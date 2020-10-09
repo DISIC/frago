@@ -1,0 +1,81 @@
+home:
+  other: "Accueil"
+nav-main:
+  other: Navigation principale
+nav-content:
+  other: A suivre
+nav-package:
+  other: Découvrir les autres catégories
+nav-anchor:
+  other: Accéder aux thématiques
+promise-title:
+  other: Une bibliothèque de contenus
+promise-text:
+  other: pour améliorer les résultats de l'enseignement et de l'apprentissage dans la région nord du Ghana
+title-related-content:
+  other: Contenus similaires
+link-access-more:
+  other: Voir plus
+link-access-content:
+  other: Voir le contenu
+form-legend-sort:
+  other: "Trier par:"
+form-legend-sort-date:
+  other: "Trier par date:"
+form-label-title:
+  other: "Titre"
+form-label-lang:
+  other: "Langue"
+form-legend-lang:
+  other: "Languages:"
+form-label-date:
+  other: "Date"
+form-label-ascending:
+  other: "Croissant"
+form-label-descending:
+  other: "Decroissant"
+form-label-all:
+  other: "Tout"
+search-placeholder:
+  other: Que recherchez-vous ?
+search-button:
+  other: Rechercher
+assets-images:
+  other: images
+assets-audio:
+  other: "audios"
+assets-documents:
+  other: documents
+assets-videos:
+  other: videos
+message-video-compatibility:
+  other: Your browser does not support the video tag.
+message-audio-compatibility:
+  other: "Your browser does not support the audio tag."
+message-not-found:
+  other: Page non trouvée
+languages:
+  one: Langue
+  other: Langues
+category:
+  one: catégorie
+  other: catégories
+optional:
+  other: optionel
+required:
+  other: obligatoire
+location:
+  other: location
+name:
+  other: nom
+email:
+  other: email
+phone:
+  other: téléphone
+message:
+  other: message
+send:
+  other: Envoyer
+contact-us:
+  other: Nous contacter
+

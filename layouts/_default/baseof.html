@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{{/* General variables */}}
+<html lang="{{ .Site.LanguageCode | default "fr" }}" dir="ltr">
+{{ partial "head" . }}
+<body class="hugo-{{ .Kind }}">
+  <div class="skip-links">
+    <a href="#nav">Navigation principale</a>
+    <a href="#main">Contenu principal</a>
+  </div>
+  <header role="banner">
+    <div class="wrapper flex align-items-center margin-baseline padding-baseline">
+          <div class="flex align-items-center">
+            <a href="/" title="Accueil - L’observatoire de la qualité des démarches en ligne" rel="home"
+              class="navbar-brand"><img src="/assets/images/LogoRF.svg" width="150" alt="Logo République française"><span class="demarches-titlebar-sitename"></span></a>
+            <p class="h4">{{ .Site.Title | safeHTML }}</p>
+          </div>
+          <nav class="nav nav-main">
+            <ul class="list-unstyled list-inline">
+              {{- $currentPage := . -}}
+              {{ range .Site.Menus.main }}
+                <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{end}} href="{{ .URL }}" title="{{ .Title }}">{{ .Title }}</a></li>
+              {{- end -}}
+            </ul>
+          </nav>
+    </div>
+  </header>
+  <main id="main" class="page main">
+  {{ block "main" . }}{{- end -}}
+  </main>
+  {{ partialCached "footer" . }}
+  {{ block "script" . }}{{- end -}}
+  {{- if .HasShortcode "mermaid" -}}
+  <script src="/assets/js/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      theme: 'neutral',
+      themeCSS: '.node rect,.node polygon, .task { fill: #006be6; stroke: #333; stroke-width:0;}.node .label {color: #fff;}.edgeLabel {background: snow;}.task {fill: #189e57}.task0 {fill: #006be6}',
+      logLevel: 3,
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 },
+      // sequenceDiagram: { actorMargin: 300 } // deprecated
+    });
+  </script>
+  {{- end -}}
+  {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production")) -}}
+  {{ partial "debug/debug.html" (dict "context" .) }}
+  {{- end -}}
+</body>
+</html>
+

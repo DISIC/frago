@@ -1,0 +1,18 @@
+/*
+/// Media queries
+*/
+
+/* Media Query breakpoint
+// https://medium.freecodecamp.com/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862#.59e713wwa
+//-------------------------------------
+*/
+
+:root {
+  --screen: "only screen";
+  --tiny: 20;       /* 320px  */
+  --small: 37.5;    /* 600px  */
+  --medium: 56.25;  /* 900px  */
+  --large: 75;      /* 1200px */
+  --xlarge: 112.5;  /* 1800px */
+  --xxlarge: 150;   /* 2400px */
+}

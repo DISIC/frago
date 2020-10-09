@@ -1,0 +1,366 @@
+{{- define "main" -}}
+<div class="wrapper">
+<h2>Colors</h2>
+<h3>Primary</h3>
+<ul class="primary colors"></ul>
+<h3>Secondary</h3>
+<ul class="secondary colors"></ul>
+<h3>Grey</h3>
+<ul class="grey colors"></ul>
+
+<h2>Typography</h2>
+
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+<p>This is a paragraph. The font family is monospace and for the headings 1 to 3 it's Sans-Serif</a>.
+  <b>Some bold text.</b>
+  <i>Italics also looks nice.</i> You can <u>underline</u> things you feel are important. has
+  styles that override the default heading styles, including margin.
+</p>
+
+<h2 id="codeBlock">Code Block</h2>
+<p>
+  <code>inline code;</code>
+  <samp>inline samp;</samp> and kbd: <kbd>ctrl</kbd>
+  <kbd>c</kbd>
+</p>
+<p>Code blocks are code tags wrapped with pre tags. They automatically overflow to become scrollable on smaller displays
+</p>
+<pre><code>&lt;pre&gt;&lt;code&gt;
+&lt;h2&gt;Code Block Example&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;</code></pre>
+<p>Samp blocks are similar but intended for output moslty so mono/color sets the line-height tighter to show it better
+  (for example, ASCII art)
+</p>
+<pre><samp>                /\  (hi i'm v dude)
+   __  ____  __/\/\__  __   ___
+  /  \/ __ \ \ _  _ / /  \ |   \
+ / /\ \__ \ \/\'  '/\/ /\ \|    |
+/_/  \____/\__/\__/\__/  \_____/</samp></pre>
+<h2>Blockquote</h2>
+<blockquote>
+  You're <em>not</em> a fucking moron if you use default browser styles you can do what ever the fuck you want
+  who cares
+  <br><cite>&mdash; Eleanor Roosevelt</cite>
+  <blockquote>
+    This is a nested quote
+    <br><cite>&mdash; Me</cite>
+    <blockquote>Yes, I totally took that from <a href="http://bettermotherfuckingwebsite.com/">this site</a>. I always
+      used it as a reference.
+      <br><cite>&mdash; Also me</cite>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<br>
+<h2 id="lists">Lists</h2>
+<p>Lists are default HTML lists. I tried a few things but figured the defaults are all that's needed (imo).</p>
+<h3>Unordered List</h3>
+<ul>
+  <li>First Item</li>
+  <li>
+    Second Item
+    <ul>
+      <li>Sub Item 1</li>
+      <li>Sub Item 2</li>
+    </ul>
+  </li>
+  <li>Third Item</li>
+</ul>
+<h3>Ordered List</h3>
+<ol>
+  <li>First Item</li>
+  <li>
+    Second Item
+    <ol>
+      <li>Sub Item 1</li>
+      <li>Sub Item 2</li>
+    </ol>
+  </li>
+  <li>Third Item</li>
+</ol>
+<h2 id="tables">Tables</h2>
+<p>Tables looks nice too:</p>
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Username</th>
+    <th>email</th>
+    <th>secondary email</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Lorem Ipsum</td>
+      <td>lorem</td>
+      <td>email@example.com</td>
+      <td>email@example.org</td>
+    </tr>
+    <tr>
+      <td>Lorem Ipsum</td>
+      <td>lorem</td>
+      <td>email@example.com</td>
+      <td>email@example.org</td>
+    </tr>
+  </tbody>
+</table>
+<h2 id="forms">Forms</h2>
+
+{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "form") }}
+<form class="tacenter">
+<fieldset>
+    <legend>Legend</legend>
+    <label>Email <span class="form__required">requis</span></label>
+    <input type="email" placeholder="ex. Tom Glance" required>
+    <label>Password <span class="form__required">requis</span></label>
+    <input type="password" placeholder="ex.tom.glance@mail.net" required>
+
+  <label>Message</label>
+  <textarea placeholder="Some information here" class="w-100"></textarea>
+  <input type="submit" value="Submit">
+</fieldset>
+</form>
+
+<h2 id="buttons">Buttons</h2>
+<p>Buttons are created with either a button or an anchor, they both must have the <code>btn</code> class.</p>
+<div>
+  <a class="btn" href="#">Link button</a>
+  <a class="btn skip" href="#">Skip button</a>
+  <button class="btn">Regular Button</button>
+  <p>Primary buttons are made with the <code>primary</code> class</p>
+  <button class="btn primary">Primary Button</button>
+  <button class="btn secondary">Secondary Button</button>
+  <button class="btn warning">Warning Button</button>
+  <button class="btn action">Action Button</button>
+  <button class="btn" disabled>Disabled Button</button>
+</div>
+
+{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
+<h2 id="grid">Grid</h2>
+<div class="grid">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+</div>
+<div class="grid">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+  <div class="card card-border text-center">3</div>
+</div>
+<div class="grid">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+  <div class="card card-border text-center">3</div>
+  <div class="card card-border text-center">4</div>
+</div>
+<h2 id="grid">Flex</h2>
+<div class="flex">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+</div>
+<div class="flex">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+  <div class="card card-border text-center">3</div>
+</div>
+<div class="flex">
+  <div class="card card-border text-center">1</div>
+  <div class="card card-border text-center">2</div>
+  <div class="card card-border text-center">3</div>
+  <div class="card card-border text-center">4</div>
+</div>
+</div>
+
+</div>
+{{- end -}}
+{{- define "script" -}}
+<style>
+
+table {
+    border: solid 1px var(--color-grey-light);
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+thead th {
+    background-color: #dedede;
+    border: solid 1px #dedede;
+    color: #333;
+    padding: calc(var(--baseline) / 2);
+    text-align: left;
+}
+tbody td {
+    border: solid 1px #dedede;
+    color: var(--text-color);
+    padding: 10px;
+}
+
+blockquote {
+  background: var(--background-color);
+  border-left: 5px solid var(--color-primary);
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: var(--text-color);
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+
+ul ::marker,
+ol ::marker {
+  color: var(--color-primary-light, #000);
+}
+
+ol {
+  list-style: none;
+  counter-reset: counter;
+}
+ol li {
+  counter-increment: counter;
+}
+ol li::before {
+  content: counter(counter) ". ";
+  color: var(--link-color, #000);
+  font-weight: bold;
+}
+
+
+.colors {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.color {
+  border-radius: 2px;
+  border: 1px solid var(--text-color);
+  padding: 0.5rem;
+  transition: box-shadow 0.15s;
+}
+
+.color__swatch {
+  background-color: var(--color);
+  border-radius: 2px 2px 0 0;
+  display: block;
+  height: 11rem;
+}
+
+.color__details {
+  font-size: 1rem;
+  padding: 0.5rem;
+  text-align: right;
+}
+
+.color input {
+  border: 0;
+  display: block;
+  font-family: monospace;
+  font-size: inherit;
+  margin: 0;
+  padding: 0.2rem;
+  text-align: right;
+  width: 100%;
+  color: var(--text-color);
+  background: none;
+}
+
+</style>
+<script>
+// https://codepen.io/tylergaw/pen/jObmNNM
+
+/*
+ Check if the stylesheet is internal or hosted on the current domain.
+ If it isn't, attempting to access sheet.cssRules will throw a cross origin error.
+ See https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet#Notes
+
+ NOTE: One problem this could raise is hosting stylesheets on a CDN with a
+ different domain. Those would be cross origin, so you can't access them.
+*/
+  const isSameDomain = (styleSheet) => {
+    // Internal style blocks won't have an href value
+    if (!styleSheet.href) {
+      return true;
+    }
+    return styleSheet.href.indexOf(window.location.origin) === 0;
+  };
+  /*
+   Determine if the given rule is a CSSStyleRule
+   See: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
+  */
+  const isStyleRule = (rule) => rule.type === 1;
+  /**
+   * Get all custom properties on a page
+   * @return array<array[string, string]>
+   * ex; [["--color-accent", "#b9f500"], ["--color-text", "#252525"], ...]
+   */
+  const getCSSCustomPropIndex = () =>
+    // styleSheets is array-like, so we convert it to an array.
+    // Filter out any stylesheets not on this domain
+    [...document.styleSheets].filter(isSameDomain).reduce(
+      (finalArr, sheet) =>
+      finalArr.concat(
+        // cssRules is array-like, so we convert it to an array
+        [...sheet.cssRules].filter(isStyleRule).reduce((propValArr, rule) => {
+          const props = [...rule.style]
+            .map((propName) => [
+              propName.trim(),
+              rule.style.getPropertyValue(propName).trim()
+            ])
+            // Discard any props that don't start with "--". Custom props are required to.
+            .filter(([propName]) => propName.indexOf("--color") === 0);
+          return [...propValArr, ...props];
+        }, [])
+      ),
+      []
+    );
+  const cssCustomPropIndex = getCSSCustomPropIndex();
+  let set = new Set(cssCustomPropIndex.map(JSON.stringify));
+  let cssCustomPropIndexFinal = Array.from(set).map(JSON.parse);
+  let cssCustomPropIndexPrimary = cssCustomPropIndexFinal.filter(propName => propName[0].includes('primary'))
+  let cssCustomPropIndexSecondary = cssCustomPropIndexFinal.filter(propName => propName[0].includes('secondary'))
+  let cssCustomPropIndexGrey = cssCustomPropIndexFinal.filter(propName => propName[0].includes('grey'))
+  // Add the swatches to the DOM
+  document.querySelector(".primary").innerHTML = cssCustomPropIndexPrimary.reduce(
+    (str, [prop, val]) => `${str}<li class="color">
+    <b class="color__swatch" style="--color: ${val}"></b>
+    <div class="color__details">
+      <input value="${prop}" readonly />
+      <input value="${val}" readonly />
+    </div>
+   </li>`,
+    ""
+  );
+  document.querySelector(".secondary").innerHTML = cssCustomPropIndexSecondary.reduce(
+    (str, [prop, val]) => `${str}<li class="color">
+    <b class="color__swatch" style="--color: ${val}"></b>
+    <div class="color__details">
+      <input value="${prop}" readonly />
+      <input value="${val}" readonly />
+    </div>
+   </li>`,
+    ""
+  );
+  document.querySelector(".grey").innerHTML = cssCustomPropIndexGrey.reduce(
+    (str, [prop, val]) => `${str}<li class="color">
+    <b class="color__swatch" style="--color: ${val}"></b>
+    <div class="color__details">
+      <input value="${prop}" readonly />
+      <input value="${val}" readonly />
+    </div>
+   </li>`,
+    ""
+  );
+
+</script>
+{{- end -}}

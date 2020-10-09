@@ -1,0 +1,153 @@
+/*
+/// Layout
+*/
+:root {
+  --layout-max-width: 75rem;
+}
+
+/* Page & Wrapper
+// -------------------------
+*/
+
+.page {
+  padding-bottom: var(--baseline);
+}
+
+.page,
+.wrapper {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.wrapper {
+  padding-right: var(--baseline);
+  padding-left: var(--baseline);
+  max-width: var(--layout-max-width);
+}
+
+.narrow {
+  max-width: 70ch;
+}
+
+/* Grid
+// -------------------------
+*/
+
+@supports (grid-area: auto) {
+  .grid {
+    display: grid;
+    grid-gap: var(--baseline);
+    margin-bottom: var(--baseline);
+  }
+
+  .grid-center {
+    display: grid;
+    place-items: center;
+  }
+}
+
+.grid-separator > *:not(:first-child) {
+  position: relative;
+  border-top: #f1f1f1 2px solid;
+}
+
+@media screen and (min-width: 56.25em) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .grid-separator {
+    grid-gap: 0;
+  }
+
+  .grid-separator > *:not(:first-child) {
+      border: none;
+      border-left: #f1f1f1 2px solid;
+  }
+  .grid-separator.flex > *:not(:first-child) {
+      margin: 0 0 0 0.5em;
+      padding: 0 1em;
+  }
+}
+
+/* Flex
+// -------------------------
+*/
+
+.flex {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.flex-gap > * {
+  padding: var(--baseline) 0;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 56.25em) {
+  .flex {
+      display: flex;
+      flex-direction: row;
+  }
+
+  .flex-gap > * {
+    padding: 0 var(--baseline);
+  }
+}
+
+.flex > * {
+  flex: 1;
+}
+
+.flex-max {
+  flex: 999;
+}
+
+.flex-min {
+  flex: 0.001;
+}
+
+.flex-column {
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+/* Margin
+// -------------------------
+*/
+
+.margin-baseline {
+  margin-bottom: var(--baseline);
+}
+
+.padding-baseline {
+  padding: calc(var(--baseline) / 2) 0;
+}
+
+/* Alignement
+// -------------------------
+*/
+
+.row-reverse {
+  flex-direction: row-reverse;
+}
+
+.align-items-center {
+  align-items: center;
+  -ms-flex-align: center;
+}
+
+.justify-content-center {
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.justify-content-end {
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}

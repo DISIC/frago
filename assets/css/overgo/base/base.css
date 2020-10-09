@@ -1,0 +1,111 @@
+/*
+/// Very basic styles
+///*/
+
+html, body {
+  box-sizing: border-box;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* @media (prefers-reduced-motion: reduce) {
+  :root {
+    --enable-shadows: none;
+  }
+} */
+
+/* Selection focus */
+*:focus {
+  box-shadow: var(--enable-shadows, 0 0 4px 1px var(--color-primary));
+  outline: 3px solid transparent;
+}
+
+/* Chunk rendering for all but the first article */
+body > main > *+* {
+  content-visibility: auto;
+}
+
+/* Images
+// -------------------------
+*/
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  -ms-interpolation-mode: bicubic;
+  border: 0;
+}
+
+/* We need to revert these for Google maps cause else it breaks! */
+.img--no-max {
+  max-width: none;
+}
+
+
+/* Figures
+// -------------------------
+*/
+
+figure > img {
+  display: block;
+  width: 100%;
+}
+
+figcaption {
+  font-size: var(--smaller);
+}
+
+/* Links
+// -------------------------
+*/
+
+a {
+  transition: 0.5s ease all;
+  text-decoration: underline;
+  color: var(--link-color);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  outline: none;
+}
+
+/* Lists
+// -------------------------
+*/
+
+ul, ol {
+  margin-bottom: var(--baseline);
+}
+
+/*/ List options
+// -------------------------
+*/
+
+/* Unstyled keeps list items block level, just removes default browser padding and list-style*/
+.list-unstyled {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Inline turns list items into inline-block */
+.list-inline > li {
+  display: inline-block;
+  margin: 0 -5px 0 0;
+}
+

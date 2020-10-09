@@ -1,0 +1,12 @@
+<nav class="grid">
+  {{ if ne .PrevInSection  nil }}
+    {{ with .PrevInSection }}
+    <span class="pagination--prev"><a href="{{ .Permalink }}" class="pagination--item">{{ .Title }}</a></span>
+    {{ end }}
+  {{ end }}
+  {{ if ne .NextInSection  nil }}
+    {{ with .NextInSection }}
+    <span class="pagination--next text-right"><a href="{{ .Permalink }}" class="pagination--item">{{ .Title }}</a></span>
+    {{ end }}
+  {{ end }}
+</nav>

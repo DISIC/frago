@@ -1,0 +1,1 @@
+{{ partial "elements/images.html" (dict "image" .Destination "title" .Title "alt" .Text) | replaceRE "<link rel='preload' as='image' srcset='" "<link rel='preload' as='image' imagesrcset='" | safeHTML }}

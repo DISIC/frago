@@ -1,0 +1,47 @@
+{{- define "main" -}}
+<link rel="stylesheet" href="/assets/css/night-owl.min.css">
+<script src="/assets/js/highlight.min.js"></script>
+<script src="/assets/js/simple-lightbox.min.js"></script>
+<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
+<div class="wrapper">
+<p><= <a href="{{ .Parent.Permalink }}">Retour à la liste des {{ .Parent.Title }}</a></p>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{ partial "elements/content.html" .Content }}
+{{ range $id, $p := $.Site.Data.audits.contraventions }}
+  <h2>{{ .name }}</h2>
+  {{ $name := .name }}
+  URL : <a href="{{ .url }}">{{ .url }}</a>
+  {{- $.Scratch.Set "paths" slice -}}
+  {{ range $b := .blocks }}
+  {{ range $idx, $s:= .errors }}
+    {{ $path := .name  }}
+    {{ $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) }}
+    {{ $.Scratch.Add "index" (slice $path) }}
+    <dl>
+      <dt>{{ if .checked }}✅ Exemple de test corrigé{{ else }}❌{{ end }} {{ .name }} - <small>{{ range (readDir "./static/assets/images/auditcontraventions/") }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir "./static/assets/images/auditcontraventions/") }}
+      {{ if in (string .Name) (string $filename) }}</a>{{ end }}{{ end }}</small></dt>
+      <dd>{{ .description | safeHTML }}</dd>
+    </dl>
+    {{ if .codebefore }}<p><strong>Code présent</strong><pre class="language-html"><code>{{ .codebefore | htmlUnescape }}</code></pre></p>{{ end }}
+    {{ if .codeafter }}<p><strong>Code modifié</strong><pre class="language-html"><code>{{ .codeafter | htmlUnescape }}</code></pre></p>{{ end }}
+  {{ end }}
+  <div class="parcours grid grid-4 lightbox-{{ $id }}">
+  {{ range $errorname := ($.Scratch.Get "index") }}
+      {{ $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize)}}
+      {{ range (readDir "./static/assets/images/auditcontraventions/") }}
+        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><div id="">{{ $errorname }}</div><figure class="flex flex-max"><a href="/assets/images/auditcontraventions/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/auditcontraventions/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
+      {{ end }}
+  {{ end }}
+  <script>var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize) "-" "") | safeJS}} = new SimpleLightbox('.lightbox-{{ $id }} figure a', {captionPosition:'bottom',loop: 'false'});</script>
+  </div>
+  {{ end }}
+{{ end }}
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+{{ end }}

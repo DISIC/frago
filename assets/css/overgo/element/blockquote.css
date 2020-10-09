@@ -1,0 +1,23 @@
+/* Blockquotes
+// -------------------------
+*/
+
+blockquote {
+  margin-bottom: var(--baseline);
+  padding: calc(var(--baseline) / 2) var(--baseline) calc(var(--baseline) / 4);
+  font-size: var(--bigger);
+  border-left: 5px solid var(--color-primary);
+  background-color: #fff;
+}
+
+blockquote, blockquote p, q {
+  color: var(--color-grey-dark);
+}
+
+q {
+  quotes: "“" "”";
+}
+
+q:lang(de) {
+  quotes: "„" "“";
+}

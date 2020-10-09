@@ -1,0 +1,14 @@
+/*
+/// Navigations anchor
+*/
+
+.nav-anchor {
+  margin-bottom: calc(var(--baseline) * 2);
+  padding: var(--baseline) calc(var(--baseline) * 2) var(--baseline);
+  background-color: var(--background-color);
+}
+
+.nav-anchor li {
+  display: inline-block;
+  margin: var(--baseline) var(--baseline) var(--baseline) 0;
+}

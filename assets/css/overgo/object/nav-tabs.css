@@ -1,0 +1,113 @@
+/*
+/// Navigations tabs
+*/
+
+.nav-tabs {
+  margin: 0 0 var(--baseline);
+}
+
+.nav-tabs li {
+  text-align: center;
+}
+
+.nav-tabs__link {
+  display: block;
+  padding: 1em;
+  height: 100%;
+  line-height: 1.5;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  background: var(--color-primary);
+  z-index: 0;
+}
+
+.nav-tabs__link strong {
+  overflow: hidden;
+  display: block;
+  vertical-align: middle;
+}
+
+.nav-tabs__link span {
+  display: inline-block;
+  margin: 0 0.5em 0.5em 0;
+  padding: 0.1em 0.5em;
+  border-radius: 50%;
+  font-size: var(--bigger);
+  font-weight: bold;
+  color: #000;
+  background: #fff;
+}
+
+.nav-tabs__link:hover,
+[aria-selected="true"].nav-tabs__link {
+  text-decoration: none;
+  background: var(--color-primary-dark);
+}
+
+.nav-tabs__content {
+  margin-top: var(--baseline);
+  padding: var(--baseline);
+  min-height: 20rem;
+  text-align: center;
+  font-size: var(--bigger);
+  background: var(--background-color);
+}
+
+[aria-hidden="true"].nav-tabs__content {
+  display: none;
+}
+
+@media screen and (min-width: 56.25em) {
+
+  .nav-tabs ul {
+    display: flex;
+  }
+
+  .nav-tabs li {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  li:not(:first-child) .nav-tabs__link {
+    padding-left: 2em;
+  }
+
+  li:not(:last-child) .nav-tabs__link {
+    padding-right: 2em;
+  }
+
+  li:not(:first-child) .nav-tabs__link::before,
+  li:not(:last-child) .nav-tabs__link::after {
+    --border-color: var(--color-primary);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    content: "";
+    width: 0;
+    height: 0;
+    background: var(--background-color);
+    border-top: 100px solid var(--border-color);
+    border-left: 30px solid transparent;
+    border-bottom: 100px solid var(--border-color);
+    transition: .5s ease all;
+    transform: translateY(-50%);
+  }
+
+  li:not(:last-child) .nav-tabs__link::after {
+    left: auto;
+    right: 0;
+    border-top: 100px solid transparent;
+    border-left: 30px solid var(--border-color);
+    border-bottom: 100px solid transparent;
+  }
+
+  li [aria-selected="true"].nav-tabs__link::before,
+  li [aria-selected="true"].nav-tabs__link::after,
+  li .nav-tabs__link:hover::before,
+  li .nav-tabs__link:hover::after {
+    --border-color: var(--color-primary-dark);
+  }
+}
+

@@ -1,0 +1,32 @@
+/*
+/// Table
+*/
+
+table {
+  color: var(--color-grey-dark);
+  border-collapse: collapse;
+  border: 1px solid var(--color-grey-dark);
+  background-color: #fff;
+}
+
+table th {
+  color: var(--color-grey-light);
+  background-color: var(--link-color);
+}
+
+table tr {
+  border-bottom: 1px solid var(--color-grey-dark);
+}
+
+table tr:last-child {
+  border: none;
+}
+
+table tr td {
+  padding: 5px 10px;
+  border-right: 1px solid var(--color-grey-dark);
+}
+
+table tr td:last-child {
+  border: none;
+}

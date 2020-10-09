@@ -1,0 +1,6 @@
+{{ $filepath := printf "/css/%s/%s.css" .filefolder .filename }}
+{{- $css := resources.Get $filepath -}}
+<link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{ end }} media="print" onload="this.media='all'">
+<noscript>
+  <link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{ end }} media="screen">
+</noscript>

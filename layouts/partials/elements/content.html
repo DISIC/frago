@@ -1,0 +1,71 @@
+{{ $currentLang := site.Language.Lang }}
+{{ with findRE "<table>" . }}
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "table") }}
+{{ end }}
+{{ with findRE "<dl>" .}}
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "definitionlists") }}
+{{ end }}
+{{ with findRE "<pre>" .}}
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "codeformatting") }}
+{{ end }}
+{{ with or (findRE "<blockquote>" .) (findRE "<q>" .)}}
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") }}
+{{ end }}
+{{ with or (findRE "<iframe>" .) (findRE "<embed>" .)}}
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") }}
+{{ end }}
+
+{{ if eq $currentLang "fr" }}
+
+    {{ $content := . }}
+
+    <!-- # Ordinals -->
+    {{ $content = $content | replaceRE "(\\s)(\\d+)(e|è)(r|me)?([\\s.,])" "$1$2<sup>$3$4</sup>$5" }}
+
+    <!-- # Num -->
+    <!-- input.gsub!(%r!n°\s*(\d)!, 'n<sup>o</sup>&#8239;\1') -->
+    {{ $content = $content | replaceRE "n°\\s*(\\d)" "n<sup>o</sup>&#8239;$1" }}
+
+    <!-- # French Guillemets -->
+    <!-- {{ $content = $content | replaceRE "(&rdquo;|”|»)&lt;a " "«&nbsp;&lt;a " }}
+    {{ $content = $content | replaceRE "(&ldquo;|“|«)(^&#8239;)(\\s|&nbsp;| )*" "«&#8239;" }} -->
+    <!-- # ?! not existing in go. Should find an other way -->
+    <!-- {{ $content = $content | replaceRE "(\\s|&nbsp;| )*(\\?\\!&nbsp;)(&rdquo;|”|»)" "&#8239;»" }} -->
+
+    <!-- # Point median -->
+    <!-- if settings["median"] -->
+    <!-- input.gsub!(%r!(\p{L}+)(·\p{L}+)((·)(\p{L}+))?!, '\1<span aria-hidden="true">\2\4</span>\5') -->
+    <!-- end -->
+
+    <!-- # Special punctuation -->
+    <!-- input.gsub!(%r!(\s)+\?\!([^\w]|$)!, '&#8239;&#8264;\2') -->
+    <!-- input.gsub!(%r!(\s)+\!\?([^\w]|$)!, '&#8239;&#8265;\2') -->
+    <!-- input.gsub!(%r!(\s)+\!\!\!([^\w]|$)!, '&#8239;&#8252;\2') -->
+    <!-- input.gsub!(%r!(\s)+\!\!([^\w]|$)!, '&#8239;&#8252;\2') -->
+
+    <!-- # Times : need tests -->
+    <!-- input.gsub!(%r!(\s)+(\d+)(\s)*x(\s)*(?=\d)!, '\1\2&nbsp;&times;&nbsp;\5') -->
+    {{ $content = $content | replaceRE "(\\s)+(\\d+)(\\s)*x(\\s)*(^\\d)" "$1$2&nbsp;&times;&nbsp;$5" }}
+
+    <!-- # Non-breaking space before '%' and units (< 4 letters) -->
+    {{ $content = $content | replaceRE "(\\s)+(\\d+)(\\s)+([a-zA-Z]|%)" "$1$2&nbsp;$4$5" }}
+
+    <!-- # Thin non-breaking space before ;', '!', '?' -->
+    {{ $content = $content | replaceRE "( )([;?!])" "&#8239;$2" }}
+
+    <!-- # non-breaking space -->
+    {{ $content = $content | replaceRE "( )([:])" "&nbsp;$2" }}
+
+    <!-- # Currencies -->
+    {{ $content = $content | replaceRE "(\\d+)\\s*(\\$|€)" "$1&nbsp;$2" }}
+
+    <!-- # nbsp after middle dash (dialogs) -->
+    <!-- input.gsub!(%r!(—|&mdash;)(\s)!, '\1&nbsp;') -->
+    {{ $content = $content | replaceRE "(—|&mdash;)(\\s)" "$1&nbsp;" }}
+
+    <!-- Render Content -->
+    {{ $content | safeHTML }}
+
+{{ else }}
+    {{ . }}
+{{ end }}

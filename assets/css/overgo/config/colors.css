@@ -1,0 +1,41 @@
+/*
+/// Colors
+*/
+
+/* Better colors for development
+//-------------------------------------
+*/
+
+/* https://blog.jim-nielsen.com/2020/sass-color-functions-in-css/ */
+
+:root {
+  --base-color-hs: 335, 100%;
+  --base-color: hsl(var(--base-color-hs), 50%);
+  --base-color-light: hsl(var(--base-color-hs), 85%);
+  --base-color-dark: hsl(var(--base-color-hs), 20%);
+  --base-color-translucent: hsla(var(--base-color-hs), 50%, .5);
+}
+
+:root {
+
+  /* set initial (main) HSL color values to use */
+  --base-hue: 0;
+  --base-sat: 65%;
+  --base-light: 50%;
+  --base-opacity: 1;
+
+  --shader: 23.5%;
+
+  --base-red: var(--base-hue);
+  --base-pink: calc(var(--base-hue) + 330);
+  --base-grape: calc(var(--base-hue) + 300);
+  --base-violet: calc(var(--base-hue) + 270);
+  --base-indigo: calc(var(--base-hue) + 240);
+  --base-blue: calc(var(--base-hue) + 210);
+  --base-cyan: calc(var(--base-hue) + 180);
+  --base-teal: calc(var(--base-hue) + 150);
+  --base-green: calc(var(--base-hue) + 120);
+  --base-lime: calc(var(--base-hue) + 90);
+  --base-yellow: calc(var(--base-hue) + 60);
+  --base-orange: calc(var(--base-hue) + 30);
+}

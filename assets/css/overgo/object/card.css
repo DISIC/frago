@@ -1,0 +1,65 @@
+/*
+/// Card
+*/
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  justify-content: center;
+  padding: var(--baseline);
+  min-height: 5em;
+  font-weight: bold;
+}
+
+.card-animate:focus-within,
+.card-animate:hover {
+  transform: scale(1.03);
+  opacity: 1;
+}
+
+.card-animate {
+  transition: 0.3s opacity, 0.3s transform;
+  pointer-events: auto;
+}
+
+.card-border {
+  border: 1px solid var(--color-grey);
+}
+
+.card-shadow {
+  box-shadow: var(--enable-shadows, 0 0 1px rgba(0, 0, 0, 0.11), 0 0 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11));
+}
+
+.card h3,.card h4 {
+  line-height: 1.25;
+  color: var(--color-grey-dark);
+}
+
+.card figure {
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.11);
+  border-radius: 4px 4px 0 0;
+}
+
+.card img {
+  width: 100%;
+  max-height: 7em;
+  object-fit: cover;
+}
+
+.card .meta-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card p {
+  color: var(--color-grey-dark);
+}
+
+.card a:hover {
+  text-decoration: inherit;
+}

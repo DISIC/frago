@@ -1,0 +1,15 @@
+<nav class="nav nav-language">
+  {{- range .Site.Languages -}}
+  <button onclick="i18next.changeLanguage('{{ . }}')" class="button-translation">{{- . -}}</button>
+  {{- end -}}
+  {{- if .IsTranslated -}}
+  {{/*  <ul class="list-unstyled list-inline">
+  <!-- Alternative available languages -->
+  {{- range .Translations -}}
+  <li>
+    <a href="{{ .Permalink }}">{{- .Language.LanguageName -}}</a>
+  </li>
+  {{- end -}}
+  </ul>  */}}
+  {{- end -}}
+</nav>

@@ -1,0 +1,24 @@
+{{- $.Scratch.Set "index" slice -}}{{- range .Site.RegularPages -}}
+{{- $content := (.RawContent | plainify | lower) -}}
+{{- $content := (replaceRE "\"" "" $content) -}}
+{{- $content := (replaceRE "&ldquo;" "" $content) -}}
+{{- $content := (replaceRE "&rdquo;" "" $content) -}}
+{{- $content := (replaceRE "\n+" " " $content) -}}
+{{- $content := (replaceRE "\r+" " " $content) -}}
+{{- $content := (replaceRE "\t+" " " $content) -}}
+{{- $content := (replaceRE " +" " " $content) }}
+{{- $content := (trim $content " ") }}
+{{- $.Scratch.Set "counterimage" 0 -}}
+{{- $.Scratch.Set "counterdocument" 0 -}}
+{{- $.Scratch.Set "countervideo" 0 -}}
+{{- $.Scratch.Set "image" "" -}}
+{{- $.Scratch.Set "imagepath" .File.Dir -}}
+{{- $path := printf "%s%s" $.Site.Params.contentpath (string .File.Dir) -}}
+{{- range (readDir $path) -}}
+  {{- if or (in .Name ".jpg") (in .Name ".png") (in .Name ".jpeg") -}}
+    {{- $.Scratch.Set "image" .Name -}}
+  {{- end -}}
+{{- end -}}
+{{- $.Scratch.Add "index" (dict "objectID" .File.UniqueID "image" ($.Scratch.Get "image") "date" .Date.UTC.Unix  "dateFormat" (dateFormat "Monday, Jan 2, 2006" .Date) "dateCreated" .Params.dateCreated "lang" .Params.lang "publication" .Params.publication "description" .Description "dir" .File.Dir "expirydate" .ExpiryDate.UTC.Unix "fuzzywordcount" .FuzzyWordCount "wordcount" .WordCount "keywords" .Keywords "kind" .Kind "lastmod" .Lastmod.UTC.Unix "permalink" .Permalink "publishdate" .PublishDate "readingtime" .ReadingTime  "relpermalink" .RelPermalink "summary" .Summary "title" .Title "slug" (.Title | anchorize ) "content" $content "typeimagecount" ($.Scratch.Get "counterimage") "typeaudiocount" ($.Scratch.Get "counteraudio") "typedocumentcount" ($.Scratch.Get "counterdocument") "typevideocount" ($.Scratch.Get "countervideo")) }}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}

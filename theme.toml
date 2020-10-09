@@ -1,0 +1,14 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/spf13/hugoThemes#themetoml for an example
+
+name = "Overgo"
+license = "MIT"
+licenselink = ""
+description = "Simple corporate theme"
+homepage = ""
+tags = ["corporate", "light", "accessibility"]
+min_version = 0.1
+
+[author]
+  name = "Bertrand Keller"
+  homepage = "https://github.com/bertrandkeller"

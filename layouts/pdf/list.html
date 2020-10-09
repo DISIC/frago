@@ -1,0 +1,26 @@
+{{ partial "head" . }}
+
+<body>
+
+  <h1>All the Posts!</h1>
+
+  <p>This is a copy of all posts on the website. To download the latest version, visit...</p>
+
+  <p>TOC:</p>
+
+  <ul>
+    {{ range .Site.RegularPages }}
+      <li><a href="#{{ substr .RelPermalink 1 -1 }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+
+  {{ range .Site.RegularPages }}
+
+    <h2 id="{{ substr .RelPermalink 1 -1 }}">{{ .Title }}</h2>
+    <p style=""><a href="{{ .Permalink }}">{{ .Permalink }}</a> - {{ .Params.sdate }}</p>
+    {{ .Content }}
+
+  {{ end }}
+
+</body>
+</html>

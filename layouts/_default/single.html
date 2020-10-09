@@ -1,0 +1,21 @@
+{{- define "main" -}}
+{{ if .Content }}
+<div class="wrapper">
+  <p><= <a href="{{ .Parent.Permalink }}">Retour à la liste des {{ .Parent.Title }}</a></p>
+  <h1>{{ .Title }}</h1>
+  {{ if .Params.persons }}
+  <h2>Présents</h2>
+  <ul>
+  {{- range .Params.persons -}}
+    {{ range $id, $p := where $.Site.Data.directory "name" . }}
+      {{ if . }}<li><a href="/directory#{{ .name | urlize }}">{{ .name }}{{ if . }}</a>{{ end }}{{ if .ministry }} - {{ .ministry }}{{ end }}{{ if not (eq .job "") }} - {{ .job }}{{ end }}</li>{{ end }}
+    {{ end }}
+  {{- end -}}
+  </ul>
+  {{- end -}}
+  {{ partial "elements/content.html" .Content }}
+  <hr class="divider">
+  {{ partial "navigations/nav-prevnext.html" . }}
+  {{- end -}}
+</div>
+{{- end -}}

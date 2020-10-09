@@ -1,0 +1,33 @@
+{{- define "main" -}}
+  <h1 class="text-center">{{ .Title }}</h1>
+  <section class="section-dark">
+  <div class="wrapper">
+  <h2 class="text-center">Phases du projet</h2>
+    {{ range $key, $taxonomy := .Site.Taxonomies.phases }}
+    <h3>{{ $key | humanize }}</h3>
+    <ul id='timeline'>
+        {{ range $idx, $p := $taxonomy.Pages }}
+        <li class="work">
+          <input class='radio' id='work{{ $idx }}' name="works" type="radio">
+          <div class="relative">
+            <label for="work{{ $idx }}">{{ .LinkTitle }}</a></label>
+            <span class="date">{{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Format "2006/01/02" | safeHTML }}</time>{{ end }}</span>
+            <span class="circle"></span>
+          </div>
+          <div class="content">
+            <p>
+              {{ .Params.description }}
+            </p>
+          </div>
+        </li>
+        {{ end }}
+    </ul>
+    {{ end }}
+    </div>
+  </section>
+  {{- partial "list.html" (dict "context" . "section" "meetings") -}}
+  {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}
+  {{- partial "list.html" (dict "context" . "section" "studies") -}}
+  <hr class="divider">
+  {{- .Content -}}
+{{- end -}}

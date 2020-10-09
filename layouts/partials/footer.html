@@ -1,0 +1,83 @@
+<footer id="footerglobal" role="contentinfo">
+  <h2>Pied de page</h2>
+  <div class="wrapper">
+    <div class="row grid">
+      <div>
+        <h3>Service de paiement des amendes</h3>
+        <p>Un service proposé par la <a href="https://numerique.gouv.fr"><abbr
+              title="Direction interministérielle du numérique">DINUM</abbr></a></p>
+        <ul class="social-networks list-unstyled list-inline">
+          <li><a href="https://twitter.com/_DINUM" class="twitter" target="_blank"><span
+                class="fa fa-twitter"></span></a>
+          </li>
+          <li><a href="https://www.linkedin.com/company/direction-interministerielle-du-numerique-dinum/"
+              class="linkedin" target="_blank"><span class="fa fa-linkedin"></span></a>
+          </li>
+        </ul>
+        <ul class="list-unstyled">
+          <li><a href="/Main/CGU">Conditions générales d'utilisation</a></li>
+          <li><a href="/Main/Accessibilite">Accessibilité</a></li>
+          <li><a href="https://github.com/DISIC/wikidemarches" target="_blank">Code open source</a></li>
+          <li><a href="mailto:nosdemarches@modernisation.gouv.fr">Contact</a></li>
+        </ul>
+        <ul class="list-unstyled">
+          <li><a href="/login/Main/WebHome">
+              Accès administration
+            </a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Plan du site</h3>
+        <ul class="list-unstyled">
+          <li><a href="/observatoire/">L'observatoire</a></li>
+          <li><a href="/Aide/Observatoire">En savoir plus sur l'observatoire</a></li>
+          <li><a href="/Aide/Donner%20son%20avis">Comment donner son avis ?</a></li>
+          <li><a href="/Main/A%20propos">À propos</a></li>
+          {{ $currentPage := . }}
+          {{ range .Site.Menus.footer }}
+          <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{end}} href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+      <div>
+        <h3>Nos univers</h3>
+        <ul class="list-unstyled">
+          <li><a href="https://www.numerique.gouv.fr/" target="_blank"
+              title="numerique.gouv.fr (nouvelle fenêtre)">numerique.gouv.fr</a></li>
+          <li><a href="https://voxusagers.gouv.fr/" target="_blank"
+              title="voxusagers.gouv.fr (nouvelle fenêtre)">voxusagers.gouv.fr</a></li>
+          <li><a href="https://www.etalab.gouv.fr/" target="_blank"
+              title="etalab.gouv.fr (nouvelle fenêtre)">etalab.gouv.fr</a></li>
+          <li><a href="https://data.gouv.fr/" target="_blank" title="data.gouv.fr (nouvelle fenêtre)">data.gouv.fr</a>
+          </li>
+          <li><a href="https://beta.gouv.fr/" target="_blank" title="beta.gouv.fr (nouvelle fenêtre)">beta.gouv.fr</a>
+          </li>
+          <li><a href="https://api.gouv.fr/" target="_blank" title="api.gouv.fr (nouvelle fenêtre)">api.gouv.fr</a>
+          </li>
+          <li><a href="https://agd.data.gouv.fr/" target="_blank"
+              title="agd.data.gouv.fr (nouvelle fenêtre)">agd.data.gouv.fr</a></li>
+          <li><a href="https://references.modernisation.gouv.fr/" target="_blank"
+              title="Nos documents de référence (nouvelle fenêtre)">Nos documents de référence</a></li>
+        </ul>
+        <h3>Services aux usagers</h3>
+        <ul class="list-unstyled">
+          <li><a href="https://franceconnect.gouv.fr/" target="_blank"
+              title="franceconnect.gouv.fr (nouvelle fenêtre)">franceconnect.gouv.fr</a></li>
+          <li><a href="https://demarches-simplifiees.fr/" target="_blank"
+              title="demarches-simplifiees.fr (nouvelle fenêtre)">demarches-simplifiees.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 footer-col-sites">
+        Les sites publics :
+        <a href="https://www.elysee.fr" target="_blank" title="Elysee.fr (nouvelle fenêtre)">Elysee.fr</a>
+        <a href="https://www.gouvernement.fr/" target="_blank"
+          title="gouvernement.fr (nouvelle fenêtre)">gouvernement.fr</a>
+        <a href="https://www.service-public.fr/" target="_blank"
+          title="service-public.fr (nouvelle fenêtre)">service-public.fr</a>
+        <a href="https://www.legifrance.gouv.fr/" target="_blank"
+          title="legifrance.gouv.fr (nouvelle fenêtre)">legifrance.gouv.fr</a>
+        <a href="https://www.data.gouv.fr/" target="_blank" title="data.gouv.fr (nouvelle fenêtre)">data.gouv.fr</a>
+      </div>
+  </div>
+</footer>

@@ -1,0 +1,29 @@
+/*
+/// Table of content
+*/
+
+.tableofcontents {
+  margin: var(--baseline) 0 calc(var(--baseline) * 2);
+  padding: 0 var(--baseline) var(--baseline);
+  background: var(--color-grey-light);
+  border: 1px solid var(--color-grey);
+}
+
+.tableofcontents ul ul {
+  margin-bottom: calc(var(--baseline) / 2);
+  padding-left: var(--baseline);
+}
+
+.tableofcontents a,
+.tableofcontents h2 {
+  color: var(--color-grey-verydark);
+}
+
+.tableofcontents a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tableofcontents a:hover {
+  text-decoration: underline;
+}

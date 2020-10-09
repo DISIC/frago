@@ -1,0 +1,79 @@
+home:
+  other: "Home"
+nav-content:
+  other: "Other contents"
+nav-package:
+  other: "View the other categories"
+nav-anchor:
+  other: "Discover the thematics"
+promise-title:
+  other: "Content library"
+promise-text:
+  other: "Improving teaching and learning outcomes in the Northern region of Ghana"
+title-related-content:
+  other: "related content"
+link-access-more:
+  other: "See more"
+link-access-content:
+  other: "See more"
+form-legend-sort:
+  other: "Sort by:"
+form-legend-sort-date:
+  other: "Sort by date:"
+form-label-title:
+  other: "Title"
+form-label-lang:
+  other: "Language"
+form-legend-lang:
+  other: "Languages:"
+form-label-date:
+  other: "Date"
+form-label-ascending:
+  other: "Ascending"
+form-label-descending:
+  other: "Descending"
+form-label-all:
+  other: "All"
+search-placeholder:
+  other: "What are you looking for?"
+search-button:
+  other: "Search"
+assets-images:
+  other: "images"
+assets-audio:
+  other: "sounds"
+assets-documents:
+  other: "documents"
+assets-videos:
+  other: videos
+message-video-compatibility:
+  other: "Your browser does not support the video tag."
+message-audio-compatibility:
+  other: "Your browser does not support the audio tag."
+message-notfound:
+  other: "Page not found"
+languages:
+  one: "Language"
+  other: "Languages"
+category:
+  one: "category"
+  other: "categories"
+optional:
+  other: "optional"
+required:
+  other: "required"
+location:
+  other: "location"
+name:
+  other: "name"
+email:
+  other: "email"
+phone:
+  other: "phone"
+message:
+  other: "message"
+send:
+  other: "send"
+contact-us:
+  other: "Contact Us"
+

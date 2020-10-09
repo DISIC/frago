@@ -1,0 +1,21 @@
+.tags {
+  display: flex;
+  margin-bottom: var(--baseline);
+}
+
+.tags a {
+  position: relative;
+  margin: 0 calc(var(--baseline) / 4) 0 0;
+  padding: 0.2em calc(var(--baseline) / 2);
+  text-decoration: none;
+  color: var(--color-grey-verylight);
+  background: hsl(var(--base-primary), var(--base-sat), var(--base-light));
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.tags a:hover {
+  --base-light: 30%;
+  color: var(--color-grey-light);
+}
+

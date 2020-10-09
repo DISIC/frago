@@ -1,0 +1,9 @@
+{{- with .GetTerms "tags" -}}
+{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "tag") -}}
+<h2>Tags :</h2>
+<ul class="list-unstyled tags">
+	{{- range . -}}
+	<li><a href="{{.RelPermalink}}">{{.LinkTitle}}</a></li>
+	{{ end }}
+</ul>
+{{- end -}}

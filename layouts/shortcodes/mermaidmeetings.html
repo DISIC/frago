@@ -1,0 +1,9 @@
+<div class="mermaid">
+    gantt
+      dateFormat  YYYY-MM-DD
+      section Réunions
+      Lancement commando  :2020-09-07, 10h
+      {{ range (where .Site.RegularPages "Section" "meetings").Reverse }}{{ .Title }}   :{{ .Date.Format "2006-01-02" }}, 10h
+      {{ end }}Clôture commando    :2020-12-12, 10h
+</div>
+{{- .Inner -}}
