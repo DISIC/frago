@@ -1,0 +1,8 @@
+# This fixes the annoying trailing space trim on VS Code
+# (we don't want it for mardown files)
+# see https://github.com/editorconfig/editorconfig-vscode/issues/153
+[*.md]
+trim_trailing_whitespace = false
+
+[*.html]
+indent_style = space
