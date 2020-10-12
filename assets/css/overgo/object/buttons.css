@@ -29,8 +29,8 @@ input[type="submit"],.btn {
   box-shadow: var(--enable-shadows,0 1px 1px rgba(0,0,0,0.08),0 2px 2px rgba(0,0,0,0.12),0 4px 4px rgba(0,0,0,0.16),0 8px 8px rgba(0,0,0,0.20));
 }
 
-input[type="submit"]:hover,
-.btn:hover {
+input[type="submit"]:not(:disabled):hover,
+.btn:not(:disabled):hover {
   --base-light: 30%;
   text-decoration: none;
   box-shadow: var(--enable-shadows,0 8px 8px rgba(0,0,0,0.04),0 10px 10px rgba(0,0,0,0.08));
@@ -38,8 +38,8 @@ input[type="submit"]:hover,
   transform: translateY(-5px);
 }
 
-.btn:active,
-input[type="submit"]:active {
+input[type="submit"]:not(:disabled):active,
+.btn:not(:disabled):active {
   --base-light: 20%;
   transform: translate(0, -4px);
   box-shadow: var(--enable-shadows, inset 1px 1px 1px rgba(0, 0, 0, 0.11), inset 1px 1px 2px rgba(0, 0, 0, 0.11), inset 1px 1px 4px rgba(0, 0, 0, 0.31));
