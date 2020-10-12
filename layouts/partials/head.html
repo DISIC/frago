@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
   <title>{{ block "title" . }}{{ .Title }}{{ end }} | {{ .Site.Title }}</title>
-  {#{- with .Description -}}<meta name="description" content="{{ . }}">{{- end -}#}
+  {{- with .Description -}}<meta name="description" content="{{ . }}">{{- end -}}
   <meta name="description" content="Défi de mise en conformité de démarches en ligne">
 
   <!-- Informations -->
