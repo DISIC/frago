@@ -1,30 +1,7 @@
 {{- define "main" -}}
   <h1 class="text-center">{{ .Title }}</h1>
-  <section class="section-dark">
-  <div class="wrapper">
-  <h2 class="text-center">Phases du projet</h2>
-    {{ range $key, $taxonomy := .Site.Taxonomies.phases }}
-    <h3>{{ $key | humanize }}</h3>
-    <ul id='timeline'>
-        {{ range $idx, $p := $taxonomy.Pages }}
-        <li class="work">
-          <input class='radio' id='work{{ $idx }}' name="works" type="radio">
-          <div class="relative">
-            <label for="work{{ $idx }}">{{ .LinkTitle }}</a></label>
-            <span class="date">{{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Format "2006/01/02" | safeHTML }}</time>{{ end }}</span>
-            <span class="circle"></span>
-          </div>
-          <div class="content">
-            <p>
-              {{ .Params.description }}
-            </p>
-          </div>
-        </li>
-        {{ end }}
-    </ul>
-    {{ end }}
-    </div>
-  </section>
+  {{- partial "elements/phases.html" (dict "context" . "type" "dark") -}}
+  <div class="progress progress-circular"><div></div><div><ul><li data-name="Speed Index" data-percent="87%"><svg viewBox="-10 -10 220 220" class="top"><g fill="none" stroke-width="15" transform="translate(100,100)"><path d="M 0,-100 A 100,100 0 0,1 86.6,-50"></path><path d="M 86.6,-50 A 100,100 0 0,1 86.6,50"></path><path d="M 86.6,50 A 100,100 0 0,1 0,100"></path><path d="M 0,100 A 100,100 0 0,1 -86.6,50"></path><path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50"></path><path d="M -86.6,-50 A 100,100 0 0,1 0,-100"></path></g></svg> <svg viewBox="-10 -10 220 220"><path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="548.1"></path></svg></li><li data-name="Performance" data-percent="81%"><svg viewBox="-10 -10 220 220" class="verygood"><g fill="none" stroke-width="15" transform="translate(100,100)"><path d="M 0,-100 A 100,100 0 0,1 86.6,-50"></path><path d="M 86.6,-50 A 100,100 0 0,1 86.6,50"></path><path d="M 86.6,50 A 100,100 0 0,1 0,100"></path><path d="M 0,100 A 100,100 0 0,1 -86.6,50"></path><path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50"></path><path d="M -86.6,-50 A 100,100 0 0,1 0,-100"></path></g></svg> <svg viewBox="-10 -10 220 220"><path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="510.3"></path></svg></li><li data-name="SEO" data-percent="100%"><svg viewBox="-10 -10 220 220" class="top"><g fill="none" stroke-width="15" transform="translate(100,100)"><path d="M 0,-100 A 100,100 0 0,1 86.6,-50"></path><path d="M 86.6,-50 A 100,100 0 0,1 86.6,50"></path><path d="M 86.6,50 A 100,100 0 0,1 0,100"></path><path d="M 0,100 A 100,100 0 0,1 -86.6,50"></path><path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50"></path><path d="M -86.6,-50 A 100,100 0 0,1 0,-100"></path></g></svg> <svg viewBox="-10 -10 220 220"><path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="630"></path></svg></li><li data-name="Bonnes pratiques" data-percent="67%"><svg viewBox="-10 -10 220 220" class="good"><g fill="none" stroke-width="15" transform="translate(100,100)"><path d="M 0,-100 A 100,100 0 0,1 86.6,-50"></path><path d="M 86.6,-50 A 100,100 0 0,1 86.6,50"></path><path d="M 86.6,50 A 100,100 0 0,1 0,100"></path><path d="M 0,100 A 100,100 0 0,1 -86.6,50"></path><path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50"></path><path d="M -86.6,-50 A 100,100 0 0,1 0,-100"></path></g></svg> <svg viewBox="-10 -10 220 220"><path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="422.1"></path></svg></li></ul></div></div>
   {{- partial "list.html" (dict "context" . "section" "meetings") -}}
   {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}
   {{- partial "list.html" (dict "context" . "section" "studies") -}}

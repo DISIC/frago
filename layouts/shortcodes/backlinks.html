@@ -1,5 +1,5 @@
 {{ .Inner }}
-{{- range sort $.Site.Data.backlinks -}}
+{{- range sort (index $.Site.Data (.Get "datafile")) -}}
   <div class="flex flex-wrap" style="justify-content: space-between; margin-bottom: 1rem;">
     <span style="max-width: 40%;">▶ {{ (index . "Source Page Title") }}</span> <a href="{{ (index . "Source URL") }}" style="max-width: 50%;word-wrap: break-word;">{{ (index . "Source URL") }}</a><br>
   </div>
