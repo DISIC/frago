@@ -55,6 +55,7 @@ body {
   padding-bottom: 0;
   line-height: var(--line-height-base);
   font-family: var(--base-font);
+  color: var(--title-color);
 }
 
 h1,
@@ -65,7 +66,7 @@ h5,
 h6
 label,
 legend {
-  color: var(--title-color);
+  color: currentColor;
   margin-top: var(--baseline);
   margin-bottom: var(--baseline);
   font-family: var(--title-font);

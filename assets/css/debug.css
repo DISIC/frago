@@ -1,6 +1,7 @@
 .debug {
   position: relative;
   font-size: 14px;
+  color: #fff;
 }
 
 .debug.expanded .debug-badge {
@@ -73,6 +74,7 @@ table.debugprint {
   font-family: 'Source Code Pro', monospace;
   font-size: 15px;
   color: #ffffff;
+  background-color: transparent;
 
   -webkit-font-smoothing: antialiased;
 }
@@ -90,7 +92,7 @@ table.debugprint {
   padding: 5px 20px;
   font-weight: 700;
   text-align: left;
-  color: #e66798;
+  background-color: #000;
 }
 
 .debugprint th.type {
