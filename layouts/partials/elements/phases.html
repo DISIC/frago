@@ -13,7 +13,7 @@
     {{- range $key, $taxonomy := $.context.Site.Taxonomies.phases -}}
     {{ $.context.Scratch.Add "counter" 1 }}
     <h3>{{ $key | humanize }}</h3>
-    <ul id='timeline'>
+    <ul class='timeline'>
         {{ range $idx, $p := (sort $taxonomy.Pages "Date" "asc")}}
         <li class="work">
           <input class='radio' id='work{{$.context.Scratch.Get "counter"}}{{ $idx }}' name="works{{$.context.Scratch.Get "counter"}}" type="radio">

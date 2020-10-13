@@ -484,23 +484,23 @@ ul.social-networks li a {
   color: #fff !important;
 }
 
-#timeline {
+.timeline {
   list-style: none;
   margin: 50px 0 30px 120px;
   padding-left: 30px;
   border-left: 8px solid #eee9dc;
 }
 
-#timeline li {
+.timeline li {
   margin: 40px 0;
   position: relative;
 }
 
-#timeline p {
+.timeline p {
   margin: 0 0 15px;
 }
 
-#timeline .date {
+.timeline .date {
   margin-top: -10px;
   top: 50%;
   left: -158px;
@@ -509,7 +509,7 @@ ul.social-networks li a {
   position: absolute;
 }
 
-#timeline .circle {
+.timeline .circle {
   margin-top: -10px;
   top: 50%;
   left: -44px;
@@ -522,7 +522,7 @@ ul.social-networks li a {
   position: absolute;
 }
 
-#timeline .content {
+.timeline .content {
   max-height: 20px;
   padding: 50px 20px 0;
   border-color: transparent;
@@ -536,8 +536,8 @@ ul.social-networks li a {
   -webkit-transform: translateX(20px);
 }
 
-#timeline .content:before,
-#timeline .content:after {
+.timeline .content:before,
+.timeline .content:after {
   content: "";
   width: 0;
   height: 0;
@@ -547,21 +547,21 @@ ul.social-networks li a {
   right: calc(100% + 1px);
 }
 
-#timeline .content:before {
+.timeline .content:before {
   border-right-color: inherit;
   border-width: 20px;
   top: 50%;
   margin-top: -20px;
 }
 
-#timeline .content:after {
+.timeline .content:after {
 
   border-width: 17px;
   top: 50%;
   margin-top: -17px;
 }
 
-#timeline .content p {
+.timeline .content p {
   max-height: 0;
   color: transparent;
   text-align: justify;
@@ -572,7 +572,7 @@ ul.social-networks li a {
   color: #eee9dc;
 }
 
-#timeline label {
+.timeline label {
   font-size: 1.3em;
   position: absolute;
   z-index: 100;
@@ -583,7 +583,7 @@ ul.social-networks li a {
   /* -webkit-transition: -webkit-transform 0.2s linear; */
 }
 
-#timeline .radio {
+.timeline .radio {
   display: none;
 }
 
