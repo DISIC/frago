@@ -28,6 +28,28 @@
   {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
 
   <!-- CSS -->
+  {{- if .HasShortcode "parcours" -}}
+  <script src="/assets/js/simple-lightbox.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
+  </script>
+  {{- end -}}
+  {{- if .HasShortcode "mermaid" -}}
+  <script src="/assets/js/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      theme: 'neutral',
+      themeCSS: '.node rect,.node polygon, .task { fill: #006be6; stroke: #333; stroke-width:0;}.node .label {color: #fff;}.edgeLabel {background: snow;}.task {fill: #189e57}.task0 {fill: #006be6}',
+      logLevel: 3,
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 },
+      // sequenceDiagram: { actorMargin: 300 } // deprecated
+    });
+  </script>
+  {{- end -}}
+
+  <!-- CSS -->
   {{- with resources.Match "**.css" -}}
   <!-- Loop over all css of the base theme -->
 	{{- range . -}}
