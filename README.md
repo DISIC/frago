@@ -40,7 +40,7 @@ If you meet difficulties to connect to this private repository on Gitlab, it's p
 
 More information here : https://golang.org/doc/faq#git_https
 
-The 2 second (using SSH instead of HTTPS) option has been tested with success by adding these lines to `~/.gitconfg`:
+The second option (using SSH instead of HTTPS) has been tested with success by adding these lines to `~/.gitconfg`:
 ```git
 [url "ssh://git@gitlab.com/"]
 	insteadOf = https://gitlab.com/
