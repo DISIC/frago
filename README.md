@@ -1,4 +1,4 @@
-Commando – Hugo theme for Commando UX
+# Commando – Hugo theme for Commando UX
 
 > Generate accessibility audit reports and much more
 
