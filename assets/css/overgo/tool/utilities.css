@@ -31,6 +31,12 @@
   text-align: right;
 }
 
+/* Display */
+
+.d-inline-block {
+  display: inline-block;
+}
+
 /* Color */
 
 .text-color {

@@ -26,8 +26,20 @@ html, body {
 
 /* Selection focus */
 *:focus {
+  box-shadow: var(--enable-shadows, 0 0 5px 1px var(--color-primary));
+  outline: 1px solid var(--color-primary-light);
+}
+
+/* Hide focus styles if they're not needed, for example,
+when an element receives focus via the mouse. */
+:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+/* Show focus styles on keyboard focus. */
+:focus-visible {
   box-shadow: var(--enable-shadows, 0 0 4px 1px var(--color-primary));
-  outline: 3px solid transparent;
+  outline: 1px solid var(--color-primary-light);
 }
 
 /* Chunk rendering for all but the first article */
