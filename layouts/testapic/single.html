@@ -1,0 +1,24 @@
+{{- define "main" -}}
+{{ $.Scratch.Set "userid" slice }}
+{{ $loop := index (index (index $.Site.Data.audits (index (split .Path "/") 1)) "testapic") "etudiants" }}
+{{- range $key, $value := $loop  -}}
+  {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}
+{{- end -}}
+{{- $userid := $.Scratch.Get "userid" | uniq -}}
+<div class="wrapper">
+<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{- partial "elements/content.html" .Content -}}
+{{- range $userid -}}
+<h3>{{ index (index (first 1 (where $loop "Id user" .)) 0) "First Name" }} <small>sur {{ index (index (first 1 (where $loop "Id user" .)) 0) "Device" }}</small></h3>
+{{- range $key, $value := where $loop "Id user" . -}}
+  <dl>
+    <dt>{{ .Question }}</dt>
+    <dd>{{ delimit (split .Answer "|") ", " | safeHTML }}</dd>
+  </dl>
+{{- end -}}
+<hr>
+{{- end -}}
+{{- end -}}
+{{- define "script" -}}
+{{- end -}}
