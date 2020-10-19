@@ -1,0 +1,39 @@
+{{- define "main" -}}
+<div class="wrapper">
+<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{- partial "elements/content.html" .Content -}}
+{{- range $key, $value := (index (index $.Site.Data.audits (index (split .Path "/") 1)) "lighthouse")  -}}
+<h3>Scores</h3>
+<div class="progress">
+  <div></div>
+  <div>
+  <ul>
+    <li class="counter text-center" data-name="Performance">Page chargée<br>{{ div (index (index (index (index (index (index . "audits") "metrics") "details") "items") 0) "largestContentfulPaint") 1000 }}s</li>
+    <li class="counter text-center" data-name="SEO">Poids de la page<br>{{ div (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "totalByteWeight") 1000 | lang.NumFmt 0 }}kb</li>
+    <li class="counter text-center" data-name="Bonnes pratiques">Éléments sur la page<br>{{ (index (index (index . "audits") "dom-size") "numericValue") | lang.NumFmt 0 }}</li>
+    <li class="counter text-center" data-name="Accessibilité">Nombre de requêtes<br>{{ (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "numRequests") }}</li>
+  </ul>
+  </div>
+</div>
+<h3>Erreurs</h3>
+<dl>
+{{- range $key, $value := (index . "audits") -}}
+  {{ if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) }}
+  <dt>{{ .title }}</dt>
+  <dd>{{ index (split .description ".") 0 }}<br>
+  => <small><strong>{{ .displayValue }}</strong></small>
+  <dd>
+  <ul>
+    {{ range .details.items }}
+      {{ if and (not (eq .url "Unattributable")) .url }}<li>{{ .url }}</li>{{ end }}
+    {{ end }}
+  </ul>
+  {{ end }}
+{{- end -}}
+</dl>
+{{- end -}}
+</div>
+{{- end -}}
+{{- define "script" -}}
+{{- end -}}
