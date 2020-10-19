@@ -9,8 +9,8 @@
   border: 1px solid var(--color-grey);
 }
 
-.tableofcontents ul ul {
-  margin-bottom: calc(var(--baseline) / 2);
+.tableofcontents ul {
+  margin: var(--baseline) 0 0;
   padding-left: var(--baseline);
 }
 
@@ -21,9 +21,4 @@
 
 .tableofcontents a {
   font-weight: 700;
-  text-decoration: none;
-}
-
-.tableofcontents a:hover {
-  text-decoration: underline;
 }
