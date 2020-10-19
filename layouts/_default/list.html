@@ -15,7 +15,6 @@
     <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
     <p style="display:block;margin-top:-1.5em;">{{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }} {{ if .Params.tags }}pour {{ range .Params.tags }}<a href="/tags/{{ . }}">{{ . }}</a> {{ end }}{{ end }}</p>
     <p>{{ .Params.summary }}</p>
-    <p><a href="{{ .RelPermalink }}" class="link-more" aria-label="En savoir plus sur {{ .Title }}">En savoir plus</a></p>
   </div>
   <hr>
 {{ end }}
