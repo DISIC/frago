@@ -26,7 +26,7 @@ hugo mod init gitlab.com/goodimpact/dinum/commando
   - for dev mode, run `hugo server`. Modules should be automatically fetched
   - to update theme, run: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template`
 
-## Make an test changes in the theme
+## Make and test changes in the theme
 
 One way to do local development of a module imported in a project is to add a replace directive to a local directory with the source in `go.mod`:
 ```go
