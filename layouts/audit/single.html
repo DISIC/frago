@@ -1,44 +1,114 @@
 {{- define "main" -}}
-<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
-<link rel="stylesheet" href="/assets/css/night-owl.min.css">
-<script src="/assets/js/simple-lightbox.min.js"></script>
+{{- $project :=  (index (split .Path "/") 1) -}}
+{{- $pathimage := printf "./static/assets/images/%s/" $project }}
 <div class="wrapper">
-<p><= <a href="{{ .Parent.Permalink }}">Retour à la liste des {{ .Parent.Title }}</a></p>
+<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
-{{ partial "elements/content.html" .Content }}
-{{ range $id, $p := (index $.Site.Data.audits .Params.datafile) }}
-  <h2>{{ .name }} - <small>Page</small></h2>
+{{- partial "elements/content.html" .Content -}}
+{{- range index (index $.Site.Data.audits $project) "accessibility" -}}
+<div>
+{{ $.Scratch.Set "countererrorstotal" 0 }}
+{{ $.Scratch.Set "countererrorschecked" 0 }}
+{{ $.Scratch.Set "countererrorstypecode" 0 }}
+{{ $.Scratch.Set "countererrorstypevisual" 0 }}
+{{ $.Scratch.Set "countererrorstypestructure" 0 }}
+{{ $.Scratch.Set "countererrorstypetext" 0 }}
+{{- range .pages -}}
+{{- range $b := .blocks -}}
+{{- range .errors -}}
+  {{ $.Scratch.Add "countererrorstotal" 1 }}
+  {{ if .checked }}{{ $.Scratch.Add "countererrorschecked" 1 }}{{ end }}
+  {{ if eq .type "code" }}{{ $.Scratch.Add "countererrorstypecode" 1 }}{{ end }}
+  {{ if eq .type "visual" }}{{ $.Scratch.Add "countererrorstypevisual" 1 }}{{ end }}
+  {{ if eq .type "structure" }}{{ $.Scratch.Add "countererrorstypestructure" 1 }}{{ end }}
+  {{ if eq .type "text" }}{{ $.Scratch.Add "countererrorstypetext" 1 }}{{ end }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+<h2>Erreurs</h2>
+<div class="counter text-center d-inline-block"><span class="h3">{{ $.Scratch.Get "countererrorstotal" }}</span><br>Au total</div> -
+<div class="counter text-center d-inline-block"><span class="h3">{{ $.Scratch.Get "countererrorstypecode" }}</span><br>Type code</div>
+<div class="counter text-center d-inline-block"><span class="h3">{{ $.Scratch.Get "countererrorstypevisual" }}</span><br>Type visuel</div>
+<div class="counter text-center d-inline-block"><span class="h3">{{ $.Scratch.Get "countererrorstypestructure" }}</span><br>Type structure</div>
+<div class="counter text-center d-inline-block"><span class="h3">{{ $.Scratch.Get "countererrorstypetext" }}</span><br>Type textuel</div> -
+<div class="counter text-center d-inline-block good"><span class="h3">{{ $.Scratch.Get "countererrorschecked" }}</span><br>Corrigées</div>
+{{- end -}}
+</div>
+<h2>Contexte</h2>
+{{- range index (index $.Site.Data.audits $project) "accessibility" -}}
+<p>
+  <strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>
+  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>
+  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>
+  <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
+</p>
+{{- end -}}
+<div class="tableofcontents">
+<h2>Accéder aux pages auditées</h2>
+<ul>
+{{- range index (index $.Site.Data.audits $project) "accessibility" -}}
+{{- range .pages -}}
+  <li><a href="#{{ .name | urlize }}">{{ .name }}</a></li>
+{{- end -}}
+{{- end -}}
+</ul>
+</div>
+<h2>Liste des pages auditées</h2>
+{{- range index (index $.Site.Data.audits $project) "accessibility" -}}
+{{- range $idpage, $s := .pages -}}
   {{- $name := .name -}}
+  {{ $.Scratch.Set "countererrors" 0 }}
+  {{- range $idblock, $b := .blocks -}}
+  {{- range $s:= .errors -}}
+    {{ $.Scratch.Add "countererrors" 1 }}
+  {{- end -}}
+  {{- end -}}
+  <h3 id="{{ .name | urlize }}">{{ .name }} - <small><span class="counter">{{ $.Scratch.Get "countererrors" }}</span> erreurs sur cette page</small></h3>
   <p>URL : <a href="{{ .url }}">{{ .url }}</a></p>
   {{- $.Scratch.Set "paths" slice -}}
-  {{- range $b := .blocks -}}
-  <h3>{{ $b.name }} - <small>Bloc</small></h3>
-  {{- range $idx, $s:= .errors -}}
+  {{- range $idblock, $b := .blocks -}}
+  <h4>{{ $b.name }} - <small>Bloc</small></h4>
+  {{- range $s:= .errors -}}
     {{- $path := .name  -}}
     {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
     {{- $.Scratch.Add "index" (slice $path) -}}
     <dl>
-      <dt>{{ if .checked }}✅{{ else }}❌{{ end }} {{ .name }} - <small>{{ range (readDir "./static/assets/images/auditcontraventions/") }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir "./static/assets/images/auditcontraventions/") }}
+      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }} <small class="no-print">- {{ range (readDir $pathimage) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir $pathimage) }}
       {{ if in (string .Name) (string $filename) }}</a>{{ end }}{{ end }}</small></dt>
-      <dd>{{ .description | safeHTML }}</dd>
+      {{ if .description }}<dd>{{ .description | safeHTML }}</dd>{{ end }}
+      {{ if .criterion }}<dd>Critère : <a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/methode/criteres/#crit-{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>{{ end }}
     </dl>
     {{ if .codebefore }}<p><strong>Code présent</strong><pre class="language-html"><code>{{ .codebefore | htmlUnescape }}</code></pre></p>{{ end }}
     {{ if .codeafter }}<p><strong>Code modifié</strong><pre class="language-html"><code>{{ .codeafter | htmlUnescape }}</code></pre></p>{{ end }}
   {{- end -}}
-  <div class="parcours grid grid-4 lightbox-{{ $id }}">
+  <div class="parcours grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
   {{- range $errorname := ($.Scratch.Get "index") -}}
       {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}
-      {{- range (readDir "./static/assets/images/auditcontraventions/") -}}
-        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><div id="">{{ $errorname }}</div><figure class="flex flex-max"><a href="/assets/images/auditcontraventions/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/auditcontraventions/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
+      {{- range (readDir $pathimage) -}}
+        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><div id="{{ .Name }}">{{ $errorname }}</div><figure class="flex flex-max"><a href="/assets/images/{{ $project }}/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/{{ $project }}/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
       {{- end -}}
   {{- end -}}
-  <script>var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize) "-" "") | safeJS}} = new SimpleLightbox('.lightbox-{{ $id }} figure a', {captionPosition:'bottom',loop: 'false'});</script>
   </div>
   {{- end -}}
+  <hr>
+{{- end -}}
 {{- end -}}
 </div>
 {{- end -}}
 {{- define "script" -}}
+<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
+<link rel="stylesheet" href="/assets/css/night-owl.min.css" />
+<script src="/assets/js/simple-lightbox.min.js"></script>
+{{- range index (index $.Site.Data.audits (index (split .Path "/") 1)) "accessibility" -}}
+{{- range $idpage, $p := .pages -}}
+{{- $name := .name -}}
+<script>
+{{ range $idblock,$b := .blocks }}
+var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
+{{- end -}}
+</script>
+{{- end -}}
+{{- end -}}
 <script src="/assets/js/highlight.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
