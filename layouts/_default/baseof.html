@@ -17,9 +17,12 @@
           <nav class="nav nav-main">
             <ul class="list-unstyled list-inline">
               {{- $currentPage := . -}}
-              {{ range .Site.Menus.main }}
-                <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{end}} href="{{ .URL }}" title="{{ .Title }}">{{ .Title }}</a></li>
+              {{ range where $.Site.RegularPages "Section" "projects" }}
+                <li><a class="sidebar-nav-item" href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
               {{- end -}}
+              {{/* range .Site.Menus.main }}
+                <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{ end }} href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
+              {{- end -*/}}
             </ul>
           </nav>
     </div>
