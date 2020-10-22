@@ -1,6 +1,7 @@
 {{- $tags := (slice .context.File.BaseFileName) -}}
 {{- $section := where .context.Site.RegularPages "Section" .section -}}
 {{- $taxonomy := where .context.Site.Pages ".Params.tags" "intersect" $tags -}}
+{{- $.context.Scratch.Set "linksingle" "" -}}
 {{- if $section | intersect $taxonomy -}}
 <section class="section{{ if .type }}-{{ .type }}{{ end }} text-center">
 <div class="wrapper">
@@ -13,9 +14,10 @@
     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
     {{- if not $taxonomy -}}{{- if .Params.tags -}}{{ range .Params.tags }}<a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}{{ end }}
   </li>
+  {{- $.context.Scratch.Set "linksingle" .RelPermalink -}}
 {{- end -}}
 </ul>
-<a href="/{{ .section }}/" class="btn secondary">Voir toutes les {{ with .context.Site.GetPage .section }}{{ lower .Title }}{{ end }}</a>
+<a href="/{{ .section }}/{{ if gt (len (split ($.context.Scratch.Get "linksingle") "/")) 4 }}{{ index (last 1 (split (delimit (split .context.Permalink "/") "," "") ",")) 0 }}/{{ end }}" class="btn secondary">Voir toutes les {{ with .context.Site.GetPage .section }}{{ lower .Title }}{{ end }}</a>
 </div>
 </section>
 {{- end -}}
