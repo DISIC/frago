@@ -3,7 +3,7 @@
   {{ $.context.Scratch.Set "isphases" false }}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
     {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
-    {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}{{ $.context.Scratch.Set "isphases" true }}{{ $.Scratch.Get "isphases" }}{{- end -}}
+    {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}{{ $.context.Scratch.Set "isphases" true }}{{- end -}}
   {{- end -}}
   {{- if $.context.Scratch.Get "isphases" -}}
   <section class="section{{ if .type }}-{{ .type }}{{ end }}">
