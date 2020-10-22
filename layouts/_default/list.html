@@ -2,9 +2,9 @@
 {{ partial "elements/content.html" .Content }}
 <!--$paginator-->
 {{- if .IsHome -}}
-{{.Scratch.Set "Paginator" (.Paginate (where .Site.RegularPages "Type" "in" site.Params.mainSections))}}
+{{.Scratch.Set "Paginator" (.Paginate (where .Site.RegularPages "Page.Type" "in" site.Params.mainSections))}}
 {{- else -}}
-{{.Scratch.Set "Paginator" .Paginator}}
+{{.Scratch.Set "Paginator" (.Paginate (where .Site.RegularPages "Page.Type" "in" site.Params.mainSections))}}
 {{- end -}}
 {{ $paginator:=(.Scratch.Get "Paginator") }}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
