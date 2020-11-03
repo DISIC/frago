@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {{/* General variables */}}
 <html lang="{{ .Site.LanguageCode | default "fr" }}" dir="ltr">
-{{ partial "head" . }}
+{{ partialCached "head" . }}
 <body class="hugo-{{ .Kind }}">
   <div class="skip-links">
     <a href="#nav">Navigation principale</a>

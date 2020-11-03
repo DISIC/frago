@@ -1,5 +1,5 @@
 <html>
-  {{ partial "head" . }}
+  {{ partialCached "head" . }}
   <body class="error-page">
   <main>
       <div class="wrapper center">
@@ -7,6 +7,6 @@
           <h2 data-i18n="message-not-found">{{ i18n "message-not-found" }}</h2>
       </div>
   </main>
-  {{ partial "footer" . }}
+  {{ partialCached "footer" . }}
   </body>
 </html>

@@ -3,16 +3,17 @@
   {{- $project :=  replace (index (split .Path "/") 1) ".md" "" -}}
   {{- $pathimage := printf "./static/assets/images/%s/" $project }}
   <div class="wrapper text-center">
+
   <h2>Scores</h2>
-  <h3>Performance</h3>
   {{ $auditfile := (index $.Site.Data.audits $project) }}
   {{ if $auditfile }}
+    <h3>Performance</h3>
     {{- range $key, $value := (index $auditfile "lighthouse")  -}}
     <div class="progress">
       <div></div>
       <div>
       <ul>
-        <li class="counter text-center">Page chargée<br>{{ div (index (index (index (index (index (index . "audits") "metrics") "details") "items") 0) "largestContentfulPaint") 1000 }}s</li>
+        <li class="counter text-center">Page chargée<br>{{ replace (div (index (index (index (index (index (index . "audits") "metrics") "details") "items") 0) "largestContentfulPaint") 1000) "." "," }}s</li>
         <li class="counter text-center">Poids de la page<br>{{ div (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "totalByteWeight") 1000 | lang.NumFmt 0 }}kb</li>
         <li class="counter text-center">Éléments sur la page<br>{{ (index (index (index . "audits") "dom-size") "numericValue") | lang.NumFmt 0 }}</li>
         <li class="counter text-center">Nombre de requêtes<br>{{ (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "numRequests") }}</li>

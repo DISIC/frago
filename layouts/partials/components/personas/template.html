@@ -1,0 +1,47 @@
+{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
+<div class="card smaller">
+  <div>
+  {{ $name := .context.name | urlize }}
+  {{- range (readDir "static/assets/images/personas") -}}
+    {{ if eq $name (replace .Name ".png" "") }}
+    <figure class="rounded">
+    <img src="/assets/images/personas/{{ .Name }}">
+    </figure>
+    {{ end }}
+  {{- end -}}
+  {{ $personaspath := printf "/personas/%s/%s" .project $name }}
+  <h3 class="text-center">{{ with .pages.GetPage $personaspath }}<a href="{{ $personaspath }}">{{ end }}{{ .context.name }}{{ with .pages.GetPage $personaspath }}</a>{{ end }}<br><small>{{ .context.job }}</small></h3>
+  </div>
+  <div>
+    <p>
+      Âge : {{ .context.age }}<br>
+      Raison: {{ .context.reason }}
+    </p>
+    <hr>
+    <h4>Motivations</h4>
+    <ul>
+      {{ range .context.motivations }}
+        <li>{{ . }}</li>
+      {{ end }}
+    </ul>
+    <h4>Frustrations</h4>
+    <ul>
+      {{ range .context.frustrations }}
+        <li>{{ . }}</li>
+      {{ end }}
+    </ul>
+    <h4>Rapport avec le gouvernement</h4>
+    <p>{{ .context.feeling }}</p>
+  </div>
+  <div>
+    <p><strong>Aisance numérique</strong><br>
+    {{ $ditmissed := sub 5 (int .context.digitalease) }}
+    {{ range seq .context.digitalease }}
+      <span class="dot">{{ . }}</span>
+    {{ end }}
+    {{ range seq $ditmissed }}
+      <span class="dot dot-missed">{{ . }}</span>
+    {{ end }}
+    </p>
+  </div>
+</div>

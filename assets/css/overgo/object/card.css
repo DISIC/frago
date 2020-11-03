@@ -49,6 +49,14 @@
   object-fit: cover;
 }
 
+.card img.full {
+  margin: -2em calc(var(--baseline) * -1) calc(var(--baseline));
+  width: calc(100% + calc(var(--baseline) * 2));
+  max-width: calc(100% + calc(var(--baseline) * 2));
+  max-height: 100em;
+  object-fit: cover;
+}
+
 .card .meta-content {
   display: flex;
   flex: 1;

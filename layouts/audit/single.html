@@ -81,7 +81,7 @@
     {{ if .codebefore }}<p><strong>Code présent</strong><pre class="language-html"><code>{{ .codebefore | htmlUnescape }}</code></pre></p>{{ end }}
     {{ if .codeafter }}<p><strong>Code modifié</strong><pre class="language-html"><code>{{ .codeafter | htmlUnescape }}</code></pre></p>{{ end }}
   {{- end -}}
-  <div class="parcours grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
+  <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
   {{- range $errorname := ($.Scratch.Get "index") -}}
       {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}
       {{- range (readDir $pathimage) -}}

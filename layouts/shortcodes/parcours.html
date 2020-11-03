@@ -1,11 +1,8 @@
-{{ $src := .Get "src" }}
-<div class="parcours grid grid-4 lightbox-{{ .Ordinal }}">
-{{ range sort (index (index $.Site.Data.audits (.Get "datafile" )) "similary") "country" "asc" }}
-    {{- $path := printf "%s%s" (replace (index (split (path.Split .url) "/") 2) "|" "") $src -}}
-    {{- range (readDir "./static/assets/images/parcours/") -}}
-        {{ if in (string .Name) (string $path) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/assets/images/parcours/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/parcours/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
-      {{- end -}}
+{{ $project := .Get "project" }}
+<div class="text-center">
+{{- range index (index $.Site.Data.audits $project) "personas" -}}
+  <h3>{{ .name }}</h3>
+  {{ partial "components/parcours/template.html" (dict "context" . "pages" $ "project" $project) }}
 {{- end -}}
 </div>
-<script>var {{ printf "$gallery%s" (replace ( .Ordinal | anchorize) "-" "") | safeJS }} = new SimpleLightbox('.lightbox-{{ .Ordinal }} figure a', {});</script>
 {{- .Inner -}}

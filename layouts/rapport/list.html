@@ -1,0 +1,52 @@
+{{ partial "head" . }}
+
+<body class="wrapper">
+  <main>
+    <h1>{{ .Title }}</h1>
+    <h2>Scores</h2>
+    {{ $auditfile := (index $.Site.Data.audits "amendes") }}
+    {{ if $auditfile }}
+      <h3>Performance</h3>
+      {{- range $key, $value := (index $auditfile "lighthouse")  -}}
+      <div class="progress">
+        <div></div>
+        <div>
+        <ul>
+          <li class="counter text-center">Page chargée<br>{{ replace (div (index (index (index (index (index (index . "audits") "metrics") "details") "items") 0) "largestContentfulPaint") 1000) "." "," }}s</li>
+          <li class="counter text-center">Poids de la page<br>{{ div (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "totalByteWeight") 1000 | lang.NumFmt 0 }}kb</li>
+          <li class="counter text-center">Éléments sur la page<br>{{ (index (index (index . "audits") "dom-size") "numericValue") | lang.NumFmt 0 }}</li>
+          <li class="counter text-center">Nombre de requêtes<br>{{ (index (index (index (index (index (index . "audits") "diagnostics") "details") "items") 0) "numRequests") }}</li>
+        </ul>
+        </div>
+      </div>
+      {{- end -}}
+      {{- range index (index $auditfile "accessibility") -}}
+        {{ $.Scratch.Set "countererrorstotal" 0 }}
+        {{ $.Scratch.Set "countererrorschecked" 0 }}
+        {{- range .pages -}}
+        {{- range $b := .blocks -}}
+        {{- range .errors -}}
+          {{ $.Scratch.Add "countererrorstotal" 1 }}
+          {{ if .checked }}{{ $.Scratch.Add "countererrorschecked" 1 }}{{ end }}
+        {{- end -}}
+        {{- end -}}
+        {{- end -}}
+        <h3>Accessibilité</h3>
+        <div class="progress">
+        <ul>
+        <li class="counter text-center d-inline-block">{{ $.Scratch.Get "countererrorstotal" }}<br>Au total</li>
+        <li class="counter text-center d-inline-block good">{{ $.Scratch.Get "countererrorschecked" }}<br>Corrigées</li>
+        </ul>
+        </div>
+      {{- end -}}
+    {{- end -}}
+    </div>
+    {{ partial "elements/content.html" .Content }}
+    {{ $tag := slice "print" }}
+    {{ range where .Site.RegularPages ".Params.tags" "intersect" $tag }}
+      <h2 id="{{ substr .RelPermalink 1 -1 }}" class="page-break">{{ .Title }}</h2>
+      {{ .Content }}
+    {{ end }}
+  </main>
+</body>
+</html>

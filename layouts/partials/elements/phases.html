@@ -1,12 +1,15 @@
-  {{- $tags := (slice .context.File.BaseFileName) -}}
-  {{- $site := .context.Site -}}
-  {{ $.context.Scratch.Set "isphases" false }}
-  {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
-    {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
-    {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}{{ $.context.Scratch.Set "isphases" true }}{{- end -}}
-  {{- end -}}
-  {{- if $.context.Scratch.Get "isphases" -}}
-  <section class="section{{ if .type }}-{{ .type }}{{ end }}">
+{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") -}}
+
+{{- $tags := (slice .context.File.BaseFileName) -}}
+{{- $site := .context.Site -}}
+{{ $.context.Scratch.Set "isphases" false }}
+{{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
+  {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
+  {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}{{ $.context.Scratch.Set "isphases" true }}{{- end -}}
+{{- end -}}
+
+{{- if $.context.Scratch.Get "isphases" -}}
+<section class="section{{ if .type }}-{{ .type }}{{ end }}">
   <div class="wrapper">
   {{ $.context.Scratch.Set "counter" 0 }}
   <h2 class="text-center">Phases du projet</h2>
@@ -31,6 +34,6 @@
         {{- end -}}
     </ul>
     {{- end -}}
-    </div>
-  </section>
-  {{- end -}}
+  </div>
+</section>
+{{- end -}}

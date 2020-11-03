@@ -1,14 +1,126 @@
 {{- define "main" -}}
-{{ $.Scratch.Set "userid" slice }}
-{{ $loop := index (index (index $.Site.Data.audits (index (split .Path "/") 1)) "testapic") "etudiants" }}
+{{/* Variables */}}
+{{- $.Scratch.Set "userid" slice -}}
+{{- $.Scratch.Set "tasknumber" slice -}}
+{{- $.Scratch.Set "answer" slice -}}
+{{- $loop := index (index (index $.Site.Data.audits (index (split .Path "/") 1)) "testapic") "etudiants" -}}
+
+<div class="wrapper">
+{{/*
+<table>
+    <thead>
+      <tr>
+      <th>Name</th>
+      <th>montant maximum de l’amende</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{ range sort $.Site.Data.amendes "name" "asc" }}
+    <tr>
+      <td>{{ (index . "Qualification simplifiée de l'infraction") | truncate 60 }}</td>
+      <td class="text-center">{{ index . "montant maximum de l'amende" }}</td>
+    </tr>
+    {{ end }}
+    </tbody>
+  </table>
+</div>
+*/}}
+
+{{/* Find all task id */}}
 {{- range $key, $value := $loop  -}}
   {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}
+  {{- $.Scratch.Add "tasknumber" (slice (index . "Task Number")) -}}
 {{- end -}}
 {{- $userid := $.Scratch.Get "userid" | uniq -}}
+{{- $tasknumber := $.Scratch.Get "tasknumber" | uniq -}}
+
+{{/* Find array of answers */}}
+{{- range $tasknumber -}}
+{{ $.Scratch.Set "answers" slice }}
+{{- range where $loop "Task Number" . -}}
+  {{ $answers := index . "Answer" }}
+  {{- $.Scratch.Add "answers" (slice $answers) -}}
+{{- end -}}
+{{- $.Scratch.Add "answer" (slice ($.Scratch.Get "answers" | uniq)) -}}
+{{- end -}}
+{{- $answer := $.Scratch.Get "answer" | uniq -}}
+
+{{/* LOOP TWICE ON ANSWER */}}
+
+{{/* Initialize map for answers counting */}}
+{{ range $idx, $m := $answer }}
+{{ range $p := . }}
+{{ range $s := $loop }}
+  {{ range $id, $h := (split .Answer "|") }}
+    {{ if in $p . }}
+    {{ $.Scratch.SetInMap "countanswer" . 0 }}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Initialize map for answers counting */}}
+{{ range $idx, $m := $answer }}
+{{/* Initialize for each question the list of answer */}}
+{{ $.Scratch.Set "listanswers" slice }}
+{{ range $p := . }}
+{{ range $s := $loop }}
+  {{ $ans := .Answer }}
+  {{ $question := .Question }}
+  {{ range $id, $h := (split .Answer "|") }}
+    {{ if and (in $p .) (eq $p $ans) }}
+    {{/* Add an answer to an array AND Set the array of answers for each question AND Count number of answer */}}
+    {{ $.Scratch.Add "listanswers" $h }}
+    {{ $.Scratch.SetInMap "listquestions" $question ($.Scratch.Get "listanswers" | uniq) }}
+    {{ $.Scratch.SetInMap "countanswer" . (add (index ($.Scratch.Get "countanswer") .) 1) }}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
 <div class="wrapper">
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
-<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{- end -}}{{- end -}}</small></h1>
+{{/* Range questions with array of answers inside */}}
+<h2>Synthèse des résultats - <small>{{ len $userid }} personnes questionnées au total</small></h2>
+{{ range $key, $value := $.Scratch.Get "listquestions" }}
+  {{ $.Scratch.Set "counter" 0 }}
+  {{ range $id, $val := $value }}
+    {{/* Find the number of Answer for each answer */}}
+    {{ $.Scratch.Add "counter" (index ($.Scratch.Get "countanswer") .) }}
+  {{- end -}}
+  <h3 class="h5">{{ $key }}</h3>
+  <div class="graph">
+    {{ if gt ($.Scratch.Get "counter") (len $userid) }}
+    <div class="flex-column graph-vis">
+    {{ range $id, $val := $value }}
+      {{/* Find the number of Answer for each answer */}}
+      <div class="counter" style="display: grid;--base-primary: calc(220 + {{ mul $id 20 }});--base-light: calc(60% + {{ mul $id 1 }}%);max-width: {{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) (len $userid) }}%"><span>{{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) (len $userid) }}%</span> {{ . }}</div>
+    {{- end -}}
+    </div>
+    {{ else }}
+    <div class="flex graph-vis text-center">
+    {{ range $id, $val := $value }}
+      {{/* Find the number of Answer for each answer */}}
+      <div class="counter" style="--base-primary: calc(220 + {{ mul $id 30 }});--base-light: calc(60% + {{ mul $id 1 }}%);max-width: {{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) ($.Scratch.Get "counter") }}%">{{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) ($.Scratch.Get "counter") }}%</div>
+    {{- end -}}
+    </div>
+    <div class="flex text-center">
+    {{ range $id, $val := $value }}
+      {{/* Find the number of Answer for each answer */}}
+      <div class="counter" style="--base-primary: calc(220 + {{ mul $id 25 }});max-width: {{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) ($.Scratch.Get "counter") }}%"><small>{{ . }}</small></div>
+    {{- end -}}
+    </div>
+    {{ end }}
+  </div>
+{{- end -}}
+
+<hr>
 {{- partial "elements/content.html" .Content -}}
+{{/*
+<h2 class="page-break">Listes des réponses par personne</h2>
 {{- range $userid -}}
 <h3>{{ index (index (first 1 (where $loop "Id user" .)) 0) "First Name" }} <small>sur {{ index (index (first 1 (where $loop "Id user" .)) 0) "Device" }}</small></h3>
 {{- range $key, $value := where $loop "Id user" . -}}
@@ -19,6 +131,7 @@
 {{- end -}}
 <hr>
 {{- end -}}
+*/}}
 {{- end -}}
 {{- define "script" -}}
 {{- end -}}

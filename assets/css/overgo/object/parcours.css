@@ -1,0 +1,166 @@
+/* Parcours
+   ----------------------------- */
+
+.parcours {
+    position: relative;
+    margin: 0 auto 3rem;
+    padding: 2em 0;
+    max-width: 30rem;
+}
+
+.parcours > .parcours-label {
+    color: var(--color-grey-verylight);
+    border-width: 2px;
+    background: var(--color-grey-verydark);
+}
+
+.parcours-label {
+    display: grid;
+    align-items: center;
+    padding: 5px;
+    min-width: 200px;
+    line-height: 20px;
+    min-height: 3rem;
+    text-align: center;
+    border: 1px solid var(--color-grey);
+    border-radius: 5px;
+}
+
+.parcours-branch {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.parcours-entry {
+    position: relative;
+    flex: 1;
+    margin: 0.1em 0;
+    min-width: 300px;
+}
+
+.lv1 > .parcours-entry > .parcours-label {
+    color: var(--color-grey-verylight);
+    background: var(--color-primary-dark);
+}
+
+.lv2 > .parcours-entry > .parcours-label {
+    color: var(--color-grey-verydark);
+    background: var(--color-primary-verylight);
+}
+
+.lv3 {
+    color: darkcyan;
+}
+
+
+@media screen and (min-width: 70em) {
+    .parcours {
+        display: inline-block;
+        margin: 0 0 var(--baseline) -200px;
+        max-width: 99999px;
+    }
+
+    .parcours-label {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -15px;
+        max-width: 200px;
+    }
+
+    .parcours-branch {
+        position: relative;
+        display: block;
+        margin-left: 271px;
+    }
+
+    .parcours-entry {
+        min-width: 0;
+        min-height: 60px;
+    }
+
+    .parcours-label + .parcours-branch:before {
+        position: absolute;
+        content: "";
+        top: calc(50% + 0.5rem);
+        left: -72px;
+        margin-top: 1px;
+        width: 24px;
+        border-top: 2px solid var(--color-grey);
+    }
+
+    .lv1 > .parcours-entry > .parcours-label {
+        color: var(--color-grey-verylight);
+        background: var(--color-primary-dark);
+    }
+
+    .lv2 > .parcours-entry > .parcours-label {
+        color: var(--color-grey-verylight);
+        background: var(--color-primary-dark);
+    }
+
+    .lv3 > .parcours-entry > .parcours-label {
+        color: var(--color-grey-verylight);
+        background: var(--color-primary-dark);
+    }
+
+
+    .lv1 > .parcours-entry:after {
+        display: none;
+    }
+
+    .parcours-label + .lv1 > .parcours-entry:after {
+        display: block;
+    }
+
+    .parcours-entry:before {
+        position: absolute;
+        content: "";
+        left: -50px;
+        height: calc(100% + 1rem);
+        border-left: 2px solid var(--color-grey);
+    }
+
+    .parcours-entry:after {
+        position: absolute;
+        content: "";
+        top: calc(50% + 0.5rem);
+        left: -50px;
+        margin-top: 1px;
+        width: 50px;
+        border-top: 2px solid var(--color-grey);
+    }
+
+    .parcours-entry:first-child:before {
+        top: calc(50% + 0.5rem);
+        margin-top: 2px;
+        width: 10px;
+        height: calc(50% + 1.5rem);
+    }
+    .parcours-entry:last-child:first-child:before {
+        display: none;
+    }
+    .parcours-entry:first-child:after {
+        height: 10px;
+    }
+    .parcours-entry:last-child:before {
+        width: 10px;
+        height: 50%;
+    }
+    .parcours-entry:not(:first-child):last-child:after {
+        margin-top: -10px;
+        height: 10px;
+        border-top: none;
+        border-bottom: 2px solid var(--color-grey);
+    }
+    .parcours-entry.sole:before {
+        display: none;
+    }
+    .parcours-entry.sole:after {
+        margin-top: 1px;
+        width: 50px;
+        height: 0;
+        border-radius: 0;
+    }
+}

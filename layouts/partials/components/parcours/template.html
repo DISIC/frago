@@ -1,0 +1,39 @@
+{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "parcours") -}}
+{{- if .context.parcours -}}
+{{ $.pages.Scratch.Set "counter" 0 }}
+{{- range $id, $p := .context.parcours -}}
+  {{- $.pages.Scratch.Add "counter" 1 -}}
+{{- end -}}
+{{- end -}}
+{{- with .context.parcours -}}
+{{- range $id, $p := . -}}
+  {{ if gt ($.pages.Scratch.Get "counter") 1 }}<h3>Parcours {{ add $id 1 }}</h3>{{ end }}
+  <div class="parcours">
+    <span class="parcours-label">{{ .name | safeHTML }}</span>
+    {{- with .list -}}
+    <div class="parcours-branch lv1">
+      {{- range . -}}
+        <div class="parcours-entry"><span class="parcours-label">{{ .name | safeHTML  }}</span>
+          {{- with .list -}}
+          <div class="parcours-branch lv2">
+          {{- range . -}}
+            <div class="parcours-entry"><span class="parcours-label">{{ .name | safeHTML }}</span>
+            {{- with .list -}}
+              <div class="parcours-branch lv3">
+              {{- range . -}}
+                <div class="parcours-entry"><span class="parcours-label">{{ .name | safeHTML }}</span></div>
+              {{- end -}}
+              </div>
+            {{- end -}}
+            </div>
+          {{- end -}}
+          </div>
+          {{- end -}}
+        </div>
+      {{- end -}}
+    </div>
+    {{- end -}}
+    </div>
+    <hr>
+  {{- end -}}
+{{- end -}}

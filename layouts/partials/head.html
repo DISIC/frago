@@ -33,7 +33,8 @@
   <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
   </script>
   {{- end -}}
-  {{- if .HasShortcode "mermaid" -}}
+  {{/*- if .HasShortcode "mermaid" -*/}}
+  <link rel="preload" href="/assets/js/mermaid.min.js" as="script">
   <script src="/assets/js/mermaid.min.js"></script>
   <script>
     mermaid.initialize({
@@ -47,7 +48,7 @@
       // sequenceDiagram: { actorMargin: 300 } // deprecated
     });
   </script>
-  {{- end -}}
+  {{/*- end -*/}}
 
   <!-- CSS -->
   {{- with resources.Match "**.css" -}}
@@ -66,9 +67,9 @@
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
   <!-- Call font files -->
-  <link rel="preload" href="/assets/fonts/Marianne-Regular.woff2" as="font">
-  <link rel="preload" href="/assets/fonts/Marianne-Light.woff2" as="font">
-  <link rel="preload" href="/assets/fonts/Marianne-Bold.woff2" as="font">
+  <link rel="preload" href="/assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="/assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="/assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
   {{- partial "utils/css.html" (dict "context" . "filefolder" "" "filename" "fonts") -}}
   <style id="style-screen">
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
