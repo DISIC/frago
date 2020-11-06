@@ -1,0 +1,36 @@
+{{- range .auditfile -}}
+  <div>
+    {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
+    {{- $.context.Scratch.Set "countererrorschecked" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypecode" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypevisual" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypestructure" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypetext" 0 -}}
+    {{- range .pages -}}
+    {{- range $b := .blocks -}}
+    {{- range .errors -}}
+      {{- $.context.Scratch.Add "countererrorstotal" 1 -}}
+      {{- if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{- end -}}
+      {{- if eq .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
+      {{- if eq .type "visual" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
+      {{- if eq .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
+      {{- if eq .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+    {{- end -}}
+    <h2 class="m-0">Erreurs</h2>
+    <div class="scores">
+    <ul>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstotal" }}</b><br>Au total</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ $.context.Scratch.Get "countererrorschecked" }}</b><br>Corrigées</span></li>
+    </ul>
+    <ul>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypecode" }}</b><br>Type code</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypevisual" }}</b><br>Type visuel</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypestructure" }}</b><br>Type structure</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypetext" }}</b><br>Type textuel</span></li>
+    </ul>
+    </div>
+  </div>
+{{- end -}}
+
