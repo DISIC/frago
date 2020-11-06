@@ -1,0 +1,33 @@
+baseURL = ""
+
+title = "Commando UX"
+theme = "overgo"
+paginate = "10"
+
+languageCode = "fr-FR"
+defaultContentLanguage = "fr"
+defaultContentLanguageInSubdir = false
+enableInlineShortcodes = true
+removePathAccents = true
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  phase = "phases"
+
+[params]
+  logo = "Commando UX <small>Défi de mise en conformité de démarches en ligne</small>"
+  env = "development"
+  style = "default"
+  description = "Défi de mise en conformité de démarches en ligne"
+  copyright = "&copy;2020 DINUM"
+
+[imaging]
+quality = 70
+
+[markup]
+  defaultMarkdownHandler = "blackfriday"
+  [markup.tableOfContents]
+    endLevel = 2
+    ordered = false
+    startLevel = 2

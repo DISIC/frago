@@ -1,0 +1,35 @@
+[
+  {
+    "guidelines": "Pidila Évaluation rapide",
+    "technologies": ["HTML", "CSS", "Angular"],
+    "tools": ["Wave", "AXE", "MOZ DevTools","Usability Hike"],
+    "environment": ["MacOS", "Chrome", "ChromeVox"],
+    "pages": [
+      {
+        "name": "Site officiel unique de télépaiement",
+        "url": "https://www.amendes.gouv.fr/tai",
+        "blocks": [
+          {
+            "name": "Page",
+            "errors": [
+              {
+                "name": "Titres",
+                "element": "h1",
+                "description": "La structure des titres devrait remonter d'un cran. h2 => h1 et h3 => h2.",
+                "criterion": "9.1",
+                "type": "text"
+              },
+              {
+                "name": "Agrandissement texte",
+                "element": "body",
+                "description": "À 200%, des élements sortent du cadre de la page (3ème actualité), apparition d'un scroll horizontal.",
+                "criterion": "10.4",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

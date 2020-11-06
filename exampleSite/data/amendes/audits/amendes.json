@@ -1,0 +1,278 @@
+[
+  {
+    "guidelines": "RGAA 4",
+    "technologies": ["HTML", "CSS", "Angular"],
+    "tools": ["Wave", "AXE", "MOZ DevTools","Usability Hike"],
+    "environment": ["MacOS", "Chrome", "ChromeVox"],
+    "pages": [
+      {
+        "name": "Site officiel unique de télépaiement",
+        "url": "https://www.amendes.gouv.fr/tai",
+        "blocks": [
+          {
+            "name": "Page",
+            "errors": [
+              {
+                "name": "Titres",
+                "element": "h1",
+                "description": "La structure des titres devrait remonter d'un cran. h2 => h1 et h3 => h2.",
+                "criterion": "9.1",
+                "type": "text"
+              },
+              {
+                "name": "Agrandissement texte",
+                "element": "body",
+                "description": "À 200%, des élements sortent du cadre de la page (3ème actualité), apparition d'un scroll horizontal.",
+                "criterion": "10.4",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "Header",
+            "errors": [
+              {
+                "name": "Retour accueil",
+                "element": "a",
+                "description": "Le lien de retour à l’accueil propose le contenu alternatif de l'image comme texte. Il est possible de mettre un attribut <code>aria-label='Retour à l’accueil de amendes.gouv.fr'</code>.",
+                "type": "code",
+                "codebefore": "<a routerlink=\"/tai\" href=\"/tai\">",
+                "codeafter": "<a routerlink=\"/tai\" href=\"/tai\" aria-label=\"Retour à l’accueil de amendes.gouv.fr\">"
+              },
+              {
+                "name": "Menu évitement",
+                "element": "nav",
+                "description": "Il n‘y a pas de menu d’évitement permettant d’aller directement au contenu.",
+                "criterion": "12.7",
+                "type": "code"
+              },
+              {
+                "name": "Menu langues",
+                "element": "ul",
+                "description": "Le menu de changement de langue, n'a pas de rôle navigation. Il doit soit être inclue dans une balise <code>&lt;nav&gt;</code>, soit comport un attribut <code>role=navigation</code>.",
+                "type": "code",
+                "codebefore": "<ul class=\"lang-selector no-print\">",
+                "codeafter": "<ul class=\"lang-selector no-print\" role=\"navigation\">"
+              },
+              {
+                "name": "Langue de la page",
+                "element": "html",
+                "description": "Le changement de langue ne modifie pas la langue du document.",
+                "criterion": "8.3",
+                "type": "code",
+                "codebefore": "<html lang=\"en\">"
+              },
+              {
+                "name": "Traduction du titre de la page",
+                "element": "title",
+                "description": "Le changement de langue ne modifie pas le contenu de la balise &lt;title&gt;.",
+                "type": "code",
+                "codebefore": "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+              },
+              {
+                "name": "Langue URL",
+                "element": "url",
+                "description": "Le changement de langue ne modifie pas l’url de la page. Il n'est pas possible de faire de lien vers la bonne langue depuis l’ANTAI ou un autre site.",
+                "type": "code"
+              },
+              {
+                "name": "Menu langues liens",
+                "element": "a",
+                "description": "Les liens n’ont pas d’attribut <code>lang='es'</code> permettant de savoir qu'on va être redirigé vers une page dans une autre langue (mais comme on change pas de page…).",
+                "criterion": "8.7",
+                "type": "code",
+                "codebefore": "<a href=\"javascript:void(0);\">",
+                "codeafter": "<a href=\"javascript:void(0);\" lang=\"es\">"
+              },
+              {
+                "name": "Validation contrôle",
+                "element": "form",
+                "description": "Le contrôle du formulaire est réalisé avec du code JavaScript plutôt que d’utiliser des fonctions natives du navigateur.",
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "name": "Bannière",
+            "errors": [
+              {
+                "name": "Titres",
+                "element": "h",
+                "description": "Le titre de la bannière est renseigné comme titre 2. Alors qu'il n’y a pas de titre 1 dans la page. Ce titre doit : soit être un titre 1, soit précédé d‘un titre 1.",
+                "type": "structure"
+              },
+              {
+                "name": "Description",
+                "element": "p",
+                "description": "« le numéro de télépaiement est présent sur la carte de paiement », il y a une erreur dans la description, remplacer « la carte de paiement » par « formulaire de paiement ».",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "Formulaire",
+            "errors": [
+              {
+                "name": "Légende",
+                "element": "legend",
+                "description": "Le texte de la légende du formulaire ne précise pas le rôle de la zone, mais liste les champs. La légende devrait indiquer ce qui est présent dans le h3 (caché) « Saisir les renseignement pour le télépaiement »",
+                "type": "text"
+              },
+              {
+                "name": "Numéro de télépaiement placeholder",
+                "element": "input",
+                "description": "Le champ du numéro de télépaiement ne présente pas de placeholder pour l’aide à la saisie du bon numéro.",
+                "type": "code"
+              },
+              {
+                "name": "Numéro de télépaiement mention « requis »",
+                "element": "input",
+                "description": "Le label du numéro de télépaiement n’indique pas que le champ est obligatoire.",
+                "type": "code"
+              },
+              {
+                "name": "Numéro de télépaiement type",
+                "element": "input",
+                "description": "Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.",
+                "type": "code"
+              },
+              {
+                "name": "Clé placeholder",
+                "element": "input",
+                "description": "Le champ du numéro de télépaiement ne présente pas de placeholder pour l’aide à la saisie du bon numéro.",
+                "type": "code"
+              },
+              {
+                "name": "Clé mention « requis »",
+                "element": "input",
+                "description": "Le label de la clé n’indique pas que le champ est obligatoire.",
+                "type": "code"
+              },
+              {
+                "name": "Clé type",
+                "element": "input",
+                "description": "Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.",
+                "type": "code"
+              },
+              {
+                "name": "Aide",
+                "element": "p",
+                "description": "Le lien d’aide devrait se trouver au dessus du formulaire dans une zone de notice.",
+                "type": "code"
+              },
+              {
+                "name": "Erreurs",
+                "element": "p",
+                "description": "La zone d’erreur devrait se situer en premier parmi les éléments de formulaire.",
+                "type": "code"
+              },
+              {
+                "name": "Bouton",
+                "element": "button",
+                "description": "Le bouton pourrait se trouver au milieu ou aligner à gauche avec les champs liés.",
+                "type": "code"
+              }
+            ]
+          },
+          {
+            "name": "À savoir",
+            "errors": [
+              {
+                "name": "Blocs actualités",
+                "element": "div",
+                "description": "Certaines actualités date de 2013. Est-ce qu'il s’agit d‘information, d’aides… a-t-on envie de consulter des brêves quand on vient payer uen amende ? Application ou site ?",
+                "type": "Visuel"
+              },
+              {
+                "name": "Titre page niveau",
+                "element": "h4",
+                "description": "Les titres devrient être des h3.",
+                "type": "structure"
+              },
+              {
+                "name": "En savoir plus",
+                "element": "a",
+                "description": "Les liens « en savoir plus » n’ont pas d’attribut <code>&lt;title&gt;</code>. Le lien devrait être sur le titre du bloc.",
+                "type": "code"
+              },
+              {
+                "name": "Date",
+                "element": "span",
+                "description": "La balise contenant la date ne présente pas l’attribut <code>&lt;datetime&gt;</code>.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "Boîte de dialogue",
+            "errors": [
+              {
+                "name": "Focus",
+                "element": "button",
+                "description": "Lors de l’ouverture d’une boîte de dialogue, le focus est appliqué au bouton « fermer » en base de la boîte.",
+                "type": "text"
+              },
+              {
+                "name": "Accordéon",
+                "element": "div",
+                "description": "Le bloc de accordéon ne présente pas les attributs ARAI nécessaire à la navigation au clavier.",
+                "type": "code"
+              },
+              {
+                "name": "Accordéon description",
+                "element": "p",
+                "description": "Le texte de la description n’est pas compréhensible.",
+                "type": "text",
+                "codebefore": "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs de 4,4,4 et 2 chiffres ou 5 blocs de 4,4,4,4 et 2 chiffres et la clé sur sa droite sur 2 chiffres.</p>",
+                "codeafter": "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs avec 3 blocs de 4 chiffres plus un bloc de 2 chiffres ou bien 5 blocs avec 4 blocs de 4 chiffres et un bloc de 2 chiffres plus la clé sur sa droite avec un bloc de 2 chiffres.</p>"
+              },
+              {
+                "name": "Accordéon image texte",
+                "element": "img",
+                "description": "L’alternative texte ne décrit pas suffisamemt l'image. Il devrait être indiqué le cas de figure.",
+                "type": "text",
+                "codebefore": "<img src=\"img/content/carte-paiement-ACO.jpg\" alt=\"Où trouver le numéro de télépaiement et la clé ?\">",
+                "codeafter": "<img src=\"img/content/carte-paiement-ACO.jpg\" alt=\"Pour une amende forfaitaire - Où trouver le numéro de télépaiement et la clé ?\">"
+              },
+              {
+                "name": "Accordéon image",
+                "element": "img",
+                "description": "Les images présentent une qualité médiocre. Le positionnement du numéro de télépaiement devrait être entouré.",
+                "type": "text"
+              },
+              {
+                "name": "Accordéon image figure",
+                "element": "img",
+                "description": "L’image pourrait être inclue dans une balise <code>&lt;figure&gt;</code> avec une <code>&lt;figcaption&gt;</code> pour décrire où se situe le numéro sur le formulaire de télépaiement.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "name": "Footer",
+            "errors": [
+              {
+                "name": "Liens",
+                "element": "div",
+                "description": "Les liens ne sont pas soulignés.",
+                "type": "Visuel"
+              },
+              {
+                "name": "Liens Hover",
+                "element": "div",
+                "description": "Les liens présentent un constraste insuffisant lors d‘un passage de la souris.",
+                "type": "Visuel"
+              },
+              {
+                "name": "Liens sites externes",
+                "element": "div",
+                "description": "Les liens ne doivent pas contenir l’attribut <code>&lt;target='_blank'&gt;</code>",
+                "type": "Visuel"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

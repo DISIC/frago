@@ -26,7 +26,7 @@ Actuellement, il affiche en bas de page la listes des études. Ces études sont 
 
 ### Projets
 
-La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`). 
+La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`).
 
 ![Projets](/images/projets.png)
 
@@ -34,7 +34,9 @@ La page de projet doit servir à présenter l’état de la démarche, puis le p
 
 L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité sera unique et évoluera au court du projet (pourra servir à la mise en conformité de la démarche). L’audit d'accompagnement a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
-Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)(va évoluer)
+> Le chemin des captures d’écran va évoluer.
+
+Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)
 
 ![Accessibilite](/images/accessibilite.png)
 
@@ -58,6 +60,8 @@ Les tests utilisateurs de type quantitatifs consistent à poser des questions si
 
 L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n'existe pas encore de gabarits d'analyse graphique dans le temps.
 
+> Il ets peut-être nécessaire de créer un répertoire `lighthouse` dans chaque défi dans `data`. C'est à vérifier si la règle d'existence de ce répertoire est bie ajouté.
+
 Éditer : `data/nomdudéfi/lighthouse/YYYY-MM-JJ.json`
 
 ![Performance](/images/performance.png)
@@ -65,6 +69,8 @@ L’audit de performance apporte une complémentarité à l’audit d’accessib
 ### Personas
 
 Définir des personas et les afficher sur une même page pour les partager à l'équipe projet. On peut sélectionner les profils retenus pour les tests.
+
+> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dasn  `content/personas/nomdudéfi/prenom-nom.md`.
 
 Éditer : `data/nomdudéfi/personas.json`
 

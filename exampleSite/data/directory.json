@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Bertrand Keller",
+    "email": "bertrand.keller@modernisation.gouv.fr",
+    "job": "Développeur accessibilité",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Lucile Foraison",
+    "email": "lucile.foraison@modernisation.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Kheira Belkacem",
+    "email": "kheira.belkacem@modernisation.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Marine Boudeau",
+    "email": "marine.boudeau@modernisation.gouv.fr",
+    "job": "Cheffe du pôle Design des services numériques",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Micheline Noslen",
+    "email": "micheline.noslen@dgfip.finances.gouv.fr",
+    "job": "Administratrice des finances publiques adjointe",
+    "ministry": "Ministère des finances",
+    "direction": ""
+  },
+  {
+    "name": "Thibault Chasleries",
+    "email": "thibault.chasleries@dgfip.finances.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère des finances",
+    "direction": "MOA paiement des amendes"
+  },
+  {
+    "name": "Marie Andre",
+    "email": "marie-c.andre@dgfip.finances.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère des finances",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Carole Maudet",
+    "email": "carole.maudet@dgfip.finances.gouv.fr",
+    "job": "Inspectrice des finances",
+    "ministry": "Ministère des finances",
+    "direction": "Cap Numérique"
+  },
+  {
+    "name": "Florence Rodriguez",
+    "email": "florence.rodriguez@dgfip.finances.gouv.fr",
+    "job": "",
+    "ministry": "Ministère des finances",
+    "direction": "Cap Soutien"
+  },
+  {
+    "name": "Philippe Ducrocq",
+    "email": "philippe-l.ducrocq@dgfip.finances.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère des finances",
+    "direction": "Bureau GF 1C. Amendes et condamnations pécuniaires"
+  },
+  {
+    "name": "Serge Helly",
+    "email": "serge.helly@dgfip.finances.gouv.fr",
+    "job": "",
+    "ministry": "Ministère des finances",
+    "direction": "Cap Soutien"
+  },
+  {
+    "name": "Stéphane Eustache",
+    "email": "lucile.foraison@dgfip.finances.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère des finances",
+    "direction": "France Recouvrement"
+  },
+  {
+    "name": "Alexandre Gardette",
+    "email": "alexandre.gardette@dgfip.finances.gouv.fr",
+    "job": "Chef de mission",
+    "ministry": "Ministère des finances",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Marie-Laurence Abolhamb",
+    "email": "marie-Laurence.abolhamb@dgfip.finances.gouv.fr",
+    "job": "",
+    "ministry": "Ministère des finances",
+    "direction": "DSI"
+  },
+  {
+    "name": "Philippe Went",
+    "email": "philippe.went@dgfip.finances.gouv.fr",
+    "job": "",
+    "ministry": "Ministère des finances",
+    "direction": "DSI"
+  },
+  {
+    "name": "Laure Millefaux",
+    "email": "laure.millefaux@dgfip.finances.gouv.fr",
+    "job": "",
+    "ministry": "Ministère des finances",
+    "direction": "DSI"
+  },
+  {
+    "name": "Bruno Latombe",
+    "email": "lucile.foraison@modernisation.gouv.fr",
+    "job": "Chef de direction",
+    "ministry": "Ministère des finances",
+    "direction": "DSI"
+  },
+  {
+    "name": "Fabienne Larose",
+    "email": "fabienne.larose@interieur.gouv.fr",
+    "job": "Responsable d’opérations",
+    "ministry": "Ministère de l’intérieur",
+    "direction": "DSI"
+  },
+  {
+    "name": "Laurent Wallet",
+    "email": "laurent.wallet@interieur.gouv.fr",
+    "job": "Directeur de projet et Architecte fonctionnel du SI",
+    "ministry": "Ministère de l’intérieur",
+    "direction": "DSI"
+  },
+  {
+    "name": "Frédéric Soutrel",
+    "email": "frederic.soutrel@open-groupe.com",
+    "job": "Chef de projet",
+    "ministry": "Open Groupe",
+    "direction": "DSI"
+  }
+]
