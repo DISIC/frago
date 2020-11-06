@@ -1,0 +1,20 @@
+{{- $title := .Get "title" -}}
+{{- $type := .Get "type" -}}
+<div id="chart-{{ $title | urlize }}">
+</div>
+<script>
+    const data{{ replace ($title | urlize) "-" "" | safeJS  }} = {{ .Inner | safeJS }}
+    const chart{{ replace ($title | urlize) "-" "" | safeJS  }} = new frappe.Chart("#chart-{{ $title | urlize }}", {
+        title: "{{ $title }}",
+        data: data{{ replace ($title | urlize) "-" "" | safeJS }},
+        type: {{ $type }}, // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+        height: 450,
+        truncateLegends: true,
+        axisOptions: {
+            xAxisMode: "tick"
+        },
+        barOptions: {
+            stacked: 1
+        }
+    })
+</script>
