@@ -1,5 +1,5 @@
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
-<div class="card smaller">
+<div class="card smaller{{ if .context.selected }} card-border{{ end }}">
   <div>
   {{ $name := .context.name | urlize }}
   {{- range (readDir "static/assets/images/personas") -}}
@@ -18,23 +18,25 @@
       Raison: {{ .context.reason }}
     </p>
     <hr>
-    <h4>Motivations</h4>
-    <ul>
+    <h4 class="mb-0">Motivations</h4>
+    <ul class="list-unstyled">
       {{ range .context.motivations }}
-        <li>{{ . }}</li>
+        <li>. {{ . }}</li>
       {{ end }}
     </ul>
-    <h4>Frustrations</h4>
-    <ul>
+    <h4 class="mb-0">Frustrations</h4>
+    <ul class="list-unstyled">
       {{ range .context.frustrations }}
-        <li>{{ . }}</li>
+        <li>. {{ . }}</li>
       {{ end }}
     </ul>
-    <h4>Rapport avec le gouvernement</h4>
-    <p>{{ .context.feeling }}</p>
+    <h4 class="mb-0">Sentiments</h4>
+    <ul class="list-unstyled">
+        <li>. {{ .context.feeling }}</li>
+    </ul>
   </div>
   <div>
-    <p><strong>Aisance numérique</strong><br>
+    <h4 class="mb-0">Aisance numérique</h4>
     {{ $ditmissed := sub 5 (int .context.digitalease) }}
     {{ range seq .context.digitalease }}
       <span class="dot">{{ . }}</span>
