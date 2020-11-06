@@ -6,7 +6,7 @@
     {{ partial "elements/content.html" .Content }}
     <div class="grid">
     {{ range .RegularPages }}
-      {{- range where (index (index $.Site.Data.audits $project) "personas") "name" "eq" .Title -}}
+      {{- range where (index (index $.Site.Data $project) "personas") "name" "eq" .Title -}}
         {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project) }}
       {{- end -}}
     {{ end }}
