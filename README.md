@@ -6,31 +6,37 @@
 
 Le thème DINUM Commando a pour pour d’aider à la génération de rapports pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier…
+Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi tous les défi en parallèle.
+
+Malheureusement, le thème pourrait être optimisé pour du mono projet, il ne l'ai pas encore complètement car c'est assez long à tester.
+
+> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site plante. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème.
 
 ## Architecture de contenu
 
-Il existe différents types de contenus qu'on peut afficher sur le site. Ces différents types de contenus servent à la publication d’audit, l’analyse de résultat ou la présentation de la démarche UX.
+Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l'information technique pour des personnes éloignés du développement de sites web.
 
 ### Accueil
 
 La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, il n'y a pas (encore) de mécanisme pour afficher directement le gabarit de `projects`.
 
+Actuellement, il affiche en bas de page la listes des études. Ces études sont un type de contenu (non définitif) à insérer dans le répertoire `content/studies`.
+
 ![Accueil](/images/accueil.png)
 
 ### Projets
 
-La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets.
+La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`). 
 
 ![Projets](/images/projets.png)
 
 ### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité sera unique et évoluera au court du projet (pourra servir à la mise en conformité de la démarche). l’audit d'accompagnement a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité sera unique et évoluera au court du projet (pourra servir à la mise en conformité de la démarche). L’audit d'accompagnement a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
 Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)(va évoluer)
 
-![Audit](/images/audit.png)
+![Accessibilite](/images/accessibilite.png)
 
 ### Directory
 
@@ -38,7 +44,7 @@ Lister les personnes contacté pendant la durée du défi. Cet annuaire permet u
 
 Éditer : `data/directory.json`
 
-![Directory](/images/directory.png)
+![Annuaire](/images/annuaire.png)
 
 ### Testapic
 
