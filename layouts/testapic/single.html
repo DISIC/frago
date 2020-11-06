@@ -3,29 +3,9 @@
 {{- $.Scratch.Set "userid" slice -}}
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
-{{- $loop := index (index (index $.Site.Data.audits (index (split .Path "/") 1)) "testapic") "etudiants" -}}
+{{- $loop := index (index (index $.Site.Data (index (split .Path "/") 1)) "testapic") .Params.kind -}}
 
 <div class="wrapper">
-{{/*
-<table>
-    <thead>
-      <tr>
-      <th>Name</th>
-      <th>montant maximum de l’amende</th>
-      </tr>
-    </thead>
-    <tbody>
-    {{ range sort $.Site.Data.amendes "name" "asc" }}
-    <tr>
-      <td>{{ (index . "Qualification simplifiée de l'infraction") | truncate 60 }}</td>
-      <td class="text-center">{{ index . "montant maximum de l'amende" }}</td>
-    </tr>
-    {{ end }}
-    </tbody>
-  </table>
-</div>
-*/}}
-
 {{/* Find all task id */}}
 {{- range $key, $value := $loop  -}}
   {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}

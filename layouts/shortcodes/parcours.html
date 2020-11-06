@@ -1,7 +1,6 @@
-{{ $project := .Get "project" }}
+{{- $project := .Get "project" -}}
 <div class="text-center">
-{{- range index (index $.Site.Data.audits $project) "personas" -}}
-  <h3>{{ .name }}</h3>
+{{- range index (index $.Site.Data $project) "personas" -}}
   {{ partial "components/parcours/template.html" (dict "context" . "pages" $ "project" $project) }}
 {{- end -}}
 </div>

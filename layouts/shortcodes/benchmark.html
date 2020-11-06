@@ -1,9 +1,11 @@
-{{ $src := .Get "src" }}
+{{- $src := .Get "src" -}}
+{{- $datafile := .Get "datafile" -}}
 <div class="benchmark grid grid-4 lightbox-{{ .Ordinal }}">
-{{ range sort (index (index $.Site.Data.audits (.Get "datafile" )) "similary") "country" "asc" }}
+{{ range sort (index (index $.Site.Data $datafile) "similary") "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}
-    {{- range (readDir "./static/assets/images/parcours/") -}}
-        {{ if in (string .Name) (string $path) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/assets/images/parcours/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/parcours/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
+    {{- $pathfile :=(printf "./static/assets/images/%s/benchmark/" $datafile) -}}
+    {{- range (readDir $pathfile) -}}
+        {{ if in (string .Name) (string $path) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/assets/images/{{ $datafile }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="/assets/images/parcours/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
       {{- end -}}
 {{- end -}}
 </div>

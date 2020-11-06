@@ -1,6 +1,6 @@
-{{ $project := .Get "project" }}
+{{- $project := .Get "project" -}}
 <div class="flex grid">
-{{- range index (index $.Site.Data.audits $project) "personas" -}}
+{{- range index (index $.Site.Data $project) "personas" -}}
   {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project)}}
 {{- end -}}
 </div>
