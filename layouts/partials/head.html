@@ -33,7 +33,12 @@
   <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
   </script>
   {{- end -}}
-  {{/*- if .HasShortcode "mermaid" -*/}}
+  <link rel="preload" href="/assets/js/frappe-charts.min.iife.js" as="script">
+  <script src="/assets/js/frappe-charts.min.iife.js"></script>
+  {{- if .HasShortcode "graphic" -}}
+  <script src="https://unpkg.com/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>
+  {{- end -}}
+  {{- if .HasShortcode "mermaid" -}}
   <link rel="preload" href="/assets/js/mermaid.min.js" as="script">
   <script src="/assets/js/mermaid.min.js"></script>
   <script>
@@ -48,7 +53,7 @@
       // sequenceDiagram: { actorMargin: 300 } // deprecated
     });
   </script>
-  {{/*- end -*/}}
+  {{- end -}}
 
   <!-- CSS -->
   {{- with resources.Match "**.css" -}}

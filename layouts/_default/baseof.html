@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {{/* General variables */}}
 <html lang="{{ .Site.LanguageCode | default "fr" }}" dir="ltr">
-{{ partialCached "head" . }}
+{{ partial "head" . }}
 <body class="hugo-{{ .Kind }}">
   <div class="skip-links">
     <a href="#nav">Navigation principale</a>
@@ -12,12 +12,12 @@
           <div class="flex align-items-center">
             <a href="/" title="Accueil - L’observatoire de la qualité des démarches en ligne" rel="home"
               class="navbar-brand"><img src="/assets/images/LogoRF.svg" width="150" alt="Logo République française"><span class="demarches-titlebar-sitename"></span></a>
-            <p class="h4">{{ .Site.Title | safeHTML }}</p>
+
           </div>
           <nav class="nav nav-main">
             <ul class="list-unstyled list-inline">
               {{- $currentPage := . -}}
-              {{ range where $.Site.RegularPages "Section" "projects" }}
+              {{- range where $.Site.RegularPages "Section" "projects" -}}
                 <li><a class="sidebar-nav-item" href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
               {{- end -}}
               {{/* range .Site.Menus.main }}
@@ -30,10 +30,10 @@
   <main id="main" class="page main">
   {{ block "main" . }}{{- end -}}
   </main>
-  {{ partialCached "footer" . }}
+  {{- partialCached "footer" . -}}
   {{ block "script" . }}{{- end -}}
   {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production")) -}}
-  {{ partial "debug/debug.html" (dict "context" .) }}
+  {{- partial "debug/debug.html" (dict "context" .) -}}
   {{- end -}}
 </body>
 </html>
