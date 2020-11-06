@@ -16,13 +16,13 @@ Il existe différents types de contenus qu'on peut afficher sur le site. Ces dif
 
 La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, il n'y a pas (encore) de mécanisme pour afficher directement le gabarit de `projects`.
 
-![/images/accueil.png](Accueil)
+![Accueil](/images/accueil.png)
 
 ### Projets
 
 La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets.
 
-![/images/projets.png](Projets)
+![Projets](/images/projets.png)
 
 ### Audit
 
@@ -30,7 +30,7 @@ L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*
 
 Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)(va évoluer)
 
-![/images/audit.png](Audit)
+![Audit](/images/audit.png)
 
 ### Directory
 
@@ -38,7 +38,7 @@ Lister les personnes contacté pendant la durée du défi. Cet annuaire permet u
 
 Éditer : `data/directory.json`
 
-![/images/directory.png](Directory)
+![Directory](/images/directory.png)
 
 ### Testapic
 
@@ -46,7 +46,7 @@ Les tests utilisateurs de type quantitatifs consistent à poser des questions si
 
 Éditer : `data/nomdudéfi/testapic/nometude.json` (à faire évoluer)
 
-![/images/testapic.png](Testapic)
+![Testapic](/images/testapic.png)
 
 ### Performance
 
@@ -54,7 +54,7 @@ L’audit de performance apporte une complémentarité à l’audit d’accessib
 
 Éditer : `data/nomdudéfi/lighthouse/YYYY-MM-JJ.json`
 
-![/images/performance.png](Performance)
+![Performance](/images/performance.png)
 
 ### Personas
 
@@ -62,7 +62,7 @@ Définir des personas et les afficher sur une même page pour les partager à l'
 
 Éditer : `data/nomdudéfi/personas.json`
 
-![/images/personas.png](Personas)
+![Personas](/images/personas.png)
 
 ### Parcours
 
@@ -70,13 +70,13 @@ Ajouter un parcours type par personas pour fournir une base visuelle à l'équip
 
 Éditer : `data/nomdudéfi/personas.json`
 
-![/images/parcours.png](Parcours)
+![Parcours](/images/parcours.png)
 
 ### Composants
 
 #### Scores
 
-![/images/scores.png](Scores)
+![Scores](/images/scores.png)
 
 #### Phases
 
@@ -84,7 +84,7 @@ Nécessite d'ajouter un type de catégorie dans le `config.toml` ; et d’ajoute
 
 Les contenus listés sont donc hétérogènes.
 
-![/images/phases.png](Phases)
+![Phases](/images/phases.png)
 
 ### Shortcodes
 
@@ -146,7 +146,7 @@ Petit aide pour l’affichage de graphique. Il faut passer les données dans le 
 }
 {{< /graphic >}}
 ```
-![/images/graphiques.png](graphiques)
+![graphiques](/images/graphiques.png)
 
 ### Personas
 
