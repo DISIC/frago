@@ -38,9 +38,9 @@ L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*
 
 ![Accessibilite](/images/accessibilite.png)
 
-### Directory
+### Annuaire
 
-Lister les personnes contacté pendant la durée du défi. Cet annuaire permet un passage de partager les contacts.
+Lister les personnes contactés pendant la durée du défi. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
 
 Éditer : `data/directory.json`
 
@@ -130,6 +130,8 @@ Appel de la librairie *mermaid.JS*. Ajouter la syntaxe *Mermaid* dans le contenu
       B --> |Virement pour étrangers| I(Site web)
 {{< /mermaid >}}
 ```
+
+![graphiques](/images/diagramme.png)
 
 #### Graphiques
 
