@@ -84,13 +84,17 @@
   .grid {
     display: grid;
     grid-gap: var(--baseline);
-    margin-bottom: var(--baseline);
-    padding-bottom: calc(var(--baseline) * 2);
+    margin: 0 0 var(--baseline);
+    padding: 0 0 calc(var(--baseline) * 2);
   }
 
   .grid-center {
     display: grid;
     place-items: center;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(250px, 1fr)) !important;
   }
 }
 
@@ -103,6 +107,10 @@
 @media screen and (min-width: 56.25em) {
   .grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(4, minmax(250px, 1fr)) !important;
   }
 
   .grid-separator {

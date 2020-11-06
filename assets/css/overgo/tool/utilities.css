@@ -2,65 +2,86 @@
 // Utility classes
 */
 
-.w-100 {
-  width: 100%;
-}
-
-.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
 
 /* Display */
 
+.d-block {
+    display: block;
+}
+
 .d-inline-block {
-  display: inline-block;
+    display: inline-block;
+}
+
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* Text */
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Margin */
+
+.m-0 {
+    margin: 0;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mb-0 {
+    margin-bottom: 0;
 }
 
 /* Color */
 
 .text-color {
-  color: var(--text-color);
+    color: var(--text-color);
 }
 
 /* Toggling content */
 
 .hide,
 .d-none {
-  display: none !important;
+    display: none !important;
 }
 
 .show {
-  display: block !important;
+    display: block !important;
 }
 
 .invisible {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    border: 0;
 }

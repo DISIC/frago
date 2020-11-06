@@ -54,7 +54,6 @@
   }
 
   body {
-    max-width: 90%;
     font-size: 11pt;
     color: #000;
     background-color:#fff;
@@ -105,12 +104,17 @@
 		white-space: -pre-wrap;
 		white-space: -o-pre-wrap;
 		word-wrap: break-word;
-		background: #fff;
+    background: #fff;
+    break-inside: avoid;
   }
 
   figure {
     padding: 0 !important;
     border: none !important;
+  }
+
+  figure a {
+    display: block;
   }
 
   .no-print, .no-print * {
@@ -130,6 +134,10 @@
 
   .flex > * {
     min-width: 200px;
+  }
+
+  .benchmark {
+    break-inside: avoid;
   }
 
   .counter {

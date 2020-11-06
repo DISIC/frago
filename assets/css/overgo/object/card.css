@@ -5,6 +5,7 @@
 .card {
   position: relative;
   display: grid;
+  grid-template-columns: 100%;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
   justify-content: center;
@@ -37,13 +38,13 @@
   color: var(--color-grey-dark);
 }
 
-.card figure {
+.card > figure {
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.11);
   border-radius: 4px 4px 0 0;
 }
 
-.card img {
+.card > img {
   width: 100%;
   max-height: 7em;
   object-fit: cover;
