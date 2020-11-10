@@ -563,11 +563,13 @@ hr {
 }
 
 .good.counter {
-  background: #0e840e
+  background: #0e840e;
+  background-image: repeating-linear-gradient(70deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 10.5%);
 }
 
 .bad.counter {
-  background: #6f0c0c
+  background: #6f0c0c;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);
 }
 
 .verygood path {
