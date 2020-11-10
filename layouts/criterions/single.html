@@ -4,7 +4,7 @@
 {{ partial "elements/content.html" .Content }}
 <div hidden>
 Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du site;contenu;Vérification;Justificatif<br>
-{{ range $key1, $value1 := index $.Site.Data.criteres "topics"}}
+{{ range $key1, $value1 := index $.Site.Data.criteres "topics" }}
   {{ $topic := .topic }}
   {{ range $key2, $value2 := .criteria }}
     {{ $title := .criterium.title}}
