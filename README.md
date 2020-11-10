@@ -34,6 +34,8 @@ La page de projet doit servir à présenter l’état de la démarche, puis le p
 
 L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité sera unique et évoluera au court du projet (pourra servir à la mise en conformité de la démarche). L’audit d'accompagnement a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
+#### Accessibilité
+
 > Le chemin des captures d’écran va évoluer.
 
 Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)
@@ -44,13 +46,18 @@ type: accessibility // appel le gabarit accessibility :: data/nomdudéfi/accessi
 ---
 ```
 
+![Accessibilite](/images/accessibilite.png)
+
+#### Qualité
+
 ```
 ---
 type: quality // appel le gabarit quality :: le plus récent de data/nomdudéfi/audits/YYYY-MM-JJ.json
 datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
+---
 ```
 
-![Accessibilite](/images/accessibilite.png)
+![Accessibilite](/images/qualite.png)
 
 ### Annuaire
 
