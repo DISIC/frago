@@ -38,6 +38,18 @@ L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*
 
 Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)
 
+```
+---
+type: accessibility // appel le gabarit accessibility :: data/nomdudéfi/accessibility.json
+---
+```
+
+```
+---
+type: quality // appel le gabarit quality :: le plus récent de data/nomdudéfi/audits/YYYY-MM-JJ.json
+datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
+```
+
 ![Accessibilite](/images/accessibilite.png)
 
 ### Annuaire
@@ -52,7 +64,18 @@ Lister les personnes contactés pendant la durée du défi. Cet annuaire permet 
 
 Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *Testapic*, il existe une mise en forme pour l’analyse rapide de ces résultats.
 
+Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV (Penser à convertir le CSV en JSON).
+
 Éditer : `data/nomdudéfi/testapic/nometude.json` (à faire évoluer)
+
+Ajouter à l'entête du fichier de contenu :
+
+```
+---
+type: testapic // appel le gabarit testapic
+datafilename: etudiants // appel le fichier nommé etudiants :: dans data/nomdudéfi/testapic/etudiants.json
+---
+```
 
 ![Testapic](/images/testapic.png)
 
@@ -70,7 +93,7 @@ L’audit de performance apporte une complémentarité à l’audit d’accessib
 
 Définir des personas et les afficher sur une même page pour les partager à l'équipe projet. On peut sélectionner les profils retenus pour les tests.
 
-> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dasn  `content/personas/nomdudéfi/prenom-nom.md`.
+> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdudéfi/prenom-nom.md`.
 
 Éditer : `data/nomdudéfi/personas.json`
 
@@ -92,7 +115,7 @@ Ajouter un parcours type par personas pour fournir une base visuelle à l'équip
 
 #### Phases
 
-Nécessite d'ajouter un type de catégorie dans le `config.toml` ; et d’ajouter le *tag* dans chacun des contenus qu'on désire qu'on souhaite voir afficher dans une phase.
+Nécessite d'ajouter un type de catégorie dans le `config.toml` ; et d’ajouter le *tag* dans chacun des contenus qu’on souhaite voir afficher dans une phase.
 
 Les contenus listés sont donc hétérogènes.
 
@@ -110,9 +133,9 @@ Afficher une liste de capture d’écran pour illustrer une étude comparative.
 
 #### Sites similaires
 
-Afficher la liste des sites similaires à la démarche (action de benchmarking). Les sites sont rangées par pays.
+Afficher la liste des sites similaires à la démarche (action de benchmarking). Les sites sont rangés par pays.
 
-Éditer : `data/nomdudéfi/personas.json`
+Éditer : `data/nomdudéfi/similary.json`
 
 ```
 {{< similary project="amendes" >}}{{< /similary >}}
@@ -141,7 +164,7 @@ Appel de la librairie *mermaid.JS*. Ajouter la syntaxe *Mermaid* dans le contenu
 
 #### Graphiques
 
-Petit aide pour l’affichage de graphique. Il faut passer les données dans le contenu du shortcode. Et choisir le titre et le type de graphique à afficher : bar, line, donut…
+Petit aide pour l’affichage de graphiques. Passer les données dans le contenu du shortcode. Choisir le titre et le type de graphique à afficher : bar, line, donut…
 
 ```
 {{< graphic title="Ventilation des paiements dans l’année (en milliers)" type="bar">}}
