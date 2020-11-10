@@ -9,13 +9,15 @@
     <h2 class="text-center">Scores</h2>
     <h3 class="m-0">Performance</h3>
     {{- partial "components/scores/performance" $project -}}
-    {{ end }}
+    {{- end -}}
     {{- end -}}
     {{- if $accessibilityfile -}}
     <h3 class="m-0">Accessibilité</h3>
-    {{ partial "components/scores/accessibility-resume" (dict "context" . "auditfile" $accessibilityfile) }}
+    {{- partial "components/scores/accessibility" (dict "context" . "auditfile" $accessibilityfile) -}}
+    {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
     {{- end -}}
   </div>
+  {{ if eq $project "amendes" }}
   <h2 class="text-center">Planning</h2>
   <div class="gantt">
     <span class="d-1"></span>
@@ -37,7 +39,7 @@
     <div class="t-4" style="grid-column: nov-middle / nov-end;">Proposition</div>
     <div class="t-5" style="grid-column: dec-start / dec-middle;">Application</div>
   </div>
-
+  {{ end }}
   {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
   {{- partial "list.html" (dict "context" . "section" "meetings") -}}
   {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}

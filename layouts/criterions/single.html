@@ -1,0 +1,49 @@
+{{- define "main" -}}
+<div class="wrapper">
+<h1>Critères RGAA4</h1>
+{{ partial "elements/content.html" .Content }}
+<div hidden>
+Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du site;contenu;Vérification;Justificatif<br>
+{{ range $key1, $value1 := index $.Site.Data.criteres "topics"}}
+  {{ $topic := .topic }}
+  {{ range $key2, $value2 := .criteria }}
+    {{ $title := .criterium.title}}
+    {{ range $key3, $value3 := .criterium.tests }}
+        {{ add $key1 1 }};{{ add $key2 1 }};{{ $key3 }};
+        {{ if reflect.IsSlice $value3 }}
+        "{{ (index $value3 0) | markdownify}}"<br>
+        {{ else }}
+        "{{ $value3 | markdownify }}"<br>
+        {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+</div>
+<div class="tableofcontents">
+<h2>Sujets</h2>
+<ol>
+{{ range $key1, $value1 := index $.Site.Data.criteres "topics"}}
+  <li><a href="#{{ .topic | urlize }}">{{ .topic }}</a></li>
+{{ end }}
+</ol>
+</div>
+{{ range $key1, $value1 := index $.Site.Data.criteres "topics"}}
+  <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
+  {{ range $key2, $value2 := .criteria }}
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ .criterium.title | markdownify }}</h3>
+    {{ range $key3, $value3 := .criterium.tests }}
+        Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }} -
+        {{ if reflect.IsSlice $value3 }}
+        {{ (index $value3 0) | markdownify}}<br>
+        <ol>
+        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ . | markdownify }}</li>{{ end }}
+        </ol>
+        {{ else }}
+        {{ $value3 | markdownify }}<br>
+        {{ end }}
+    {{ end }}
+    <hr>
+  {{ end }}
+{{ end }}
+</div>
+{{ end }}

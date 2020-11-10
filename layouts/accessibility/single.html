@@ -1,0 +1,43 @@
+{{- define "main" -}}
+{{- $project :=  (index (split .Path "/") 1) -}}
+{{- $pathimage := printf "./static/assets/images/%s/" $project }}
+
+{{/* Set the audit file - it must exist */}}
+{{ $.Scratch.Set "auditfile" (index (index $.Site.Data (index (split .Path "/") 1)) "accessibility") }}
+<div class="wrapper audit">
+<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{- partial "elements/content.html" .Content -}}
+{{- partial "components/scores/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
+<h2>Contexte</h2>
+<div class="tableofcontents">
+<h2>Accéder aux pages auditées</h2>
+<ul>
+{{- $.Scratch.Set "pages" slice -}}
+{{- range $key, $value := index ($.Scratch.Get "auditfile") 0 -}}
+    {{- $.Scratch.Add "pages" $key -}}
+{{- end -}}
+{{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
+{{- range $id, $value := $pages -}}
+  <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
+{{- end -}}
+</ul>
+</div>
+<h2>Liste des pages auditées</h2>
+{{- range $id, $value := $pages -}}
+  {{ $page := . }}
+  <h3 id="{{ . | urlize }}">{{ . }}</h3>
+  {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
+  {{- if or (eq (index . $page) "c") (eq (index . $page) "nc") -}}
+  {{- $test := .Tests -}}
+  <h4 class="mb-0">{{ if eq (index . $page) "c" }}✅{{ end }}{{ if eq (index . $page) "nc" }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if eq (index . $page) "c" }}Conforme{{ end }}{{ if eq (index . $page) "nc" }}Non conforme{{ end }}</small></h4>
+  {{ $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet)  }}
+  {{ range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests  }}
+    {{- if eq $idx (string $test) -}}
+    {{ index . 0 | markdownify }}<br>
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}

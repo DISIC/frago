@@ -1,36 +1,115 @@
-{{- range .auditfile -}}
-  <div>
-    {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
-    {{- $.context.Scratch.Set "countererrorschecked" 0 -}}
-    {{- $.context.Scratch.Set "countererrorstypecode" 0 -}}
-    {{- $.context.Scratch.Set "countererrorstypevisual" 0 -}}
-    {{- $.context.Scratch.Set "countererrorstypestructure" 0 -}}
-    {{- $.context.Scratch.Set "countererrorstypetext" 0 -}}
-    {{- range .pages -}}
-    {{- range $b := .blocks -}}
-    {{- range .errors -}}
-      {{- $.context.Scratch.Add "countererrorstotal" 1 -}}
-      {{- if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{- end -}}
-      {{- if eq .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
-      {{- if eq .type "visual" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
-      {{- if eq .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
-      {{- if eq .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
+{{ with .auditfile }}
+{{ $auditfile := . }}
+{{- $.context.Scratch.Set "pages" slice -}}
+{{ $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l’information" "Formulaires" "Navigation" "Consultation" }}
+
+
+{{- range $key, $value := $topics -}}
+{{- $.context.Scratch.Set "counterconforme" 0 -}}
+{{- $.context.Scratch.Set "counternonconforme" 0 -}}
+  {{- range where $auditfile "Sujet" $key -}}
+  {{- $sujet := .Sujet -}}
+    {{- range . -}}
+      {{ $.context.Scratch.SetInMap "conforme" (string $key)  ($.context.Scratch.Get "counterconforme") }}
+      {{ $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconforme") }}
+      {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconforme" 1 -}}{{ $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconforme") }}{{ end }}
+      {{- if eq . "nc" -}}{{ $.context.Scratch.Add "counternonconforme" 1 -}}{{ $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconforme") }}{{ end }}
     {{- end -}}
-    {{- end -}}
-    {{- end -}}
-    <h2 class="m-0">Erreurs</h2>
-    <div class="scores">
-    <ul>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstotal" }}</b><br>Au total</span></li>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ $.context.Scratch.Get "countererrorschecked" }}</b><br>Corrigées</span></li>
-    </ul>
-    <ul>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypecode" }}</b><br>Type code</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypevisual" }}</b><br>Type visuel</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypestructure" }}</b><br>Type structure</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypetext" }}</b><br>Type textuel</span></li>
-    </ul>
-    </div>
-  </div>
+  {{- end -}}
 {{- end -}}
 
+{{- $countersliceconforme := slice -}}
+{{- $counterconformesum := 0 -}}
+{{- $counterslicenonapplicable := slice -}}
+{{- $counternonapplicablesum := 0 -}}
+{{- $counterslicenonconforme := slice -}}
+{{- $counternonconformesum := 0 -}}
+{{- range $key, $value := index . 0 -}}
+    {{- $.context.Scratch.Add "pages" $key -}}
+{{- end -}}
+{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
+{{- range $id, $value := $pages -}}
+  {{ $page := . }}
+  {{- $.context.Scratch.Set "counterconforme" 0 -}}
+  {{- $.context.Scratch.Set "counternonapplicable" 0 -}}
+  {{- $.context.Scratch.Set "counternonconforme" 0 -}}
+  {{- range where $auditfile . "c" -}}
+    {{- $.context.Scratch.Add "counterconforme" 1 -}}
+  {{- end -}}
+  {{- range where $auditfile . "na" -}}
+    {{- $.context.Scratch.Add "counternonapplicable" 1 -}}
+  {{- end -}}
+  {{- range where $auditfile . "nc" -}}
+    {{- $.context.Scratch.Add "counternonconforme" 1 -}}
+  {{- end -}}
+  {{- $countersliceconforme = $countersliceconforme | append ($.context.Scratch.Get "counterconforme") -}}
+  {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconforme") -}}
+  {{- $counterslicenonapplicable = $counterslicenonapplicable | append ($.context.Scratch.Get "counternonapplicable") -}}
+  {{- $counternonapplicablesum = add $counternonapplicablesum ($.context.Scratch.Get "counternonapplicable") -}}
+  {{- $counterslicenonconforme = $counterslicenonconforme | append ($.context.Scratch.Get "counternonconforme") -}}
+  {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconforme") -}}
+{{- end -}}
+{{ $total := add $counterconformesum $counternonconformesum }}
+<div class="scores" hidden>
+    <ul>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ div (mul $counterconformesum 100) $total }}%</b><br>Conforme</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>
+    </ul>
+</div>
+<div id="chartpage"></div>
+<div id="charttopic"></div>
+<script>
+    const datapage = {
+    labels: [{{ range $id, $value := $pages }}{{ if not (eq $id 0) }},{{ end }}"{{ . }}"{{ end }}],
+    datasets: [
+      {
+        name: "Conforme",
+        values: [{{ range $id, $value := $countersliceconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $counterslicenonconforme $id)) }}{{ end }}]
+      },
+      {
+        name: "Non Conforme",
+        values: [{{ range $id, $value := $counterslicenonconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $countersliceconforme $id)) }}{{ end }}]
+      }
+    ]
+}
+    const chartpage = new frappe.Chart("#chartpage", {
+        title: "Par page (en %)",
+        data: datapage,
+        type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+        height: 400,
+        truncateLegends: true,
+        barOptions: {
+            stacked: 1,
+            spaceRatio: 0.2
+        },
+        colors: ['#0e840e','#6f0c0c']
+    })
+</script>
+<script>
+    const datatopic = {
+    labels: [{{ range $id, $value := $.context.Scratch.Get "conforme" }}{{ if not (eq $value 0) }}{{ if not (eq $id "1") }},{{ end }}"{{ index $topics (sub (int $id) 1) }}"{{ end }}{{ end }}],
+    datasets: [
+      {
+        name: "Conforme",
+        values: [{{ range $id, $value := $.context.Scratch.Get "conforme" }}{{ if not (eq $value 0) }}{{ if not (eq $id "1") }},{{ end }}{{ (div (mul $value 100) (add $value (index ($.context.Scratch.Get "nonconforme") $id))) }}{{ end }}{{ end }}]
+      },
+      {
+        name: "Non Conforme",
+        values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if not (eq $value 0) }}{{ if not (eq $id "1") }},{{ end }}{{ (div (mul $value 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) -}}{{ end }}{{ end }}]
+      }
+    ]
+}
+    const charttopic = new frappe.Chart("#charttopic", {
+        title: "Par sujet (en %)",
+        data: datatopic,
+        type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+        height: 300,
+        truncateLegends: true,
+        barOptions: {
+            stacked: 1,
+            spaceRatio: 0.2
+        },
+        colors: ['#0e840e','#6f0c0c']
+    })
+</script>
+{{- end -}}
