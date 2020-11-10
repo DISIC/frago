@@ -562,14 +562,20 @@ hr {
   stroke: #22961e
 }
 
-.good.counter {
+.good.counter,
+.dataset-0 rect {
   background: #0e840e;
-  background-image: repeating-linear-gradient(70deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 10.5%);
+  /*background-image: repeating-linear-gradient(70deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 10.5%);*/
+  -webkit-mask-image: repeating-linear-gradient(70deg, #0e840e, #0e840e 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
+  mask-image: repeating-linear-gradient(70deg, #0e840e, #0e840e 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
 }
 
-.bad.counter {
+.bad.counter,
+.dataset-1 rect {
   background: #6f0c0c;
-  background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);
+  /*background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);*/
+  -webkit-mask-image: repeating-linear-gradient(45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 11%);
+  mask-image: repeating-linear-gradient(45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 13%);
 }
 
 .verygood path {
@@ -606,7 +612,6 @@ hr {
   justify-content: space-around;
   margin: 0 calc(var(--baseline) / -2);
   padding: 0;
-  width: 100%
 }
 
 .scores li {
@@ -625,7 +630,6 @@ hr {
   align-items: center;
   margin: 0;
   padding: 1em 0;
-  max-width: 100%;
 }
 
 
@@ -636,6 +640,9 @@ hr {
   font-family: Futura;
   color: var(--color-grey-verylight);
   background: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) - var(--shader)));
+  background-image: radial-gradient(rgba(255,255,255,0.1) 5%, transparent 10%);
+  background-position: 0 0, 100px 100px;
+  background-size: 20px 20px;
 }
 
 .dot {

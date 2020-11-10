@@ -8,7 +8,11 @@
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
+<h2 class="text-center">Scores</h2>
+<h3 class="mb-0">Conformité globale</h3>
 {{- partial "components/scores/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
+<h3 class="mb-0">Conformité détaillée</h3>
+{{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 <h2>Contexte</h2>
 <div class="tableofcontents">
 <h2>Accéder aux pages auditées</h2>
