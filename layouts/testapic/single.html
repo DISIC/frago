@@ -3,7 +3,7 @@
 {{- $.Scratch.Set "userid" slice -}}
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
-{{- $loop := index (index (index $.Site.Data (index (split .Path "/") 1)) "testapic") .Params.kind -}}
+{{- $loop := index (index (index $.Site.Data (index (split .Path "/") 1)) "testapic") .Params.datafilename -}}
 
 <div class="wrapper">
 {{/* Find all task id */}}
