@@ -574,8 +574,8 @@ hr {
 .dataset-1 rect {
   background: #6f0c0c;
   /*background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);*/
-  -webkit-mask-image: repeating-linear-gradient(45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 11%);
-  mask-image: repeating-linear-gradient(45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 13%);
+  -webkit-mask-image: repeating-linear-gradient(-45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
+  mask-image: repeating-linear-gradient(-45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
 }
 
 .verygood path {
