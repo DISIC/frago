@@ -1,5 +1,8 @@
 
 {{- $project := .project -}}
+{{ $projectfolder := index $.context.Site.Data $project }}
+{{ if $projectfolder }}
+{{- if index $projectfolder "quality" -}}
 {{- $dir := readDir (printf "./data/%s/quality/" $project) -}}
 {{- with $dir -}}
   {{- range last 1 $dir -}}
@@ -45,5 +48,7 @@
     </ul>
     </div>
   </div>
+{{- end -}}
+{{- end -}}
 {{- end -}}
 

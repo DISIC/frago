@@ -3,7 +3,6 @@
 {{- $.context.Scratch.Set "pages" slice -}}
 {{ $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l’information" "Formulaires" "Navigation" "Consultation" }}
 
-
 {{- range $key, $value := $topics -}}
 {{- $.context.Scratch.Set "counterconforme" 0 -}}
 {{- $.context.Scratch.Set "counternonconforme" 0 -}}
@@ -50,10 +49,12 @@
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconforme") -}}
 {{- end -}}
 {{ $total := add $counterconformesum $counternonconformesum }}
+{{- if not (eq $total 0) -}}
 <div class="scores" hidden>
     <ul>
       <li class="counter text-center d-inline-block good"><span><b class="h2">{{ div (mul $counterconformesum 100) $total }}%</b><br>Conforme</span></li>
       <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>
     </ul>
 </div>
+{{- end -}}
 {{- end -}}

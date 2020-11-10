@@ -2,21 +2,29 @@
   <h1 class="text-center">{{ .Title }}</h1>
   {{- $project :=  replace (index (split .Path "/") 1) ".md" "" -}}
   <div class="wrapper">
-    {{ $accessibilityfile := (index $.Site.Data $project).accessibility }}
-    {{- range $key, $value := index $.Site.Data $project -}}
-    {{/* If a project folder exist in data */}}
-    {{ if eq $key $project }}
+
+
+    {{- $accessibilityfile := (index $.Site.Data $project).accessibility -}}
+    {{- $projectfolder := index $.Site.Data $project -}}
+
+    {{- if $projectfolder -}}
     <h2 class="text-center">Scores</h2>
-    <h3 class="m-0">Performance</h3>
-    {{- partial "components/scores/performance" $project -}}
-    {{- end -}}
-    {{- end -}}
     {{- if $accessibilityfile -}}
     <h3 class="m-0">Accessibilité</h3>
     {{- partial "components/scores/accessibility" (dict "context" . "auditfile" $accessibilityfile) -}}
+    {{- end -}}
+
+    {{- if index $projectfolder "lighthouse" -}}
+    <h3 class="m-0">Performance</h3>
+    {{- partial "components/scores/performance" $project -}}
+    {{- end -}}
+
+    {{- if index $projectfolder "quality" -}}
     <h3 class="m-0">Qualité</h3>
     {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
     {{- end -}}
+    {{- end -}}
+
   </div>
   {{ if eq $project "amendes" }}
   <h2 class="text-center">Planning</h2>
