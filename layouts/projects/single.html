@@ -14,15 +14,17 @@
     {{- partial "components/scores/accessibility" (dict "context" . "auditfile" $accessibilityfile) -}}
     {{- end -}}
 
+    {{- if index $projectfolder "quality" -}}
+    <h3 class="m-0">Qualité</h3>
+    {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
+    {{- end -}}
+
     {{- if index $projectfolder "lighthouse" -}}
     <h3 class="m-0">Performance</h3>
     {{- partial "components/scores/performance" $project -}}
     {{- end -}}
 
-    {{- if index $projectfolder "quality" -}}
-    <h3 class="m-0">Qualité</h3>
-    {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
-    {{- end -}}
+
     {{- end -}}
 
   </div>
@@ -42,7 +44,7 @@
     <h3 class="h-oct">octobre</h3>
     <h3 class="h-nov">novembre</h3>
     <h3 class="h-dec">décembre</h3>
-    <div class="t-1" style="grid-column: sept-middle / oct-middle;">Mise en place</div>
+    <div class="t-1" style="grid-column: sept-middle / oct-middle;">Découverte</div>
     <div class="t-2" style="grid-column: oct-middle / oct-end;">Collecte</div>
     <div class="t-3" style="grid-column: nov-start / nov-middle;">Étude</div>
     <div class="t-4" style="grid-column: nov-middle / nov-end;">Proposition</div>
