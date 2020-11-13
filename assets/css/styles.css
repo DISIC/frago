@@ -558,10 +558,6 @@ hr {
 /* Counter & counter color
    ----------------------------- */
 
-.top path {
-  stroke: #22961e
-}
-
 .good.counter,
 .dataset-0 rect {
   background: #0e840e;
@@ -578,20 +574,20 @@ hr {
   mask-image: repeating-linear-gradient(-45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
 }
 
-.verygood path {
-  stroke: #30d42a
+.verygood {
+  background: #30d42a
 }
 
-.good path {
-  stroke: #346888
+.good {
+  background: #22961e;
 }
 
-.bad path {
-  stroke: #d68100
+.medium {
+  background: #d68100
 }
 
-.verybad path {
-  stroke: #b00202
+.bad {
+  background: #b00202
 }
 
 .scores {
@@ -643,6 +639,13 @@ hr {
   background-image: radial-gradient(rgba(255,255,255,0.1) 5%, transparent 10%);
   background-position: 0 0, 100px 100px;
   background-size: 20px 20px;
+}
+
+.badge {
+  padding: 0 0.3em;
+  font-size: 0.5em;
+  color: var(--color-grey-verylight);
+  border-radius: 5px;
 }
 
 .dot {

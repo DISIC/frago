@@ -7,7 +7,7 @@
 {{- range $key, $value := $topics -}}
 {{- $.context.Scratch.Set "counterconforme" 0 -}}
 {{- $.context.Scratch.Set "counternonconforme" 0 -}}
-  {{- range where $auditfile "Sujet" $key -}}
+  {{- range where $auditfile "Sujet" (string $key) -}}
   {{- $sujet := .Sujet -}}
     {{- range . -}}
       {{ $.context.Scratch.SetInMap "conforme" (string $key)  ($.context.Scratch.Get "counterconforme") }}
@@ -42,6 +42,9 @@
   {{- range where $auditfile . "nc" -}}
     {{- $.context.Scratch.Add "counternonconforme" 1 -}}
   {{- end -}}
+    {{- range $auditfile -}}{{- range . -}}
+    {{ if gt (len (string .)) 2 }}{{- $.context.Scratch.Add "counternonconforme" 1 -}}{{ end }}
+  {{- end -}}{{- end -}}
   {{- $countersliceconforme = $countersliceconforme | append ($.context.Scratch.Get "counterconforme") -}}
   {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconforme") -}}
   {{- $counterslicenonapplicable = $counterslicenonapplicable | append ($.context.Scratch.Get "counternonapplicable") -}}
@@ -76,7 +79,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#68b568','#6f0c0c']
+        colors: ['#0e840e','#6f0c0c']
     })
 </script>
 <script>
@@ -103,7 +106,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#68b568','#6f0c0c']
+        colors: ['#0e840e','#6f0c0c']
     })
 </script>
 {{- end -}}

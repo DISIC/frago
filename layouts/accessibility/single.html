@@ -1,9 +1,8 @@
 {{- define "main" -}}
 {{- $project :=  (index (split .Path "/") 1) -}}
 {{- $pathimage := printf "./static/assets/images/%s/" $project }}
-
 {{/* Set the audit file - it must exist */}}
-{{ $.Scratch.Set "auditfile" (index (index $.Site.Data (index (split .Path "/") 1)) "accessibility") }}
+{{- $.Scratch.Set "auditfile" (index (index $.Site.Data (index (split .Path "/") 1)) "accessibility") -}}
 <div class="wrapper audit">
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
@@ -13,35 +12,192 @@
 {{- partial "components/scores/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 <h3 class="mb-0">Conformité détaillée</h3>
 {{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
+
 <h2>Contexte</h2>
-<div class="tableofcontents">
-<h2>Accéder aux pages auditées</h2>
-<ul>
+<p>
+  <strong>Version du référentiel&nbsp;: </strong>{{ .Params.accessibility.guidelines }}<br>
+  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .Params.accessibility.technologies ", " }}<br>
+  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .Params.accessibility.tools ", " }}<br>
+  <strong>Environnement de test&nbsp;: </strong>{{ delimit .Params.accessibility.environment ", " }}<br>
+</p>
+
+{{/* Create an array with all pages */}}
 {{- $.Scratch.Set "pages" slice -}}
 {{- range $key, $value := index ($.Scratch.Get "auditfile") 0 -}}
-    {{- $.Scratch.Add "pages" $key -}}
+  {{- $.Scratch.Add "pages" $key -}}
 {{- end -}}
+{{/* Remove header row entries from the csv */}}
 {{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
-{{- range $id, $value := $pages -}}
-  <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
-{{- end -}}
-</ul>
-</div>
-<h2>Liste des pages auditées</h2>
+
+<hr>
+
+{{/* Create map with qualified errors */}}
 {{- range $id, $value := $pages -}}
   {{ $page := . }}
-  <h3 id="{{ . | urlize }}">{{ . }}</h3>
   {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
-  {{- if or (eq (index . $page) "c") (eq (index . $page) "nc") -}}
+    {{- $content := index . $page -}}
+    {{- $condcontentlen := gt (len $content) 2 -}}
+    {{- $condcontentnc := (eq $content "nc") -}}
+
+    {{/* Test if the test result is the same for all the page */}}
+    {{- $.Scratch.Set "similaryresult" slice -}}
+    {{- range $k, $s := $value -}}
+      {{- if not (intersect (slice $k) (slice "Sujet" "Critère" "Tests")) -}}{{- $.Scratch.Add "similaryresult" . -}}{{ end }}
+    {{- end -}}
+    {{- if and $condcontentlen (eq $id 0) -}}
+    {{- if and (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) (gt (len (uniq ($.Scratch.Get "similaryresult"))) 0) -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}{{ $.Scratch.SetInMap "allpageserrorsease" (string $page) $value }}{{- end -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}{{ $.Scratch.SetInMap "allpageserrorsmedium" (string $page) $value }}{{- end -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}{{ $.Scratch.SetInMap "allpageserrorshard" (string $page) $value }}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+    {{- if or $condcontentlen -}}
+    {{- if not (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}{{ $.Scratch.SetInMap "pageserrorsease" (string $page) $value }}{{- end -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}{{ $.Scratch.SetInMap "pageserrorsmedium" (string $page) $value }}{{- end -}}
+      {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}{{ $.Scratch.SetInMap "pageserrorshard" (string $page) $value }}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{ $.Scratch.Set "allpageserrors" (dict "1 - Correction facile" ($.Scratch.Get "allpageserrorsease") "2 - Correction modérée" ($.Scratch.Get "allpageserrorsmedium") "3 - Correction difficile" ($.Scratch.Get "allpageserrorshard")) }}
+{{ $.Scratch.Set "pageserrors" (dict "1 - Correction facile" ($.Scratch.Get "pageserrorsease") "2 - Correction modérée" ($.Scratch.Get "pageserrorsmedium") "3 - Correction difficile" ($.Scratch.Get "pageserrorshard")) }}
+{{ $.Scratch.Set "allerrors" (dict "A - Erreurs présentes sur toutes les pages" ($.Scratch.Get "allpageserrors") "B - Erreurs présentes sur les pages spécifiques" ($.Scratch.Get "pageserrors")) }}
+
+<h2>Erreurs par ordre de difficulté de correction (erreurs seulement)</h2>
+
+{{ range $keytitle, $value := ($.Scratch.Get "allerrors")  }}
+    <h3>{{ $keytitle }}</h3>
+    {{ range $key, $value := . }}
+      {{ if $value }}
+      <h4>{{ $key }}</h4>
+      {{ range $key, $value := . }}
+        {{- $content := index . $key -}}
+        {{- $test := .Tests -}}
+        <p class="mb-0"><strong>
+          Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }}{{ if eq $keytitle "B - Erreurs présentes sur les pages spécifiques" }} - sur la page {{ $key }}{{ end }}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
+        </strong></p>
+        <strong>{{ (replaceRE "!(.*)!" "" $content 1)| markdownify }}</strong><br>
+        {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
+        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
+          {{- if eq $idx (string $test) -}}
+          {{ if reflect.IsSlice . }}
+          <em>{{ index . 0 | markdownify }}</em><br>
+          {{- else -}}
+          <em>{{ . | markdownify }}</em><br>
+          {{- end -}}
+          {{- end -}}
+        {{- end -}}
+        {{ end }}
+      {{ end }}
+    {{- end -}}
+{{- end -}}
+<hr>
+
+<h2>Liste des pages auditées</h2>
+
+<div class="tableofcontents">
+  <h3>Accéder aux pages auditées</h3>
+  <ul>
+    <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
+    {{/* Loop all pages for anchor navigation */}}
+    {{- range $id, $value := $pages -}}
+    <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
+    {{- end -}}
+  </ul>
+</div>
+
+<h3>Par ordre des tests du référentiel RGAA</h3>
+{{/* Display errors presents on all pages */}}
+<h4 id="pagesall">A - Erreurs présentes sur toutes les pages</h4>
+{{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
+  {{- $content := index . (index $pages 1) -}}
+  {{- $condcontentlen := gt (len $content) 2 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+
+
+  {{- if or $condcontentlen $condcontentnc -}}
   {{- $test := .Tests -}}
-  <h4 class="mb-0">{{ if eq (index . $page) "c" }}✅{{ end }}{{ if eq (index . $page) "nc" }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if eq (index . $page) "c" }}Conforme{{ end }}{{ if eq (index . $page) "nc" }}Non conforme{{ end }}</small></h4>
-  {{ $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet)  }}
-  {{ range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests  }}
+  {{/* Test if the test result is the same for all the page */}}
+  {{- $.Scratch.Set "similaryresult" slice -}}
+  {{- range $k, $s := $value -}}
+    {{ if not (intersect (slice $k) (slice "Sujet" "Critère" "Tests")) }}{{- $.Scratch.Add "similaryresult" . -}}{{ end }}
+  {{- end -}}
+
+  {{- $.Scratch.Set "text" "" -}}
+  {{- if and (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) (gt (len (uniq ($.Scratch.Get "similaryresult"))) 0) -}}
+  <h4 class="mb-0">
+    {{ if $condcontentc }}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
+  </h4>
+  {{- if $condcontentlen }}<strong>{{ (replaceRE "!(.*)!" "" $content 1)| markdownify }}</strong><br>{{ end }}
+  {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
+  {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
     {{- if eq $idx (string $test) -}}
-    {{ index . 0 | markdownify }}<br>
+    {{ if reflect.IsSlice . }}
+    <em>{{ index . 0 | markdownify }}</em><br>
+    {{- else -}}
+    <em>{{ . | markdownify }}</em><br>
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- else -}}
+  {{ $.Scratch.Set "text" "<p>Pas d’erreur spécifique à cette page.</p>" }}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $.Scratch.Get "text" | safeHTML -}}
+
+
+<br><hr class="divider">
+
+<h4>B - Erreurs présentes sur les pages spécifiques</h4>
+{{/* Display errors presents on specific pages */}}
+{{- range $id, $value := $pages -}}
+  {{ $.Scratch.Set "text" 0 }}
+  {{ $page := . }}
+  <h5 id="{{ . | urlize }}">{{ . }}</h5>
+  {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
+  {{- $content := index . $page -}}
+  {{- $condcontentlen := gt (len $content) 2 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+
+  {{- if or $condcontentlen $condcontentnc $condcontentc -}}
+  {{- $test := .Tests -}}
+  {{/* Test if the test result is the same for all the page */}}
+  {{- $.Scratch.Set "similaryresult" slice -}}
+  {{ range $k, $s := $value }}
+    {{ if not (intersect (slice $k) (slice "Sujet" "Critère" "Tests")) }}{{- $.Scratch.Add "similaryresult" . -}}{{ end }}
+  {{ end }}
+  {{- if not (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) -}}
+  {{ $.Scratch.Set "text" 1 }}
+  <h4 class="mb-0">
+    {{ if $condcontentc }}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
+    {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
+  </h4>
+  {{- if $condcontentlen }}<strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong><br>{{ end }}
+  {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
+  {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
+    {{- if eq $idx (string $test) -}}
+    {{ if reflect.IsSlice . }}
+    <em>{{ index . 0 | markdownify }}</em><br>
+    {{- else -}}
+    <em>{{ . | markdownify }}</em><br>
+    {{- end -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}
   {{- end -}}
+  {{- end -}}
+  {{ if eq ($.Scratch.Get "text") 0 }}Pas d’erreur spécifique à cette page.{{ end }}
 {{- end -}}
 {{- end -}}
