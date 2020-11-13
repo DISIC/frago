@@ -1,25 +1,35 @@
 {{- define "main" -}}
 {{- $project :=  (index (split .Path "/") 1) -}}
-{{- $pathimage := printf "./static/assets/images/%s/" $project }}
+{{- $pathimage := printf "./static/images/%s/" $project }}
 {{/* Set the audit file - it must exist */}}
+
+{{- if eq (len (split .Path "/")) 3 -}}
 {{- $.Scratch.Set "auditfile" (index (index $.Site.Data (index (split .Path "/") 1)) "accessibility") -}}
+{{- else -}}
+{{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
+{{- end -}}
+
 <div class="wrapper audit">
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
+
+{{- if $.Scratch.Get "auditfile" -}}
 <h2 class="text-center">Scores</h2>
 <h3 class="mb-0">Conformité globale</h3>
 {{- partial "components/scores/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 <h3 class="mb-0">Conformité détaillée</h3>
 {{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 
+{{- with .Params.accessibility -}}
 <h2>Contexte</h2>
 <p>
-  <strong>Version du référentiel&nbsp;: </strong>{{ .Params.accessibility.guidelines }}<br>
-  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .Params.accessibility.technologies ", " }}<br>
-  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .Params.accessibility.tools ", " }}<br>
-  <strong>Environnement de test&nbsp;: </strong>{{ delimit .Params.accessibility.environment ", " }}<br>
+  <strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>
+  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>
+  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>
+  <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
 </p>
+{{- end -}}
 
 {{/* Create an array with all pages */}}
 {{- $.Scratch.Set "pages" slice -}}
@@ -199,5 +209,10 @@
   {{- end -}}
   {{- end -}}
   {{ if eq ($.Scratch.Get "text") 0 }}Pas d’erreur spécifique à cette page.{{ end }}
+{{- end -}}
+{{- else -}}
+  <p>
+  Il manque la présence d’un fichier : <code>{{- if eq (len (split .Path "/")) 3 -}}data/{{ $project }}/{{- else -}}data/{{- end -}}accessibility.json</code>.
+  </p>
 {{- end -}}
 {{- end -}}

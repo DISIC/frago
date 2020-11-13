@@ -2,10 +2,10 @@
 <div class="card smaller{{ if .context.selected }} card-border{{ end }}">
   <div>
   {{ $name := .context.name | urlize }}
-  {{- range (readDir "static/assets/images/personas") -}}
+  {{- range (readDir "/static/images/personas") -}}
     {{ if eq $name (replace .Name ".png" "") }}
     <figure class="rounded">
-    <img src="/assets/images/personas/{{ .Name }}">
+    <img src="/images/personas/{{ .Name }}">
     </figure>
     {{ end }}
   {{- end -}}

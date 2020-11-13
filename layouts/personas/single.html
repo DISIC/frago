@@ -7,8 +7,8 @@
 {{- range where (index (index $.Site.Data $project) "personas") "name" "eq" .Title -}}
   {{ $name := .name | urlize }}
   <figure class="rounded">
-  {{- range (readDir "static/assets/images/personas") -}}
-    {{ if eq $name (replace .Name ".png" "") }}<img class="full" src="/assets/images/personas/{{ .Name }}">{{ end }}
+  {{- range (readDir "/static/images/personas") -}}
+    {{ if eq $name (replace .Name ".png" "") }}<img class="full" src="/images/personas/{{ .Name }}">{{ end }}
   {{- end -}}
   </figure>
   <h2 class="text-center mb-0">Description</h2>

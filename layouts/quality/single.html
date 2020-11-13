@@ -1,30 +1,49 @@
 {{- define "main" -}}
-{{- $project :=  (index (split .Path "/") 1) -}}
-{{- $pathimage := printf "./static/assets/images/%s/" $project }}
-{{- $dir := readDir (printf "data/%s/quality/" $project) -}}
+{{- $patharray :=  split .Path "/" -}}
+{{- $project :=  (index $patharray 1) -}}
+{{- $.Scratch.Set "pathimage" "" }}
+{{- $.Scratch.Set "dir" "" -}}
+
+{{- if eq (len $patharray) 3 -}}
+{{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
+{{- $.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+{{- else -}}
+{{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
+{{- $.Scratch.Set "dir" (readDir "data/quality/") -}}
+{{- end -}}
 
 {{/* Set the audit file - test if a specific file is called */}}
 {{- if .Params.datafilename -}}
-{{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s.json" $project .Params.datafilename) }}
-{{ $.Scratch.Set "auditfile" (getJSON ($.Scratch.Get "auditpath")) }}
+  {{- if eq (len $patharray) 3 -}}
+  {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s.json" $project .Params.datafilename) }}
+  {{- else -}}
+  {{ $.Scratch.Set "auditpath" (printf "data/quality/%s.json" .Params.datafilename) }}
+  {{- end -}}
+  {{ $.Scratch.Set "auditfile" (getJSON ($.Scratch.Get "auditpath")) }}
 {{- else -}}
-{{- with $dir -}}
-  {{- range last 1 $dir -}}
-  {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s" $project .Name) }}
-  {{- $lastfile := getJSON ($.Scratch.Get "auditpath") -}}
-    {{- with $lastfile -}}
-      {{/* Set the audit file - it must exist */}}
-      {{ $.Scratch.Set "auditfile" . }}
+  {{- with ($.Scratch.Get "dir") -}}
+    {{- range last 1 ($.Scratch.Get "dir") -}}
+    {{- if eq (len $patharray) 3 -}}
+    {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s" $project .Name) }}
+    {{- else -}}
+    {{ $.Scratch.Set "auditpath" (printf "data/quality/%s" .Name) }}
+    {{- end -}}
+    {{- $lastfile := getJSON ($.Scratch.Get "auditpath") -}}
+      {{- with $lastfile -}}
+        {{/* Set the audit file - it must exist */}}
+        {{ $.Scratch.Set "auditfile" . }}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
-{{- end -}}
 {{- end -}}
 
 <div class="wrapper audit">
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
+{{- if eq (len $patharray) 3 -}}
 {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
+{{- end -}}
 <h2>Contexte</h2>
 {{- range ($.Scratch.Get "auditfile") -}}
 <p>
@@ -64,7 +83,7 @@
     {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
     {{- $.Scratch.Add "index" (slice $path) -}}
     <dl>
-      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }} <small class="no-print">- {{ range (readDir $pathimage) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir $pathimage) }}
+      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }} <small class="no-print">- {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir ($.Scratch.Get "pathimage")) }}
       {{ if in (string .Name) (string $filename) }}</a>{{ end }}{{ end }}</small></dt>
       {{ if .description }}<dd>{{ .description | safeHTML }}</dd>{{ end }}
       {{ if .criterion }}
@@ -83,8 +102,8 @@
   <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
   {{- range $errorname := ($.Scratch.Get "index") -}}
       {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}
-      {{- range (readDir $pathimage) -}}
-        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/assets/images/{{ $project }}/{{ .Name }}" cfmodified="modified"><img src="/assets/images/{{ $project }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{ end }}
+      {{- range (readDir ($.Scratch.Get "pathimage")) -}}
+        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{ end }}
       {{- end -}}
   {{- end -}}
   </div>
@@ -95,9 +114,9 @@
 </div>
 {{- end -}}
 {{- define "script" -}}
-<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
-<link rel="stylesheet" href="/assets/css/night-owl.min.css" />
-<script src="/assets/js/simple-lightbox.min.js"></script>
+<link rel="stylesheet" href="/css/simple-lightbox.min.css" />
+<link rel="stylesheet" href="/css/night-owl.min.css" />
+<script src="/js/simple-lightbox.min.js"></script>
 {{- range ($.Scratch.Get "auditfile") -}}
 {{- range $idpage, $p := .pages -}}
 {{- $name := .name -}}
@@ -108,7 +127,7 @@ var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.na
 </script>
 {{- end -}}
 {{- end -}}
-<script src="/assets/js/highlight.min.js"></script>
+<script src="/js/highlight.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('pre code').forEach((block) => {
