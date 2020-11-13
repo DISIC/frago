@@ -6,15 +6,72 @@
 
 Le thème DINUM Commando a pour pour d’aider à la génération de rapports pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi tous les défi en parallèle.
+Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi tous les défis en parallèle.
 
-Malheureusement, le thème pourrait être optimisé pour du mono projet, il ne l'est pas encore complètement car c'est assez long à tester.
+Malheureusement, le thème pourrait être optimisé pour du mono projet, il ne l'est pas encore complètement car c'est assez long à tester. Il y a des éléments qui le sont mais pas toute.
 
 > Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site plante. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème.
 
 ### Architecture de contenu
 
 Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l'information technique pour des personnes éloignés du développement de sites web.
+
+```
+.
+├── config.toml
+├── content
+│   ├── meetings
+│   │    ├── _index.md // liste les réunions
+│   │    └── 2020-10-22-reunion1.md // on indique la data pour ranger les fichiers visuellement, mais c'est inutile, il faut la répéter dans l’entête YML du fichier.
+│   ├── personas
+│   │    ├── _index.md // liste tous les personas :: Ne fonctionne pas en mono projet
+│   │    ├── simon.md  // Ne fonctionne pas en mono projet
+│   │    ├── annie.md  // Ne fonctionne pas en mono projet
+│   │    └── projet1
+│   │         ├── _index.md // liste tous les personas
+│   │         ├── simon.md
+│   │         └── annie.md
+│   ├── projects // Les pages d’accueil des différents projets
+│   │    ├── _index.md // optionnel, liste tous les projets
+│   │    ├── projet1.md
+│   │    └── projet2.md
+│   └── _index.md // page d’accueil du site
+├── data
+│   ├── projet1
+│   │    ├── lighthouse
+│   │    │    ├── 2020-10-15.json
+│   │    │    └── 2020-11-15.json
+│   │    ├── quality // Pas de prise en compte de nom d'image d‘illustration avec le nom du fichier
+│   │    │    ├── 2020-10-15.json
+│   │    │    └── 2020-11-15.json
+│   │    ├── testapic
+│   │    │    ├── test1.json
+│   │    │    └── test2.json
+│   │    ├── accessibility.json
+│   │    ├── backlinks.json
+│   │    ├── personas.json
+│   │    └── similary.json
+│   ├── accessibility.json // Si pas de projets
+│   ├── quality // Ne fonctionne pas complètement en mono projet
+│   │    ├── 2020-10-15.json
+│   │    └── 2020-11-15.json
+│   ├── testapic // Ne fonctionne pas en mono projet
+│   │    ├── test1.json
+│   │    └── test2.json
+│   ├── criteres.json // Critères RGAA
+│   ├── directory.json // Annuaire
+│   └── glossaire.json // Glossaire RGAA
+├── static
+│   └── images
+│        ├── projet1
+│        │    └── benchmark
+│        │         ├── image1.png // nommage précis disponible sur le rapport
+│        │         └── image2.png // nommage précis disponible sur le rapport
+│        │    └── quality
+│        ├── projet2
+│        └── personas
+└── index.html
+```
 
 #### Accueil
 
@@ -36,13 +93,19 @@ L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*
 
 ##### Accessibilité
 
-> Le chemin des captures d’écran va évoluer.
 
-Éditer : `data/nomdudéfi/accessibility.json` ou `data/nomdudéfi/audits/YYYY-MM-JJ.json` (va évoluer)
+Éditer : `data/nomdudéfi/accessibility.json`
+
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Ls données relatives au test (optionnelles) doivent être indiquée dans l’entête du fichier. 
 
 ```
 ---
 type: accessibility // appel le gabarit accessibility :: data/nomdudéfi/accessibility.json
+accessibility:
+  guidelines: "RGAA4"
+  technologies: ["HTML", "CSS", "Angular"]
+  tools: ["Wave", "AXE", "MOZ DevTools","Usability Hike"]
+  environment: ["MacOS", "Chrome", "ChromeVox"]
 ---
 ```
 
