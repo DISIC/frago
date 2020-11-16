@@ -1,12 +1,12 @@
 # theme.toml template for a Hugo theme
 # See https://github.com/spf13/hugoThemes#themetoml for an example
 
-name = "Overgo"
+name = "overgo"
 license = "MIT"
 licenselink = ""
-description = "Simple corporate theme"
+description = "Governemaental theme"
 homepage = ""
-tags = ["corporate", "light", "accessibility"]
+tags = ["report", "accessibility"]
 min_version = 0.1
 
 [author]
