@@ -106,7 +106,7 @@
     console.log('Page Lastmod: ', '{{ .context.Page.Lastmod}}')
     console.log('Page Date=Lastmod?: ', '{{ (eq .Page.Lastmod .Page.Date) }}')
     console.log('Page Date<>Lastmod?: ', '{{ (ne .Lastmod .Date) }}')
-    console.log('Section Parent: ', '{{ with .context.Parent }}{{ .File.Dir | default "/" }}{{ .File }}{{end}}')
+    console.log('Section Parent: ', '{{ with .context.Parent }}{{ .File.Dir | default "/" }}{{ .File }}{{ end }}')
     console.log('Google Analytics: ', '{{ .context.Site.GoogleAnalytics | default "NOT DEFINED" }}')
     {{ if .context.Page.IsPage }}console.log('Count of related pages: ', '{{ len ( .context.Site.RegularPages.Related .context) }}' ){{ end }}
     console.log('---------------------------------------------------')
