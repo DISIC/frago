@@ -1,5 +1,8 @@
 {{- define "main" -}}
-{{ partial "elements/content.html" .Content }}
+<div class="wrapper">
+  <h1 class="text-center">{{ .Title }}</h1>
+  {{ partial "elements/content.html" .Content }}
+</div>
 {{- end -}}
 {{- define "script" -}}
 {{- end -}}

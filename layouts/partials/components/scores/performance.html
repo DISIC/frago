@@ -1,8 +1,19 @@
 {{- $project := . -}}
+{{- $dir := "" -}}
+{{- if (fileExists "data/lighthouse/") -}}
+{{- $dir := readDir (printf "data/lighthouse/") -}}
+{{- else -}}
+<p>Veuillez créer le répertoire : <code>data/lighthouse/</code>.</p>
+{{- end -}}
+{{- if and $project (fileExists "/static/images/personas") -}}
 {{- $dir := readDir (printf "data/%s/lighthouse/" $project) -}}
+{{- end -}}
 {{- with $dir -}}
 {{- range last 1 $dir -}}
-{{- $lastfile := getJSON (printf "data/amendes/lighthouse/%s" .Name) -}}
+{{- $lastfile := getJSON (printf "data/lighthouse/%s" .Name) -}}
+{{- if $project -}}
+{{- $lastfile := getJSON (printf "data/%s/lighthouse/%s" $project .Name) -}}
+{{- end -}}
 {{- with $lastfile -}}
 <div class="scores">
   <ul>

@@ -4,9 +4,11 @@
 {{ range sort (index (index $.Site.Data $datafile) "similary") "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}
     {{- $pathfile :=(printf "./static/images/%s/benchmark/" $datafile) -}}
+    {{- if (fileExists $pathfile) -}}
     {{- range (readDir $pathfile) -}}
         {{ if in (string .Name) (string $path) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{ $datafile }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="/images/{{ $datafile }}/benchmark/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
       {{- end -}}
+    {{- end -}}
 {{- end -}}
 </div>
 <script>var {{ printf "$gallery%s" (replace ( .Ordinal | anchorize) "-" "") | safeJS }} = new SimpleLightbox('.lightbox-{{ .Ordinal }} figure a', {});</script>
