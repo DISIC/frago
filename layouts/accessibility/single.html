@@ -95,7 +95,10 @@
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
           {{- if eq $idx (string $test) -}}
           {{ if reflect.IsSlice . }}
-          <em>{{ index . 0 | markdownify }}</em><br>
+          <em>{{ index . 0 | markdownify }}</em>
+          <ol>
+            {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+          </ol>
           {{- else -}}
           <em>{{ . | markdownify }}</em><br>
           {{- end -}}
@@ -152,6 +155,9 @@
     {{- if eq $idx (string $test) -}}
     {{ if reflect.IsSlice . }}
     <em>{{ index . 0 | markdownify }}</em><br>
+    <ol>
+      {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+    </ol>
     {{- else -}}
     <em>{{ . | markdownify }}</em><br>
     {{- end -}}
@@ -200,6 +206,9 @@
     {{- if eq $idx (string $test) -}}
     {{ if reflect.IsSlice . }}
     <em>{{ index . 0 | markdownify }}</em><br>
+    <ol>
+      {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+    </ol>
     {{- else -}}
     <em>{{ . | markdownify }}</em><br>
     {{- end -}}
