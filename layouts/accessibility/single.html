@@ -10,8 +10,11 @@
 {{- end -}}
 
 <div class="wrapper audit">
+{{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{- end -}}
+
 {{- partial "elements/content.html" .Content -}}
 
 {{- if $.Scratch.Get "auditfile" -}}
