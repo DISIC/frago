@@ -296,7 +296,7 @@ Modifier la source dans `go.mod` :
 replace gitlab.com/bertrandkeller/commando-hugo-template => ~/workspace/dinum/commando-hugo-template
 ```
 
-Caution: **Caution:**
+**Attention :**
 
 Si difficultés avec un repo privé de Gitlab, c’est peut-être parce que `go get` utilise HTTPS.
 
@@ -307,7 +307,7 @@ module https://gitlab.com/bertrandkeller/commando-hugo-template // au lieu de : 
 
 Lire : https://golang.org/doc/faq#git_https
 
-ou tenter de modifier `~/.gitconfg`:
+ou tenter de modifier `~/.gitconfig`:
 ```git
 [url "ssh://git@gitlab.com/"]
 	insteadOf = https://gitlab.com/
