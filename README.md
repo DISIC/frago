@@ -270,45 +270,44 @@ Afficher les parcours sur la page de son choix en fonction du projet de son choi
 {{< parcours project="amendes" >}} {{< /parcours >}}
 ```
 
-## Usage (as a module)
+## Utiliser le module
 
-Follow official instructions for using a theme as a module :
+Site officiel :
 https://gohugo.io/hugo-modules/use-modules/#use-a-module-for-a-theme
 
-1. Initialize the hugo module system:
-`$ hugo mod init github.com/<your_user>/<your_project>`.
-Example: let's say you have created a repository on Gitlab named `commando` within  a sub-folder named `dinum`. You can set your module path to `gitlab.com/dinum/commando`:
-```shell
-hugo mod init gitlab.com/dinum/commando
-```
+1. Initialiser le module hugo :
+`$ hugo mod init https://gitlab.com/bertrandkeller/commando-hugo-template`.
 
 2. Import the theme in your `config.toml`:
 ```toml
 [module]
   [[module.imports]]
     path = "gitlab.com/bertrandkeller/commando-hugo-template"
-		# theme
 ```
 
-3. All good.
-  - for dev mode, run `hugo server`. Modules should be automatically fetched
-  - to update theme, run: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template`
+3. C'est installé ?
+  - En mode dev, lancer `hugo server`. Mais préférer : `HUGO_ENV=production hugo server --buildFuture`, pour le mode production.
+  - Mettre à jour le thème, lancer: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template` ou juste `hugo mod get -u`.
 
-## Make and test changes in the theme
+## Procéder à des modifications sur le thème.
 
-One way to do local development of a module imported in a project is to add a replace directive to a local directory with the source in `go.mod`:
+Modifier la source dans `go.mod` :
 ```go
 replace gitlab.com/bertrandkeller/commando-hugo-template => ~/workspace/dinum/commando-hugo-template
 ```
 
-CAUTION: **Caution:**
-If you meet difficulties to connect to this private repository on Gitlab, it's probably because `go get`uses HTTPS. You can find instructions on how to:
-- either authenticate over HTTPS
-- or use SSH in place of HTTPS
+Caution: **Caution:**
 
-More information here : https://golang.org/doc/faq#git_https
+Si difficultés avec un repo privé de Gitlab, c’est peut-être parce que `go get` utilise HTTPS.
 
-The second option (using SSH instead of HTTPS) has been tested with success by adding these lines to `~/.gitconfg`:
+Modifier le fichier `go.mod` à la racine du projet, ajouter `https://`:
+```
+module https://gitlab.com/bertrandkeller/commando-hugo-template // au lieu de : module gitlab.com/bertrandkeller/commando-hugo-template
+```
+
+Lire : https://golang.org/doc/faq#git_https
+
+ou tenter de modifier `~/.gitconfg`:
 ```git
 [url "ssh://git@gitlab.com/"]
 	insteadOf = https://gitlab.com/

@@ -4,7 +4,7 @@
 name = "overgo"
 license = "MIT"
 licenselink = ""
-description = "Governemaental theme"
+description = "Governemental theme"
 homepage = ""
 tags = ["report", "accessibility"]
 min_version = 0.1
