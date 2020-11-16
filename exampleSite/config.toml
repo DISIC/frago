@@ -1,7 +1,11 @@
 baseURL = ""
 
+[module]
+  [[module.imports]]
+    path = "gitlab.com/bertrandkeller/commando-hugo-template"
+
 title = "Commando UX"
-theme = "overgo"
+theme = ["overgo"]
 paginate = "10"
 
 languageCode = "fr-FR"
