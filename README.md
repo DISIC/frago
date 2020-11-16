@@ -22,7 +22,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ├── content
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
-│   │    └── 2020-10-22-reunion1.md // on indique la data pour ranger les fichiers visuellement, mais c'est inutile, il faut la répéter dans l’entête YML du fichier.
+│   │    └── 2020-10-22-reunion1.md // on indique la dat pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier.
 │   ├── personas
 │   │    ├── _index.md // liste tous les personas :: Ne fonctionne pas en mono projet
 │   │    ├── simon.md  // Ne fonctionne pas en mono projet
@@ -41,7 +41,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── lighthouse
 │   │    │    ├── 2020-10-15.json
 │   │    │    └── 2020-11-15.json
-│   │    ├── quality // Pas de prise en compte de nom d'image d‘illustration avec le nom du fichier
+│   │    ├── quality // Pas de prise en compte de nom d'image d‘illustration avec le nom du fichier pour plusieurs rapports
 │   │    │    ├── 2020-10-15.json
 │   │    │    └── 2020-11-15.json
 │   │    ├── testapic
