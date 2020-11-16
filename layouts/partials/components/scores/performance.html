@@ -1,20 +1,17 @@
-{{- $project := . -}}
-{{- $dir := "" -}}
+{{- $project := .project -}}
+{{- $.context.Scratch.Set "dir" "" -}}
+{{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
+{{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/lighthouse/" $project)) -}}
+{{- end -}}
+{{- with ($.context.Scratch.Get "dir") -}}
+{{- range last 1 . -}}
 {{- if (fileExists "data/lighthouse/") -}}
-{{- $dir := readDir (printf "data/lighthouse/") -}}
-{{- else -}}
-<p>Veuillez créer le répertoire : <code>data/lighthouse/</code>.</p>
+{{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/lighthouse/%s" .Name)) -}}
 {{- end -}}
-{{- if and $project (fileExists "/static/images/personas") -}}
-{{- $dir := readDir (printf "data/%s/lighthouse/" $project) -}}
+{{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
+{{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/lighthouse/%s" $project .Name)) -}}
 {{- end -}}
-{{- with $dir -}}
-{{- range last 1 $dir -}}
-{{- $lastfile := getJSON (printf "data/lighthouse/%s" .Name) -}}
-{{- if $project -}}
-{{- $lastfile := getJSON (printf "data/%s/lighthouse/%s" $project .Name) -}}
-{{- end -}}
-{{- with $lastfile -}}
+{{- with ($.context.Scratch.Get "lastfile") -}}
 <div class="scores">
   <ul>
     <li class="counter text-center"><span>Page chargée<br><b class="h2">{{ div ((index .audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}s</b></span></li>

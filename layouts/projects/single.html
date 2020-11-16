@@ -1,29 +1,30 @@
 {{- define "main" -}}
   <h1 class="text-center">{{ .Title }}</h1>
-  {{- $project :=  replace (index (split .Path "/") 1) ".md" "" -}}
+  {{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
   <div class="wrapper">
 
-
-    {{- $accessibilityfile := (index $.Site.Data $project).accessibility -}}
-    {{- $projectfolder := index $.Site.Data $project -}}
-
-    {{- if $projectfolder -}}
-    <h2 class="text-center">Scores</h2>
-    {{- if $accessibilityfile -}}
-    <h3 class="m-0">Accessibilité</h3>
-    {{- partial "components/scores/accessibility" (dict "context" . "auditfile" $accessibilityfile) -}}
+    {{- $.Scratch.Set "projectfolder" $.Site.Data -}}
+    {{- if eq (len (split .Permalink "/")) 6 -}}
+    {{- $.Scratch.Set "projectfolder" (index $.Site.Data $project) -}}
     {{- end -}}
 
-    {{- if index $projectfolder "quality" -}}
+    {{- if ($.Scratch.Get "projectfolder") -}}
+    <h2 class="text-center">Scores</h2>
+
+    {{- if index ($.Scratch.Get "projectfolder") "accessibility" -}}
+    <h3 class="m-0">Accessibilité</h3>
+    {{- partial "components/scores/accessibility" (dict "context" . "auditfile" (index ($.Scratch.Get "projectfolder") "accessibility")) -}}
+    {{- end -}}
+
+    {{- if index ($.Scratch.Get "projectfolder") "quality" -}}
     <h3 class="m-0">Qualité</h3>
     {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
     {{- end -}}
 
-    {{- if index $projectfolder "lighthouse" -}}
+    {{- if index ($.Scratch.Get "projectfolder") "lighthouse" -}}
     <h3 class="m-0">Performance</h3>
-    {{- partial "components/scores/performance" $project -}}
+    {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
-
 
     {{- end -}}
 
