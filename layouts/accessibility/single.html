@@ -4,7 +4,7 @@
 {{/* Set the audit file - it must exist */}}
 
 {{- if eq (len (split .Path "/")) 3 -}}
-{{- $.Scratch.Set "auditfile" (index (index $.Site.Data (index (split .Path "/") 1)) "accessibility") -}}
+{{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
 {{- else -}}
 {{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
 {{- end -}}

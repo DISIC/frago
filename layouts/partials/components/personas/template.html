@@ -2,12 +2,14 @@
 <div class="card smaller{{ if .context.selected }} card-border{{ end }}">
   <div>
   {{ $name := .context.name | urlize }}
+  {{ if (fileExists "/static/images/personas") }}
   {{- range (readDir "/static/images/personas") -}}
     {{ if eq $name (replace .Name ".png" "") }}
     <figure class="rounded">
     <img src="/images/personas/{{ .Name }}">
     </figure>
-    {{ end }}
+    {{- end -}}
+  {{- end -}}
   {{- end -}}
   {{ $personaspath := printf "/personas/%s/%s" .project $name }}
   <h3 class="text-center">{{ with .pages.GetPage $personaspath }}<a href="{{ $personaspath }}">{{ end }}{{ .context.name }}{{ with .pages.GetPage $personaspath }}</a>{{ end }}<br><small>{{ .context.job }}</small></h3>

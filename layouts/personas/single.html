@@ -1,14 +1,22 @@
 {{- define "main" -}}
 {{ $project := (index (split .Path "/") 1) }}
-{{ $project := "amendes" }}
+
+{{- if eq (len (split .Path "/")) 3 -}}
+{{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "personas") -}}
+{{- else -}}
+{{- $.Scratch.Set "auditfile" $.Site.Data.personas -}}
+{{- end -}}
+
 <div class="wrapper">
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
 <h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
-{{- range where (index (index $.Site.Data $project) "personas") "name" "eq" .Title -}}
+{{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}
   {{ $name := .name | urlize }}
   <figure class="rounded">
+  {{ if (fileExists "/static/images/personas") }}
   {{- range (readDir "/static/images/personas") -}}
     {{ if eq $name (replace .Name ".png" "") }}<img class="full" src="/images/personas/{{ .Name }}">{{ end }}
+  {{- end -}}
   {{- end -}}
   </figure>
   <h2 class="text-center mb-0">Description</h2>

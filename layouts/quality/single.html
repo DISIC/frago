@@ -38,7 +38,9 @@
 {{- end -}}
 
 <div class="wrapper audit">
+{{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+{{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
 {{- if eq (len $patharray) 3 -}}
@@ -83,14 +85,26 @@
     {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
     {{- $.Scratch.Add "index" (slice $path) -}}
     <dl>
-      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }} <small class="no-print">- {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{ $filename }}{{ range (readDir ($.Scratch.Get "pathimage")) }}
-      {{ if in (string .Name) (string $filename) }}</a>{{ end }}{{ end }}</small></dt>
-      {{ if .description }}<dd>{{ .description | safeHTML }}</dd>{{ end }}
-      {{ if .criterion }}
-      {{ if not (eq (slicestr .criterion 0 2) "ER") }}
-      <dd>Critère : <a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/methode/criteres/#crit-{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>
-      {{- else -}}
-      <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
+      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
+        <small class="no-print">-
+        {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
+        {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{- end -}}
+        {{ $filename }}
+        {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
+        {{- range (readDir ($.Scratch.Get "pathimage")) -}}
+        {{- if in (string .Name) (string $filename) -}}</a>
+        {{- end -}}{{- end -}}
+      </small>
+      </dt>
+      {{- if .description -}}
+      <dd>{{ .description | safeHTML }}</dd>
+      {{- end -}}
+      {{- if .criterion -}}
+        {{ if not (eq (slicestr .criterion 0 2) "ER") }}
+        <dd>Critère : <a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/methode/criteres/#crit-{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>
+        {{- else -}}
+        <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
+        {{- end -}}
       {{- end -}}
       {{- end -}}
     </dl>
@@ -102,8 +116,10 @@
   <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
   {{- range $errorname := ($.Scratch.Get "index") -}}
       {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}
+      {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
       {{- range (readDir ($.Scratch.Get "pathimage")) -}}
         {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{ end }}
+      {{- end -}}
       {{- end -}}
   {{- end -}}
   </div>
