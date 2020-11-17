@@ -1,6 +1,6 @@
 ---
 title: Création des proto-personas
-description: Définition de visiteurs types, exercices permettant de discuter plus facilement du périmètre de la démarche.
+description: Définition de visiteurs types, exercice permettant de discuter plus facilement du périmètre de la démarche.
 date: 2020-10-26
 tags:
   - amendes
