@@ -4,14 +4,9 @@
     <h1>{{ .Title }}</h1>
     {{ $project := "amendes"}}
     {{ $accessibilityfile := (index $.Site.Data $project).accessibility }}
-    {{- range $key, $value := index $.Site.Data $project -}}
-    {{/* If a project folder exist in data */}}
-    {{ if eq $key $project }}
     <h2 class="text-center">Scores</h2>
     <h3 class="m-0">Performance</h3>
-    {{- partial "components/scores/performance" $project -}}
-    {{ end }}
-    {{- end -}}
+    {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- if $accessibilityfile -}}
     <h3 class="m-0">Accessibilité</h3>
     {{- partial "components/scores/accessibility" (dict "context" . "auditfile" $accessibilityfile) -}}

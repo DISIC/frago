@@ -1,21 +1,37 @@
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") -}}
 {{- $tags := (slice .context.File.BaseFileName) -}}
 {{- $site := .context.Site -}}
+{{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
+{{- $.context.Scratch.Set "lencond" (eq (len (split .context.Permalink "/")) 6) -}}
 {{- $.context.Scratch.Set "isphases" false -}}
+{{- $.context.Scratch.Set "phases" .context.Site.Taxonomies.phases -}}
+
+{{/* Set the audit file */}}
+{{- if ($.context.Scratch.Get "lencond") -}}
 {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
-  {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
-  {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}{{ $.context.Scratch.Set "isphases" true }}{{- end -}}
+  {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}
+  {{- $.context.Scratch.Set "isphases" true -}}
+  {{- end -}}
 {{- end -}}
+{{- else -}}
+{{- $.context.Scratch.Set "isphases" true -}}
+{{- end -}}
+
 {{- if $.context.Scratch.Get "isphases" -}}
 <section class="section{{ if .type }}-{{ .type }}{{ end }}">
   <div class="wrapper">
   {{ $.context.Scratch.Set "counter" 0 }}
   <h2 class="text-center">Phases du projet</h2>
-    {{- range $key, $taxonomy := $.context.Site.Taxonomies.phases -}}
+    {{- range $key, $taxonomy := $.context.Scratch.Get "phases" -}}
     {{ $.context.Scratch.Add "counter" 1 }}
     <h3 id="{{ $key }}">{{ $key | humanize }}</h3>
     <ul class='timeline'>
-        {{ range $idx, $p := (sort $taxonomy.Pages "Date" "asc")}}
+        {{- if ($.context.Scratch.Get "lencond") -}}
+        {{- $.context.Scratch.Set "phasestags" (where (sort $taxonomy.Pages "Date" "asc") ".Params.tags" "intersect" $tags) -}}
+        {{- else -}}
+        {{- $.context.Scratch.Set "phasestags" (sort $taxonomy.Pages "Date" "asc") -}}
+        {{- end -}}
+        {{- range $idx, $p := ($.context.Scratch.Get "phasestags") -}}
         <li class="work">
           <input class='radio' id='work{{$.context.Scratch.Get "counter"}}{{ $idx }}' name="works{{$.context.Scratch.Get "counter"}}" type="radio">
           <div class="relative">

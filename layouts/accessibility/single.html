@@ -1,8 +1,8 @@
 {{- define "main" -}}
 {{- $project :=  (index (split .Path "/") 1) -}}
 {{- $pathimage := printf "./static/images/%s/" $project }}
-{{/* Set the audit file - it must exist */}}
 
+{{/* Set the audit file */}}
 {{- if eq (len (split .Path "/")) 3 -}}
 {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
 {{- else -}}

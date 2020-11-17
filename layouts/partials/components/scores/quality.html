@@ -1,21 +1,25 @@
 
 {{- $project := .project -}}
-{{ $projectfolder := index $.context.Site.Data $project }}
-{{ if $projectfolder }}
-{{- if index $projectfolder "quality" -}}
-{{- $dir := readDir (printf "./data/%s/quality/" $project) -}}
-{{- with $dir -}}
-  {{- range last 1 $dir -}}
-  {{ $.context.Scratch.Set "auditpath" (printf "data/%s/quality/%s" $project .Name) }}
-  {{- $lastfile := readFile (printf "./data/%s/quality/%s" $project .Name) | transform.Unmarshal -}}
-    {{- with $lastfile -}}
-      {{/* Set the audit file - it must exist */}}
-      {{ $.context.Scratch.Set "auditfile" . }}
+
+{{- if (fileExists "data/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "data/quality/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+{{- end -}}
+
+{{- with ($.context.Scratch.Get "dir") -}}
+  {{- range last 1 . -}}
+    {{- if (fileExists "data/quality/") -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/quality/%s" $project .Name)) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
-{{- range ($.context.Scratch.Get "auditfile") -}}
+{{- range ($.context.Scratch.Get "lastfile") -}}
   <div>
     {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
     {{- $.context.Scratch.Set "countererrorschecked" 0 -}}
@@ -48,7 +52,5 @@
     </ul>
     </div>
   </div>
-{{- end -}}
-{{- end -}}
 {{- end -}}
 

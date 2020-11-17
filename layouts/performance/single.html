@@ -7,7 +7,7 @@
 {{- $auditfile := (index $.Site.Data $project) -}}
 {{- with $auditfile -}}
 <h3>Scores</h3>
-{{- partial "components/scores/performance" $project -}}
+{{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
 {{ $.Scratch.Set "allfile" slice }}
 {{- range $key, $value := (index . "lighthouse")  -}}
   {{ $.Scratch.Add "allfile" $key }}

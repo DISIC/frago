@@ -1,16 +1,23 @@
 {{- $project := .project -}}
-{{- $.context.Scratch.Set "dir" "" -}}
-{{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
-{{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/lighthouse/" $project)) -}}
-{{- end -}}
-{{- with ($.context.Scratch.Get "dir") -}}
-{{- range last 1 . -}}
+
 {{- if (fileExists "data/lighthouse/") -}}
-{{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/lighthouse/%s" .Name)) -}}
+  {{- $.context.Scratch.Set "dir" (readDir "data/lighthouse/") -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
-{{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/lighthouse/%s" $project .Name)) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/lighthouse/" $project)) -}}
 {{- end -}}
+
+{{- with ($.context.Scratch.Get "dir") -}}
+  {{- range last 1 . -}}
+    {{- if (fileExists "data/lighthouse/") -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/lighthouse/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/lighthouse/%s" $project .Name)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 {{- with ($.context.Scratch.Get "lastfile") -}}
 <div class="scores">
   <ul>
@@ -20,7 +27,5 @@
     <li class="counter text-center"><span>Nombre de requêtes<br><b class="h2">{{ (index (.audits.diagnostics.details.items) 0).numRequests }}</b></span></li>
   </ul>
 </div>
-{{- end -}}
-{{- end -}}
 {{- end -}}
 
