@@ -8,13 +8,17 @@
 
 {{/* Set the audit file */}}
 {{- if ($.context.Scratch.Get "lencond") -}}
-{{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
-  {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}
-  {{- $.context.Scratch.Set "isphases" true -}}
+  {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
+    {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}
+    {{- $.context.Scratch.Set "isphases" true -}}
+    {{- end -}}
   {{- end -}}
-{{- end -}}
-{{- else -}}
-{{- $.context.Scratch.Set "isphases" true -}}
+{{- else  -}}
+  {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
+    {{- if $taxonomy.Pages -}}
+    {{- $.context.Scratch.Set "isphases" true -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 
 {{- if $.context.Scratch.Get "isphases" -}}
@@ -24,13 +28,13 @@
   <h2 class="text-center">Phases du projet</h2>
     {{- range $key, $taxonomy := $.context.Scratch.Get "phases" -}}
     {{ $.context.Scratch.Add "counter" 1 }}
-    <h3 id="{{ $key }}">{{ $key | humanize }}</h3>
+    {{- if ($.context.Scratch.Get "lencond") -}}
+    {{- $.context.Scratch.Set "phasestags" (where (sort $taxonomy.Pages "Date" "asc") ".Params.tags" "intersect" $tags) -}}
+    {{- else -}}
+    {{- $.context.Scratch.Set "phasestags" (sort $taxonomy.Pages "Date" "asc") -}}
+    {{- end -}}
+    {{ if ($.context.Scratch.Get "phasestags") }}<h3 id="{{ $key }}">{{ $key | humanize }}</h3>{{ end }}
     <ul class='timeline'>
-        {{- if ($.context.Scratch.Get "lencond") -}}
-        {{- $.context.Scratch.Set "phasestags" (where (sort $taxonomy.Pages "Date" "asc") ".Params.tags" "intersect" $tags) -}}
-        {{- else -}}
-        {{- $.context.Scratch.Set "phasestags" (sort $taxonomy.Pages "Date" "asc") -}}
-        {{- end -}}
         {{- range $idx, $p := ($.context.Scratch.Get "phasestags") -}}
         <li class="work">
           <input class='radio' id='work{{$.context.Scratch.Get "counter"}}{{ $idx }}' name="works{{$.context.Scratch.Get "counter"}}" type="radio">
