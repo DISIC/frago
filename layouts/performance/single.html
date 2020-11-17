@@ -1,6 +1,8 @@
 {{- define "main" -}}
+{{- $patharray :=  split .Path "/" -}}
+{{- $project :=  (index $patharray 1) -}}
 <div class="wrapper">
-<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
 {{ $project :=  (index (split .Path "/") 1)}}

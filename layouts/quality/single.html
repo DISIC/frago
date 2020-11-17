@@ -6,10 +6,14 @@
 
 {{- if eq (len $patharray) 3 -}}
 {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
+{{- if (fileExists (printf "data/%s/quality/" $project)) -}}
 {{- $.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+{{- end -}}
 {{- else -}}
 {{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
+{{- if (fileExists (printf "data/quality/" $project)) -}}
 {{- $.Scratch.Set "dir" (readDir "data/quality/") -}}
+{{- end -}}
 {{- end -}}
 
 {{/* Set the audit file - test if a specific file is called */}}
@@ -39,7 +43,7 @@
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
-<p class="no-print">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
