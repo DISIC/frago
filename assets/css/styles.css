@@ -142,7 +142,7 @@ p+pre {
 }
 
 .audit-code, .audit .benchmark, .audit small {
-  display: none;
+  /* display: none; */
 }
 
 .audit dl {
