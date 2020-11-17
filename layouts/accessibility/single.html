@@ -40,7 +40,7 @@
   {{- $.Scratch.Add "pages" $key -}}
 {{- end -}}
 {{/* Remove header row entries from the csv */}}
-{{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
+{{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests" "Description") -}}
 
 <hr>
 
@@ -93,17 +93,17 @@
           {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
           {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
         </strong></p>
-        <strong>{{ (replaceRE "!(.*)!" "" $content 1)| markdownify }}</strong><br>
+        <p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>
         {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
           {{- if eq $idx (string $test) -}}
           {{ if reflect.IsSlice . }}
-          <em>{{ index . 0 | markdownify }}</em>
+          <p><em>{{ index . 0 | markdownify }}</em></p>
           <ol>
             {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
           </ol>
           {{- else -}}
-          <em>{{ . | markdownify }}</em><br>
+          <p><em>{{ . | markdownify }}</em></p>
           {{- end -}}
           {{- end -}}
         {{- end -}}
@@ -146,23 +146,23 @@
 
   {{- $.Scratch.Set "text" "" -}}
   {{- if and (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) (gt (len (uniq ($.Scratch.Get "similaryresult"))) 0) -}}
-  <h4 class="mb-0">
+  <h5 class="mb-0">
     {{ if $condcontentc }}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
-  </h4>
-  {{- if $condcontentlen }}<strong>{{ (replaceRE "!(.*)!" "" $content 1)| markdownify }}</strong><br>{{ end }}
+  </h5>
+  {{- if $condcontentlen }}<p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>{{ end }}
   {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
   {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
     {{- if eq $idx (string $test) -}}
     {{ if reflect.IsSlice . }}
-    <em>{{ index . 0 | markdownify }}</em><br>
+    <p><em>{{ index . 0 | markdownify }}</em><br></p>
     <ol>
       {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
     </ol>
     {{- else -}}
-    <em>{{ . | markdownify }}</em><br>
+    <p><em>{{ . | markdownify }}</em></p>
     {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -197,23 +197,23 @@
   {{ end }}
   {{- if not (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) -}}
   {{ $.Scratch.Set "text" 1 }}
-  <h4 class="mb-0">
-    {{ if $condcontentc }}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+  <p class="mb-0"><strong>
+    {{ if $condcontentc }}✅&nbsp;{{ end }}{{ if or $condcontentnc $condcontentlen }}❌&nbsp;{{ end }} Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
-  </h4>
-  {{- if $condcontentlen }}<strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong><br>{{ end }}
+  </strong></p>
+  {{- if $condcontentlen }}<p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>{{ end }}
   {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
   {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
     {{- if eq $idx (string $test) -}}
     {{ if reflect.IsSlice . }}
-    <em>{{ index . 0 | markdownify }}</em><br>
+    <p><em>{{ index . 0 | markdownify }}</em></p>
     <ol>
       {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
     </ol>
     {{- else -}}
-    <em>{{ . | markdownify }}</em><br>
+    <p><em>{{ . | markdownify }}</em></p>
     {{- end -}}
     {{- end -}}
   {{- end -}}
