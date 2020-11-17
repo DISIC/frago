@@ -1,0 +1,43 @@
+{{- define "main" -}}
+<div class="wrapper">
+<h1>{{ .Title }}</h1>
+{{- partial "elements/content.html" .Content -}}
+{{- range $key, $value := $.Site.Data.glossary -}}
+  {{- range $value -}}
+  <h2>{{ .section }}</h2>
+  <dl>
+    {{- range .dl -}}
+      <dt id="{{ .dt | urlize }}">{{ .dt }}</dt>
+      <dd>
+        {{- range .dd -}}
+          {{- if reflect.IsMap . -}}
+              {{- range . -}}
+              <ul>
+              {{- range . -}}
+              {{- if reflect.IsMap . -}}
+                  {{- range . -}}
+                  <ul>
+                    {{- range . -}}
+                      <li>
+                      {{ . }}
+                      </li>
+                    {{- end -}}
+                  </ul>
+                  {{- end -}}
+              {{- else -}}
+                <li>{{ . | markdownify }}</li>
+              {{- end -}}
+              {{- end -}}
+              </ul>
+              {{- end -}}
+          {{- else -}}
+            <p>{{ . | markdownify }}</p>
+          {{- end -}}
+        {{- end -}}
+      </dd>
+    {{- end -}}
+  </dl>
+  {{- end -}}
+{{- end -}}
+</div>
+{{- end -}}
