@@ -65,7 +65,7 @@
 }
 
 /* Toggling content */
-
+[hidden]
 .hide,
 .d-none {
     display: none !important;

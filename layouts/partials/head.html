@@ -31,12 +31,10 @@
   {{- if .HasShortcode "parcours" -}}
   <script src="/assets/js/simple-lightbox.min.js"></script>
   <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
-  </script>
   {{- end -}}
+  {{- if .HasShortcode "graphic" -}}
   <link rel="preload" href="/assets/js/frappe-charts.min.iife.js" as="script">
   <script src="/assets/js/frappe-charts.min.iife.js"></script>
-  {{- if .HasShortcode "graphic" -}}
-  <script src="https://unpkg.com/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>
   {{- end -}}
   {{- if .HasShortcode "mermaid" -}}
   <link rel="preload" href="/assets/js/mermaid.min.js" as="script">
@@ -90,11 +88,11 @@
   {{- with .OutputFormats.Get "RSS" -}}
   <link href="{{ .RelPermalink }}" rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
   <link href="{{ .RelPermalink }}" rel="feed" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
-  {{ end }}
+  {{- end -}}
 
-  {{- template "_internal/opengraph.html" . -}}
-  {{- template "_internal/schema.html" . -}}
-  {{- template "_internal/twitter_cards.html" . -}}
+  {{/*- template "_internal/opengraph.html" . -*/}}
+  {{/*- template "_internal/schema.html" . -*/}}
+  {{/*- template "_internal/twitter_cards.html" . -*/}}
 </head>
 
 
