@@ -32,10 +32,10 @@
     {{- range .errors -}}
       {{- $.context.Scratch.Add "countererrorstotal" 1 -}}
       {{- if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{- end -}}
-      {{- if eq .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
-      {{- if eq .type "visual" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
-      {{- if eq .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
-      {{- if eq .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
+      {{- if in .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
+      {{- if in .type "vis" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
+      {{- if in .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
+      {{- if in .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
     {{- end -}}
     {{- end -}}
     {{- end -}}

@@ -26,9 +26,18 @@
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
 
-    {{- end -}}
+    <h3 class="m-0">Éco</h3>
+    <div class="scores">
+      <ul>
+        <li class="counter text-center bad"><span>EcoIndex<br><b class="h2">72</b></span></li>
+        <li class="counter text-center"><span>Eau (cl)<br><b class="h2">2.34</b></span></li>
+        <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">1.56</b></span></li>
+      </ul>
+    </div>
 
+    {{- end -}}
   </div>
+
   {{ if eq $project "amendes" }}
   <h2 class="text-center">Planning</h2>
   <div class="gantt">
@@ -51,10 +60,14 @@
     <div class="t-4" style="grid-column: nov-middle / nov-end;">Proposition</div>
     <div class="t-5" style="grid-column: dec-start / dec-middle;">Application</div>
   </div>
+  <section>
+    <div class="wrapper">
+    {{ partial "components/quality/lot.html" (dict "context" . "project" $project) }}
+    </div>
+  </section>
   {{ end }}
   {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
   {{- partial "list.html" (dict "context" . "section" "meetings") -}}
   {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}
-  <hr class="divider">
   {{- .Content -}}
 {{- end -}}

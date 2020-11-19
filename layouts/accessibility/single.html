@@ -50,7 +50,7 @@
   {{- $.Scratch.Add "pages" $key -}}
 {{- end -}}
 {{/* Remove header row entries from the csv */}}
-{{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests" "Description") -}}
+{{- $pages := $.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
 
 <hr>
 

@@ -59,6 +59,14 @@
   <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
 </p>
 {{- end -}}
+
+<h2>Erreurs à corriger</h2>
+{{ partial "components/quality/lot.html" (dict "context" . "project" $project) }}
+{{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
+
+
+<hr class="divider">
+
 <div class="tableofcontents">
 <h2>Accéder aux pages auditées</h2>
 <ul>
@@ -84,13 +92,13 @@
   {{- $.Scratch.Set "paths" slice -}}
   {{- range $idblock, $b := .blocks -}}
   <h4>{{ $b.name }} <small>- Bloc</small></h4>
-  {{- range $s:= .errors -}}
+  {{- range $s := .errors -}}
     {{- $path := .name  -}}
     {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
     {{- $.Scratch.Add "index" (slice $path) -}}
     <dl>
-      <dt>{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
-        <small class="no-print">-
+      <dt id="{{ .name | urlize }}">{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
+        <small class="no-print">-&nbsp;
         {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
         {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{- end -}}
         {{ $filename }}
@@ -98,6 +106,7 @@
         {{- range (readDir ($.Scratch.Get "pathimage")) -}}
         {{- if in (string .Name) (string $filename) -}}</a>
         {{- end -}}{{- end -}}
+        {{ with .status }}&nbsp;<span class="badge{{ if eq . "critique" }} bad{{ end }}{{ if eq . "important" }} medium{{ end }}{{ if eq . "moindre" }} normal{{ end }}">{{ . }}</span>{{ end }}
       </small>
       </dt>
       {{- if .description -}}
@@ -134,9 +143,9 @@
 </div>
 {{- end -}}
 {{- define "script" -}}
-<link rel="stylesheet" href="/css/simple-lightbox.min.css" />
-<link rel="stylesheet" href="/css/night-owl.min.css" />
-<script src="/js/simple-lightbox.min.js"></script>
+<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
+<link rel="stylesheet" href="/assets/css/night-owl.min.css" />
+<script src="/assets/js/simple-lightbox.min.js"></script>
 {{- range ($.Scratch.Get "auditfile") -}}
 {{- range $idpage, $p := .pages -}}
 {{- $name := .name -}}
@@ -147,7 +156,7 @@ var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.na
 </script>
 {{- end -}}
 {{- end -}}
-<script src="/js/highlight.min.js"></script>
+<script src="/assets/js/highlight.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('pre code').forEach((block) => {

@@ -1,0 +1,58 @@
+{{- $project := .project -}}
+
+{{- if (fileExists "data/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "data/quality/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+{{- end -}}
+
+{{- with ($.context.Scratch.Get "dir") -}}
+  {{- range last 1 . -}}
+    {{- if (fileExists "data/quality/") -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/%s/quality/%s" $project .Name)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{ $.context.Scratch.Set "delivery" slice }}
+{{ $.context.Scratch.Set "pagesdelivery" slice }}
+{{- range ($.context.Scratch.Get "lastfilee") -}}
+{{- range $idpage, $s := .pages -}}
+  {{- range .blocks -}}
+  {{- range $id, $s:= .errors -}}
+    {{- with .delivery -}}
+    {{ $.context.Scratch.Add "delivery" . }}
+    {{ $.context.Scratch.Add "pagesdelivery" $s }}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{ if $.context.Scratch.Get "pagesdelivery" }}
+<h3>Par lots de livraison</h3>
+{{ range sort (uniq ($.context.Scratch.Get "delivery")) }}
+  {{ $lot := where ($.context.Scratch.Get "pagesdelivery") "delivery" . }}
+  <table class="text-left">
+    <caption>{{ if $lot }}{{ . | humanize }}{{ end }}</caption>
+    <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 150px;">Criticité</th></tr></thead>
+    <tbody>
+    {{- range sort $lot "status" "asc"  -}}
+      <tr>
+        <td>{{ .description | markdownify }}</td>
+        <td class="text-center">{{ .type }}</td>
+        <td class="critical{{ if eq .status "critique" }} bad{{ else if eq .status "important" }} medium{{ else if eq .status "moindre" }} normal{{ else }} none{{ end }}">
+          <span class="emoticon">{{ if eq .status "critique" }}🚫 {{ else if eq .status "important" }}❗️ {{ else if eq .status "moindre" }}➰ {{ else }}❓ {{ end }}</span>
+          <strong class="text-color-light">{{ .status }}{{ if not .status }}Aucune{{ end }}</strong>
+        </td>
+      </tr>
+    {{- end -}}
+    </tbody>
+  </table>
+{{- end -}}
+{{- end -}}
+<br>
