@@ -3,11 +3,21 @@
 {{- $pathimage := printf "./static/images/%s/" $project }}
 
 {{/* Set the audit file */}}
-{{- if eq (len (split .Path "/")) 3 -}}
-{{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
+{{/* Set the audit file - test if a specific file is called */}}
+{{- if .Params.datafilename -}}
+  {{- if eq (len (split .Path "/")) 3 -}}
+  {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) .Params.datafilename) -}}
+  {{- else -}}
+  {{- $.Scratch.Set "auditfile" (index $.Site.Data .Params.datafilename) -}}
+  {{- end -}}
 {{- else -}}
-{{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
+  {{- if eq (len (split .Path "/")) 3 -}}
+  {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
+  {{- else -}}
+  {{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
+  {{- end -}}
 {{- end -}}
+
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
