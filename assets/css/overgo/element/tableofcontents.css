@@ -5,7 +5,8 @@
 .tableofcontents {
   margin: var(--baseline) 0 calc(var(--baseline) * 2);
   padding: 0 var(--baseline) var(--baseline);
-  background: var(--color-grey-light);
+  color: var(--text-color);
+  background: var(--background-color-body);
   border: 1px solid var(--color-grey);
 }
 
@@ -14,9 +15,8 @@
   padding-left: var(--baseline);
 }
 
-.tableofcontents a,
-.tableofcontents h2 {
-  color: var(--color-grey-verydark);
+.tableofcontents a {
+  color: var(--text-color);
 }
 
 .tableofcontents a {

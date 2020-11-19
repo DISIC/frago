@@ -11,10 +11,24 @@ table {
   background-color: #fff;
 }
 
+table caption {
+  text-align: left;
+  font-size: var(--bigger);
+  font-weight: bold;
+}
+
+table thead tr {
+  height: 50px;
+}
+table tbody tr {
+  height: 70px;
+}
+
 table th {
   color: var(--color-grey-light);
   background-color: var(--link-color);
   border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
 }
 
 table tr {
@@ -25,8 +39,12 @@ table tr:last-child {
   border: none;
 }
 
-table tr td {
+table th,
+table td {
   padding: 5px 10px;
+}
+
+table td {
   border-left: 1px solid;
 }
 

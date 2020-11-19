@@ -64,6 +64,10 @@
     color: var(--text-color);
 }
 
+.text-color-light {
+  color: #fff;
+}
+
 /* Toggling content */
 [hidden]
 .hide,
