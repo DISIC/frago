@@ -39,7 +39,7 @@
         <li class="work">
           <input class='radio' id='work{{$.context.Scratch.Get "counter"}}{{ $idx }}' name="works{{$.context.Scratch.Get "counter"}}" type="radio">
           <div class="relative">
-            <label for="work{{$.context.Scratch.Get "counter"}}{{ $idx }}">{{ .LinkTitle }}{{ if .Content }}<small>- <a href="{{ .Permalink }}">Accéder à la page</a></small>{{- end -}}</label>
+            <label for="work{{$.context.Scratch.Get "counter"}}{{ $idx }}">{{ .LinkTitle }}{{ if .Content }}<small> - <a href="{{ .Permalink }}">Accéder à la page</a></small>{{- end -}}</label>
             <span class="date">{{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Format "2006/01/02" | safeHTML }}</time>{{ end }}</span>
             <span class="circle"></span>
           </div>
