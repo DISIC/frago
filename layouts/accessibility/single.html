@@ -89,12 +89,12 @@
 
 <h2>Erreurs par ordre de difficulté de correction (erreurs seulement)</h2>
 
-{{ range $keytitle, $value := ($.Scratch.Get "allerrors")  }}
+{{- range $keytitle, $value := ($.Scratch.Get "allerrors") -}}
     <h3>{{ $keytitle }}</h3>
-    {{ range $key, $value := . }}
-      {{ if $value }}
+    {{- range $key, $value := . -}}
+      {{- if $value -}}
       <h4>{{ $key }}</h4>
-      {{ range $key, $value := . }}
+      {{- range $key, $value := . -}}
         {{- $content := index . $key -}}
         {{- $test := .Tests -}}
         <p class="mb-0"><strong>
@@ -103,11 +103,11 @@
           {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
           {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
         </strong></p>
-        <p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>
+        <p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>
         {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
           {{- if eq $idx (string $test) -}}
-          {{ if reflect.IsSlice . }}
+          {{- if reflect.IsSlice . -}}
           <p><em>{{ index . 0 | markdownify }}</em></p>
           <ol>
             {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
@@ -145,7 +145,6 @@
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
 
-
   {{- if or $condcontentlen $condcontentnc -}}
   {{- $test := .Tests -}}
   {{/* Test if the test result is the same for all the page */}}
@@ -162,7 +161,7 @@
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
   </h5>
-  {{- if $condcontentlen }}<p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>{{ end }}
+  {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
   {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
   {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
     {{- if eq $idx (string $test) -}}
@@ -213,7 +212,7 @@
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
     {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
   </strong></p>
-  {{- if $condcontentlen }}<p class="m-0"><strong>{{ (replaceRE "!(.*)!" "" $content 1) | markdownify }}</strong></p>{{ end }}
+  {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
   {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
   {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
     {{- if eq $idx (string $test) -}}
