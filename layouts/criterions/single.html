@@ -33,20 +33,20 @@ Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du s
   <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
   {{/* Range level 1 */}}
   {{- range $key2, $value2 := .criteria -}}
-    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ .criterium.title | markdownify }}</h3>
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" "=\"/glossaire/#" (.criterium.title | markdownify) 100) | markdownify }}</h3>
     {{/* Range level 2 */}}
     {{- range $key3, $value3 := .criterium.tests -}}
-        Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }} -
+        <p {{ if reflect.IsSlice $value3 }}class="mb-0"{{ end }}><strong>Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }}</strong> -
         {{/* Test if value is an array */}}
         {{- if reflect.IsSlice $value3 -}}
-        {{ (replaceRE "=\"#" "=\"/glossaire/#" ((index $value3 0) | markdownify) 100) | markdownify }}<br>
+        {{ (replaceRE "=\"#" "=\"/glossaire/#" ((index $value3 0) | markdownify) 100) | markdownify }}</p>
         <ol>
         {{/* Range array and prepend "glossaire" before all links */}}
         {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{- end -}}
         </ol>
         {{- else -}}
         {{/* Prepend "glossaire" before all links */}}
-        {{ (replaceRE "=\"#" "=\"/glossaire/#" ($value3 | markdownify) 100) | markdownify }}<br>
+        {{ (replaceRE "=\"#" "=\"/glossaire/#" ($value3 | markdownify) 100) | markdownify }}</p>
         {{- end -}}
     {{- end -}}
     <hr>
