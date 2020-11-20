@@ -1,20 +1,23 @@
 {{- define "main" -}}
+{{/* Vars */}}
 {{- $project :=  (index (split .Path "/") 1) -}}
 {{- $pathimage := printf "./static/images/%s/" $project }}
 
 {{/* Set the audit file */}}
 {{/* Set the audit file - test if a specific file is called */}}
 {{- if .Params.datafilename -}}
+  {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
-  {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) .Params.datafilename) -}}
+    {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) .Params.datafilename) -}}
   {{- else -}}
-  {{- $.Scratch.Set "auditfile" (index $.Site.Data .Params.datafilename) -}}
+    {{- $.Scratch.Set "auditfile" (index $.Site.Data .Params.datafilename) -}}
   {{- end -}}
 {{- else -}}
+  {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
-  {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
+    {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
   {{- else -}}
-  {{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
+    {{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
   {{- end -}}
 {{- end -}}
 
@@ -27,6 +30,7 @@
 
 {{- partial "elements/content.html" .Content -}}
 
+{{/* Call score components */}}
 {{- if $.Scratch.Get "auditfile" -}}
 <h2 class="text-center">Scores</h2>
 <h3 class="mb-0">Conformité globale</h3>
@@ -34,6 +38,7 @@
 <h3 class="mb-0">Conformité détaillée</h3>
 {{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 
+{{/* Call page parameters */}}
 {{- with .Params.accessibility -}}
 <h2>Contexte</h2>
 <p>
@@ -55,18 +60,22 @@
 <hr>
 
 {{/* Create map with qualified errors */}}
+{{/* Range an array with all pages */}}
 {{- range $id, $value := $pages -}}
   {{ $page := . }}
+  {{/* Range file for each page name */}}
   {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
+    {{/* Vars */}}
     {{- $content := index . $page -}}
     {{- $condcontentlen := gt (len $content) 2 -}}
     {{- $condcontentnc := (eq $content "nc") -}}
 
-    {{/* Test if the test result is the same for all the page */}}
+    {{/* Test if the test result is the same for all the page for a row in the csv file */}}
     {{- $.Scratch.Set "similaryresult" slice -}}
     {{- range $k, $s := $value -}}
       {{- if not (intersect (slice $k) (slice "Sujet" "Critère" "Tests")) -}}{{- $.Scratch.Add "similaryresult" . -}}{{ end }}
     {{- end -}}
+    {{/* If result is the same for all page - Create map for each difficulties */}}
     {{- if and $condcontentlen (eq $id 0) -}}
     {{- if and (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) (gt (len (uniq ($.Scratch.Get "similaryresult"))) 0) -}}
       {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}{{ $.Scratch.SetInMap "allpageserrorsease" (string $page) $value }}{{- end -}}
@@ -74,6 +83,7 @@
       {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}{{ $.Scratch.SetInMap "allpageserrorshard" (string $page) $value }}{{- end -}}
     {{- end -}}
     {{- end -}}
+    {{/* If result is particular of a page - Create map for each difficulties */}}
     {{- if or $condcontentlen -}}
     {{- if not (eq (len (uniq ($.Scratch.Get "similaryresult"))) 1) -}}
       {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}{{ $.Scratch.SetInMap "pageserrorsease" (string $page) $value }}{{- end -}}
@@ -83,48 +93,51 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+{{/* Create maps */}}
 {{ $.Scratch.Set "allpageserrors" (dict "1 - Correction facile" ($.Scratch.Get "allpageserrorsease") "2 - Correction modérée" ($.Scratch.Get "allpageserrorsmedium") "3 - Correction difficile" ($.Scratch.Get "allpageserrorshard")) }}
 {{ $.Scratch.Set "pageserrors" (dict "1 - Correction facile" ($.Scratch.Get "pageserrorsease") "2 - Correction modérée" ($.Scratch.Get "pageserrorsmedium") "3 - Correction difficile" ($.Scratch.Get "pageserrorshard")) }}
 {{ $.Scratch.Set "allerrors" (dict "A - Erreurs présentes sur toutes les pages" ($.Scratch.Get "allpageserrors") "B - Erreurs présentes sur les pages spécifiques" ($.Scratch.Get "pageserrors")) }}
 
 <h2>Erreurs par ordre de difficulté de correction (erreurs seulement)</h2>
 
+{{/* Range map with errors sort by difficulties */}}
 {{- range $keytitle, $value := ($.Scratch.Get "allerrors") -}}
-    <h3>{{ $keytitle }}</h3>
+  <h3>{{ $keytitle }}</h3>
+  {{- range $key, $value := . -}}
+    {{- if $value -}}
+    <h4>{{ $key }}</h4>
     {{- range $key, $value := . -}}
-      {{- if $value -}}
-      <h4>{{ $key }}</h4>
-      {{- range $key, $value := . -}}
-        {{- $content := index . $key -}}
-        {{- $test := .Tests -}}
-        <p class="mb-0"><strong>
-          Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }}{{ if eq $keytitle "B - Erreurs présentes sur les pages spécifiques" }} - sur la page {{ $key }}{{ end }}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
-        </strong></p>
-        <p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>
-        {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
-        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
-          {{- if eq $idx (string $test) -}}
-          {{- if reflect.IsSlice . -}}
-          <p><em>{{ index . 0 | markdownify }}</em></p>
-          <ol>
-            {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
-          </ol>
-          {{- else -}}
-          <p><em>{{ . | markdownify }}</em></p>
-          {{- end -}}
-          {{- end -}}
+      {{- $content := index . $key -}}
+      {{- $test := .Tests -}}
+      <p class="mb-0"><strong>
+        Test {{ .Sujet }}.{{ .Critère }}.{{ .Tests }}{{ if eq $keytitle "B - Erreurs présentes sur les pages spécifiques" }} - sur la page {{ $key }}{{ end }}
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" }}<span class="badge good">Facile</span>{{ end }}
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" }}<span class="badge medium">Modéré</span>{{ end }}
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" }}<span class="badge bad">Difficile</span>{{ end }}
+      </strong></p>
+      <p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>
+      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int .Sujet) -}}
+      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int .Critère) 1)).criterium).tests -}}
+        {{- if eq $idx (string $test) -}}
+        {{- if reflect.IsSlice . -}}
+        <p><em>{{ index . 0 | markdownify }}</em></p>
+        <ol>
+          {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+        </ol>
+        {{- else -}}
+        <p><em>{{ . | markdownify }}</em></p>
         {{- end -}}
-        {{ end }}
+        {{- end -}}
+      {{- end -}}
       {{ end }}
-    {{- end -}}
+    {{ end }}
+  {{- end -}}
 {{- end -}}
 <hr>
 
 <h2>Liste des pages auditées</h2>
 
+{{/* Create a anchors menu */}}
 <div class="tableofcontents">
   <h3>Accéder aux pages auditées</h3>
   <ul>
@@ -137,7 +150,7 @@
 </div>
 
 <h3>Par ordre des tests du référentiel RGAA</h3>
-{{/* Display errors presents on all pages */}}
+{{/* Range map errors sort by RGAA order - on all pages */}}
 <h4 id="pagesall">A - Erreurs présentes sur toutes les pages</h4>
 {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
   {{- $content := index . (index $pages 1) -}}
@@ -185,6 +198,7 @@
 
 <br><hr class="divider">
 
+{{/* Range map errors sort by RGAA order - on specifics pages */}}
 <h4>B - Erreurs présentes sur les pages spécifiques</h4>
 {{/* Display errors presents on specific pages */}}
 {{- range $id, $value := $pages -}}

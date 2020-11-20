@@ -1,36 +1,40 @@
 {{- define "main" -}}
+{{/* Var */}}
 {{- $patharray :=  split .Path "/" -}}
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
 {{- $.Scratch.Set "dir" "" -}}
 
+{{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
-{{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
-{{- if (fileExists (printf "data/%s/quality/" $project)) -}}
-{{- $.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
-{{- end -}}
+  {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
+  {{- if (fileExists (printf "data/%s/quality/" $project)) -}}
+    {{- $.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+  {{- end -}}
 {{- else -}}
-{{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
-{{- if (fileExists (printf "data/quality/" $project)) -}}
-{{- $.Scratch.Set "dir" (readDir "data/quality/") -}}
-{{- end -}}
+  {{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
+  {{- if (fileExists (printf "data/quality/" $project)) -}}
+    {{- $.Scratch.Set "dir" (readDir "data/quality/") -}}
+  {{- end -}}
 {{- end -}}
 
 {{/* Set the audit file - test if a specific file is called */}}
 {{- if .Params.datafilename -}}
+{{/* Condition about structure level */}}
   {{- if eq (len $patharray) 3 -}}
-  {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s.json" $project .Params.datafilename) }}
+    {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s.json" $project .Params.datafilename) }}
   {{- else -}}
-  {{ $.Scratch.Set "auditpath" (printf "data/quality/%s.json" .Params.datafilename) }}
+    {{ $.Scratch.Set "auditpath" (printf "data/quality/%s.json" .Params.datafilename) }}
   {{- end -}}
   {{ $.Scratch.Set "auditfile" (getJSON ($.Scratch.Get "auditpath")) }}
 {{- else -}}
   {{- with ($.Scratch.Get "dir") -}}
     {{- range last 1 ($.Scratch.Get "dir") -}}
+    {{/* Condition about structure level */}}
     {{- if eq (len $patharray) 3 -}}
-    {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s" $project .Name) }}
+      {{ $.Scratch.Set "auditpath" (printf "data/%s/quality/%s" $project .Name) }}
     {{- else -}}
-    {{ $.Scratch.Set "auditpath" (printf "data/quality/%s" .Name) }}
+      {{ $.Scratch.Set "auditpath" (printf "data/quality/%s" .Name) }}
     {{- end -}}
     {{- $lastfile := getJSON ($.Scratch.Get "auditpath") -}}
       {{- with $lastfile -}}
@@ -43,118 +47,130 @@
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
-<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+  <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
 {{- if eq (len $patharray) 3 -}}
-{{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
+  {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
 {{- end -}}
 <h2>Contexte</h2>
+{{/* Call page parameters */}}
 {{- range ($.Scratch.Get "auditfile") -}}
-<p>
-  <strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>
-  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>
-  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>
-  <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
-</p>
+  <p>
+    {{- if .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>{{ end }}
+    {{- if .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>{{ end }}
+    {{- if .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>{{ end }}
+    {{- if .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>{{ end }}
+  </p>
 {{- end -}}
 
 <h2>Erreurs à corriger</h2>
 {{ partial "components/quality/lot.html" (dict "context" . "project" $project) }}
 {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
 
-
 <hr class="divider">
 
+{{/* Create a anchors menu */}}
 <div class="tableofcontents">
 <h2>Accéder aux pages auditées</h2>
-<ul>
-{{- range ($.Scratch.Get "auditfile") -}}
-{{- range .pages -}}
-  <li><a href="#{{ .name | urlize }}">{{ .name }}</a></li>
-{{- end -}}
-{{- end -}}
-</ul>
+  <ul>
+  {{- range ($.Scratch.Get "auditfile") -}}
+    {{- range .pages -}}
+      <li><a href="#{{ .name | urlize }}">{{ .name }}</a></li>
+    {{- end -}}
+  {{- end -}}
+  </ul>
 </div>
+
 <h2>Liste des pages auditées</h2>
+{{/* Range the quality file */}}
 {{- range ($.Scratch.Get "auditfile") -}}
-{{- range $idpage, $s := .pages -}}
-  {{- $name := .name -}}
-  {{ $.Scratch.Set "countererrors" 0 }}
-  {{- range $idblock, $b := .blocks -}}
-  {{- range $s:= .errors -}}
-    {{ $.Scratch.Add "countererrors" 1 }}
-  {{- end -}}
-  {{- end -}}
-  <h3 id="{{ .name | urlize }}">{{ .name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrors" }}</span> erreurs sur cette page</small></h3>
-  <p>URL : <a href="{{ .url }}">{{ .url }}</a></p>
-  {{- $.Scratch.Set "paths" slice -}}
-  {{- range $idblock, $b := .blocks -}}
-  <h4>{{ $b.name }} <small>- Bloc</small></h4>
-  {{- range $s := .errors -}}
-    {{- $path := .name  -}}
-    {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
-    {{- $.Scratch.Add "index" (slice $path) -}}
-    <dl>
-      <dt id="{{ .name | urlize }}">{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
-        <small class="no-print">-&nbsp;
-        {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
-        {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}<a href="#{{ $filename }}">{{ end }}{{ end }}{{- end -}}
-        {{ $filename }}
-        {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
-        {{- range (readDir ($.Scratch.Get "pathimage")) -}}
-        {{- if in (string .Name) (string $filename) -}}</a>
-        {{- end -}}{{- end -}}
-        {{ with .status }}&nbsp;<span class="badge{{ if eq . "critique" }} bad{{ end }}{{ if eq . "important" }} medium{{ end }}{{ if eq . "moindre" }} normal{{ end }}">{{ . }}</span>{{ end }}
-      </small>
-      </dt>
-      {{- if .description -}}
-      <dd>{{ .description | safeHTML }}</dd>
+  {{/* Range first level */}}
+  {{- range $idpage, $s := .pages -}}
+    {{- $name := .name -}}
+    {{- $.Scratch.Set "countererrors" 0 -}}
+    {{/* Range second level */}}
+    {{- range $idblock, $b := .blocks -}}
+      {{/* Range third level and count errors */}}
+      {{- range $s:= .errors -}}
+        {{- $.Scratch.Add "countererrors" 1 -}}
       {{- end -}}
-      {{- if .criterion -}}
-        {{ if not (eq (slicestr .criterion 0 2) "ER") }}
-        <dd>Critère : <a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/methode/criteres/#crit-{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>
-        {{- else -}}
-        <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
+    {{- end -}}
+    <h3 id="{{ .name | urlize }}">{{ .name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrors" }}</span> erreurs sur cette page</small></h3>
+    <p>URL : <a href="{{ .url }}">{{ .url }}</a></p>
+    {{- $.Scratch.Set "paths" slice -}}
+    {{/* Range second level */}}
+    {{- range $idblock, $b := .blocks -}}
+      <h4>{{ $b.name }} <small>- Bloc</small></h4>
+      {{/* Range third level */}}
+      {{- range $s := .errors -}}
+        {{- $path := .name  -}}
+        {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
+        {{/* Create an array fir the images slider with screen capture */}}
+        {{- $.Scratch.Add "index" (slice $path) -}}{{/*Si dev je veux le nom fichier avec un lien si fichier exist et le nom du fichier sans lien si le fichier exit pas
+          Si prod je veux un lien si fichier exist et rien si le fichier exist pas*/}}
+        <dl>
+          <dt id="{{ .name | urlize }}">{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
+            {{- $.Scratch.Set "fileexist" false -}}
+            {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
+              {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
+            {{- end -}}
+            <small class="no-print">
+              {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") -}}
+                {{- if $.Scratch.Get "fileexist" -}}
+                &nbsp-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
+                {{- end -}}
+              {{ else }}
+                &nbsp-&nbsp;
+                {{- if $.Scratch.Get "fileexist" -}}
+                <a href="#{{ $filename }}">{{ $filename }}</a>
+                {{- else -}}
+                {{ $filename }}
+                {{- end -}}
+              {{- end -}}
+              {{ with .status }}&nbsp;<span class="badge{{ if eq . "critique" }} bad{{ end }}{{ if eq . "important" }} medium{{ end }}{{ if eq . "moindre" }} normal{{ end }}">{{ . }}</span>{{ end }}
+            </small>
+          </dt>
+          {{- if .description -}}
+            <dd>{{ .description | safeHTML }}</dd>
+          {{- end -}}
+          {{- if .criterion -}}
+            {{- if not (eq (slicestr .criterion 0 2) "ER") -}}
+            <dd>Critère : <a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/methode/criteres/#crit-{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>
+            {{- else -}}
+            <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
+            {{- end -}}
+          {{- end -}}
+        </dl>
+        {{ if or .codebefore .codeafter }}
+          <div class="audit-code">
+            {{ if .codebefore }}<p><strong>Code présent</strong><pre class="language-html"><code>{{ .codebefore | htmlUnescape }}</code></pre></p>{{ end }}
+            {{ if .codeafter }}<p><strong>Code modifié</strong><pre class="language-html"><code>{{ .codeafter | htmlUnescape }}</code></pre></p>{{ end }}
+          </div>
         {{- end -}}
-      {{- end -}}
-      {{- end -}}
-    </dl>
-    <div class="audit-code">
-      {{ if .codebefore }}<p><strong>Code présent</strong><pre class="language-html"><code>{{ .codebefore | htmlUnescape }}</code></pre></p>{{ end }}
-      {{ if .codeafter }}<p><strong>Code modifié</strong><pre class="language-html"><code>{{ .codeafter | htmlUnescape }}</code></pre></p>{{ end }}
-    </div>
-  {{- end -}}
-  <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
-  {{- range $errorname := ($.Scratch.Get "index") -}}
-      {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}
-      {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
-      {{- range (readDir ($.Scratch.Get "pathimage")) -}}
-        {{ if in (string .Name) (string $filename) }}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{ end }}
-      {{- end -}}
-      {{- end -}}
-  {{- end -}}
-  </div>
-  <hr>
-  {{- end -}}
-{{- end -}}
-{{- end -}}
+      {{- end -}}{{/* Range third level */}}
+      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+      <hr>
+    {{- end -}}{{/* Range second level */}}
+  {{- end -}}{{/* Range first level */}}
+{{- end -}}{{/* Range the quality file */}}
 </div>
 {{- end -}}
+
 {{- define "script" -}}
 <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
 <link rel="stylesheet" href="/assets/css/night-owl.min.css" />
 <script src="/assets/js/simple-lightbox.min.js"></script>
 {{- range ($.Scratch.Get "auditfile") -}}
-{{- range $idpage, $p := .pages -}}
-{{- $name := .name -}}
-<script>
-{{ range $idblock,$b := .blocks }}
-var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
-{{- end -}}
-</script>
-{{- end -}}
+  {{- range $idpage, $p := .pages -}}
+  {{- $name := .name -}}
+  <script>
+    {{- range $idblock,$b := .blocks -}}
+    var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
+    {{- end -}}
+  </script>
+  {{- end -}}
 {{- end -}}
 <script src="/assets/js/highlight.min.js"></script>
 <script>

@@ -1,6 +1,8 @@
 {{- define "main" -}}
+{{/* Vars */}}
 {{ $project := (index (split .Path "/") 1) }}
 
+{{/* Condition about structure level */}}
 {{- if eq (len (split .Path "/")) 3 -}}
 {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "personas") -}}
 {{- else -}}
@@ -10,6 +12,7 @@
 <div class="wrapper">
 <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 <h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{/* List the data for this files with range personas files on the project */}}
 {{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}
   {{ $name := .name | urlize }}
   <figure class="rounded">
@@ -31,17 +34,17 @@
   <div>
     <h4 class="mb-0">Motivations</h4>
     <ul class="list-unstyled">
-      {{ range .motivations }}
+      {{- range .motivations -}}
         <li>. {{ . }}</li>
-      {{ end }}
+      {{- end -}}
     </ul>
   </div>
   <div>
     <h4 class="mb-0">Frustrations</h4>
     <ul class="list-unstyled">
-      {{ range .frustrations }}
+      {{- range .frustrations -}}
         <li>. {{ . }}</li>
-      {{ end }}
+      {{- end -}}
     </ul>
   </div>
   <div>
@@ -51,13 +54,13 @@
   <div>
   <h4 class="mb-0">Aisance numérique</h4>
   <p>
-    {{ $ditmissed := sub 5 (int .digitalease) }}
-    {{ range seq .digitalease }}
+    {{- $ditmissed := sub 5 (int .digitalease) -}}
+    {{- range seq .digitalease -}}
       <span class="dot">{{ . }}</span>
-    {{ end }}
-    {{ range seq $ditmissed }}
+    {{- end -}}
+    {{- range seq $ditmissed -}}
       <span class="dot dot-missed">{{ . }}</span>
-    {{ end }}
+    {{- end -}}
   </p>
   </div>
   </div>

@@ -1,35 +1,42 @@
 {{- define "main" -}}
+{{/* Vars */}}
 {{- $patharray :=  split .Path "/" -}}
 {{- $project :=  (index $patharray 1) -}}
 <div class="wrapper">
-<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
-<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
-{{- partial "elements/content.html" .Content -}}
-{{ $project :=  (index (split .Path "/") 1)}}
-{{- $auditfile := (index $.Site.Data $project) -}}
-{{- with $auditfile -}}
-<h3>Scores</h3>
-{{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
-{{ $.Scratch.Set "allfile" slice }}
-{{- range $key, $value := (index . "lighthouse")  -}}
-  {{ $.Scratch.Add "allfile" $key }}
-{{- end -}}
-{{ $lastfile := (index (index . "lighthouse") (string (delimit (last 1 ($.Scratch.Get "allfile")) ""))) }}
-<dl>
-  {{- range $key, $value := (index $lastfile "audits") -}}
-  {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) -}}
-  <dt>{{ .title }}</dt>
-  <dd>{{ index (split .description ".") 0 }}<br>
-  => <small><strong>{{ .displayValue }}</strong></small>
-  <dd>
-  <ul>
-    {{- range .details.items -}}
-      {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
+  <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+  <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+  {{- partial "elements/content.html" .Content -}}
+  {{/* Vars */}}
+  {{- $project :=  (index (split .Path "/") 1) -}}
+  {{- $auditfile := (index $.Site.Data $project) -}}
+  {{/* Range performance file */}}
+  {{- with $auditfile -}}
+  <h3>Scores</h3>
+  {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
+  {{/* Add all files on the lighthouse directory in an array */}}
+  {{- $.Scratch.Set "allfile" slice -}}
+  {{- range $key, $value := (index . "lighthouse")  -}}
+    {{ $.Scratch.Add "allfile" $key }}
+  {{- end -}}
+  {{/* Vars with the last file of the lighthouse directory */}}
+  {{ $lastfile := (index (index . "lighthouse") (string (delimit (last 1 ($.Scratch.Get "allfile")) ""))) }}
+  <dl>
+    {{/* Range the file */}}
+    {{- range $key, $value := (index $lastfile "audits") -}}
+    {{/* Display only errors - with score different of null */}}
+    {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) -}}
+    <dt>{{ .title }}</dt>
+    <dd>{{ index (split .description ".") 0 }}<br>
+    => <small><strong>{{ .displayValue }}</strong></small>
+    <dd>
+    <ul>
+      {{- range .details.items -}}
+        {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
+      {{- end -}}
+    </ul>
     {{- end -}}
-  </ul>
-  {{- end -}}
-  {{- end -}}
-</dl>
+    {{- end -}}
+  </dl>
 </div>
 {{- end -}}
 {{- end -}}
