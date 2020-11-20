@@ -270,15 +270,17 @@ Afficher les parcours sur la page de son choix en fonction du projet de son choi
 {{< parcours project="amendes" >}} {{< /parcours >}}
 ```
 
-## Utiliser le module
+## Utiliser ce module comme thème d'un projet
 
 Site officiel :
 https://gohugo.io/hugo-modules/use-modules/#use-a-module-for-a-theme
 
-1. Initialiser le module hugo :
-`$ hugo mod init https://gitlab.com/bertrandkeller/commando-hugo-template`.
+1. Initialiser votre projet pour utiliser les modules hugo :
+`$ hugo mod init [MON_GESTIONNAIRE_DE_DEPOT]/[MON_COMPTE]/[MON_PROJET]`
+par exemple :
+`$ hugo mod init gitlab.com/toto_dev/mon_generateur_de_rapports`
 
-2. Import the theme in your `config.toml`:
+2. Importer ce module dans le fichier `config.toml`:
 ```toml
 [module]
   [[module.imports]]
