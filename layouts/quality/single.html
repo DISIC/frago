@@ -51,6 +51,7 @@
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- partial "elements/content.html" .Content -}}
+{{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
   {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
 {{- end -}}
@@ -61,12 +62,12 @@
     {{- if .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>{{ end }}
     {{- if .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>{{ end }}
     {{- if .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>{{ end }}
-    {{- if .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>{{ end }}
+    {{- if .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}{{ end }}
   </p>
 {{- end -}}
 
 <h2>Erreurs à corriger</h2>
-{{ partial "components/quality/lot.html" (dict "context" . "project" $project) }}
+{{/* partial "components/quality/lot.html" (dict "context" . "project" $project) */}}
 {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
 
 <hr class="divider">
@@ -102,14 +103,14 @@
     {{- $.Scratch.Set "paths" slice -}}
     {{/* Range second level */}}
     {{- range $idblock, $b := .blocks -}}
+      {{- $.Scratch.Set "index" slice -}}
       <h4>{{ $b.name }} <small>- Bloc</small></h4>
       {{/* Range third level */}}
       {{- range $s := .errors -}}
         {{- $path := .name  -}}
         {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
         {{/* Create an array fir the images slider with screen capture */}}
-        {{- $.Scratch.Add "index" (slice $path) -}}{{/*Si dev je veux le nom fichier avec un lien si fichier exist et le nom du fichier sans lien si le fichier exit pas
-          Si prod je veux un lien si fichier exist et rien si le fichier exist pas*/}}
+        {{- $.Scratch.Add "index" (slice $path) -}}
         <dl>
           <dt id="{{ .name | urlize }}">{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
             {{- $.Scratch.Set "fileexist" false -}}
@@ -150,7 +151,7 @@
           </div>
         {{- end -}}
       {{- end -}}{{/* Range third level */}}
-      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s-%s-%s" ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
       <hr>
     {{- end -}}{{/* Range second level */}}
   {{- end -}}{{/* Range first level */}}
