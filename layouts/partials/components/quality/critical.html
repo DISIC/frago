@@ -18,8 +18,8 @@
   {{- end -}}
 {{- end -}}
 
-{{ $.context.Scratch.Set "delivery" slice }}
-{{ $.context.Scratch.Set "pagesdelivery" slice }}
+{{- $.context.Scratch.Set "delivery" slice -}}
+{{- $.context.Scratch.Set "pagesdelivery" slice -}}
 {{- range ($.context.Scratch.Get "lastfilee") -}}
 {{- range $idpage, $s := .pages -}}
   {{ $page := dict "pagename" .name }}
@@ -27,15 +27,14 @@
   {{- range $iderror, $s:= .errors -}}
     {{ $id := (printf "%s%s%s" (string $idpage) (string $idblock) (string $iderror)) }}
     {{- if .status -}}
-    {{ $s := merge $s $page}}
-    {{ $.context.Scratch.SetInMap "pagesstatus" (string $id) $s }}
+    {{- $s := merge $s $page -}}
+    {{- $.context.Scratch.SetInMap "pagesstatus" (string $id) $s -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- end -}}
-<hr>
-{{ with $.context.Scratch.Get "pagesstatus" }}
+{{- with $.context.Scratch.Get "pagesstatus" -}}
 <h3>Par criticité</h3>
 <table class="text-left">
   <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 150px;">Criticité</th></tr></thead>

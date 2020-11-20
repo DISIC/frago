@@ -15,15 +15,17 @@
               <ul>
               {{- range . -}}
               {{- if reflect.IsMap . -}}
+                <li>
                   {{- range . -}}
                   <ul>
                     {{- range . -}}
                       <li>
-                      {{ . }}
+                      {{ . | markdownify }}
                       </li>
                     {{- end -}}
                   </ul>
                   {{- end -}}
+                </li>
               {{- else -}}
                 <li>{{ . | markdownify }}</li>
               {{- end -}}
