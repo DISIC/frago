@@ -1,12 +1,12 @@
-{{ with .auditfile }}
-{{ $auditfile := . }}
+{{- with .auditfile -}}
+{{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
-{{ $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l’information" "Formulaires" "Navigation" "Consultation" }}
+{{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l’information" "Formulaires" "Navigation" "Consultation" -}}
 
 {{- range $key, $value := $topics -}}
 {{- $.context.Scratch.Set "counterconforme" 0 -}}
 {{- $.context.Scratch.Set "counternonconforme" 0 -}}
-  {{- range where $auditfile "Sujet" $key -}}
+  {{- range where $auditfile "Sujet" (string $key) -}}
   {{- $sujet := .Sujet -}}
     {{- range . -}}
       {{ $.context.Scratch.SetInMap "conforme" (string $key)  ($.context.Scratch.Get "counterconforme") }}
@@ -38,7 +38,7 @@
   {{- range where $auditfile . "na" -}}
     {{- $.context.Scratch.Add "counternonapplicable" 1 -}}
   {{- end -}}
-  {{- range where $auditfile . "nc" -}}
+  {{- range where (where (where (where $auditfile . "!=" "na") . "!=" "c")  . "!=" "?") . "!=" "" -}}
     {{- $.context.Scratch.Add "counternonconforme" 1 -}}
   {{- end -}}
   {{- $countersliceconforme = $countersliceconforme | append ($.context.Scratch.Get "counterconforme") -}}

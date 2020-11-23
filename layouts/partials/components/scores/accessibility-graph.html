@@ -38,12 +38,9 @@
   {{- range where $auditfile . "na" -}}
     {{- $.context.Scratch.Add "counternonapplicable" 1 -}}
   {{- end -}}
-  {{- range where $auditfile . "nc" -}}
+  {{- range where (where (where (where $auditfile . "!=" "na") . "!=" "c")  . "!=" "?") . "!=" "" -}}
     {{- $.context.Scratch.Add "counternonconforme" 1 -}}
   {{- end -}}
-    {{- range $auditfile -}}{{- range . -}}
-    {{- if gt (len (string .)) 2 }}{{- $.context.Scratch.Add "counternonconforme" 1 -}}{{ end }}
-  {{- end -}}{{- end -}}
   {{- $countersliceconforme = $countersliceconforme | append ($.context.Scratch.Get "counterconforme") -}}
   {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconforme") -}}
   {{- $counterslicenonapplicable = $counterslicenonapplicable | append ($.context.Scratch.Get "counternonapplicable") -}}
@@ -54,20 +51,21 @@
 {{ $total := add $counterconformesum $counternonconformesum }}
 <div id="chartpage"></div>
 <div id="charttopic" hidden></div>
+
 <script>
     const datapage = {
-    labels: [{{ range $id, $value := $pages }}{{ if not (eq $id 0) }},{{ end }}"{{ . }}"{{ end }}],
-    datasets: [
-      {
-        name: "Conforme",
-        values: [{{ range $id, $value := $countersliceconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $counterslicenonconforme $id)) }}{{ end }}]
-      },
-      {
-        name: "Non Conforme",
-        values: [{{ range $id, $value := $counterslicenonconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $countersliceconforme $id)) }}{{ end }}]
-      }
-    ]
-}
+        labels: [{{ range $id, $value := $pages }}{{ if not (eq $id 0) }},{{ end }}"{{ . }}"{{ end }}],
+        datasets: [
+          {
+            name: "Conforme",
+            values: [{{ range $id, $value := $countersliceconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $counterslicenonconforme $id)) }}{{ end }}]
+          },
+          {
+            name: "Non Conforme",
+            values: [{{ range $id, $value := $counterslicenonconforme }}{{ if not (eq $id 0) }},{{ end }}{{ div (mul $value 100) (add . (index $countersliceconforme $id)) }}{{ end }}]
+          }
+        ]
+    }
     const chartpage = new frappe.Chart("#chartpage", {
         title: "Par page (en %)",
         data: datapage,
@@ -78,7 +76,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#0e840e','#6f0c0c']
+         colors: ['#3D9970','#ac3636']
     })
 </script>
 <script>
@@ -105,7 +103,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#0e840e','#6f0c0c']
+        colors: ['#3D9970','#ac3636']
     })
 </script>
 {{- end -}}
