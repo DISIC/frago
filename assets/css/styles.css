@@ -577,26 +577,26 @@ hr {
 
 .good.counter,
 .dataset-0 rect {
-  background: #0e840e;
+  background: #3D9970;
   /*background-image: repeating-linear-gradient(70deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 10.5%);*/
-  -webkit-mask-image: repeating-linear-gradient(70deg, #0e840e, #0e840e 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
-  mask-image: repeating-linear-gradient(70deg, #0e840e, #0e840e 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
+  -webkit-mask-image: repeating-linear-gradient(70deg, #3D9970, #3D9970 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
+  mask-image: repeating-linear-gradient(70deg, #3D9970, #3D9970 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
 }
 
 .bad.counter,
 .dataset-1 rect {
-  background: #6f0c0c;
+  background: #ac3636;
   /*background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);*/
-  -webkit-mask-image: repeating-linear-gradient(-45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
-  mask-image: repeating-linear-gradient(-45deg, #6f0c0c, #6f0c0c 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
+  -webkit-mask-image: repeating-linear-gradient(-45deg, #ac3636, #ac3636 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
+  mask-image: repeating-linear-gradient(-45deg, #ac3636, #ac3636 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
 }
 
 .medium.counter,
 .dataset-1 rect {
   background: #d68100;
   /*background-image: repeating-linear-gradient(45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%),repeating-linear-gradient(-45deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 12%);*/
-  -webkit-mask-image: repeating-linear-gradient(-80deg, #d68100, #d68100 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
-  mask-image: repeating-linear-gradient(-80deg, #d68100, #d68100 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
+  -webkit-mask-image: repeating-linear-gradient(-80deg, #dd9c0a, #dd9c0a 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
+  mask-image: repeating-linear-gradient(-80deg, #dd9c0a, #dd9c0a 10%, rgba(255,255,255,0.9) 10%, rgba(255,255,255,0.9) 14%);
 }
 
 .verygood {
@@ -604,15 +604,15 @@ hr {
 }
 
 .good {
-  background: #22961e;
+  background: #3D9970;
 }
 
 .medium {
-  background: #d68100
+  background: #dd9c0a
 }
 
 .normal {
-  background: #2d7ad2;
+  background: hsl(var(--base-primary), var(--base-sat), 45%);
 }
 
 .none {
@@ -620,7 +620,7 @@ hr {
 }
 
 .bad {
-  background: #b00202
+  background: #ac3636
 }
 
 .verybad {
@@ -672,7 +672,7 @@ hr {
   padding: calc(var(--baseline) / 8) calc(var(--baseline) / 4);
   font-family: Futura;
   color: var(--color-grey-verylight);
-  background: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) - var(--shader)));
+  background: hsl(var(--base-primary), var(--base-sat), 35%);
   background-image: radial-gradient(rgba(255,255,255,0.1) 5%, transparent 10%);
   background-position: 0 0, 100px 100px;
   background-size: 20px 20px;
