@@ -79,12 +79,8 @@
   h1,
   h2,
   h3,
-<<<<<<< HEAD
-  caption {
-=======
   caption,
   figure {
->>>>>>> d507de7... theme
     page-break-after: avoid;
   }
 
@@ -102,13 +98,10 @@
     display: none;
   }
 
-<<<<<<< HEAD
-=======
   table th, table td {
     padding: 1px 5px;
   }
 
->>>>>>> d507de7... theme
   pre, code {
     overflow-x: auto;
 		white-space: pre-wrap;

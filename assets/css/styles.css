@@ -244,8 +244,6 @@ h3+time {
   margin-top: -1.5rem;
 }
 
-<<<<<<< HEAD
-=======
 .note {
   margin-bottom: var(--baseline);
   padding: var(--baseline) var(--baseline) 1px;
@@ -257,7 +255,6 @@ h3+time {
 .note p,.note ul {
   margin-bottom: calc(var(--baseline) /2 );
 }
->>>>>>> d507de7... theme
 
 /* LOGO
    ----------------------------- */
@@ -520,11 +517,7 @@ ul.social-networks li a {
    ----------------------------- */
 
 .benchmark {
-<<<<<<< HEAD
-  margin: var(--baseline) auto;
-=======
   margin: calc(var(--baseline) * 2) auto 0;
->>>>>>> d507de7... theme
 }
 
 .benchmark:empty {
@@ -535,10 +528,7 @@ ul.social-networks li a {
   position: relative;
   flex-direction: column;
   padding-bottom: 2em;
-<<<<<<< HEAD
-=======
   max-width: 70%;
->>>>>>> d507de7... theme
   border: 1px solid var(--color-grey);
   background: #fff;
 }
@@ -758,91 +748,30 @@ hr {
   background: #fff;
 }
 
-<<<<<<< HEAD
-.gantt {
-  display: grid;
-  grid-template-columns:
-      [sept-start] 1fr [sept-middle] 1fr
-      [sept-end oct-start] 1fr [oct-middle] 1fr
-      [oct-end nov-start] 1fr [nov-middle] 1fr
-      [nov-end dec-start] 1fr [dec-middle] 1fr
-      [dec-end];
-  grid-gap: 10px 0px;
-  width: 100%;
-  max-width: 1150px;
-  padding-top: 40px;
-  margin: 0 auto;
-}
-
-
-/* dividers */
-.gantt span {
-  border-left: 1px solid var(--text-color);
-  grid-row: 1 / span 10;
-}
-
-span.d-1 { grid-column: 1; }
-span.d-1mid { grid-column: 2; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
-span.d-2 { grid-column: 3; }
-span.d-2mid { grid-column: 4; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
-span.d-3 { grid-column: 5; }
-span.d-3mid { grid-column: 6; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
-span.d-4 { grid-column: 7; }
-span.d-4mid { grid-column: 8; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
-span.d-5 { grid-column: 9; }
-span.d-5mid { grid-column: 10; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
-span.d-6 { grid-column: 11; }
-
-/* days */
-.gantt h3 {
-  margin-top: 0;
-=======
 
 
 
 /* days */
 .gantt h3 {
   margin: 0;
->>>>>>> d507de7... theme
   padding: calc(var(--baseline) / 2) 0;
   text-align: center;
   grid-row: 1;
   color: var(--text-color);
   background: var(--background-color-body);
-<<<<<<< HEAD
-  border-left: 1px solid var(--text-color);
 }
 
-h3.h-sept { grid-column: 1 / span 2; }
-h3.h-oct { grid-column: 3 / span 2; }
-h3.h-nov { grid-column: 5 / span 2; }
-h3.h-dec { grid-column: 7 / span 2; }
-
-=======
-}
-
->>>>>>> d507de7... theme
 /* tasks */
 .gantt div {
   color: white;
   font-size: 12px;
-<<<<<<< HEAD
-  padding: 10px 10px;
-=======
   margin: auto;
   padding: 10px 10px;
   max-width: 90%;
->>>>>>> d507de7... theme
   border-radius: 20px;
   text-align: center;
 }
 
-<<<<<<< HEAD
-@media only screen and (min-width: 600px) {
-  .gantt div {
-    font-size: 16px;
-  }
-=======
 @media only screen and (min-width: 960px) {
 
   .gantt {
@@ -892,7 +821,6 @@ h3.h-dec { grid-column: 7 / span 2; }
   span.d-5 { grid-column: 9; }
   span.d-5mid { grid-column: 10; grid-row: 1 / span 9; border-left-style: dashed; border-color: var(--text-color);}
   span.d-6 { grid-column: 11; }
->>>>>>> d507de7... theme
 }
 /* specific task styles */
 .t-1 { background: #b03532; grid-row: 2; }
@@ -904,8 +832,6 @@ h3.h-dec { grid-column: 7 / span 2; }
 .t-7 { background: #e03f3f; grid-row: 8; }
 .t-8 { background: #59a627; grid-row: 9; }
 .t-9 { background: #4464a1; grid-row: 10; }
-<<<<<<< HEAD
-=======
 
 
 details {
@@ -953,4 +879,3 @@ details[open] summary {
   padding-bottom: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
->>>>>>> d507de7... theme

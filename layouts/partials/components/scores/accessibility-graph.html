@@ -1,7 +1,6 @@
 {{- with .auditfile -}}
 {{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
-
 {{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l'information" "Formulaires" "Navigation" "Consultation" -}}
 {{- range $key, $value := index . 0 -}}
     {{- $.context.Scratch.Add "pages" $key -}}
@@ -23,7 +22,6 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-
 
 {{/* By page */}}
 {{- range $key, $value := $pages -}}
@@ -47,7 +45,6 @@
 {{- $counterconformesum := 0 -}}
 {{- $counternonapplicablesum := 0 -}}
 {{- $counternonconformesum := 0 -}}
-
 {{- range $id, $value := $pages -}}
   {{- $page := . -}}
   {{- $.context.Scratch.Set "counterconforme" 0 -}}
@@ -147,5 +144,4 @@
         colors: ['#ac3636']
     })
 </script>
-
 {{- end -}}

@@ -331,4 +331,3 @@ Code for transforming a CSV to JSON file :: CSV files can't be called from `data
 {{- end -}}
 {{ $.Scratch.Get "json" | jsonify }}
 ```
-

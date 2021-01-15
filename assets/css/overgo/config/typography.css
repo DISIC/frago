@@ -58,15 +58,12 @@ body {
   color: var(--title-color);
 }
 
-<<<<<<< HEAD
-=======
 @media (prefers-reduced-data: reduce) {
   body {
     font-family: var(--system-font);
   }
 }
 
->>>>>>> d507de7... theme
 h1,
 h2,
 h3,

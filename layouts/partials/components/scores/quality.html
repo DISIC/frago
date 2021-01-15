@@ -7,18 +7,15 @@
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
-
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
-
     {{- if (fileExists "static/quality/") -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/quality/%s" .Name)) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
-
     {{- end -}}
   {{- end -}}
 {{- end -}}

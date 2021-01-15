@@ -72,7 +72,7 @@ email:
   other: email
 phone:
   other: téléphone
-message:
+other:
   other: message
 send:
   other: Envoyer
