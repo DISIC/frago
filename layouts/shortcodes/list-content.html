@@ -1,20 +1,36 @@
+<<<<<<< HEAD
 {{ $rangepages := where .Site.RegularPages "Section" (.Get "section") }}
+=======
+{{- $rangepages := where .Site.RegularPages "Section" (.Get "section") -}}
+>>>>>>> d507de7... theme
 {{- if $rangepages -}}
 <section class="section{{ if .Get "type" }}-{{ .Get "type" }}{{ end }} text-center">
 <div class="wrapper">
 <h2>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
 <ul class="grid">
+<<<<<<< HEAD
 {{ range first 4 $rangepages }}
+=======
+{{- range first 4 $rangepages -}}
+>>>>>>> d507de7... theme
   <li class="card card-shadow card-animate">
     {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
     {{- if .Params.tags -}}{{ range .Params.tags }}<a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}
   </li>
+<<<<<<< HEAD
 {{ end }}
 </ul>
 <a href="/{{ (.Get "section") }}/" class="btn secondary">Voir les {{ with .Site.GetPage (.Get "section") }}{{ lower .Title }}{{ end }}</a>
 </div>
 {{ .Inner }}
+=======
+{{- end -}}
+</ul>
+<a href="/{{ (.Get "section") }}/" class="btn secondary">Voir les {{ with .Site.GetPage (.Get "section") }}{{ lower .Title }}{{ end }}</a>
+</div>
+{{- .Inner -}}
+>>>>>>> d507de7... theme
 </section>
 {{- end -}}

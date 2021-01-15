@@ -2,20 +2,36 @@
 {{- $project := .project -}}
 {{- $pathlen := len (split .context.Path "/") -}}
 
+<<<<<<< HEAD
 {{- if (fileExists "data/quality/") -}}
   {{- $.context.Scratch.Set "dir" (readDir "data/quality/") -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+=======
+{{- if (fileExists "static/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+>>>>>>> d507de7... theme
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
+<<<<<<< HEAD
     {{- if (fileExists "data/quality/") -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/quality/%s" .Name)) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/quality/%s" $project .Name)) -}}
+=======
+    {{- if (fileExists "static/quality/") -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
+>>>>>>> d507de7... theme
     {{- end -}}
   {{- end -}}
 {{- end -}}
@@ -48,8 +64,13 @@
     {{- end -}}
     <div class="scores">
     <ul>
+<<<<<<< HEAD
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstotal" }}</b><br>Au total</span></li>
       <li class="counter text-center d-inline-block good"><span><b class="h2">{{ $.context.Scratch.Get "countererrorschecked" }}</b><br>Corrigées</span></li>
+=======
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstotal" }}</b><br>Erreurs total</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ $.context.Scratch.Get "countererrorschecked" }}</b><br>Erreurs corrigées</span></li>
+>>>>>>> d507de7... theme
     </ul>
     {{- if eq $pathlen 3 -}}
     <ul>
@@ -58,10 +79,17 @@
       <li class="counter text-center d-inline-block normal"><span><b class="h2">{{ $.context.Scratch.Get "countererrorsmedium" }}</b><br><b class="emoticon">➰ Moindre</b></span></li>
     </ul>
     <ul>
+<<<<<<< HEAD
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypecode" }}</b><br>Type code</span></li>
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypevisual" }}</b><br>Type visuel</span></li>
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypestructure" }}</b><br>Type structure</span></li>
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypetext" }}</b><br>Type textuel</span></li>
+=======
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypecode" }}</b><br>Erreurs de code</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypevisual" }}</b><br>Erreurs visuelles</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypestructure" }}</b><br>Erreurs de structure</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ $.context.Scratch.Get "countererrorstypetext" }}</b><br>Erreurs textuelles</span></li>
+>>>>>>> d507de7... theme
     </ul>
     {{- end -}}
     </div>

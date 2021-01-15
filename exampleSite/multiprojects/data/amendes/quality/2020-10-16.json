@@ -309,7 +309,11 @@
               {
                 "name": "Titre page niveau",
                 "element": "h4",
+<<<<<<< HEAD
                 "description": "Les titres devrient être des h3.",
+=======
+                "description": "Les titres devraient être des h3.",
+>>>>>>> d507de7... theme
                 "type": "structure",
                 "status": "moindre",
                 "delivery": "lot 2"

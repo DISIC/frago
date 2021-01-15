@@ -8,19 +8,38 @@
 {{- if .Params.datafilename -}}
   {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
+<<<<<<< HEAD
     {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) .Params.datafilename) -}}
   {{- else -}}
     {{- $.Scratch.Set "auditfile" (index $.Site.Data .Params.datafilename) -}}
+=======
+  {{ $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project .Params.datafilename) }}
+  {{- else -}}
+  {{ $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" .Params.datafilename) }}
+>>>>>>> d507de7... theme
   {{- end -}}
 {{- else -}}
   {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
+<<<<<<< HEAD
     {{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "accessibility") -}}
   {{- else -}}
     {{- $.Scratch.Set "auditfile" $.Site.Data.accessibility -}}
   {{- end -}}
 {{- end -}}
 
+=======
+    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project "accessibility") -}}
+  {{- else -}}
+  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" $project "accessibility") -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
+
+{{/* Create an array with all pages */}}
+{{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Sujets" "Critères" "Tests") -}}
+>>>>>>> d507de7... theme
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
@@ -28,6 +47,7 @@
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 
+<<<<<<< HEAD
 {{- partial "elements/content.html" .Content -}}
 
 {{/* Call score components */}}
@@ -37,6 +57,22 @@
 {{- partial "components/scores/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
 <h3 class="mb-0">Conformité détaillée</h3>
 {{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile")) -}}
+=======
+<div class="note">
+{{- partial "elements/content.html" .Content -}}
+</div>
+
+{{/* Call score components */}}
+{{- if $.Scratch.Get "auditfile-csv" -}}
+<h2 class="text-center">Scores</h2>
+<h3 class="mb-0">Conformité globale</h3>
+{{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
+{{/* If serveral pages tested */}}
+{{- if gt (len $pages) 1 -}}
+<h3 class="mb-0">Conformité détaillée</h3>
+{{- partial "components/scores/accessibility-graph-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
+{{- end -}}
+>>>>>>> d507de7... theme
 
 {{/* Call page parameters */}}
 {{- with .Params.accessibility -}}
@@ -49,6 +85,7 @@
 </p>
 {{- end -}}
 
+<<<<<<< HEAD
 {{/* Create an array with all pages */}}
 {{- $.Scratch.Set "pages" slice -}}
 {{- range $key, $value := index ($.Scratch.Get "auditfile") 0 -}}
@@ -135,6 +172,12 @@
 {{- end -}}
 <hr>
 
+=======
+<hr>
+
+{{/* If serveral pages tested */}}
+{{- if gt (len $pages) 1 -}}
+>>>>>>> d507de7... theme
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
@@ -148,6 +191,7 @@
     {{- end -}}
   </ul>
 </div>
+<<<<<<< HEAD
 
 <h3>Par ordre des tests du référentiel RGAA</h3>
 {{/* Range map errors sort by RGAA order - on all pages */}}
@@ -200,10 +244,63 @@
 
 {{/* Range map errors sort by RGAA order - on specifics pages */}}
 <h4>B - Erreurs présentes sur les pages spécifiques</h4>
+=======
+{{- end -}}
+
+<h2>Par ordre des tests du référentiel RGAA</h2>
+
+{{- if gt (len $pages) 1 -}}
+{{/* Range map errors sort by RGAA order - on all pages */}}
+<h3 id="pagesall">A - Erreurs présentes sur toutes les pages</h3>
+{{- end -}}
+{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv")  -}}
+  {{ $content := delimit (uniq (after 3 .)) "" }}
+  {{- $condcontentlen := gt (len $content) 2 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+  {{- $sujets := index $value 0 -}}
+  {{- $criteres := index $value 1 -}}
+  {{- $tests := index $value 2 -}}
+  {{ if eq (len (uniq (after 3 .))) 1 }}
+  {{- range first 1 . -}}
+    {{- if or $condcontentlen $condcontentnc -}}
+    <p class="mb-0"><strong>
+      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $sujets }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+    </strong></p>
+    {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($sujets)) -}}
+      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+        {{- if eq $idx (string ($tests)) -}}
+        {{- if reflect.IsSlice . -}}
+        <p><em>{{ index . 0 | markdownify }}</em><br></p>
+        <ol>
+          {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+        </ol>
+        {{- else -}}
+        <p><em>{{ . | markdownify }}</em></p>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<br><hr class="divider">
+
+{{/* If serveral pages tested */}}
+{{- if gt (len $pages) 1 -}}
+{{/* Range map errors sort by RGAA order - on specifics pages */}}
+<h3>B - Erreurs présentes sur les pages spécifiques</h3>
+>>>>>>> d507de7... theme
 {{/* Display errors presents on specific pages */}}
 {{- range $id, $value := $pages -}}
   {{ $.Scratch.Set "text" 0 }}
   {{ $page := . }}
+<<<<<<< HEAD
   <h5 id="{{ . | urlize }}">{{ . }}</h5>
   {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
   {{- $content := index . $page -}}
@@ -249,5 +346,47 @@
   <p>
   Il manque la présence d’un fichier : <code>{{- if eq (len (split .Path "/")) 3 -}}data/{{ $project }}/{{- else -}}data/{{- end -}}accessibility.json</code>.
   </p>
+=======
+  <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
+  {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv")  -}}
+  {{ if ne (len (uniq (after 3 .))) 1 }}
+    {{- range . -}}
+      {{- $content := . -}}
+      {{- $condcontentlen := gt (len $content) 2 -}}
+      {{- $condcontentnc := (eq $content "nc") -}}
+      {{- $condcontentc := (eq $content "c") -}}
+      {{- $sujets := index $value 0 -}}
+      {{- $criteres := index $value 1 -}}
+      {{- $tests := index $value 2 -}}
+      {{- if or $condcontentlen $condcontentnc $condcontentc -}}
+          <p class="mb-0"><strong>
+          {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $sujets }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+        </strong></p>
+        {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+          {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($sujets)) -}}
+          {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+            {{- if eq $idx (string ($tests)) -}}
+            {{- if reflect.IsSlice . -}}
+            <p><em>{{ index . 0 | markdownify }}</em><br></p>
+            <ol>
+              {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+            </ol>
+            {{- else -}}
+            <p><em>{{ . | markdownify }}</em></p>
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{- end -}}
+>>>>>>> d507de7... theme
 {{- end -}}
 {{- end -}}

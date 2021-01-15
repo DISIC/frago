@@ -109,8 +109,13 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
+<<<<<<< HEAD
   .grid-4 {
     grid-template-columns: repeat(4, minmax(250px, 1fr)) !important;
+=======
+  .grid-4 > * {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 300px)) !important;
+>>>>>>> d507de7... theme
   }
 
   .grid-separator {

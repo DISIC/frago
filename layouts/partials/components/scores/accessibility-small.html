@@ -1,0 +1,25 @@
+{{- with .auditfile -}}
+{{- $auditfile := . }}
+{{- $.context.Scratch.Set "pages" slice -}}
+
+{{- $counterconformesum := 0 -}}
+{{- $counternonapplicablesum := 0 -}}
+{{- $counternonconformesum := 0 -}}
+{{- range $id, $value := after 1 $auditfile -}}
+  {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
+  {{- $.context.Scratch.Set "counternonapplicable" 0 -}}
+  {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
+  {{ range $id, $value := after 3 $value }}
+    {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
+    {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
+    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
+  {{- end -}}
+  {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconformetopic") -}}
+  {{- $counternonapplicablesum = add $counternonapplicablesum ($.context.Scratch.Get "counternonapplicable") -}}
+  {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
+{{- end -}}
+{{ $total := add $counterconformesum $counternonconformesum }}
+{{- if not (eq $total 0) -}}
+<small class="text-center d-inline-block"><span><b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de conformité</span></small>
+{{- end -}}
+{{- end -}}

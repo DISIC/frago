@@ -5,9 +5,17 @@
 table {
   margin-bottom: var(--baseline);
   width: 100%;
+<<<<<<< HEAD
   color: var(--color-grey-dark);
   border-collapse: collapse;
   border: 1px solid var(--color-grey-dark);
+=======
+  font-size: var(--smaller);
+  color: var(--color-grey-dark);
+  border-collapse: collapse;
+  border: 1px solid var(--color-grey-dark);
+  border-left: 6px solid #000;
+>>>>>>> d507de7... theme
   background-color: #fff;
 }
 

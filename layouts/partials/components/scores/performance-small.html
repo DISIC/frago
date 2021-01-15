@@ -1,0 +1,24 @@
+{{- $project := .project -}}
+
+{{- if (fileExists "static/lighthouse/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "static/lighthouse/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" $project)) -}}
+{{- end -}}
+
+{{- with ($.context.Scratch.Get "dir") -}}
+  {{- range last 1 . -}}
+    {{- if (fileExists "static/lighthouse/") -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with ($.context.Scratch.Get "lastfile") -}}
+  <small class="text-center"><span><b class="h3">{{ div ((index .audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}s</b><br>de chargement</span></small>
+{{- end -}}
+

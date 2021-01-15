@@ -1,19 +1,36 @@
 {{- $project := .project -}}
 
+<<<<<<< HEAD
 {{- if (fileExists "data/quality/") -}}
   {{- $.context.Scratch.Set "dir" (readDir "data/quality/") -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+=======
+{{- if (fileExists "static/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+{{- end -}}
+
+{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+>>>>>>> d507de7... theme
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
+<<<<<<< HEAD
     {{- if (fileExists "data/quality/") -}}
       {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/quality/%s" .Name)) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
       {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/%s/quality/%s" $project .Name)) -}}
+=======
+    {{- if (fileExists "static/quality/") -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
+>>>>>>> d507de7... theme
     {{- end -}}
   {{- end -}}
 {{- end -}}
@@ -22,7 +39,11 @@
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
 {{- range ($.context.Scratch.Get "lastfilee") -}}
 {{- range $idpage, $s := .pages -}}
+<<<<<<< HEAD
   {{ $page := dict "pagename" .name }}
+=======
+  {{- $page := dict "pagename" .name -}}
+>>>>>>> d507de7... theme
   {{- range $idblock, $s := .blocks -}}
   {{- range $iderror, $s:= .errors -}}
     {{ $id := (printf "%s%s%s" (string $idpage) (string $idblock) (string $iderror)) }}
@@ -35,14 +56,25 @@
 {{- end -}}
 {{- end -}}
 {{- with $.context.Scratch.Get "pagesstatus" -}}
+<<<<<<< HEAD
 <h3>Par criticité</h3>
 <table class="text-left">
   <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 150px;">Criticité</th></tr></thead>
+=======
+<h3>Erreurs par criticité</h3>
+<table class="text-left">
+  <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
+>>>>>>> d507de7... theme
   <tbody>
   {{- range $key, $value := sort . "status" "asc" -}}
     <h3 hidden>{{ if $value }}{{ $key | humanize }}{{ end }}</h3>
       <tr>
+<<<<<<< HEAD
         <td>#{{ $key }} - <a href="#{{ .name | urlize }}">{{ .name }}</a>{{ if .pagename }} - {{ .pagename }}{{ end }}</td>
+=======
+        <td>#{{ add $key 1 }} - <a href="/audits/{{ $project }}/quality#{{ .name | urlize }}">{{ .name }}</a></td>
+        <td class="text-center">{{ if .pagename }}{{ .pagename }}{{ end }}</td>
+>>>>>>> d507de7... theme
         <td class="text-center">{{ .type }}</td>
         <td class="critical{{ if eq .status "critique" }} bad{{ else if eq .status "important" }} medium{{ else if eq .status "moindre" }} normal{{ else }} none{{ end }}">
           <span class="emoticon">{{ if eq .status "critique" }}🚫 {{ else if eq .status "important" }}❗️ {{ else if eq .status "moindre" }}➰ {{ else }}❓ {{ end }}</span>

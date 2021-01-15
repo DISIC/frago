@@ -1,13 +1,30 @@
 {{- $.Scratch.Set "countries" slice -}}
 {{ $project := .Get "project" }}
+<<<<<<< HEAD
 {{- range sort (index (index $.Site.Data $project) "similary") "country" "asc" -}}
+=======
+{{- $.Scratch.Set "auditpath" "static/similary.json" -}}
+{{- if $project -}}
+{{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
+{{- $.Scratch.Set "auditpath" (printf "static/%s/similary.json" $project) -}}
+{{- end -}}
+{{- range sort (index (getJSON ($.Scratch.Get "auditpath"))) "country" "asc" -}}
+>>>>>>> d507de7... theme
     {{- $.Scratch.Add "countries" (slice .country) -}}
 {{- end -}}
 {{- $field := $.Scratch.Get "countries" | uniq -}}
 {{- range $field -}}
   <h3>{{ . }}</h3>
+<<<<<<< HEAD
   {{- range where (index (index $.Site.Data $project) "similary") "country" . -}}
     <li>{{ .name }} - <a href="{{ .url }}">{{ .url | truncate 80 }}</a></li>
   {{- end -}}
+=======
+  <ul>
+  {{- range where (index (getJSON ($.Scratch.Get "auditpath"))) "country" . -}}
+    <li>{{ .name }} - <a href="{{ .url }}">{{ .url | truncate 80 }}</a></li>
+  {{- end -}}
+  </ul>
+>>>>>>> d507de7... theme
 {{- end -}}
 {{- .Inner -}}

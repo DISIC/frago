@@ -1,0 +1,34 @@
+{{- define "main" -}}
+<div class="wrapper">
+<h1>{{ .Title }}</h1>
+
+{{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
+{{- $.Scratch.Set "auditpath" "static/npm.json" -}}
+{{- if gt (len (split .RelPermalink "/")) 4 -}}
+{{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
+{{- $.Scratch.Set "auditpath" (printf "static/%s/npm.json" $project) -}}
+{{- end -}}
+{{- if (fileExists ($.Scratch.Get "auditpath")) -}}
+<h2>Failles de sécurité :: modules JavaScript</h2>
+<p>Les modules JavaScript composent le code de l’application une partie de ce code permet de faire tourner l’application pour les utilisateurs. Le gestionnaire de paquet <code>npm</code> permet de recenser ces failles et permettre aux développeurs de mettre à jour leur application.</p>
+<h3>Sévérité : critique</h3>
+<table class="text-left">
+  <thead><tr><th style="width: 300px;">Nom du module</th><th style="width: 300px;">Version actuelle</th><th>Version vulnérable</th><th style="width: 100px;" class="text-center">Correction</th><th style="width: 50px;" class="text-center">Failles</th></tr></thead>
+  <tbody>
+  {{- range $key, $value := index (getJSON ($.Scratch.Get "auditpath")) "advisories" -}}
+      {{ if eq .severity "critical" }}<tr><td><strong>{{ .module_name  }}</strong></td><td>{{ (index .findings 0).version }}</td><td>{{ .vulnerable_versions }}</td><td class="text-center">{{ dateFormat "2006-01-02" .updated }}</td><td class="text-center">{{ .metadata.exploitability }}</td></tr>{{ end }}
+  {{- end -}}
+  </tbody>
+</table>
+<h3>Sévérité : haute</h3>
+<table class="text-left">
+  <thead><tr><th style="width: 300px;">Nom du module</th><th style="width: 300px;">Version actuelle</th><th>Version vulnérable</th><th style="width: 100px;" class="text-center">Correction</th><th style="width: 50px;" class="text-center">Failles</th></tr></thead>
+  <tbody>
+  {{- range $key, $value := index (getJSON ($.Scratch.Get "auditpath")) "advisories" -}}
+      {{ if eq .severity "high" }}<tr><td><strong>{{ .module_name  }}</strong></td><td>{{ (index .findings 0).version }}</td><td>{{ .vulnerable_versions }}</td><td class="text-center">{{ dateFormat "2006-01-02" .updated }}</td><td class="text-center">{{ .metadata.exploitability }}</td></tr>{{ end }}
+  {{- end -}}
+  </tbody>
+</table>
+</div>
+{{- end -}}
+{{- end -}}

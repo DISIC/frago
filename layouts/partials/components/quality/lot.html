@@ -1,30 +1,63 @@
 {{- $project := .project -}}
 
+<<<<<<< HEAD
 {{- if (fileExists "data/quality/") -}}
   {{- $.context.Scratch.Set "dir" (readDir "data/quality/") -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/quality/" $project)) -}}
+=======
+{{- if (fileExists "static/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+>>>>>>> d507de7... theme
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
+<<<<<<< HEAD
     {{- if (fileExists "data/quality/") -}}
       {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/quality/%s" .Name)) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "data/%s/quality/" $project) -}}
       {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "data/%s/quality/%s" $project .Name)) -}}
+=======
+    {{- if (fileExists "static/quality/") -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
+>>>>>>> d507de7... theme
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
+<<<<<<< HEAD
+=======
+{{/* Create an array with all pages */}}
+{{- $.context.Scratch.Set "pages" slice -}}
+
+>>>>>>> d507de7... theme
 {{ $.context.Scratch.Set "delivery" slice }}
 {{ $.context.Scratch.Set "pagesdelivery" slice }}
 {{- range ($.context.Scratch.Get "lastfilee") -}}
 {{- range $idpage, $s := .pages -}}
+<<<<<<< HEAD
   {{- range .blocks -}}
   {{- range $id, $s:= .errors -}}
     {{- with .delivery -}}
+=======
+  {{- $.context.Scratch.Add "pages" .name -}}
+  {{- $page := dict "pagename" .name -}}
+  {{- range .blocks -}}
+  {{- $block := dict "blockname" (printf "%s-%s" .name (string $idpage)) -}}
+  {{- range $id, $s:= .errors -}}
+    {{- with .delivery -}}
+    {{- $s := merge $s $block -}}
+    {{- $s := merge $s $page -}}
+>>>>>>> d507de7... theme
     {{ $.context.Scratch.Add "delivery" . }}
     {{ $.context.Scratch.Add "pagesdelivery" $s }}
     {{- end -}}
@@ -34,6 +67,7 @@
 {{- end -}}
 
 {{ if $.context.Scratch.Get "pagesdelivery" }}
+<<<<<<< HEAD
 <h3>Par lots de livraison</h3>
 {{ range sort (uniq ($.context.Scratch.Get "delivery")) }}
   {{ $lot := where ($.context.Scratch.Get "pagesdelivery") "delivery" . }}
@@ -52,6 +86,38 @@
       </tr>
     {{- end -}}
     </tbody>
+=======
+<h3>Erreurs par lots de livraison <small>- <span class="counter">{{ len ($.context.Scratch.Get "pagesdelivery") }}</span> erreurs sélectionnées</small></h3>
+{{ range sort (uniq ($.context.Scratch.Get "delivery")) }}
+  {{ $delivery := . }}
+  <table class="text-left">
+    <caption>{{ if . }}{{ . | humanize }}{{ end }}</caption>
+    <thead><tr ;><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Bloc</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
+    <tbody>
+    {{- $.context.Scratch.Set "blockid" 0 -}}
+    {{ range ($.context.Scratch.Get "pages") }}
+      {{ $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . }}
+      {{ if $lot }}
+      {{- $.context.Scratch.Set "blockname" "" -}}
+      {{- range $id, $value := sort $lot "blockname" "asc"  -}}
+        {{ if ne ($.context.Scratch.Get "blockname") .blockname }}{{- $.context.Scratch.Add "blockid" 1 -}}{{ end }}
+        <tr style="border-left: 6px solid hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%); background: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143 }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),97%);">
+          <td><a href="{{/* /audits/{{ $project }}/quality */}}#{{ .name | urlize }}">{{ .name | markdownify }}</a><br>{{ .description | markdownify }}</td>
+          <td class="text-center">{{ if .pagename }}{{ .pagename | markdownify }}{{ end }}</td>
+          <td class="text-center" style="color: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%);">{{ if .blockname }}<strong>{{ .blockname | replaceRE "-.*" "$1" }}</strong>{{ end }}</td>
+          <td class="text-center">{{ .type }}</td>
+          <td class="critical{{ if eq .status "critique" }} bad{{ else if eq .status "important" }} medium{{ else if eq .status "moindre" }} normal{{ else }} none{{ end }}">
+            <span class="emoticon">{{ if eq .status "critique" }}🚫 {{ else if eq .status "important" }}❗️ {{ else if eq .status "moindre" }}➰ {{ else }}❓ {{ end }}</span>
+            <strong class="text-color-light">{{ .status }}{{ if not .status }}Aucune{{ end }}</strong>
+          </td>
+        </tr>
+        {{- $.context.Scratch.Set "blockname" .blockname -}}
+      {{- end -}}
+    {{ end }}
+
+  {{ end }}
+  </tbody>
+>>>>>>> d507de7... theme
   </table>
 {{- end -}}
 {{- end -}}

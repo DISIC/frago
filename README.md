@@ -315,4 +315,23 @@ ou tenter de modifier `~/.gitconfig`:
 	insteadOf = https://gitlab.com/
 ```
 
+<<<<<<< HEAD
 
+=======
+## Tips 
+
+Code for transforming a CSV to JSON file :: CSV files can't be called from `data` folder of Hugo.
+
+```
+{{- $dataC := getCSV "," "/static/accessibility.csv" -}}
+{{ $.Scratch.Set "json" slice }}
+{{- range $key, $value := (after 1 $dataC) -}}
+  {{- range $id, $value := . -}}
+    {{- $.Scratch.SetInMap "element" (index (index $dataC 0) $id) . -}}
+    {{- $.Scratch.SetInMap "collection" (string $key) ($.Scratch.Get "element") -}}
+  {{- end -}}
+  {{ $.Scratch.Add "json" ($.Scratch.Get "collection") }}
+{{- end -}}
+{{ $.Scratch.Get "json" | jsonify }}
+```
+>>>>>>> d507de7... theme

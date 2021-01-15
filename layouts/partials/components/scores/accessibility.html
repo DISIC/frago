@@ -1,6 +1,7 @@
 {{- with .auditfile -}}
 {{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
+<<<<<<< HEAD
 {{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l’information" "Formulaires" "Navigation" "Consultation" -}}
 
 {{- range $key, $value := $topics -}}
@@ -16,6 +17,8 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+=======
+>>>>>>> d507de7... theme
 
 {{- $countersliceconforme := slice -}}
 {{- $counterconformesum := 0 -}}
@@ -26,7 +29,11 @@
 {{- range $key, $value := index . 0 -}}
     {{- $.context.Scratch.Add "pages" $key -}}
 {{- end -}}
+<<<<<<< HEAD
 {{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Sujet" "Critère" "Tests") -}}
+=======
+{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Sujets" "Critères" "Tests") -}}
+>>>>>>> d507de7... theme
 {{- range $id, $value := $pages -}}
   {{ $page := . }}
   {{- $.context.Scratch.Set "counterconforme" 0 -}}
@@ -48,9 +55,15 @@
   {{- $counterslicenonconforme = $counterslicenonconforme | append ($.context.Scratch.Get "counternonconforme") -}}
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconforme") -}}
 {{- end -}}
+<<<<<<< HEAD
 {{ $total := add $counterconformesum $counternonconformesum }}
 {{- if not (eq $total 0) -}}
 <div class="scores" hidden>
+=======
+{{- $total := add $counterconformesum $counternonconformesum -}}
+{{- if not (eq $total 0) -}}
+<div class="scores">
+>>>>>>> d507de7... theme
     <ul>
       <li class="counter text-center d-inline-block good"><span><b class="h2">{{ div (mul $counterconformesum 100) $total }}%</b><br>Conforme</span></li>
       <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>

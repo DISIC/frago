@@ -3,6 +3,7 @@
   {{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
   <div class="wrapper">
 
+<<<<<<< HEAD
     {{- $.Scratch.Set "projectfolder" $.Site.Data -}}
 
     {{- if eq (len (split .RelPermalink "/")) 4 -}}
@@ -17,12 +18,56 @@
     {{- end -}}
 
     {{- if index ($.Scratch.Get "projectfolder") "quality" -}}
+=======
+    {{ if eq $project "amendes" }}
+    <h2 class="text-center">Planning</h2>
+    <div class="gantt">
+      <span class="d-1"></span>
+      <span class="d-1mid"></span>
+      <span class="d-2"></span>
+      <span class="d-2mid"></span>
+      <span class="d-3"></span>
+      <span class="d-3mid"></span>
+      <span class="d-4"></span>
+      <span class="d-4mid"></span>
+      <span class="d-5"></span>
+      <h3 class="h-sept">septembre</h3>
+      <div class="t-1" style="grid-column: sept-middle / oct-middle;">Découverte</div>
+      <h3 class="h-oct">octobre</h3>
+      <div class="t-2" style="grid-column: oct-middle / oct-end;">Collecte</div>
+      <h3 class="h-nov">novembre</h3>
+      <div class="t-3" style="grid-column: nov-start / nov-middle;">Étude</div>
+      <div class="t-4" style="grid-column: nov-middle / nov-end;">Proposition</div>
+      <h3 class="h-dec">décembre</h3>
+      <div class="t-5" style="grid-column: dec-start / dec-middle;">Application</div>
+    </div>
+    {{ end }}
+
+    {{- $.Scratch.Set "projectfolders" "/static" -}}
+    {{- if eq (len (split .RelPermalink "/")) 4 -}}
+    {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
+    {{- end -}}
+
+    {{- if ($.Scratch.Get "projectfolders") -}}
+    <h2 class="text-center">Scores</h2>
+    {{- if (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+    <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+    {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) ))) -}}
+    {{- end -}}
+
+    {{- if (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+>>>>>>> d507de7... theme
     <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
     {{- end -}}
 
+<<<<<<< HEAD
     {{- if index ($.Scratch.Get "projectfolder") "lighthouse" -}}
     <h3 class="m-0">Performance {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+=======
+    {{- if (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+    <h3 class="m-0">Performance (3G) {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+>>>>>>> d507de7... theme
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
 
@@ -34,6 +79,7 @@
         <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">1.56</b></span></li>
       </ul>
     </div>
+<<<<<<< HEAD
 
     {{- end -}}
   </div>
@@ -66,6 +112,16 @@
     </div>
   </section>
   {{ end }}
+=======
+    {{/*
+    <section>
+      {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
+    </section>
+    */}}
+    {{- end -}}
+  </div>
+
+>>>>>>> d507de7... theme
   {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
   {{- partial "list.html" (dict "context" . "section" "meetings") -}}
   {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}

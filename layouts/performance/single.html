@@ -8,6 +8,7 @@
   {{- partial "elements/content.html" .Content -}}
   {{/* Vars */}}
   {{- $project :=  (index (split .Path "/") 1) -}}
+<<<<<<< HEAD
   {{- $auditfile := (index $.Site.Data $project) -}}
   {{/* Range performance file */}}
   {{- with $auditfile -}}
@@ -29,14 +30,57 @@
     <dd>{{ index (split .description ".") 0 }}<br>
     => <small><strong>{{ .displayValue }}</strong></small>
     <dd>
+=======
+
+  {{/* Test id exist and call performance file */}}
+  {{- if (fileExists "static/lighthouse/") -}}
+    {{- $.Scratch.Set "dir" (readDir "static/lighthouse/") -}}
+  {{- end -}}
+  {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
+    {{- $.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" $project)) -}}
+  {{- end -}}
+
+  {{- with ($.Scratch.Get "dir") -}}
+    {{- range last 1 . -}}
+      {{- if (fileExists "static/lighthouse/") -}}
+        {{- $.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
+      {{- end -}}
+      {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
+        {{- $.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{/* Range performance file */}}
+  {{- with ($.Scratch.Get "lastfile") -}}
+  <h2>Scores</h2>
+  {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
+  {{/* Vars with the last file of the lighthouse directory */}}
+  {{ $lastfile := $.Scratch.Get "lastfile" }}
+    {{/* Range the file */}}
+    {{- range $key, $value := sort (index $lastfile "audits") ".score" "asc" -}}
+    {{/* Display only errors - with score different of null */}}
+    {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}
+    <details>
+    <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">H</small> {{ else if eq .score 0.5 }}<small class="counter medium">M</small> {{ else if gt .score 0.5 }}<small class="counter good">F</small> {{ end }}{{ i18n (printf "%s%s" .id "title") }}</h3></summary>
+    <p>{{ i18n (printf "%s%s" .id "description") | markdownify }}<br>
+    => <small><strong>{{ replace (replace .displayValue "Potential savings of" "Gain potentiel") "resources found" "ressources trouvées" }}</strong></small>
+    </p>
+>>>>>>> d507de7... theme
     <ul>
       {{- range .details.items -}}
         {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
       {{- end -}}
     </ul>
+<<<<<<< HEAD
     {{- end -}}
     {{- end -}}
   </dl>
+=======
+    </details>
+    {{- end -}}
+    {{- end -}}
+>>>>>>> d507de7... theme
 </div>
 {{- end -}}
 {{- end -}}
