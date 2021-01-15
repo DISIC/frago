@@ -1,35 +1,19 @@
 {{- $project := .project -}}
 
-<<<<<<< HEAD
-{{- if (fileExists "data/lighthouse/") -}}
-  {{- $.context.Scratch.Set "dir" (readDir "data/lighthouse/") -}}
-{{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "data/%s/lighthouse/" $project)) -}}
-=======
 {{- if (fileExists "static/lighthouse/") -}}
   {{- $.context.Scratch.Set "dir" (readDir "static/lighthouse/") -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" $project)) -}}
->>>>>>> d507de7... theme
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
-<<<<<<< HEAD
-    {{- if (fileExists "data/lighthouse/") -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/lighthouse/%s" .Name)) -}}
-    {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "data/%s/lighthouse/" $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "data/%s/lighthouse/%s" $project .Name)) -}}
-=======
     {{- if (fileExists "static/lighthouse/") -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
       {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
->>>>>>> d507de7... theme
     {{- end -}}
   {{- end -}}
 {{- end -}}

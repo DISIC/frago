@@ -22,9 +22,9 @@
 {{- if .Params.datafilename -}}
 {{/* Condition about structure level */}}
   {{- if eq (len $patharray) 3 -}}
-    {{- $.Scratch.Set "auditpath" (printf "static/%s/quality/%s.json" $project .Params.datafilename) -}}
+    {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s.json" $project .Params.datafilename) }}
   {{- else -}}
-    {{- $.Scratch.Set "auditpath" (printf "static/quality/%s.json" .Params.datafilename) -}}
+    {{ $.Scratch.Set "auditpath" (printf "static/quality/%s.json" .Params.datafilename) }}
   {{- end -}}
   {{ $.Scratch.Set "auditfile" (getJSON ($.Scratch.Get "auditpath")) }}
 {{- else -}}
@@ -32,9 +32,9 @@
     {{- range last 1 ($.Scratch.Get "dir") -}}
     {{/* Condition about structure level */}}
     {{- if eq (len $patharray) 3 -}}
-      {{- $.Scratch.Set "auditpath" (printf "static/%s/quality/%s" $project .Name) -}}
+      {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
     {{- else -}}
-      {{- $.Scratch.Set "auditpath" (printf "static/quality/%s" .Name) -}}
+      {{ $.Scratch.Set "auditpath" (printf "static/quality/%s" .Name) }}
     {{- end -}}
     {{- $lastfile := getJSON ($.Scratch.Get "auditpath") -}}
       {{- with $lastfile -}}
@@ -57,6 +57,7 @@
 {{- if eq (len $patharray) 3 -}}
   {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
 {{- end -}}
+
 {{/* Call page parameters */}}
 <h2>Contexte</h2>
 {{- range ($.Scratch.Get "auditfile") -}}

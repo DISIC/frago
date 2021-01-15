@@ -61,11 +61,6 @@
     --link-color: var(--color-primary-light);
   }
 
-<<<<<<< HEAD
-  img {
-    filter: brightness(.8) contrast(1.2);
-  }
-=======
   body {
     font-weight: 200;
   }
@@ -77,7 +72,6 @@
   /* img {
     filter: brightness(.8) contrast(1.2);
   } */
->>>>>>> d507de7... theme
 }
 
 /* = Very basic styles = */

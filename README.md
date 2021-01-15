@@ -315,9 +315,6 @@ ou tenter de modifier `~/.gitconfig`:
 	insteadOf = https://gitlab.com/
 ```
 
-<<<<<<< HEAD
-
-=======
 ## Tips 
 
 Code for transforming a CSV to JSON file :: CSV files can't be called from `data` folder of Hugo.
@@ -334,4 +331,4 @@ Code for transforming a CSV to JSON file :: CSV files can't be called from `data
 {{- end -}}
 {{ $.Scratch.Get "json" | jsonify }}
 ```
->>>>>>> d507de7... theme
+

@@ -14,8 +14,6 @@
   font-weight: bold;
 }
 
-<<<<<<< HEAD
-=======
 .card-inline {
   display: flex;
   align-items: center;
@@ -44,7 +42,6 @@
   background: rgba(0,0,0,0.1);
 }
 
->>>>>>> d507de7... theme
 .card-animate:focus-within,
 .card-animate:hover {
   transform: scale(1.03);

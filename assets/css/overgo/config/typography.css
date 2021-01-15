@@ -8,11 +8,7 @@
 
 :root {
 
-<<<<<<< HEAD
-  --system-font:             BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-=======
   --system-font:             BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif,'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
->>>>>>> d507de7... theme
   --base-font:               var(--base-font-name,-apple-system), var(--system-font);
   --title-font:              var(--title-font-name,-apple-system), var(--system-font);
 

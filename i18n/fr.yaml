@@ -72,19 +72,12 @@ email:
   other: email
 phone:
   other: téléphone
-<<<<<<< HEAD
 message:
-=======
-other:
->>>>>>> d507de7... theme
   other: message
 send:
   other: Envoyer
 contact-us:
   other: Nous contacter
-<<<<<<< HEAD
-
-=======
 accesskeysdescription:
   other: Les clés d'accès permettent aux utilisateurs de positionner rapidement
     le curseur dans une partie spécifique de la page. Pour les aider à naviguer correctement,
@@ -1390,4 +1383,3 @@ works-offlinewarningNoLoad:
   other: Il est possible que cette page ne se charge pas hors connexion, car votre
     URL de test ({requested}) redirige vers "{final}". Testez directement la seconde
     URL.
->>>>>>> d507de7... theme

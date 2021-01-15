@@ -44,11 +44,7 @@
   }
 
   @page :first {
-<<<<<<< HEAD
-   header {
-=======
     header {
->>>>>>> d507de7... theme
       margin: -100px;
     }
   }
