@@ -4,6 +4,7 @@
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
 {{- $.Scratch.Set "dir" "" -}}
+{{- $.Scratch.Set "auditfile" "" }}
 
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
@@ -45,6 +46,7 @@
   {{- end -}}
 {{- end -}}
 
+{{- if $.Scratch.Set "auditfile-csv" -}}
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
   <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
@@ -97,10 +99,11 @@
     {{- range $idblock, $b := .blocks -}}
     {{- $.Scratch.Set "countererrorsblock" 0 -}}
       {{/* Range third level and count errors */}}
+      {{- if .errors -}}
       {{- range $s:= .errors -}}
         {{- $.Scratch.Add "countererrorspage" 1 -}}
         {{- $.Scratch.Add "countererrorsblock" 1 -}}
-        {{- $.Scratch.SetInMap "countererrorsblocklist" (string $idblock) ($.Scratch.Get "countererrorsblock")  -}}
+        {{- $.Scratch.SetInMap "countererrorsblocklist" (string $idblock) ($.Scratch.Get "countererrorsblock") -}}
       {{- end -}}
     {{- end -}}
     <h3 id="{{ .name | urlize }}">{{ .name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrorspage" }}</span> erreurs recensées sur cette page</small></h3>
@@ -132,7 +135,7 @@
       <h4>{{ $b.name }} <small>- <span class="counter">{{ index ($.Scratch.Get "countererrorsblocklist") (string $idblock) }}</span> erreurs recensées sur ce bloc</small></h4>
       {{/* Range third level */}}
       {{- range $s := .errors -}}
-        {{- $path := .name  -}}
+        {{- $path := .name -}}
         {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
         {{/* Create an array fir the images slider with screen capture */}}
         {{- $.Scratch.Add "index" (slice $path) -}}
@@ -200,28 +203,6 @@
 {{- end -}}{{/* Range the quality file */}}
 </div>
 {{- end -}}
+{{- end -}}
 
-{{- define "script" -}}
-<link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
-<link rel="stylesheet" href="/assets/css/night-owl.min.css" />
-<script src="/assets/js/simple-lightbox.min.js"></script>
-{{- range ($.Scratch.Get "auditfile") -}}
-  {{- range $idpage, $p := .pages -}}
-  {{- $name := .name -}}
-  <script>
-    var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
-    {{- range $idblock,$b := .blocks -}}
-    var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
-    {{- end -}}
-  </script>
-  {{- end -}}
-{{- end -}}
-<script src="/assets/js/highlight.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('pre code').forEach((block) => {
-    hljs.highlightBlock(block);
-  });
-});
-</script>
-{{- end -}}
+

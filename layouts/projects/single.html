@@ -3,7 +3,7 @@
   {{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
   <div class="wrapper">
 
-    {{ if eq $project "amendes" }}
+    {{- if eq $project "amendes" -}}
     <h2 class="text-center">Planning</h2>
     <div class="gantt">
       <span class="d-1"></span>
@@ -25,7 +25,7 @@
       <h3 class="h-dec">décembre</h3>
       <div class="t-5" style="grid-column: dec-start / dec-middle;">Application</div>
     </div>
-    {{ end }}
+    {{- end -}}
 
     {{- $.Scratch.Set "projectfolders" "/static" -}}
     {{- if eq (len (split .RelPermalink "/")) 4 -}}
@@ -49,6 +49,7 @@
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
 
+    {{- if eq $project "amendes" -}}
     <h3 class="m-0">Écoindex</h3>
     <div class="scores">
       <ul>
@@ -57,6 +58,7 @@
         <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">1.56</b></span></li>
       </ul>
     </div>
+    {{- end -}}
     {{/*
     <section>
       {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}

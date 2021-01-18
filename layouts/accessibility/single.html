@@ -2,6 +2,7 @@
 {{/* Vars */}}
 {{- $project :=  (index (split .Path "/") 1) -}}
 {{- $pathimage := printf "./static/images/%s/" $project }}
+{{- $.Scratch.Set "auditfile-csv" "" }}
 
 {{/* Set the audit file */}}
 {{/* Set the audit file - test if a specific file is called */}}
@@ -22,6 +23,8 @@
 {{- end -}}
 
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
+
+{{- if ($.Scratch.Get "auditfile-csv") -}}
 
 {{/* Create an array with all pages */}}
 {{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Sujets" "Critères" "Tests") -}}
@@ -83,7 +86,7 @@
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">A - Erreurs présentes sur toutes les pages</h3>
 {{- end -}}
-{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv")  -}}
+{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{ $content := delimit (uniq (after 3 .)) "" }}
   {{- $condcontentlen := gt (len $content) 2 -}}
   {{- $condcontentnc := (eq $content "nc") -}}
@@ -130,7 +133,7 @@
   {{ $.Scratch.Set "text" 0 }}
   {{ $page := . }}
   <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
-  {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv")  -}}
+  {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{ if ne (len (uniq (after 3 .))) 1 }}
     {{- range . -}}
       {{- $content := . -}}
@@ -167,7 +170,7 @@
   {{- end -}}
 {{- end -}}
 
-
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

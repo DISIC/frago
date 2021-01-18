@@ -7,7 +7,7 @@
 
 <div class="wrapper">
 {{/* Find all task id */}}
-{{- range $key, $value := $loop  -}}
+{{- range $key, $value := $loop -}}
   {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}
   {{- $.Scratch.Add "tasknumber" (slice (index . "Task Number")) -}}
 {{- end -}}

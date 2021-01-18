@@ -54,7 +54,7 @@
       {{ $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . }}
       {{ if $lot }}
       {{- $.context.Scratch.Set "blockname" "" -}}
-      {{- range $id, $value := sort $lot "blockname" "asc"  -}}
+      {{- range $id, $value := sort $lot "blockname" "asc" -}}
         {{ if ne ($.context.Scratch.Get "blockname") .blockname }}{{- $.context.Scratch.Add "blockid" 1 -}}{{ end }}
         <tr style="border-left: 6px solid hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%); background: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143 }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),97%);">
           <td><a href="{{/* /audits/{{ $project }}/quality */}}#{{ .name | urlize }}">{{ .name | markdownify }}</a><br>{{ .description | markdownify }}</td>

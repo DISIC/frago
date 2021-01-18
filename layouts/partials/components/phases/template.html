@@ -1,3 +1,5 @@
+{{- if .context.Site.Taxonomies -}}
+{{- if .context.Site.Taxonomies.phases -}}
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") -}}
 {{- $tags := (slice .context.File.BaseFileName) -}}
 {{- $site := .context.Site -}}
@@ -13,7 +15,7 @@
     {{- $.context.Scratch.Set "isphases" true -}}
     {{- end -}}
   {{- end -}}
-{{- else  -}}
+{{- else -}}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
     {{- if $taxonomy.Pages -}}
     {{- $.context.Scratch.Set "isphases" true -}}
@@ -56,4 +58,6 @@
     {{- end -}}
   </div>
 </section>
+{{- end -}}
+{{- end -}}
 {{- end -}}
