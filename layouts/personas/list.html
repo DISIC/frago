@@ -9,7 +9,7 @@
   {{/* Range all regular pages */}}
   {{- range .RegularPages -}}
     {{/* Range the personas file in the project and find/list the pages on `content/personas/` directory */}}
-    {{- range where (index (index $.Site.Data $project) "personas") "name" "eq" .Title -}}
+    {{- range where (getJSON (printf "static/%s/personas.json" $project)) "name" "eq" .Title -}}
       {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project) }}
     {{- end -}}
   {{- end -}}

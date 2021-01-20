@@ -4,9 +4,9 @@
 
 {{/* Condition about structure level */}}
 {{- if eq (len (split .Path "/")) 3 -}}
-{{- $.Scratch.Set "auditfile" (index (index $.Site.Data $project) "personas") -}}
+{{- $.Scratch.Set "auditfile" (getJSON (printf "static/%s/personas.json" $project)) -}}
 {{- else -}}
-{{- $.Scratch.Set "auditfile" $.Site.Data.personas -}}
+{{- $.Scratch.Set "auditfile" (getJSON "static/personas.json") -}}
 {{- end -}}
 
 <div class="wrapper">
@@ -67,7 +67,7 @@
 {{- end -}}
 <hr class="divider">
 <div class="text-center">
-  {{- range where (index (index $.Site.Data $project) "personas") "name" "eq" .Title -}}
+  {{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}
     {{ with .parcours }}<h2>Parcours</h2>{{ end }}
     {{ partial "components/parcours/template.html" (dict "context" . "pages" $ "project" $project) }}
   {{- end -}}
