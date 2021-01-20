@@ -1,7 +1,7 @@
 {{- $src := .Get "src" -}}
 {{- $datafile := .Get "datafile" -}}
 <div class="benchmark grid grid-4 lightbox-{{ .Ordinal }}">
-{{ range sort (index (index $.Site.Data $datafile) "similary") "country" "asc" }}
+{{ range sort (getJSON (printf "static/%s/similary.json" $datafile)) "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}
     {{- $pathfile :=(printf "./static/images/%s/benchmark/" $datafile) -}}
     {{- if (fileExists $pathfile) -}}
