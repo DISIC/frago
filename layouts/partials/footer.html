@@ -1,15 +1,17 @@
+{{- if .Site.Menus.footer -}}
 <footer id="footerglobal" role="contentinfo">
   <h2>Pied de page</h2>
   <div class="wrapper">
     <div class="text-center">
       <div>
         <ul class="list-unstyled list-inline">
-          {{ $currentPage := . }}
-          {{ range .Site.Menus.footer }}
+          {{- $currentPage := . -}}
+          {{- range .Site.Menus.footer -}}
           <li>&nbsp;<a class="sidebar-nav-item" href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>&nbsp;</li>
-          {{ end }}
+          {{- end -}}
         </ul>
       </div>
     </div>
   </div>
 </footer>
+{{- end -}}
