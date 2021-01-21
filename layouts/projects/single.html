@@ -39,7 +39,7 @@
     {{- if ($.Scratch.Get "projectfolders") -}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
-    {{- end -}}
+
     {{- if $accessibility -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) ))) -}}
@@ -70,13 +70,10 @@
       {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
     </section>
     */}}
+    {{- else -}}
+    <p class="text-center">Aucun audit pour le moment</p>
     {{- end -}}
-    <p hidden>
-      <b>$project</b> : {{ $project }}<br>
-      <b>$accessibility</b> : {{ $accessibility }}<br>
-      <b>$quality</b> : {{ $quality }}<br>
-      <b>$lighthouse</b> : {{ $lighthouse }}<br>
-    </p>
+    {{- end -}}
   </div>
 
   {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
