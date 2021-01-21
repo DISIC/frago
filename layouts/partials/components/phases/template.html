@@ -8,11 +8,10 @@
 {{- $.context.Scratch.Set "isphases" false -}}
 {{- $.context.Scratch.Set "phases" .context.Site.Taxonomies.phases -}}
 
-{{/* Set the audit file */}}
+{{/* Find is pahses tags are present for this project */}}
 {{- if ($.context.Scratch.Get "lencond") -}}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
-    <p hidden>{{- $taxonomy.Pages  -}}</p>
-    <p hidden>{{- $projecttaxonomy  -}}</p>
+    <p hidden>{{- $taxonomy.Pages -}}</p>
     {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}
     {{- $.context.Scratch.Set "isphases" true -}}
     {{- end -}}
@@ -27,6 +26,9 @@
 {{- end -}}
 
 <p hidden>
+  <b>$tags</b> : {{ $tags }}<br>
+  <b>$projecttaxonomy</b>{{- $projecttaxonomy -}}</b>
+  <b>lencond</b> : {{ $.context.Scratch.Get "lencond" }}<br>
   <b>isphases</b> : {{ $.context.Scratch.Get "isphases" }}<br>
 </p>
 
