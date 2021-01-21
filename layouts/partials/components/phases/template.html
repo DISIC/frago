@@ -11,17 +11,24 @@
 {{/* Set the audit file */}}
 {{- if ($.context.Scratch.Get "lencond") -}}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
+    <p hidden>{{- $taxonomy.Pages  -}}</p>
+    <p hidden>{{- $projecttaxonomy  -}}</p>
     {{- if $projecttaxonomy | intersect $taxonomy.Pages -}}
     {{- $.context.Scratch.Set "isphases" true -}}
     {{- end -}}
   {{- end -}}
 {{- else -}}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
+    <p hidden>{{- $taxonomy.Pages -}}</p>
     {{- if $taxonomy.Pages -}}
     {{- $.context.Scratch.Set "isphases" true -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+<p hidden>
+  <b>isphases</b> : {{ $.context.Scratch.Get "isphases" }}<br>
+</p>
 
 {{- if $.context.Scratch.Get "isphases" -}}
 <section class="section{{ if .type }}-{{ .type }}{{ end }}">

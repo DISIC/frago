@@ -32,19 +32,25 @@
     {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
     {{- end -}}
 
+    {{- $accessibility := (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+    {{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+    {{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+
     {{- if ($.Scratch.Get "projectfolders") -}}
+    {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
-    {{- if (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+    {{- end -}}
+    {{- if $accessibility -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) ))) -}}
     {{- end -}}
 
-    {{- if (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+    {{- if $quality -}}
     <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
     {{- end -}}
 
-    {{- if (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+    {{- if $lighthouse -}}
     <h3 class="m-0">Performance (3G) {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
@@ -65,6 +71,12 @@
     </section>
     */}}
     {{- end -}}
+    <p hidden>
+      <b>$project</b> : {{ $project }}<br>
+      <b>$accessibility</b> : {{ $accessibility }}<br>
+      <b>$quality</b> : {{ $quality }}<br>
+      <b>$lighthouse</b> : {{ $lighthouse }}<br>
+    </p>
   </div>
 
   {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
