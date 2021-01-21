@@ -50,9 +50,11 @@
   <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+{{- if gt (len .Content) 10 -}}
 <div class="note">
 {{- partial "elements/content.html" .Content -}}
 </div>
+{{- end -}}
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
   {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}

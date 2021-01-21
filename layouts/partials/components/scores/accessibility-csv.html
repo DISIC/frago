@@ -1,5 +1,13 @@
-{{- with .auditfile -}}
-{{- $auditfile := . }}
+{{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
+{{- $.context.Scratch.Set "is-csv-empty" "" -}}
+{{- range $key, $value := after 1 .auditfile -}}
+    {{- range after 3 . -}}
+      {{- if . -}}{{- $.context.Scratch.Set "is-csv-empty" 1 -}}{{- end -}}
+    {{- end -}}
+{{- end -}}
+
+{{- if and .auditfile ($.context.Scratch.Get "is-csv-empty")  -}}
+{{- $auditfile := .auditfile }}
 {{- $.context.Scratch.Set "pages" slice -}}
 
 {{- $counterconformesum := 0 -}}
@@ -25,4 +33,6 @@
       <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>
     </ul>
 </div>
+{{- else -}}
+  <p>Le fichier d’audit RGAA est vide pour le moment.</p>
 {{- end -}}

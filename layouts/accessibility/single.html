@@ -24,23 +24,34 @@
 
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
 
-{{- if ($.Scratch.Get "auditfile-csv") -}}
-
-{{/* Create an array with all pages */}}
-{{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Sujets" "Critères" "Tests") -}}
+{{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
+{{- $.Scratch.Set "is-csv-empty" "" -}}
+{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
+    {{- range after 3 . -}}
+      {{- if . -}}{{- $.Scratch.Set "is-csv-empty" 1 -}}{{- end -}}
+    {{- end -}}
+{{- end -}}
 
 <div class="wrapper audit">
+
 {{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 
+{{- if gt (len .Content) 10 -}}
 <div class="note">
 {{- partial "elements/content.html" .Content -}}
 </div>
+{{- end -}}
+
+
+{{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "is-csv-empty") -}}
+
+{{/* Create an array with all pages */}}
+{{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Sujets" "Critères" "Tests") -}}
 
 {{/* Call score components */}}
-{{- if $.Scratch.Get "auditfile-csv" -}}
 <h2 class="text-center">Scores</h2>
 <h3 class="mb-0">Conformité globale</h3>
 {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
@@ -48,7 +59,6 @@
 {{- if gt (len $pages) 1 -}}
 <h3 class="mb-0">Conformité détaillée</h3>
 {{- partial "components/scores/accessibility-graph-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
-{{- end -}}
 
 {{/* Call page parameters */}}
 {{- with .Params.accessibility -}}
@@ -172,5 +182,8 @@
 
 {{- end -}}
 {{- end -}}
+{{ else }}
+  <p>Le fichier d’audit RGAA est vide pour le moment.</p>
 {{- end -}}
+</div>
 {{- end -}}
