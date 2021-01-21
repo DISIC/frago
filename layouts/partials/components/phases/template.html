@@ -4,7 +4,7 @@
 {{- $tags := (slice .context.File.BaseFileName) -}}
 {{- $site := .context.Site -}}
 {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
-{{- $.context.Scratch.Set "lencond" (eq (len (split .context.Path "/")) 3) -}}
+{{- $.context.Scratch.Set "lencond" (gt (len (split .context.Path "/")) 3) -}}
 {{- $.context.Scratch.Set "isphases" false -}}
 {{- $.context.Scratch.Set "phases" .context.Site.Taxonomies.phases -}}
 
