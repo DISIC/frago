@@ -45,7 +45,6 @@
 </div>
 {{- end -}}
 
-
 {{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "is-csv-empty") -}}
 
 {{/* Create an array with all pages */}}
@@ -74,7 +73,7 @@
 <hr>
 
 {{/* If serveral pages tested */}}
-{{- if gt (len $pages) 1 -}}
+
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
@@ -92,7 +91,7 @@
 
 <h2>Par ordre des tests du référentiel RGAA</h2>
 
-{{- if gt (len $pages) 1 -}}
+{{- if gt (len $pages) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">A - Erreurs présentes sur toutes les pages</h3>
 {{- end -}}
@@ -177,10 +176,44 @@
       {{- end -}}
     {{- end -}}
   {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if gt (len $pages) 0 -}}
+{{/* Range map errors sort by RGAA order - on all pages */}}
+<h3 id="pagesall">Tous les tests</h3>
+{{- end -}}
+{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
+  {{ $content := delimit (uniq (after 3 .)) "" }}
+  {{- $condcontentlen := gt (len $content) 2 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+  {{- $sujets := index $value 0 -}}
+  {{- $criteres := index $value 1 -}}
+  {{- $tests := index $value 2 -}}
+  {{ if eq (len (uniq (after 3 .))) 1 }}
+  {{- range first 1 . -}}
+    {{- if or $condcontentlen $condcontentnc $condcontentc -}}
+    <p class="mb-0"><strong>
+      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $sujets }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+    </strong></p>
+    {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($sujets)) -}}
+      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+        {{- if eq $idx (string ($tests)) -}}
+        {{- if reflect.IsSlice . -}}
+        <p><em>{{ index . 0 | markdownify }}</em><br></p>
+        {{- else -}}
+        <p><em>{{ . | markdownify }}</em></p>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- end -}}
   {{- end -}}
-{{- end -}}
-
-{{- end -}}
+  {{- end -}}
 {{- end -}}
 {{- else -}}
   <p>Le fichier d’audit RGAA est vide pour le moment.</p>

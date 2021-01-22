@@ -2,7 +2,7 @@
 {{- if $rangepages -}}
 <section class="section{{ if .Get "type" }}-{{ .Get "type" }}{{ end }} text-center">
 <div class="wrapper">
-<h2>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
+<h2 hidden>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
 <ul class="list-unstyled">
 {{- range sort $rangepages ".Title" "desc" -}}

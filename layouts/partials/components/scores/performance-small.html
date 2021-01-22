@@ -19,6 +19,8 @@
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "lastfile") -}}
+{{- if .audits.metrics.details.items -}}
   <small class="text-center"><span><b class="h3">{{ div ((index .audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}s</b><br>de chargement</span></small>
+{{- end -}}
 {{- end -}}
 

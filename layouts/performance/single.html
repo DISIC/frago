@@ -29,10 +29,12 @@
   {{- end -}}
 
   {{/* Range performance file */}}
-  {{- with ($.Scratch.Get "lastfile") -}}
+
   <h2>Scores</h2>
   {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
+  {{- with ($.Scratch.Get "lastfile") -}}
   {{/* Vars with the last file of the lighthouse directory */}}
+  <h2>Règles</h2>
   {{ $lastfile := $.Scratch.Get "lastfile" }}
     {{/* Range the file */}}
     {{- range $key, $value := sort (index $lastfile "audits") ".score" "asc" -}}
