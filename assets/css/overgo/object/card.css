@@ -16,26 +16,34 @@
 
 .card-inline {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: var(--baseline);
   padding: 0 var(--baseline);
+  text-decoration: none;
+  color: var(--text-color);
 }
 
 .card-inline > * {
-  margin: 0 0 0 var(--baseline);
   padding: var(--baseline) 0;
+  width: 100%;
 }
 
 .card-inline > *:first-child {
   flex: 1;
   margin: 0;
-  text-align: left;
+  max-width: 75%;
 }
 
-.card-inline {
-  text-decoration: none;
-  color: var(--text-color);
+@media screen and (min-width: 37.5em) {
+  .card-inline {
+    justify-content: space-between;
+    text-align: left;
+  }
+  .card-inline > * {
+    width: auto;
+  }
 }
 
 .card-inline:hover {

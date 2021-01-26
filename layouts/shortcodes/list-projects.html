@@ -11,12 +11,19 @@
 {{- if eq (len (split .RelPermalink "/")) 4 -}}
 {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
 {{- end -}}
+{{- $accessibility := (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+{{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+{{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   <li>
     <a class="card-inline card-shadow" href="{{ .Permalink }}">
-      <h3 class="h4 w-75">{{ .Title }}</h3>
+      <h3 class="h4">{{ .Title }}</h3>
+      {{- if or $accessibility $quality $lighthouse -}}
+      <div class="scores-small">
       {{- if (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}<p class="mb-0">{{- partial "components/scores/performance-small" (dict "context" . "project" $project) -}}</p>{{ end }}
       {{- if (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}<p class="mb-0">{{- partial "components/scores/accessibility-small" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))))) -}}</p>{{ end }}
       {{- if (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}<p class="mb-0">{{- partial "components/scores/quality-small" (dict "context" . "project" $project) -}}</p>{{ end }}
+      </div>
+      {{- end -}}
     </a>
   </li>
 {{- end -}}

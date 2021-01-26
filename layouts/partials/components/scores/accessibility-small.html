@@ -19,7 +19,5 @@
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{ $total := add $counterconformesum $counternonconformesum }}
-{{- if not (eq $total 0) -}}
-<small class="text-center d-inline-block"><span><b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de conformité</span></small>
-{{- end -}}
+<small class="text-center d-inline-block"><span>{{- if not (eq $total 0) -}}<b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de conformité{{ else }}<b class="h3">Conformité</b><br>En cours{{- end -}}</span></small>
 {{- end -}}
