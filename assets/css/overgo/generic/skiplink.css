@@ -12,13 +12,13 @@
 
 .skip-links a {
   position: absolute;
-  overflow: hidden;
   display: inline-block;
+  overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
   padding: var(--baseline);
-  background: black;
-  color: white;
   text-decoration: none;
+  color: white;
+  background: black;
 }
 
 .skip-links a:focus {

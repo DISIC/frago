@@ -1,10 +1,12 @@
-/* Timeline
-   ----------------------------- */
+/*
+/// Timeline
+*/
+
 
 .timeline {
-    padding-left: 30px;
-    list-style: none;
-    border-left: 8px solid var(--color-grey-light);
+  padding-left: 30px;
+  list-style: none;
+  border-left: 8px solid var(--color-grey-light);
 }
 
 @media only screen and (min-width: 600px) {
@@ -17,50 +19,50 @@
 }
 
 .timeline a {
-    color: var(--background-color-body);
+  color: var(--background-color-body);
 }
 
 .timeline li {
-    position: relative;
-    margin: 40px 0;
+  position: relative;
+  margin: 40px 0;
 }
 
 .timeline p {
-    margin: 5px 0 15px;
+  margin: 5px 0 15px;
 }
 
 @media only screen and (min-width: 600px) {
-.timeline .date {
+  .timeline .date {
     position: absolute;
     top: 50%;
     left: -158px;
     margin-top: -10px;
     line-height: 20px;
     font-size: 0.95em;
-}
+  }
 }
 
 .timeline .circle {
-    position: absolute;
-    top: 50%;
-    left: -44px;
-    display: block;
-    margin-top: -10px;
-    width: 20px;
-    height: 20px;
-    border: 5px solid var(--color-grey-verylight);
-    border-radius: 50%;
-    background: #48b379;
+  position: absolute;
+  top: 50%;
+  left: -44px;
+  display: block;
+  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  border: 5px solid var(--color-grey-verylight);
+  border-radius: 50%;
+  background: #48b379;
 }
 
 .timeline .content p {
-    overflow: hidden;
-    max-height: 0;
-    max-height: 200px;
-    text-align: justify;
-    word-break: break-word;
-    hyphens: auto;
-    color: var(--background-color-body);
+  overflow: hidden;
+  max-height: 0;
+  max-height: 200px;
+  text-align: justify;
+  word-break: break-word;
+  hyphens: auto;
+  color: var(--background-color-body);
 }
 
 .timeline label {
@@ -70,7 +72,7 @@
 }
 
 .timeline .radio {
-    display: none;
+  display: none;
 }
 
 @media only screen and (min-width: 600px) {
@@ -101,25 +103,25 @@
 
   .timeline .content:before,
   .timeline .content:after {
-      position: absolute;
-      content: "";
-      right: calc(100% + 1px);
-      width: 0;
-      height: 0;
-      pointer-events: none;
-      border: solid transparent;
+    position: absolute;
+    content: "";
+    right: calc(100% + 1px);
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    border: solid transparent;
   }
 
   .timeline .content:before {
-      top: 50%;
-      margin-top: -20px;
-      border-width: 20px;
-      border-right-color: inherit;
+    top: 50%;
+    margin-top: -20px;
+    border-width: 20px;
+    border-right-color: inherit;
   }
 
   .timeline .content:after {
-      top: 50%;
-      margin-top: -17px;
-      border-width: 17px;
+    top: 50%;
+    margin-top: -17px;
+    border-width: 17px;
   }
 }

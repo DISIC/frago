@@ -6,8 +6,8 @@
   margin: var(--baseline) 0 calc(var(--baseline) * 2);
   padding: 0 var(--baseline) var(--baseline);
   color: var(--text-color);
-  background: var(--background-color-body);
   border: 1px solid var(--color-grey);
+  background: var(--background-color-body);
 }
 
 .tableofcontents ul {

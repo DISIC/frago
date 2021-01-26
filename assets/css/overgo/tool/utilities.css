@@ -2,52 +2,55 @@
 // Utility classes
 */
 
-
 /* Display */
 
 .d-block {
-    display: block;
+  display: block;
 }
 
 .d-inline-block {
-    display: inline-block;
+  display: inline-block;
 }
 
 .center {
-    margin-right: auto;
-    margin-left: auto;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .left {
-    float: left;
+  float: left;
 }
 
 .right {
-    float: right;
+  float: right;
+}
+
+.w-75 {
+  width: 75%;
 }
 
 .w-100 {
-    width: 100%;
+  width: 100%;
 }
 
 /* Text */
 
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 
 .text-left {
-    text-align: left;
+  text-align: left;
 }
 
 .text-right {
-    text-align: right;
+  text-align: right;
 }
 
 /* Margin */
 
 .m-0 {
-    margin: 0;
+  margin: 0;
 }
 
 .mt-0 {
@@ -55,13 +58,13 @@
 }
 
 .mb-0 {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* Color */
 
 .text-color {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .text-color-light {
@@ -69,23 +72,22 @@
 }
 
 /* Toggling content */
-[hidden]
-.hide,
+[hidden] .hide,
 .d-none {
-    display: none !important;
+  display: none !important;
 }
 
 .show {
-    display: block !important;
+  display: block !important;
 }
 
 .invisible {
-    position: absolute;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    margin: -1px;
-    padding: 0;
-    width: 1px;
-    height: 1px;
-    border: 0;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  border: 0;
 }

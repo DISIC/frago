@@ -11,8 +11,8 @@
 
 ::selection {
   color: inherit; /* 1. */
+  background-color: #accef7; /* 3. */
   text-shadow: inherit; /* 2. */
-  background-color: #ACCEF7; /* 3. */
 }
 
 html,
@@ -46,6 +46,7 @@ h3 {
 
 abbr {
   text-transform: uppercase; /* 1 */
+
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 1, "lnum" 0, "smcp" 1, "c2sc" 1; /* 2 */
 }
 

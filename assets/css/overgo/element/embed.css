@@ -8,6 +8,9 @@ embed {
   min-height: 800px;
 }
 
-iframe, embed, object, video {
+iframe,
+embed,
+object,
+video {
   max-width: 100%;
 }

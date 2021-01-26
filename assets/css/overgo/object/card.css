@@ -34,8 +34,8 @@
 }
 
 .card-inline {
-  color: var(--text-color);
   text-decoration: none;
+  color: var(--text-color);
 }
 
 .card-inline:hover {
@@ -61,7 +61,8 @@
   box-shadow: var(--enable-shadows, 0 0 1px rgba(0, 0, 0, 0.11), 0 0 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11));
 }
 
-.card h3,.card h4 {
+.card h3,
+.card h4 {
   line-height: 1.25;
   color: var(--color-grey-dark);
 }
@@ -75,6 +76,7 @@
 .card > img {
   width: 100%;
   max-height: 7em;
+
   object-fit: cover;
 }
 
@@ -83,6 +85,7 @@
   width: calc(100% + calc(var(--baseline) * 2));
   max-width: calc(100% + calc(var(--baseline) * 2));
   max-height: 100em;
+
   object-fit: cover;
 }
 

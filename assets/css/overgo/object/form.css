@@ -3,9 +3,9 @@
 */
 
 form {
-  max-width: 40em;
   margin: auto;
   padding: var(--baseline) calc(var(--baseline) * 2);
+  max-width: 40em;
   background: var(--color-primary-verylight);
 }
 
@@ -15,7 +15,7 @@ fieldset {
   border: none;
 }
 
-fieldset>* {
+fieldset > * {
   overflow: hidden;
   padding: 0.2em;
 }
@@ -62,8 +62,8 @@ textarea {
   font-size: 1em;
   vertical-align: middle;
   border: 1px solid var(--color-grey-dark);
-  background-color: #fff;
   outline: none;
+  background-color: #fff;
 }
 
 input[type=text]:optional,
@@ -103,8 +103,8 @@ input[type=date]:disabled,
 input[type=email]:disabled,
 input[type=password]:disabled,
 input[type=number]:disabled {
-  background-color: var(--color-grey-light);
   cursor: not-allowed;
+  background-color: var(--color-grey-light);
 }
 
 input[type=text]:not(:placeholder-shown),
@@ -114,8 +114,8 @@ input[type=date]:not(:placeholder-shown),
 input[type=email]:not(:placeholder-shown),
 input[type=password]:not(:placeholder-shown),
 input[type=number]:not(:placeholder-shown) {
-  box-shadow: none;
   border-color: var(--color-grey-light);
+  box-shadow: none;
 }
 
 input[type=text]:not(:placeholder-shown):valid,
@@ -125,8 +125,8 @@ input[type=date]:not(:placeholder-shown):valid,
 input[type=email]:not(:placeholder-shown):valid,
 input[type=password]:not(:placeholder-shown):valid,
 input[type=number]:not(:placeholder-shown):valid {
-  box-shadow: none;
   border-color: hsl(var(--base-green), var(--base-sat), var(--base-light));
+  box-shadow: none;
 }
 
 input[type=text]:not(:placeholder-shown):invalid,
@@ -136,12 +136,11 @@ input[type=date]:not(:placeholder-shown):invalid,
 input[type=email]:not(:placeholder-shown):invalid,
 input[type=password]:not(:placeholder-shown):invalid,
 input[type=number]:not(:placeholder-shown):invalid {
-  box-shadow: none;
   border-color: hsl(var(--base-red), var(--base-sat), var(--base-light));
+  box-shadow: none;
 }
 
 .hf-warning {
-
   overflow: hidden;
   margin: calc(var(--baseline) / -2) 0 calc(var(--baseline) / 2);
   font-size: 75%;

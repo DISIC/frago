@@ -3,17 +3,17 @@
 */
 
 .icon:before {
+  content: "";
   display: block;
   margin: 0 auto 1em;
-  content: '';
   width: 100px;
   height: 100px;
   color: var(--color-primary-dark);
-  background-repeat: no-repeat;
-  background-color: #fff;
-  background-position: center center;
-  border-radius: 50%;
   border: 1px solid var(--color-primary-verylight);
+  border-radius: 50%;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .control:before {

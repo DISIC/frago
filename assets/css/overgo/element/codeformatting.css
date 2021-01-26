@@ -2,11 +2,12 @@
 /// Code formatting
 */
 
-pre, code {
+pre,
+code {
   font-size: 15px;
+  color: var(--color-grey-light,#fefefe);
   border: 1px solid var(--color-grey-light);
   border-radius: 3px;
-  color: var(--color-grey-light,#fefefe);
   background-color: #272822;
 }
 

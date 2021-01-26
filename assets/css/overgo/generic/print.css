@@ -9,7 +9,6 @@
 */
 
 @media print {
-
   /* Reset */
   *,
   *:before,
@@ -19,14 +18,14 @@
   div:first-line,
   blockquote:first-line,
   li:first-line {
-    background: transparent !important;
     color: #000 !important;
+    background: transparent !important;
     box-shadow: none !important;
     text-shadow: none !important;
   }
 
   /* Content */
-  body>*:not(main) {
+  body > *:not(main) {
     display: none;
   }
 
@@ -50,13 +49,12 @@
   }
 
   html {
-
   }
 
   body {
     font-size: 11pt;
     color: #000;
-    background-color:#fff;
+    background-color: #fff;
   }
 
   a,
@@ -85,8 +83,8 @@
   }
 
   .wrapper {
-    max-width: none;
     margin: 0;
+    max-width: none;
   }
 
   header {
@@ -98,18 +96,21 @@
     display: none;
   }
 
-  table th, table td {
+  table th,
+  table td {
     padding: 1px 5px;
   }
 
-  pre, code {
+  pre,
+  code {
     overflow-x: auto;
-		white-space: pre-wrap;
-		white-space: -moz-pre-wrap !important;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-		word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     background: #fff;
+
     break-inside: avoid;
   }
 
@@ -122,7 +123,8 @@
     display: block;
   }
 
-  .no-print, .no-print * {
+  .no-print,
+  .no-print * {
     display: none !important;
   }
 
@@ -156,5 +158,4 @@
   .page-break {
     break-before: page;
   }
-
 }

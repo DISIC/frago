@@ -1,5 +1,5 @@
-/* Blockquotes
-// -------------------------
+/*
+/// Blockquotes
 */
 
 blockquote {
@@ -10,7 +10,9 @@ blockquote {
   background-color: #fff;
 }
 
-blockquote, blockquote p, q {
+blockquote,
+blockquote p,
+q {
   color: var(--color-grey-dark);
 }
 

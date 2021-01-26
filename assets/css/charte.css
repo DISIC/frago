@@ -1,47 +1,47 @@
 
 body {
-  font-size: 1em;
   font-family: "Marianne", Arial;
+  font-size: 1em;
 }
 
 h1 {
-  font-size: 46px;
   line-height: 52px;
+  font-family: "Marianne", Arial;
+  font-size: 46px;
   font-weight: 800;
   color: black;
-  font-family: "Marianne", Arial;
 }
 
 h2 {
-  font-size: 38px;
   line-height: 44px;
+  font-family: "Marianne", Arial;
+  font-size: 38px;
   font-weight: 800;
   color: black;
-  font-family: "Marianne", Arial;
 }
 
 h3 {
+  line-height: 34px;
+  font-family: "Marianne", Arial;
   font-size: 30px;
   font-weight: 800;
-  line-height: 34px;
   color: #000000;
-  font-family: "Marianne", Arial;
 }
 
 h4 {
+  line-height: 28px;
+  font-family: "Marianne", Arial;
   font-size: 26px;
   font-weight: 800;
-  line-height: 28px;
   color: #000000;
-  font-family: "Marianne", Arial;
 }
 
 h5 {
+  line-height: 22px;
+  font-family: "Marianne", Arial;
   font-size: 20px;
   font-weight: 800;
-  line-height: 22px;
   color: #000000;
-  font-family: "Marianne", Arial;
 }
 
 
@@ -58,24 +58,24 @@ img {
     display: inline-block;
   }
 
-  .charte-img-mobile+.charte-img-desktop {
+  .charte-img-mobile + .charte-img-desktop {
     display: none;
   }
 }
 
 .charte-homepage-header {
-  background-color: #f9f8f6;
   padding-top: 70px;
   padding-bottom: 70px;
+  background-color: #f9f8f6;
 }
 
 .charte-homepage-header h1,
 .charte-homepage-header .charte-main-title {
-  color: #000091;
-  font-size: 52px;
-  line-height: 56px;
-  font-weight: 800;
   width: 60%;
+  line-height: 56px;
+  font-size: 52px;
+  font-weight: 800;
+  color: #000091;
 }
 
 @media screen and (max-width: 959px) {
@@ -98,25 +98,25 @@ img {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-justify-content: center;
     -ms-flex-pack: center;
+    -webkit-justify-content: center;
     justify-content: center;
   }
 }
 
 .charte-homepage-header ul li {
-  float: left;
-  padding-bottom: 6px;
-  margin-right: 30px;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  float: left;
+  -webkit-align-items: center;
+  align-items: center;
+  -ms-flex-align: center;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
+  margin-right: 30px;
+  padding-bottom: 6px;
 }
 
 .charte-homepage-header ul li:last-child {
@@ -135,15 +135,15 @@ img {
 .charte-homepage-header ul li.active .mask-border,
 .charte-homepage-header ul li:hover .mask-border {
   display: block;
+  margin-top: 2px;
   width: 50%;
   border-top: 2px solid black;
-  margin-top: 2px;
 }
 
 .charte-homepage-header ul li a {
-  color: black;
-  font-weight: 800;
   font-size: 14px;
+  font-weight: 800;
+  color: black;
 }
 
 .charte-homepage-header ul li a:hover,
@@ -153,14 +153,14 @@ img {
 }
 
 #charte-header-bottom-separator {
-  box-shadow: 0 12px 17px 0 rgba(170, 170, 170, 0.23);
-  background-color: #ffffff;
   height: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 17px 0 rgba(170, 170, 170, 0.23);
 }
 
 #content.page-charte-graphique-homepage a.link-read-more {
-  font-size: 12px;
   line-height: 20px;
+  font-size: 12px;
   color: #000091;
 }
 
@@ -177,13 +177,13 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marianne #charte-homepage-marianne-contenu {
-  z-index: 1;
   position: relative;
+  z-index: 1;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marianne #charte-homepage-marianne-contenu #charte-homepage-marianne-texte {
-  width: 50%;
   margin-top: 50px;
+  width: 50%;
 }
 
 @media screen and (max-width: 959px) {
@@ -216,8 +216,8 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-typo {
-  text-align: right;
   position: relative;
+  text-align: right;
 }
 
 @media screen and (max-width: 959px) {
@@ -227,12 +227,12 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-typo #charte-homepage-typo-applat {
-  height: 468px;
   position: absolute;
-  background-color: #e6eaf5;
-  width: calc(100% - (100% - 960px) / 2 + 2%);
   z-index: 0;
   top: 21px;
+  width: calc(100% - (100% - 960px) / 2 + 2%);
+  height: 468px;
+  background-color: #e6eaf5;
 }
 
 @media screen and (max-width: 959px) {
@@ -243,8 +243,8 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-typo #charte-homepage-typo-contenu-container {
-  z-index: 1;
   position: relative;
+  z-index: 1;
 }
 
 @media screen and (max-width: 959px) {
@@ -254,9 +254,9 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-typo #charte-homepage-typo-contenu-container #charte-homepage-typo-texte {
-  width: 40%;
   float: right;
   margin-top: 55px;
+  width: 40%;
 }
 
 @media screen and (max-width: 959px) {
@@ -266,9 +266,9 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-typo #charte-homepage-typo-contenu-container #charte-homepage-typo-lien {
+  float: right;
   clear: both;
   margin-top: 26px;
-  float: right;
   width: 20%;
 }
 
@@ -306,26 +306,26 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-valeurs #charte-homepage-valeurs-applat {
-  height: 468px;
   position: absolute;
-  background-color: #e6eaf5;
-  width: calc(100% - (100% - 960px) / 2 + 2%);
-  margin-left: calc(100% - (100% - (100% - 960px) / 2 + 2%));
   z-index: 0;
   top: 24px;
+  margin-left: calc(100% - (100% - (100% - 960px) / 2 + 2%));
+  width: calc(100% - (100% - 960px) / 2 + 2%);
+  height: 468px;
+  background-color: #e6eaf5;
 }
 
 @media screen and (max-width: 959px) {
   #content.page-charte-graphique-homepage .charte-homepage-valeurs #charte-homepage-valeurs-applat {
+    margin-left: 5%;
     width: 95%;
     height: 368px;
-    margin-left: 5%;
   }
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-valeurs #charte-homepage-valeurs-contenu-container {
-  z-index: 1;
   position: relative;
+  z-index: 1;
 }
 
 @media screen and (max-width: 959px) {
@@ -335,8 +335,8 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-valeurs #charte-homepage-valeurs-contenu-container #charte-homepage-valeurs-texte {
-  width: 40%;
   margin-top: 55px;
+  width: 40%;
 }
 
 @media screen and (max-width: 959px) {
@@ -363,8 +363,8 @@ img {
 
 @media screen and (max-width: 959px) {
   #content.page-charte-graphique-homepage .charte-homepage-valeurs #charte-homepage-valeurs-contenu-container #charte-homepage-valeurs-image {
-    text-align: center;
     padding-top: 30px;
+    text-align: center;
   }
 }
 
@@ -387,9 +387,9 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-contenu #charte-homepage-marque-texte {
-  width: 50%;
-  margin-top: 50px;
   float: right;
+  margin-top: 50px;
+  width: 50%;
 }
 
 @media screen and (max-width: 959px) {
@@ -399,10 +399,10 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-contenu #charte-homepage-marque-lien {
-  margin-top: 28px;
-  width: 25%;
   float: right;
   clear: right;
+  margin-top: 28px;
+  width: 25%;
 }
 
 @media screen and (max-width: 959px) {
@@ -412,18 +412,18 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider {
-  clear: both;
   position: relative;
   z-index: 0;
-  width: 60%;
   top: -30px;
+  clear: both;
+  width: 60%;
 }
 
 @media screen and (max-width: 959px) {
   #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider {
-    width: 100%;
     top: 0;
     padding-top: 30px;
+    width: 100%;
   }
 }
 
@@ -432,8 +432,8 @@ img {
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: flex-end;
-  -ms-flex-align: end;
   align-items: flex-end;
+  -ms-flex-align: end;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-list {
@@ -445,27 +445,27 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-list .slick-slide img {
-  max-height: 100%;
   display: inline;
+  max-height: 100%;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-prev,
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-next {
   position: relative;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   float: left;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-prev::before,
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-next::before {
-  font-family: "Open Sans", Arial, Sans-Serif;
-  color: #000091;
-  font-weight: normal;
-  font-size: 40px;
   line-height: 40px;
+  font-family: "Open Sans", Arial, Sans-Serif;
+  font-size: 40px;
+  font-weight: normal;
+  color: #000091;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-prev::before {
@@ -479,8 +479,8 @@ img {
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-dots {
   position: relative;
   bottom: -7px;
-  width: 12%;
   float: left;
+  width: 12%;
 }
 
 @media screen and (max-width: 959px) {
@@ -491,9 +491,9 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-dots li {
-  height: auto;
-  width: auto;
   margin: 0;
+  width: auto;
+  height: auto;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-dots li.slick-active a {
@@ -502,16 +502,16 @@ img {
 
 #content.page-charte-graphique-homepage .charte-homepage-marque #charte-homepage-marque-slider .slick-dots li a {
   display: block;
-  margin: 0px 1px;
-  background: #d8d8d8;
-  border-radius: 50px;
-  height: 14px;
+  margin: 0 1px;
   width: 14px;
+  height: 14px;
+  border-radius: 50px;
+  background: #d8d8d8;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-sources {
-  background-color: #f9f8f6;
   padding: 80px 0;
+  background-color: #f9f8f6;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-sources .limiter {
@@ -519,8 +519,8 @@ img {
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: center;
-  -ms-flex-align: center;
   align-items: center;
+  -ms-flex-align: center;
 }
 
 @media screen and (max-width: 959px) {
@@ -534,11 +534,11 @@ img {
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-sources h1 {
-  color: #000091;
-  font-size: 52px;
-  line-height: 56px;
-  font-weight: 800;
   width: 95%;
+  line-height: 56px;
+  font-size: 52px;
+  font-weight: 800;
+  color: #000091;
 }
 
 @media screen and (max-width: 959px) {
@@ -566,28 +566,29 @@ img {
 
 @media screen and (max-width: 959px) {
   #content.page-charte-graphique-homepage .charte-homepage-sources #charte-homepage-sources-lien {
+    margin-top: 30px;
     width: 100%;
     text-align: center;
-    margin-top: 30px;
   }
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-sources h1 {
-  opacity: 0;
-  -webkit-transform: translateY(20%);
-  -ms-transform: translateY(20%);
-  transform: translateY(20%);
   transition: opacity 1s ease-out, -webkit-transform 2s ease-out;
   transition: transform 2s ease-out, opacity 1s ease-out;
   transition: transform 2s ease-out, opacity 1s ease-out, -webkit-transform 2s ease-out;
+  -webkit-transform: translateY(20%);
+  -ms-transform: translateY(20%);
+  transform: translateY(20%);
+  opacity: 0;
+
   will-change: transform, opacity;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-sources h1.is-visible {
-  opacity: 1;
   -webkit-transform: none;
   -ms-transform: none;
   transform: none;
+  opacity: 1;
 }
 
 #content.page-charte-graphique-homepage .charte-homepage-marianne h2,
@@ -606,13 +607,14 @@ img {
 #content.page-charte-graphique-homepage #charte-homepage-valeurs-texte,
 #content.page-charte-graphique-homepage #charte-homepage-valeurs-lien,
 #content.page-charte-graphique-homepage #charte-homepage-sources-texte {
-  opacity: 0;
-  -webkit-transform: translateY(50%);
-  -ms-transform: translateY(50%);
-  transform: translateY(50%);
   transition: opacity 1s ease-out, -webkit-transform 2s ease-out;
   transition: transform 2s ease-out, opacity 1s ease-out;
   transition: transform 2s ease-out, opacity 1s ease-out, -webkit-transform 2s ease-out;
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
+  opacity: 0;
+
   will-change: transform, opacity;
 }
 
@@ -632,19 +634,20 @@ img {
 #content.page-charte-graphique-homepage #charte-homepage-valeurs-texte.is-visible,
 #content.page-charte-graphique-homepage #charte-homepage-valeurs-lien.is-visible,
 #content.page-charte-graphique-homepage #charte-homepage-sources-texte.is-visible {
-  opacity: 1;
   -webkit-transform: none;
   -ms-transform: none;
   transform: none;
+  opacity: 1;
 }
 
 #content.page-charte-graphique-homepage #charte-homepage-valeurs-applat {
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
   transition: -webkit-transform 1s ease-out;
   transition: transform 1s ease-out;
   transition: transform 1s ease-out, -webkit-transform 1s ease-out;
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+
   will-change: transform;
 }
 
@@ -655,12 +658,13 @@ img {
 }
 
 #content.page-charte-graphique-homepage #charte-homepage-typo-applat {
-  -webkit-transform: translateX(-100%);
-  -ms-transform: translateX(-100%);
-  transform: translateX(-100%);
   transition: -webkit-transform 1s ease-out;
   transition: transform 1s ease-out;
   transition: transform 1s ease-out, -webkit-transform 1s ease-out;
+  -webkit-transform: translateX(-100%);
+  -ms-transform: translateX(-100%);
+  transform: translateX(-100%);
+
   will-change: transform;
 }
 

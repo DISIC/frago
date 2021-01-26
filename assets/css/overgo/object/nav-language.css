@@ -8,6 +8,6 @@
 }
 
 .nav-language li:not(:first-child):before {
-  content: '-';
+  content: "-";
   margin-left: 4px;
 }

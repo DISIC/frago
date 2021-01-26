@@ -1,8 +1,9 @@
 /*
 /// Very basic styles
-///*/
+*/
 
-html, body {
+html,
+body {
   box-sizing: border-box;
   margin: 0;
   scroll-behavior: smooth;
@@ -14,7 +15,9 @@ html, body {
   }
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -26,8 +29,8 @@ html, body {
 
 /* Selection focus */
 *:focus {
-  box-shadow: var(--enable-shadows, 0 0 5px 1px var(--color-primary));
   outline: 1px solid var(--color-primary-light);
+  box-shadow: var(--enable-shadows, 0 0 5px 1px var(--color-primary));
 }
 
 /* Hide focus styles if they're not needed, for example,
@@ -38,12 +41,12 @@ when an element receives focus via the mouse. */
 
 /* Show focus styles on keyboard focus. */
 :focus-visible {
-  box-shadow: var(--enable-shadows, 0 0 4px 1px var(--color-primary));
   outline: 1px solid var(--color-primary-light);
+  box-shadow: var(--enable-shadows, 0 0 4px 1px var(--color-primary));
 }
 
 /* Chunk rendering for all but the first article */
-body > main > *+* {
+body > main > * + * {
   content-visibility: auto;
 }
 
@@ -92,7 +95,8 @@ a:hover {
   text-decoration: none;
 }
 
-a:hover, a:active {
+a:hover,
+a:active {
   outline: none;
 }
 
@@ -100,7 +104,8 @@ a:hover, a:active {
 // -------------------------
 */
 
-ul, ol {
+ul,
+ol {
   margin-bottom: var(--baseline);
 }
 
@@ -120,4 +125,3 @@ ul, ol {
   display: inline-block;
   margin: 0 -5px 0 0;
 }
-
