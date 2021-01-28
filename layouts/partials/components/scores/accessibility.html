@@ -11,7 +11,7 @@
 {{- range $key, $value := index . 0 -}}
     {{- $.context.Scratch.Add "pages" $key -}}
 {{- end -}}
-{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Sujets" "Critères" "Tests") -}}
+{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 {{- range $id, $value := $pages -}}
   {{ $page := . }}
   {{- $.context.Scratch.Set "counterconforme" 0 -}}

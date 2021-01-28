@@ -100,20 +100,20 @@
   {{- $condcontentlen := gt (len $content) 2 -}}
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
-  {{- $Thématiques := index $value 0 -}}
+  {{- $thematiques := index $value 0 -}}
   {{- $criteres := index $value 1 -}}
   {{- $tests := index $value 2 -}}
   {{ if eq (len (uniq (after 3 .))) 1 }}
   {{- range first 1 . -}}
     {{- if or $condcontentlen $condcontentnc -}}
     <p class="mb-0"><strong>
-      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $Thématiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
     </strong></p>
     {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($Thématiques)) -}}
+      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
@@ -144,33 +144,31 @@
   <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{ if ne (len (uniq (after 3 .))) 1 }}
-    {{- range . -}}
-      {{- $content := . -}}
-      {{- $condcontentlen := gt (len $content) 2 -}}
-      {{- $condcontentnc := (eq $content "nc") -}}
-      {{- $condcontentc := (eq $content "c") -}}
-      {{- $Thématiques := index $value 0 -}}
-      {{- $criteres := index $value 1 -}}
-      {{- $tests := index $value 2 -}}
-      {{- if or $condcontentlen $condcontentnc $condcontentc -}}
-          <p class="mb-0"><strong>
-          {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $Thématiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
-        </strong></p>
-        {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-          {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($Thématiques)) -}}
-          {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
-            {{- if eq $idx (string ($tests)) -}}
-            {{- if reflect.IsSlice . -}}
-            <p><em>{{ index . 0 | markdownify }}</em><br></p>
-            <ol>
-              {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
-            </ol>
-            {{- else -}}
-            <p><em>{{ . | markdownify }}</em></p>
-            {{- end -}}
+    {{- $content := (string (index . (add $id 3))) -}}
+    {{- $condcontentlen := gt (len $content) 2 -}}
+    {{- $condcontentnc := (eq $content "nc") -}}
+    {{- $condcontentc := (eq $content "c") -}}
+    {{- $thematiques := index $value 0 -}}
+    {{- $criteres := index $value 1 -}}
+    {{- $tests := index $value 2 -}}
+    {{- if or $condcontentlen $condcontentnc -}}
+        <p class="mb-0"><strong>
+        {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+      </strong></p>
+      {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+        {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
+        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+          {{- if eq $idx (string ($tests)) -}}
+          {{- if reflect.IsSlice . -}}
+          <p><em>{{ index . 0 | markdownify }}</em><br></p>
+          <ol>
+            {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+          </ol>
+          {{- else -}}
+          <p><em>{{ . | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
@@ -180,28 +178,27 @@
 {{- end -}}
 {{- end -}}
 {{- if gt (len $pages) 0 -}}
+<br><hr class="divider">
 {{/* Range map errors sort by RGAA order - on all pages */}}
-<h3 id="pagesall">Tous les tests présents sur toutes les pages</h3>
+<h3 id="pagesall">Tous les tests non conformes du site</h3>
 {{- end -}}
 {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{- $content := delimit (uniq (after 3 .)) "" -}}
   {{- $condcontentlen := gt (len $content) 2 -}}
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
-  {{- $Thématiques := index $value 0 -}}
+  {{- $thematiques := index $value 0 -}}
   {{- $criteres := index $value 1 -}}
   {{- $tests := index $value 2 -}}
-  {{- if eq (len (uniq (after 3 .))) 1 -}}
   {{- range first 1 . -}}
-    {{- if or $condcontentlen $condcontentnc $condcontentc -}}
+    {{- if or $condcontentlen $condcontentnc -}}
     <p class="mb-0"><strong>
-      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $Thématiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
     </strong></p>
-    {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($Thématiques)) -}}
+      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
@@ -212,7 +209,6 @@
       {{- end -}}
     {{- end -}}
     {{- end -}}
-  {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- else -}}

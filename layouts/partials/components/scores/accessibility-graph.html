@@ -5,15 +5,15 @@
 {{- range $key, $value := index . 0 -}}
     {{- $.context.Scratch.Add "pages" $key -}}
 {{- end -}}
-{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Sujets" "Critères" "Tests") -}}
+{{- $pages := $.context.Scratch.Get "pages" | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 
 {{/* By topic */}}
 {{- range $key, $value := $topics -}}
 {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
 {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
-  {{- range $id, $value := where $auditfile "Sujets" (string (add $key 1)) -}}
+  {{- range $id, $value := where $auditfile "Thématiques" (string (add $key 1)) -}}
     {{- range $key2, $value2 := . -}}
-      {{- if and (not (eq $key2 "Sujets")) (not (eq $key2 "Critères")) (not (eq $key2 "Tests")) -}}
+      {{- if and (not (eq $key2 "Thématiques")) (not (eq $key2 "Critères")) (not (eq $key2 "Tests")) -}}
       {{- $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") -}}
       {{- $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") -}}
       {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformetopic" 1 -}}{{ $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") }}{{ end }}
@@ -30,7 +30,7 @@
   {{- range $id, $value := $auditfile -}}
     {{- range $key2, $value2 := . -}}
     {{- if eq $key2 $key -}}
-      {{- if and (not (eq $key2 "Sujets")) (not (eq $key2 "Critères")) (not (eq $key2 "Tests")) -}}
+      {{- if and (not (eq $key2 "Thématiques")) (not (eq $key2 "Critères")) (not (eq $key2 "Tests")) -}}
       {{- $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") -}}
       {{- $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") -}}
       {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformepage" 1 -}}{{ $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") }}{{ end }}
