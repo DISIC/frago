@@ -42,7 +42,7 @@
 }
 
 .flex-gap > * {
-  padding: var(--baseline) 0;
+  padding: calc(var(--baseline) / 2) 0;
 }
 
 .flex-wrap {
@@ -56,7 +56,7 @@
   }
 
   .flex-gap > * {
-    padding: 0 var(--baseline);
+    padding: 0 calc(var(--baseline) / 2);
   }
 }
 
