@@ -2,7 +2,7 @@
 {{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
 {{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l'information" "Formulaires" "Navigation" "Consultation" -}}
-{{- $pages := (index $auditfile 0) | symdiff (slice "Sujets" "Critères" "Tests") -}}
+{{- $pages := (index $auditfile 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 
 
 {{/* By topics */}}
