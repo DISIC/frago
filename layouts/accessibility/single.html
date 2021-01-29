@@ -120,11 +120,11 @@
         <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
         {{- if (after 1 .) -}}
         <ol>
-          {{ range after 1 . }}<li>{{ . | markdownify }}</li>{{ end }}
+          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{ end }}
         </ol>
         {{- end -}}
         {{- else -}}
-        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -132,6 +132,8 @@
   {{- end -}}
   {{- end -}}
 {{- end -}}
+
+
 
 <br><hr class="divider">
 
@@ -168,11 +170,11 @@
           <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
           {{- if (after 1 .) -}}
           <ol>
-            {{ range after 1 . }}<li>{{ . | markdownify }}</li>{{ end }}
+            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{ end }}
           </ol>
           {{- end -}}
           {{- else -}}
-          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
+          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
@@ -208,7 +210,7 @@
         {{- if reflect.IsSlice . -}}
         <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
         {{- else -}}
-        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
