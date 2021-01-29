@@ -117,12 +117,14 @@
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
-        <p><em>{{ index . 0 | markdownify }}</em><br></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+        {{- if (after 1 .) -}}
         <ol>
-          {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+          {{ range after 1 . }}<li>{{ . | markdownify }}</li>{{ end }}
         </ol>
+        {{- end -}}
         {{- else -}}
-        <p><em>{{ . | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -163,12 +165,14 @@
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
-          <p><em>{{ index . 0 | markdownify }}</em><br></p>
+          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+          {{- if (after 1 .) -}}
           <ol>
-            {{ range after 1 .}}<li>{{ . | markdownify }}</li>{{ end }}
+            {{ range after 1 . }}<li>{{ . | markdownify }}</li>{{ end }}
           </ol>
+          {{- end -}}
           {{- else -}}
-          <p><em>{{ . | markdownify }}</em></p>
+          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
@@ -202,9 +206,9 @@
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
-        <p><em>{{ index . 0 | markdownify }}</em><br></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
         {{- else -}}
-        <p><em>{{ . | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" . 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
