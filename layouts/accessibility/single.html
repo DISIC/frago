@@ -133,12 +133,9 @@
   {{- end -}}
 {{- end -}}
 
-
-
-<br><hr class="divider">
-
 {{/* If serveral pages tested */}}
 {{- if gt (len $pages) 1 -}}
+
 {{/* Range map errors sort by RGAA order - on specifics pages */}}
 <h3>B - Erreurs présentes sur les pages spécifiques</h3>
 {{/* Display errors presents on specific pages */}}
@@ -146,6 +143,7 @@
   {{ $.Scratch.Set "text" 0 }}
   {{ $page := . }}
   <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
+  {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{ if ne (len (uniq (after 3 .))) 1 }}
     {{- $content := (string (index . (add $id 3))) -}}
@@ -156,6 +154,7 @@
     {{- $criteres := index $value 1 -}}
     {{- $tests := index $value 2 -}}
     {{- if or $condcontentlen $condcontentnc -}}
+    {{- $.Scratch.Add "is-page-error" 1 -}}
         <p class="mb-0"><strong>
         {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
         {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
@@ -181,6 +180,7 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- if ge ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- if gt (len $pages) 0 -}}
