@@ -68,6 +68,15 @@
 <h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "conforme") -}}&nbsp;critères</h2>
 <h3 class="mb-0">Conformité globale</h3>
 {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
+{{- if ($.Scratch.Get "totaltests") -}}
+<div class="scores">
+    <ul>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ add 1 ($.Scratch.Get "totaltests") }}</b><br>Tests</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ ($.Scratch.Get "counterconforme") }}</b><br>Tests conformes</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ ($.Scratch.Get "counternonconforme") }}</b><br>Tests non conformes</span></li>
+    </ul>
+</div>
+{{- end -}}
 {{/* If serveral pages tested */}}
 {{- if gt (len $pages) 1 -}}
 <h3 class="mb-0">Conformité détaillée</h3>
@@ -100,16 +109,6 @@
     <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
     {{- end -}}
   </ul>
-</div>
-{{- end -}}
-
-{{- if ($.Scratch.Get "totaltests") -}}
-<div class="scores">
-    <ul>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ add 1 ($.Scratch.Get "totaltests") }}</b><br>Tests</span></li>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ ($.Scratch.Get "counterconforme") }}</b><br>Tests conformes</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ ($.Scratch.Get "counternonconforme") }}</b><br>Tests non conformes</span></li>
-    </ul>
 </div>
 {{- end -}}
 
