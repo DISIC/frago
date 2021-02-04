@@ -1,7 +1,8 @@
 {{- define "main" -}}
-  <h1 class="text-center">{{ .Title }}</h1>
+
   {{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
-  <div class="wrapper">
+  <div class="wrapper narrow">
+    <h1 class="text-center">{{ .Title }}</h1>
 
     {{- if eq $project "amendes" -}}
     <h2 class="text-center">Planning</h2>

@@ -20,6 +20,7 @@
 
 {{- with ($.context.Scratch.Get "lastfile") -}}
 {{- if .audits.metrics.details.items -}}
+{{/* https://blog.octo.com/sous-le-capot-de-la-mesure-ecoindex/ */}}
 {{- $pageweight := (index (.audits.diagnostics.details.items) 0).totalByteWeight -}}
 {{- $domsize := (index .audits "dom-size").numericValue  -}}
 {{- $requests := (index (.audits.diagnostics.details.items) 0).numRequests -}}

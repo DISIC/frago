@@ -15,7 +15,7 @@
       {{- $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") -}}
       {{- $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") -}}
       {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformetopic" 1 -}}{{ $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") }}{{ end }}
-      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{ $.context.Scratch.Add "counternonconformetopic" 1 -}}{{ $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") }}{{ end }}
+      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{ $.context.Scratch.Add "counternonconformetopic" 1 -}}{{ $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") }}{{ end }}
     {{- end -}}
   {{- end -}}
   {{- end -}}
@@ -31,7 +31,7 @@
       {{- $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") -}}
       {{- $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") -}}
       {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformepage" 1 -}}{{ $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") }}{{ end }}
-      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{ $.context.Scratch.Add "counternonconformepage" 1 -}}{{ $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") }}{{ end }}
+      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{ $.context.Scratch.Add "counternonconformepage" 1 -}}{{ $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") }}{{ end }}
     {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -47,7 +47,7 @@
   {{ range $id, $value := after 3 $value }}
     {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
     {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
-    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
+    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
   {{- end -}}
   {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconformetopic") -}}
   {{- $counternonapplicablesum = add $counternonapplicablesum ($.context.Scratch.Get "counternonapplicable") -}}

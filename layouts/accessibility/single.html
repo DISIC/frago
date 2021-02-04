@@ -25,14 +25,28 @@
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
 
 {{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
-{{- $.Scratch.Set "is-csv-empty" "" -}}
+{{- $.Scratch.Set "is-csv-empty" 0 -}}
+{{- $.Scratch.Set "totaltests" 0 -}}
+{{- $.Scratch.Set "counterconforme" 0 -}}
+{{- $.Scratch.Set "counternonapplicable" 0 -}}
+{{- $.Scratch.Set "counternonconforme" 0 -}}
+{{- $.Scratch.Set "countertopic" 0 -}}
+{{- $.Scratch.Set "critere" "" -}}
 {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
+    {{- $critere := printf "%s%s" (index . 0) (index . 1) -}}
+    {{- if ne $critere ($.Scratch.Get "critere") -}}{{- $.Scratch.Set "countertopic" 0 -}}{{- end -}}
     {{- range after 3 . -}}
-      {{- if . -}}{{- $.Scratch.Set "is-csv-empty" 1 -}}{{- end -}}
+      {{- if or (eq . "c") (eq . "nc") -}}{{- $.Scratch.Add "is-csv-empty" 1 -}}{{- end -}}
+      {{- if or (eq . "c") (eq . "nc") (eq . "na") (eq . "?") (gt (len .) 3) -}}{{- $.Scratch.Add "totaltests" 1 -}}{{- $.Scratch.Add "countertopic" 1 -}}{{- end -}}
+      {{- if eq . "c" -}}{{- $.Scratch.Add "counterconforme" 1 -}}{{- end -}}
+      {{- if eq . "na" -}}{{- $.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
+      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.Scratch.Add "counternonconforme" 1 -}}{{- end -}}
+      {{- if ne ($.Scratch.Get "countertopic") 0 -}}{{- $.Scratch.SetInMap "conforme" (string $critere) ($.Scratch.Get "countertopic") -}}{{- end -}}
     {{- end -}}
+    {{- $.Scratch.Set "critere" $critere -}}
 {{- end -}}
 
-<div class="wrapper audit">
+<div class="wrapper narrow audit">
 
 {{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
@@ -45,13 +59,13 @@
 </div>
 {{- end -}}
 
-{{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "is-csv-empty") -}}
+{{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "is-csv-empty") ($.Scratch.Get "totaltests") -}}
 
 {{/* Create an array with all pages */}}
 {{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 
 {{/* Call score components */}}
-<h2 class="text-center">Scores</h2>
+<h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "conforme") -}}&nbsp;critères</h2>
 <h3 class="mb-0">Conformité globale</h3>
 {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
 {{/* If serveral pages tested */}}
@@ -89,6 +103,16 @@
 </div>
 {{- end -}}
 
+{{- if ($.Scratch.Get "totaltests") -}}
+<div class="scores">
+    <ul>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ add 1 ($.Scratch.Get "totaltests") }}</b><br>Tests</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ ($.Scratch.Get "counterconforme") }}</b><br>Tests conformes</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ ($.Scratch.Get "counternonconforme") }}</b><br>Tests non conformes</span></li>
+    </ul>
+</div>
+{{- end -}}
+
 <h2>Par ordre des tests du référentiel RGAA</h2>
 
 {{- if gt (len $pages) 0 -}}
@@ -107,10 +131,10 @@
   {{- range first 1 . -}}
     {{- if or $condcontentlen $condcontentnc -}}
     <p class="mb-0"><strong>
-      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }}&nbsp;Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
     {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
       {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
@@ -157,9 +181,9 @@
     {{- $.Scratch.Add "is-page-error" 1 -}}
         <p class="mb-0"><strong>
         {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-        {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
       {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
         {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
@@ -198,12 +222,7 @@
   {{- $tests := index $value 2 -}}
   {{- range first 1 . -}}
     {{- if or $condcontentlen $condcontentnc -}}
-    <p class="mb-0"><strong>
-      {{- if $condcontentc -}}✅{{ end }}{{ if or $condcontentnc $condcontentlen }}❌{{ end }} Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
-    </strong></p>
+    <p class="mb-0"><strong>Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}}</strong></p>
       {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}

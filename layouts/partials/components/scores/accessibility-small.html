@@ -12,12 +12,12 @@
   {{ range $id, $value := after 3 $value }}
     {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
     {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
-    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
+    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
   {{- end -}}
   {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconformetopic") -}}
   {{- $counternonapplicablesum = add $counternonapplicablesum ($.context.Scratch.Get "counternonapplicable") -}}
-  {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
+  {{- $counternonconformesum = add $counternonconformesum ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{ $total := add $counterconformesum $counternonconformesum }}
-<small class="text-center d-inline-block">{{- if not (eq $total 0) -}}<b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
+<small class="text-center d-inline-block">{{- if ne $total 0 -}}<b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
 {{- end -}}

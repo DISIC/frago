@@ -1,8 +1,10 @@
 {{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
-{{- $.context.Scratch.Set "is-csv-empty" "" -}}
+{{- $.context.Scratch.Set "is-csv-empty" 0 -}}
+{{- $.context.Scratch.Set "totaltests" 0 -}}
 {{- range $key, $value := after 1 .auditfile -}}
     {{- range after 3 . -}}
-      {{- if . -}}{{- $.context.Scratch.Set "is-csv-empty" 1 -}}{{- end -}}
+      {{- if or (eq . "c") (eq . "nc") -}}{{- $.context.Scratch.Add "is-csv-empty" 1 -}}{{- end -}}
+      {{- if or (eq . "c") (eq . "nc") (eq . "na") -}}{{- $.context.Scratch.Add "totaltests" 1 -}}{{- end -}}
     {{- end -}}
 {{- end -}}
 
@@ -20,7 +22,7 @@
   {{ range $id, $value := after 3 $value }}
     {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
     {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
-    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
+    {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
   {{- end -}}
   {{- $counterconformesum = add $counterconformesum ($.context.Scratch.Get "counterconformetopic") -}}
   {{- $counternonapplicablesum = add $counternonapplicablesum ($.context.Scratch.Get "counternonapplicable") -}}
