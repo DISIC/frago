@@ -87,6 +87,7 @@
 </script>
 {{- $.context.Scratch.Set "graphcounter" 0 -}}
 {{- $.context.Scratch.Set "graphcounter2" 0 -}}
+{{- $.context.Scratch.Set "graphcounter3" 0 -}}
 <script>
     const datatopiccsv = {
       labels: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{ if ne ($.context.Scratch.Get "graphcounter") 0 }},{{ end }}"{{ $.context.Scratch.Add "graphcounter" 1 }}{{ index $topics ((int $id)) }}"{{ end }}{{ end }}],
@@ -97,7 +98,7 @@
         },
         {
           name: "Non Conforme",
-          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if or (ne $value 0) (ne (index ($.context.Scratch.Get "conforme") $id) 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne $id "0" -}},{{- end -}}{{ (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 1 | safeJS -}}{{- end -}}{{ end }}]
+          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if or (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter3") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 1 | safeJS -}}{{- $.context.Scratch.Add "graphcounter3" 1 | safeJS  -}}{{- end -}}{{ end }}]
         }
       ]
   }
