@@ -4,12 +4,13 @@
   font-style: normal;
   font-weight: 300;
   src: url('/assets/fonts/Marianne-Light.eot'); /* IE9 Compat Modes */
-  src: local('Signika Light'), local('Signika-Light'),
+  src: local('Marianne Light'), local('Marianne-Light'),
        url('/assets/fonts/Marianne-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
        url('/assets/fonts/Marianne-Light.woff2') format('woff2'), /* Super Modern Browsers */
        url('/assets/fonts/Marianne-Light.woff') format('woff'), /* Modern Browsers */
        url('/assets/fonts/Marianne-Light.ttf') format('truetype'), /* Safari, Android, iOS */
        url('/assets/fonts/Marianne-Light.svg#Marianne') format('svg'); /* Legacy iOS */
+  font-display: optional;
 }
 /* Marianne-regular - latin */
 @font-face {
@@ -17,12 +18,13 @@
   font-style: normal;
   font-weight: 400;
   src: url('/assets/fonts/Marianne-Regular.eot'); /* IE9 Compat Modes */
-  src: local('Signika Regular'), local('Signika-Regular'),
+  src: local('Marianne Regular'), local('Marianne-Regular'),
        url('/assets/fonts/Marianne-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
        url('/assets/fonts/Marianne-Regular.woff2') format('woff2'), /* Super Modern Browsers */
        url('/assets/fonts/Marianne-Regular.woff') format('woff'), /* Modern Browsers */
        url('/assets/fonts/Marianne-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
        url('/assets/fonts/Marianne-Regular.svg#Marianne') format('svg'); /* Legacy iOS */
+  font-display: optional;
 }
 /* Marianne-Bold - latin */
 @font-face {
@@ -30,10 +32,11 @@
   font-style: normal;
   font-weight: 600;
   src: url('/assets/fonts/Marianne-Bold.eot'); /* IE9 Compat Modes */
-  src: local('Signika SemiBold'), local('Signika-SemiBold'),
+  src: local('Marianne SemiBold'), local('Marianne-SemiBold'),
        url('/assets/fonts/Marianne-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
        url('/assets/fonts/Marianne-Bold.woff2') format('woff2'), /* Super Modern Browsers */
        url('/assets/fonts/Marianne-Bold.woff') format('woff'), /* Modern Browsers */
        url('/assets/fonts/Marianne-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
        url('/assets/fonts/Marianne-Bold.svg#Marianne') format('svg'); /* Legacy iOS */
+  font-display: optional;
 }

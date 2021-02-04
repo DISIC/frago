@@ -173,7 +173,7 @@ p+pre {
   margin: 0 auto;
   width: 80%;
   height: 2em;
-  box-shadow: var(--enable-shadows, 0 -3px 44px hsla(var(--base-primary), var(--base-sat), var(--base-light), .18));
+  box-shadow: var(--enable-shadows, 0 -3px 44px hsla(var(--base-primary), var(--base-sat), var(--base-light), .38));
   display: inline-block;
   content: "";
 }
