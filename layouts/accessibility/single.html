@@ -49,19 +49,20 @@
     {{- end -}}
     {{- $.Scratch.Set "critere" $critere -}}
 {{- end -}}
-
 {{- range $id, $value := ($.Scratch.Get "criterevalues") -}}
   {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
+    {{- if eq (index $value 0) "?" -}}{{- $.Scratch.SetInMap "valuecriterenonapplicablepage" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "c" -}}{{- $.Scratch.SetInMap "valuecritereconformepage" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.Scratch.SetInMap "valuecriterenonapplicablepage" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "nc" -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
+    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
   {{- else -}}
     {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.Scratch.SetInMap "valuecritereconformepage" (string $id) . -}}{{- end -}}
-    {{- if gt (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
+    {{- if ge (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
+<hr>
 
 <div class="wrapper narrow audit">
 {{- if eq (len (split .Path "/")) 3 -}}
@@ -89,7 +90,7 @@
     <ul>
       <li class="counter text-center d-inline-block good"><span><b class="h2">{{- len ($.Scratch.Get "valuecritereconformepage") -}}</b><br>Critères conformes</span></li>
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ len ($.Scratch.Get "valuecriterenonapplicablepage") }}</b><br>Critères non applicables</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ len ($.Scratch.Get "valuecriterenonconformepage")  }}</b><br>Tests non conformes</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ len ($.Scratch.Get "valuecriterenonconformepage")  }}</b><br>Critères non conformes</span></li>
     </ul>
 </div>
 {{- end -}}

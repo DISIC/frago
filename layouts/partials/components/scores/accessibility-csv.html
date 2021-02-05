@@ -10,7 +10,7 @@
       {{- if or (eq . "c") (eq . "nc") -}}{{- $.context.Scratch.Add "is-csv-empty" 1 -}}{{- end -}}
       {{- if or (eq . "c") (eq . "nc") (eq . "na") (eq . "?") (gt (len .) 3) -}}{{- $.context.Scratch.Add "totaltests" 1 -}}{{- $.context.Scratch.Add "countercritere" 1 -}}{{- end -}}
       {{- if ne ($.context.Scratch.Get "countercritere") 0 -}}{{- $.context.Scratch.SetInMap "criteretotal" (string $critere) ($.context.Scratch.Get "countercritere") -}}{{- end -}}
-      {{- if . -}}
+      {{- if or . -}}
       {{- $.context.Scratch.Add "valuecriterepage" . -}}
       {{- $.context.Scratch.SetInMap "criterevalues" (string $critere) (uniq ($.context.Scratch.Get "valuecriterepage")) -}}
       {{- end -}}
@@ -22,18 +22,20 @@
 {{- $auditfile := .auditfile }}
 {{- $.context.Scratch.Set "pages" slice -}}
 
-{{- range $id, $value := ($.context.Scratch.Get "criterevalues") -}}
+{{- range $id, $value := sort ($.context.Scratch.Get "criterevalues") -}}
   {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
+    {{- if eq (index $value 0) "?" -}}{{- $.context.Scratch.SetInMap "valuecriterenonapplicable" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap "valuecriterenonapplicable" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "nc" -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
+    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
   {{- else -}}
     {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
-    {{- if ne (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
+    {{- if ge (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
+<hr>
 
 {{- $counterconformesum := 0 -}}
 {{- $counternonapplicablesum := 0 -}}
@@ -58,11 +60,13 @@
       <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>
     </ul>
 </div>-->
-{{- $totalcriteres := sub (len ($.context.Scratch.Get "criteretotal")) (len ($.context.Scratch.Get "valuecriterenonapplicable")) -}}
+
+{{- $totalcriteres := sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "valuecriterenonapplicable"))) -}}
+{{- $conformes := math.Round (div (mul (len ($.context.Scratch.Get "valuecritereconforme")) 100) $totalcriteres) -}}
 <div class="scores">
     <ul>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{- div (mul (len ($.context.Scratch.Get "valuecritereconforme")) 100) $totalcriteres -}}%</b><br>Critères conformes</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{- div (mul (len ($.context.Scratch.Get "valuecriterenonconforme")) 100) $totalcriteres -}}%</b><br>Critères conformes</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{- $conformes -}}%</b><br>Critères conformes</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{- sub 100 $conformes -}}%</b><br>Critères conformes</span></li>
     </ul>
 </div>
 {{- else -}}
