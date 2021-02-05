@@ -6,28 +6,32 @@
 {{- $.context.Scratch.Set "critere" "" -}}
 {{- range $key, $value := after 1 $auditfile -}}
     {{- $critere := printf "%s.%s" (index . 0) (index . 1) -}}
-    {{- if ne $critere ($.context.Scratch.Get "critere") -}}{{- $.context.Scratch.Set "countercritere" 0 -}}{{- $.context.Scratch.Set "valuecriterepage" slice -}}{{- end -}}
+    {{- if ne $critere ($.context.Scratch.Get "critere") -}}{{- $.context.Scratch.Set "countercritere" 0 -}}{{- $.context.Scratch.Set "valuecritere" slice -}}{{- end -}}
     {{- range after 3 . -}}
       {{- if or (eq . "c") (eq . "nc") -}}{{- $.context.Scratch.Add "is-csv-empty" 1 -}}{{- end -}}
       {{- if or (eq . "c") (eq . "nc") (eq . "na") (eq . "?") (gt (len .) 3) -}}{{- $.context.Scratch.Add "totaltests" 1 -}}{{- $.context.Scratch.Add "countercritere" 1 -}}{{- end -}}
       {{- if ne ($.context.Scratch.Get "countercritere") 0 -}}{{- $.context.Scratch.SetInMap "criteretotal" (string $critere) ($.context.Scratch.Get "countercritere") -}}{{- end -}}
-      {{- $.context.Scratch.Add "valuecriterepage" . -}}
-      {{- $.context.Scratch.SetInMap "criterevalues" (string $critere) (uniq ($.context.Scratch.Get "valuecriterepage")) -}}
+      {{- if . -}}
+      {{- $.context.Scratch.Add "valuecritere" . -}}
+      {{- $.context.Scratch.SetInMap "criterevalues" (string $critere) (uniq ($.context.Scratch.Get "valuecritere")) -}}
+      {{- end -}}
     {{- end -}}
     {{- $.context.Scratch.Set "critere" $critere -}}
 {{- end -}}
 {{- $.context.Scratch.Set "pages" slice -}}
-{{- $.context.Scratch.Set "valuecriterevalid" slice -}}
-{{- $.context.Scratch.Set "valuecriterenonapplicable" slice -}}
+
 {{- range $id, $value := ($.context.Scratch.Get "criterevalues") -}}
+  {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
-    {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.Add "valuecriterevalid" . -}}{{- end -}}
-    {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.Add "valuecriterenonapplicable" . -}}{{- end -}}
+    {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
+    {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap "valuecriterenonapplicable" (string $id) . -}}{{- end -}}
+    {{- if eq (index $value 0) "nc" -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
   {{- else -}}
-    {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.Add "valuecriterevalid" . -}}{{- end -}}
+    {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
+    {{- if ne (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
+  {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- $.context.Scratch.Set "pages" slice -}}
 
 {{- $counterconformesum := 0 -}}
 {{- $counternonapplicablesum := 0 -}}
@@ -46,7 +50,6 @@
   {{- $counternonconformesum = add $counternonconformesum ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{ $total := add $counterconformesum $counternonconformesum }}
-{{- $totalcriteres := sub (len ($.context.Scratch.Get "criteretotal")) (len ($.context.Scratch.Get "valuecriterenonapplicable")) -}}
 <!--<small class="text-center d-inline-block">{{- if ne $total 0 -}}<b class="h3">{{ div (mul $counterconformesum 100) $total }}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>-->
-<small class="text-center d-inline-block">{{- if ne $totalcriteres 0 -}}<b class="h3">{{- div (mul (len ($.context.Scratch.Get "valuecriterevalid")) 100) $totalcriteres -}}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
+<small class="text-center d-inline-block">{{- if ($.context.Scratch.Get "criteretotal") -}}<b class="h3">{{- div (mul (len ($.context.Scratch.Get "valuecritereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) (len ($.context.Scratch.Get "valuecriterenonapplicable"))) -}}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
 {{- end -}}
