@@ -20,15 +20,16 @@
 {{- end -}}
 {{- $.context.Scratch.Set "pages" slice -}}
 
-{{- range $id, $value := ($.context.Scratch.Get "criterevalues") -}}
+{{- range $id, $value := sort ($.context.Scratch.Get "criterevalues") -}}
   {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
+    {{- if eq (index $value 0) "?" -}}{{- $.context.Scratch.SetInMap "valuecriterenonapplicable" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap "valuecriterenonapplicable" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "nc" -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
+    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
   {{- else -}}
     {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecritereconforme" (string $id) . -}}{{- end -}}
-    {{- if ne (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
+    {{- if ge (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.context.Scratch.SetInMap "valuecriterenonconforme" (string $id) . -}}{{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}

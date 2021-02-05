@@ -60,7 +60,6 @@
       <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ div (mul $counternonconformesum 100) $total }}%</b><br>Non Conforme</span></li>
     </ul>
 </div>-->
-
 {{- $totalcriteres := sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "valuecriterenonapplicable"))) -}}
 {{- $conformes := math.Round (div (mul (len ($.context.Scratch.Get "valuecritereconforme")) 100) $totalcriteres) -}}
 <div class="scores">
