@@ -68,7 +68,7 @@
 }
 
 /* Toggling content */
-[hidden] .hide,
+[hidden], .hide,
 .d-none {
   display: none !important;
 }
