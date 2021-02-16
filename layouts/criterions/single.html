@@ -2,23 +2,6 @@
 <div class="wrapper narrow">
 <h1>Critères RGAA4</h1>
 {{ partial "elements/content.html" .Content }}
-<div hidden>
-Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du site;contenu;Vérification;Justificatif<br>
-{{- range $key1, $value1 := index $.Site.Data.criteres "topics" -}}
-  {{- $topic := .topic -}}
-  {{- range $key2, $value2 := .criteria -}}
-    {{- $title := .criterium.title -}}
-    {{- range $key3, $value3 := .criterium.tests -}}
-        {{ add $key1 1 }};{{ add $key2 1 }};{{ $key3 }};
-        {{ if reflect.IsSlice $value3 }}
-        "{{ (index $value3 0) | markdownify}}"<br>
-        {{- else -}}
-        "{{ $value3 | markdownify }}"<br>
-        {{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-</div>
 <div class="tableofcontents">
 <h2>Thématiques</h2>
 <ol>
@@ -28,12 +11,21 @@ Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du s
 {{- end -}}
 </ol>
 </div>
+{{- $auditquick := index .Site.Data.tests "25" -}}
+{{- $auditcomplementary :=index .Site.Data.tests "50" -}}
+<ul class="list-unstyled list-inline">
+  <li><button id="auditall" class="btn">Tous les critères</button></li>&nbsp;
+  <li><button id="auditquick" class="btn">25 critères</button></li>&nbsp;
+  <li><button id="auditcomplementary" class="btn">50 critères</button></li>
+</ul>
 {{/* Range all topics */}}
 {{- range $key1, $value1 := index $.Site.Data.criteres "topics" -}}
   <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
   {{/* Range level 1 */}}
   {{- range $key2, $value2 := .criteria -}}
-    <h3 id="{{ add $key1 1 }}-{{ add $key2 1 }}">Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" "=\"/glossaire/#" (.criterium.title | markdownify) 100) | markdownify }}</h3>
+    {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
+    <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}">
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" "=\"/glossaire/#" (.criterium.title | markdownify) 100) | markdownify }}</h3>
     {{/* Range level 2 */}}
     {{- range $key3, $value3 := .criterium.tests -}}
         <p id="{{ add $key1 1 }}-{{ add $key2 1 }}-{{ $key3 }}" {{ if reflect.IsSlice $value3 }}class="mb-0"{{ end }}><strong>Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }}</strong> -
@@ -50,7 +42,31 @@ Sujet;Critère;Tests;description;Page de chargement;Accueil;Actualité;Plan du s
         {{- end -}}
     {{- end -}}
     <hr>
+    </div>
   {{- end -}}
 {{- end -}}
 </div>
+<script>
+  document.querySelector("#auditall").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+    })
+  });
+  document.querySelector("#auditquick").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditquick")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+  document.querySelector("#auditcomplementary").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditcomplementary")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+</script>
 {{- end -}}
