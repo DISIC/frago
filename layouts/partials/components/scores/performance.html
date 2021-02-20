@@ -22,14 +22,14 @@
 {{- if .audits.metrics.details.items -}}
 {{/* https://blog.octo.com/sous-le-capot-de-la-mesure-ecoindex/ */}}
 {{- $pageweight := (index (.audits.diagnostics.details.items) 0).totalByteWeight -}}
-{{- $domsize := (index .audits "dom-size").numericValue  -}}
-{{- $requests := (index (.audits.diagnostics.details.items) 0).numRequests -}}
-{{- $ecobest  := sub 100 (mul 0.833333333 (add (add (mul 3 150) (mul 15 2)) 130000)) -}}
-{{- $ecoworth := sub 100 (mul 0.833333333 (add (add (mul 3 3000) (mul 120 2)) 5000000)) -}}
-{{- $eco      := sub 100 (mul 0.833333333 (add (add (mul 3 $domsize) (mul $requests 2)) $pageweight)) -}}
-{{- $result := sub 100 (div (mul $eco 100) (sub $ecoworth $ecobest)) -}}
-{{- $eau    := add (mul (sub 50 $result) 0.03) 3 -}}
-{{- $co2    := add (mul (sub 50 $result) 0.02) 2 -}}
+{{- $domsize    := (index .audits "dom-size").numericValue  -}}
+{{- $requests   := (index (.audits.diagnostics.details.items) 0).numRequests -}}
+{{- $ecobest    := sub 100 (mul 0.833333333 (add (add (mul 3 150) (mul 15 2)) 130000)) -}}
+{{- $ecoworth   := sub 100 (mul 0.833333333 (add (add (mul 3 3000) (mul 120 2)) 5000000)) -}}
+{{- $eco        := sub 100 (mul 0.833333333 (add (add (mul 3 $domsize) (mul $requests 2)) $pageweight)) -}}
+{{- $result     := sub 100 (div (mul $eco 100) (sub $ecoworth $ecobest)) -}}
+{{- $eau        := add (mul (sub 50 $result) 0.03) 3 -}}
+{{- $co2        := add (mul (sub 50 $result) 0.02) 2 -}}
 <div class="scores">
   <ul>
     <li class="counter text-center"><span>Page chargée<br><b class="h2">{{ div ((index .audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}s</b></span></li>

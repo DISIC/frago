@@ -1,0 +1,59 @@
+
+{{- $project := .project -}}
+{{- $pathlen := len (split .context.Path "/") -}}
+
+{{- if (fileExists "static/quality/") -}}
+  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+{{- end -}}
+
+{{- with ($.context.Scratch.Get "dir") -}}
+  {{- range last 1 . -}}
+    {{- if (fileExists "static/quality/") -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/quality/%s" .Name)) -}}
+    {{- end -}}
+    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range ($.context.Scratch.Get "lastfile") -}}
+    {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
+    {{- $.context.Scratch.Set "countererrorschecked" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypecode" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypevisual" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypestructure" 0 -}}
+    {{- $.context.Scratch.Set "countererrorstypetext" 0 -}}
+    {{- $.context.Scratch.Set "countererrorscritical" 0 -}}
+    {{- $.context.Scratch.Set "countererrorsimportant" 0 -}}
+    {{- $.context.Scratch.Set "countererrorsmedium" 0 -}}
+    {{- range .pages -}}
+    {{- range $b := .blocks -}}
+    {{- range .errors -}}
+      {{- $.context.Scratch.Add "countererrorstotal" 1 -}}
+      {{- if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{- end -}}
+      {{- if in .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
+      {{- if in .type "vis" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
+      {{- if in .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
+      {{- if in .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
+      {{- if in .status "criti" }}{{ $.context.Scratch.Add "countererrorscritical" 1 }}{{- end -}}
+      {{- if in .status "important" }}{{ $.context.Scratch.Add "countererrorsimportant" 1 }}{{- end -}}
+      {{- if in .status "moindre" }}{{ $.context.Scratch.Add "countererrorsmedium" 1 }}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $.context.Scratch.SetInMap "counterquality" "pathlen" $pathlen -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstotal" ($.context.Scratch.Get "countererrorstotal") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorschecked" ($.context.Scratch.Get "countererrorschecked") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypecode" ($.context.Scratch.Get "countererrorstypecode") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypevisual" ($.context.Scratch.Get "countererrorstypevisual") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypestructure" ($.context.Scratch.Get "countererrorstypestructure") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypetext" ($.context.Scratch.Get "countererrorstypetext") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorscritical" ($.context.Scratch.Get "countererrorscritical") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorsimportant" ($.context.Scratch.Get "countererrorsimportant") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorsmedium" ($.context.Scratch.Get "countererrorsmedium") -}}
+{{- return ($.context.Scratch.Get "counterquality") -}}

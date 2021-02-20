@@ -43,12 +43,13 @@
 
     {{- if $accessibility -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) ))) -}}
+    {{- $conforme := index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) )))) "critereconformepercent" -}}
+    {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- end -}}
 
     {{- if $quality -}}
     <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
+    {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
     {{- end -}}
 
     {{- if $lighthouse -}}

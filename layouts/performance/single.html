@@ -22,7 +22,7 @@
       {{- if (fileExists "static/lighthouse/") -}}
         {{- $.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
       {{- end -}}
-      {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
+      {{- if and $project (ne $project "index") (printf "static/%s/lighthouse/" $project) -}}
         {{- $.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
       {{- end -}}
     {{- end -}}

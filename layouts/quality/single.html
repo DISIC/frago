@@ -57,21 +57,11 @@
 {{- end -}}
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
-  {{- partial "components/scores/quality" (dict "context" . "project" $project) -}}
-{{- end -}}
-{{/* Call page parameters */}}
-<h2>Contexte</h2>
-{{- range ($.Scratch.Get "auditfile") -}}
-  <p>
-    {{- if .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>{{ end }}
-    {{- if .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>{{ end }}
-    {{- if .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>{{ end }}
-    {{- if .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}{{ end }}
-  </p>
+  {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
 {{- end -}}
 
 <h2 class="page-break">Erreurs à corriger</h2>
-{{ partial "components/quality/lot.html" (dict "context" . "project" $project) }}
+{{- partial "components/quality/lot.html" (dict "context" . "project" $project) -}}
 {{/* partial "components/quality/critical.html" (dict "context" . "project" $project) */}}
 
 <hr class="divider">

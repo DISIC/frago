@@ -2,6 +2,7 @@
 {{/* Vars */}}
 {{- $project :=  (index (split .Path "/") 1) -}}
 {{- $pathimage := printf "./static/images/%s/" $project }}
+{{- $context := . -}}
 {{- $.Scratch.Set "auditfile-csv" "" }}
 
 {{/* Set the audit file */}}
@@ -9,66 +10,49 @@
 {{- if .Params.datafilename -}}
   {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
-  {{ $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project .Params.datafilename) }}
+  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project .Params.datafilename) -}}
   {{- else -}}
-  {{ $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" .Params.datafilename) }}
+  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" .Params.datafilename) -}}
   {{- end -}}
 {{- else -}}
-  {{/* Condition about structure level */}}
-  {{- if eq (len (split .Path "/")) 3 -}}
-    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project "accessibility") -}}
-  {{- else -}}
-  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" $project "accessibility") -}}
-  {{- end -}}
-{{- end -}}
-
-{{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
-
-{{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
-{{- $.Scratch.Set "is-csv-empty" 0 -}}
-{{- $.Scratch.Set "totaltestspage" 0 -}}
-{{- $.Scratch.Set "counterconformepage" 0 -}}
-{{- $.Scratch.Set "counternonapplicablepage" 0 -}}
-{{- $.Scratch.Set "counternonconformepage" 0 -}}
-{{- $.Scratch.Set "countercriterepage" 0 -}}
-{{- $.Scratch.Set "critere" "" -}}
-{{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
-    {{- $critere := printf "%s.%s" (index . 0) (index . 1) -}}
-    {{- if ne $critere ($.Scratch.Get "critere") -}}{{- $.Scratch.Set "countercriterepage" 0 -}}{{- $.Scratch.Set "valuecriterepage" slice -}}{{- end -}}
-    {{- range after 3 . -}}
-      {{- if or (eq . "c") (eq . "nc") -}}{{- $.Scratch.Add "is-csv-empty" 1 -}}{{- end -}}
-      {{- if or (eq . "c") (eq . "nc") (eq . "na") (eq . "?") (gt (len .) 3) -}}{{- $.Scratch.Add "totaltestspage" 1 -}}{{- $.Scratch.Add "countercriterepage" 1 -}}{{- end -}}
-      {{- if eq . "c" -}}{{- $.Scratch.Add "counterconformepage" 1 -}}{{- end -}}
-      {{- if eq . "na" -}}{{- $.Scratch.Add "counternonapplicablepage" 1 -}}{{- end -}}
-      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.Scratch.Add "counternonconformepage" 1 -}}{{- end -}}
-      {{- if ne ($.Scratch.Get "countercriterepage") 0 -}}{{- $.Scratch.SetInMap "criteretotal" (string $critere) ($.Scratch.Get "countercriterepage") -}}{{- end -}}
-      {{- if . -}}
-      {{- $.Scratch.Add "valuecriterepage" . -}}
-      {{- $.Scratch.SetInMap "criterevalues" (string $critere) (uniq ($.Scratch.Get "valuecriterepage")) -}}
-      {{- end -}}
+  {{/* Set the audit file - test if a generic file is called */}}
+  {{/* Test if a set of archived audit exists */}}
+  {{- if fileExists (printf "static/%s/accessibility/" $project) -}}
+    {{- range $key, $value := (readDir (printf "static/%s/accessibility/" $project)) -}}
+      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" $project .Name) -}}
+      {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
     {{- end -}}
-    {{- $.Scratch.Set "critere" $critere -}}
-{{- end -}}
-{{- range $id, $value := ($.Scratch.Get "criterevalues") -}}
-  {{- if ne (len $value) 0 -}}
-  {{- if eq (len $value) 1 -}}
-    {{- if eq (index $value 0) "?" -}}{{- $.Scratch.SetInMap "valuecriterenonapplicablepage" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "c" -}}{{- $.Scratch.SetInMap "valuecritereconformepage" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "na" -}}{{- $.Scratch.SetInMap "valuecriterenonapplicablepage" (string $id) . -}}{{- end -}}
-    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
-  {{- else -}}
-    {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.Scratch.SetInMap "valuecritereconformepage" (string $id) . -}}{{- end -}}
-    {{- if ge (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.Scratch.SetInMap "valuecriterenonconformepage" (string $id) . -}}{{- end -}}
+    {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
+  {{- else if fileExists (printf "static/accessibility/" $project) -}}
+    {{- range $key, $value := (readDir (printf "static/accessibility/" $project)) -}}
+      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/accessibility/%s" $project .Name) -}}
+      {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
+    {{- end -}}
+    {{/* Keep only the last file - if a root file doesn't exist */}}
+    {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
   {{- end -}}
+  {{/* Condition about structure level for a root generic file */}}
+  {{- if or (fileExists (printf "static/%s/%s.csv" $project "accessibility")) (fileExists (printf "static/%s.csv" $project "accessibility")) -}}
+    {{- if eq (len (split .Path "/")) 3 -}}
+      {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project "accessibility") -}}
+    {{- else -}}
+    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" $project "accessibility") -}}
+    {{- end -}}
+    {{- $.Scratch.SetInMap "allaudits" "zz" ($.Scratch.Get "auditpath-csv") -}}
+    {{- $.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
   {{- end -}}
 {{- end -}}
-<hr>
 
 <div class="wrapper narrow audit">
+{{- if ($.Scratch.Get "auditpath-csv") -}}
+
+{{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
+{{- $scores := partial "render/conformity" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
+
 {{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
-<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+<h1>{{ .Title }}</h1>
 
 {{- if gt (len .Content) 10 -}}
 <div class="note">
@@ -76,24 +60,46 @@
 </div>
 {{- end -}}
 
-{{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "is-csv-empty") ($.Scratch.Get "totaltestspage") -}}
+{{- if and ($.Scratch.Get "auditfile-csv") (index $scores "is-empty") (index $scores "testtotal") -}}
 
 {{/* Create an array with all pages */}}
 {{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 
 {{/* Call score components */}}
 <h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "criteretotal") -}}&nbsp;critères</h2>
-<h3 class="mb-0">Conformité globale selon les critères</h3>
-{{- partial "components/scores/accessibility-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
-{{- if ($.Scratch.Get "totaltestspage") -}}
-<div class="scores">
-    <ul>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{- len ($.Scratch.Get "valuecritereconformepage") -}}</b><br>Critères conformes</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ len ($.Scratch.Get "valuecriterenonapplicablepage") }}</b><br>Critères non applicables</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ len ($.Scratch.Get "valuecriterenonconformepage")  }}</b><br>Critères non conformes</span></li>
-    </ul>
-</div>
+<h3>Conformité globale selon les critères</h3>
+{{/* Call accessibility partial */}}
+{{- $conforme := index $scores "critereconformepercent" -}}
+{{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+{{/* Display conformity in time */}}
+<div id="chartconformity"></div>
+{{- if gt (len ($.Scratch.Get "allaudits")) 1 -}}
+<script>
+    const dataconformity = {
+        labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
+        datasets: [
+          {
+            name: "Conformité",
+            values: [{{- range $id, $value := ($.Scratch.Get "allaudits") -}}{{ if ne $id "1" }},{{ end }}"{{- index (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) "critereconformepercent" -}}"{{- end -}}]
+          }
+        ]
+    }
+    const chartconformity = new frappe.Chart("#chartconformity", {
+        title: "Taux de conformité dans le temps (en %)",
+        data: dataconformity,
+        type: 'line', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+        height: 400,
+        truncateLegends: true,
+        barOptions: {
+            stacked: 1,
+            spaceRatio: 0.2
+        },
+        colors: ['#ac3636','#96cfb7']
+    })
+</script>
 {{- end -}}
+{{/* Call criterium partial */}}
+{{- partial "components/scores/criterium" (dict "context" . "criteres" $scores) -}}
 {{/* If serveral pages tested */}}
 {{- if gt (len $pages) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition des tests</h3>
@@ -220,7 +226,7 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- if ge ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
+{{- if eq ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- if gt (len $pages) 0 -}}
@@ -228,7 +234,7 @@
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
 <div class="flex flex-column">
-{{- range $key, $value := ($.Scratch.Get "valuecriterenonconformepage") -}}
+{{- range $key, $value := (index $scores "criterenonconforme") -}}
   {{- $thematiques := index (split $key ".") 0 -}}
   {{- $criteres := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
@@ -244,4 +250,7 @@
   <p>Le fichier d’audit RGAA est vide pour le moment.</p>
 {{- end -}}
 </div>
+{{- else -}}
+  <p>Le fichier d’audit RGAA est manquant : `accessibility.csv`</p>
+{{- end -}}
 {{- end -}}
