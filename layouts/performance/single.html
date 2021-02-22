@@ -1,20 +1,25 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray :=  split .Path "/" -}}
-{{- $project :=  (index $patharray 1) -}}
+{{- $project :=  replace (index $patharray 1) ".md" "" -}}
 <div class="wrapper">
+  {{- if eq (len (split .Path "/")) 3 -}}
   <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+  {{- end -}}
   <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
   {{- partial "elements/content.html" .Content -}}
   {{/* Vars */}}
-  {{- $project :=  (index (split .Path "/") 1) -}}
+  {{- $.Scratch.Set "projectfolders" "/" -}}
+  {{- if eq (len (split .Path "/")) 3 -}}
+    {{- $.Scratch.Set "projectfolders" (index (split .Path "/") 1) -}}
+  {{- end -}}
 
   {{/* Test id exist and call performance file */}}
   {{- if (fileExists "static/lighthouse/") -}}
     {{- $.Scratch.Set "dir" (readDir "static/lighthouse/") -}}
   {{- end -}}
-  {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
-    {{- $.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" $project)) -}}
+  {{- if and ($.Scratch.Get "projectfolders") (ne ($.Scratch.Get "projectfolders") "index") (printf "static/%s/lighthouse/" ($.Scratch.Get "projectfolders")) -}}
+    {{- $.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   {{- end -}}
 
   {{- with ($.Scratch.Get "dir") -}}
@@ -22,8 +27,8 @@
       {{- if (fileExists "static/lighthouse/") -}}
         {{- $.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
       {{- end -}}
-      {{- if and $project (ne $project "index") (printf "static/%s/lighthouse/" $project) -}}
-        {{- $.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
+      {{- if and ($.Scratch.Get "projectfolders") (ne ($.Scratch.Get "projectfolders") "index") (printf "static/%s/lighthouse/" ($.Scratch.Get "projectfolders")) -}}
+        {{- $.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" ($.Scratch.Get "projectfolders") .Name)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -31,7 +36,7 @@
   {{/* Range performance file */}}
 
   <h2>Scores</h2>
-  {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
+  {{- partial "components/scores/performance" (dict "context" . "project" ($.Scratch.Get "projectfolders")) -}}
   {{- with ($.Scratch.Get "lastfile") -}}
   {{/* Vars with the last file of the lighthouse directory */}}
   <h2>Règles</h2>

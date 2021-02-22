@@ -1,6 +1,7 @@
 {{- define "main" -}}
 
-  {{- $project := replace (index (split .Path "/") 1) ".md" "" -}}
+  {{- $project := replace (index (split .Path "/") 1) "index.md" "" -}}
+  {{- $context := . -}}
   <div class="wrapper narrow">
     <h1 class="text-center">{{ .Title }}</h1>
 
@@ -29,22 +30,70 @@
     {{- end -}}
 
     {{- $.Scratch.Set "projectfolders" "/static" -}}
+    {{- $.Scratch.Set "accessibility-path" false -}}
+    {{/* test level of the page in file tree */}}
     {{- if eq (len (split .RelPermalink "/")) 4 -}}
     {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
     {{- end -}}
-
-    {{- $accessibility := (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+    {{- if (fileExists (printf "%s/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
+      {{- range $key, $value := (readDir (printf "%s/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
+        {{- $.Scratch.SetInMap "allauditscsv" (string (add $key 1)) (printf "%s/accessibility/%s" ($.Scratch.Get "projectfolders") .Name) -}}
+        {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if (fileExists (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders"))) -}}
+      {{- $.Scratch.Set "accessibility-path" (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) -}}
+      {{- $.Scratch.SetInMap "allauditscsv" "zz" ($.Scratch.Get "accessibility-path") -}}
+      {{- $.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
+    {{- else if (fileExists (printf "%s/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
+      {{- $.Scratch.Set "accessibility-path" (index ($.Scratch.Get "allauditscsv") "1") -}}
+    {{- end -}}
+    {{- $accessibility := $.Scratch.Get "accessibility-path" }}
     {{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
     {{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
 
     {{- if ($.Scratch.Get "projectfolders") -}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
-
     {{- if $accessibility -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- $conforme := index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) )))) "critereconformepercent" -}}
+    {{- $conforme := index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) "critereconformepercent" -}}
     {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+    {{/* Display conformity in time */}}
+    {{- with ($.Scratch.Get "allauditscsv") -}}
+    {{- if gt (len .) 1 -}}
+    <div id="chartconformity"></div>
+    <script>
+        const dataconformity = {
+            labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
+            datasets: [
+              {
+                name: "Conformité",
+                values: [{{- range $id, $value := . -}}{{ if ne $id "1" }},{{ end }}"{{- index (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) "critereconformepercent" -}}"{{- end -}}]
+              }
+            ]
+        }
+        const chartconformity = new frappe.Chart("#chartconformity", {
+            title: "Taux de conformité dans le temps (en %)",
+            data: dataconformity,
+            type: 'line', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+            height: 400,
+            lineOptions: {
+                regionFill: 1 // default: 0
+            },
+            axisOptions: {
+              xAxisMode: 'tick' // default: 'span'
+          },
+            truncateLegends: true,
+            barOptions: {
+                stacked: 1,
+                spaceRatio: 0.2
+            },
+            colors: ['#ac3636','#96cfb7']
+        })
+    </script>
+    {{- end -}}
+    {{- end -}}
     {{- end -}}
 
     {{- if $quality -}}
@@ -62,6 +111,7 @@
       {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
     </section>
     */}}
+
     {{- else -}}
     <p class="text-center">Aucun audit pour le moment</p>
     {{- end -}}

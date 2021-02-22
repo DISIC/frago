@@ -1,7 +1,11 @@
 {{- define "main" -}}
 {{/* Vars */}}
-{{- $project :=  (index (split .Path "/") 1) -}}
-{{- $pathimage := printf "./static/images/%s/" $project }}
+
+{{- $.Scratch.Set "projectfolders" "" -}}
+{{- if eq (len (split .Path "/")) 3 -}}
+  {{- $.Scratch.Set "projectfolders" (index (split .Path "/") 1) -}}
+{{- end -}}
+{{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
 {{- $context := . -}}
 {{- $.Scratch.Set "auditfile-csv" "" }}
 
@@ -10,33 +14,33 @@
 {{- if .Params.datafilename -}}
   {{/* Condition about structure level */}}
   {{- if eq (len (split .Path "/")) 3 -}}
-  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project .Params.datafilename) -}}
+  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") .Params.datafilename) -}}
   {{- else -}}
   {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" .Params.datafilename) -}}
   {{- end -}}
 {{- else -}}
   {{/* Set the audit file - test if a generic file is called */}}
   {{/* Test if a set of archived audit exists */}}
-  {{- if fileExists (printf "static/%s/accessibility/" $project) -}}
-    {{- range $key, $value := (readDir (printf "static/%s/accessibility/" $project)) -}}
-      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" $project .Name) -}}
+  {{- if fileExists (printf "static/%s/accessibility/" ($.Scratch.Get "projectfolders")) -}}
+    {{- range $key, $value := (readDir (printf "static/%s/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
+      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" ($.Scratch.Get "projectfolders") .Name) -}}
       {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
     {{- end -}}
     {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
-  {{- else if fileExists (printf "static/accessibility/" $project) -}}
-    {{- range $key, $value := (readDir (printf "static/accessibility/" $project)) -}}
-      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/accessibility/%s" $project .Name) -}}
+  {{- else if fileExists (printf "static/accessibility/" ($.Scratch.Get "projectfolders")) -}}
+    {{- range $key, $value := (readDir (printf "static/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
+      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/accessibility/%s" ($.Scratch.Get "projectfolders") .Name) -}}
       {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
     {{- end -}}
     {{/* Keep only the last file - if a root file doesn't exist */}}
     {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
   {{- end -}}
   {{/* Condition about structure level for a root generic file */}}
-  {{- if or (fileExists (printf "static/%s/%s.csv" $project "accessibility")) (fileExists (printf "static/%s.csv" $project "accessibility")) -}}
+  {{- if or (fileExists (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") "accessibility")) (fileExists (printf "static/%s%s.csv" ($.Scratch.Get "projectfolders") "accessibility")) -}}
     {{- if eq (len (split .Path "/")) 3 -}}
-      {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" $project "accessibility") -}}
+      {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") "accessibility") -}}
     {{- else -}}
-    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" $project "accessibility") -}}
+    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s%s.csv" ($.Scratch.Get "projectfolders") "accessibility") -}}
     {{- end -}}
     {{- $.Scratch.SetInMap "allaudits" "zz" ($.Scratch.Get "auditpath-csv") -}}
     {{- $.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
@@ -44,13 +48,14 @@
 {{- end -}}
 
 <div class="wrapper narrow audit">
+
 {{- if ($.Scratch.Get "auditpath-csv") -}}
 
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
 {{- $scores := partial "render/conformity" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
 
 {{- if eq (len (split .Path "/")) 3 -}}
-<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p class="no-print">⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
 <h1>{{ .Title }}</h1>
 
@@ -71,33 +76,6 @@
 {{/* Call accessibility partial */}}
 {{- $conforme := index $scores "critereconformepercent" -}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
-{{/* Display conformity in time */}}
-<div id="chartconformity"></div>
-{{- if gt (len ($.Scratch.Get "allaudits")) 1 -}}
-<script>
-    const dataconformity = {
-        labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
-        datasets: [
-          {
-            name: "Conformité",
-            values: [{{- range $id, $value := ($.Scratch.Get "allaudits") -}}{{ if ne $id "1" }},{{ end }}"{{- index (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) "critereconformepercent" -}}"{{- end -}}]
-          }
-        ]
-    }
-    const chartconformity = new frappe.Chart("#chartconformity", {
-        title: "Taux de conformité dans le temps (en %)",
-        data: dataconformity,
-        type: 'line', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
-        height: 400,
-        truncateLegends: true,
-        barOptions: {
-            stacked: 1,
-            spaceRatio: 0.2
-        },
-        colors: ['#ac3636','#96cfb7']
-    })
-</script>
-{{- end -}}
 {{/* Call criterium partial */}}
 {{- partial "components/scores/criterium" (dict "context" . "criteres" $scores) -}}
 {{/* If serveral pages tested */}}
