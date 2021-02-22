@@ -44,4 +44,3 @@
 {{- $.context.Scratch.SetInMap "scores" "critereconformepercent" (math.Round (div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "criterenonapplicable")))))) -}}
 {{- return ($.context.Scratch.Get "scores") -}}
 {{- end -}}
-
