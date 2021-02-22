@@ -18,14 +18,14 @@
 .wrapper {
   margin-right: auto;
   margin-left: auto;
-  width: 100%;
+  width: 100vw;
   max-width: 100%;
 }
 
 .wrapper {
   padding-right: var(--baseline);
   padding-left: var(--baseline);
-  max-width: var(--layout-max-width);
+  width: clamp(16rem, 90vw, var(--layout-max-width));
 }
 
 .narrow {
