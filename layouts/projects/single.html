@@ -1,6 +1,6 @@
 {{- define "main" -}}
 
-  {{- $project := replace (index (split .Path "/") 1) "index.md" "" -}}
+  {{- $project := replace (replace (index (split .Path "/") 1) ".md" "") "index" "" -}}
   {{- $context := . -}}
   <div class="wrapper narrow">
     <h1 class="text-center">{{ .Title }}</h1>
@@ -57,8 +57,13 @@
     <h2 class="text-center">Scores</h2>
     {{- if $accessibility -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace $pageauditpath ".md" "/") "/content" "" }}">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- $conforme := index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) "critereconformepercent" -}}
-    {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+    {{- $partial := (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) -}}
+    {{ if $partial }}
+      {{- $conforme := index $partial "critereconformepercent" -}}
+      {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+    {{- else -}}
+      <p>Le fichier d’audit est vide</p>
+    {{- end -}}
     {{/* Display conformity in time */}}
     {{- with ($.Scratch.Get "allauditscsv") -}}
     {{- if gt (len .) 1 -}}
