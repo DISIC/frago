@@ -22,7 +22,7 @@
     {{- $.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   {{- end -}}
 
-  {{- with ($.Scratch.Get "dir") -}}ﬂ
+  {{- with ($.Scratch.Get "dir") -}}
     {{- range last 1 . -}}
       {{- if (fileExists "static/lighthouse/") -}}
         {{- $.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
