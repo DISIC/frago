@@ -1,6 +1,7 @@
 {{- define "main" -}}
-<h1 class="text-center">{{ .Title }}</h1>
-{{ partial "elements/content.html" .Content }}
+  <h1 class="text-center">{{ .Title }}</h1>
+  {{ if eq .Type "projects" }}{{- partial "templates/projects.html" . -}}{{ end }}
+  {{- partial "elements/content.html" .Content -}}
 {{- end -}}
 {{- define "script" -}}
 {{- end -}}
