@@ -11,10 +11,10 @@
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
     {{- if (fileExists "static/quality/") -}}
-      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/quality/%s" .Name)) -}}
+      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/quality/%s" .Name) | transform.Unmarshal) -}}
     {{- end -}}
     {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-      {{- $.context.Scratch.Set "lastfilee" (getJSON (printf "static/%s/quality/%s" $project .Name)) -}}
+      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/%s/quality/%s" $project .Name) | transform.Unmarshal) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

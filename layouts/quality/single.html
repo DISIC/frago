@@ -26,20 +26,19 @@
   {{- else -}}
     {{ $.Scratch.Set "auditpath" (printf "static/quality/%s.json" .Params.datafilename) }}
   {{- end -}}
-  {{ $.Scratch.Set "auditfile" (getJSON ($.Scratch.Get "auditpath")) }}
+  {{ $.Scratch.Set "auditfile" (readFile (($.Scratch.Get "auditpath") | transform.Unmarshal)) }}
 {{- else -}}
   {{- with ($.Scratch.Get "dir") -}}
     {{- range last 1 ($.Scratch.Get "dir") -}}
-    {{/* Condition about structure level */}}
-    {{- if eq (len $patharray) 3 -}}
-      {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
-    {{- else -}}
-      {{ $.Scratch.Set "auditpath" (printf "static/quality/%s" .Name) }}
-    {{- end -}}
-    {{- $lastfile := getJSON ($.Scratch.Get "auditpath") -}}
-      {{- with $lastfile -}}
+      {{/* Condition about structure level */}}
+      {{- if eq (len $patharray) 3 -}}
+        {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
+      {{- else -}}
+        {{ $.Scratch.Set "auditpath" (printf "static/quality/%s" .Name) }}
+      {{- end -}}
+      {{- with ($.Scratch.Get "auditpath") -}}
         {{/* Set the audit file - it must exist */}}
-        {{ $.Scratch.Set "auditfile" . }}
+        {{ $.Scratch.Set "auditfile" (readFile . | transform.Unmarshal) }}
       {{- end -}}
     {{- end -}}
   {{- end -}}
