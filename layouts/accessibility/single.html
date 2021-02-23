@@ -1,5 +1,8 @@
 {{- define "main" -}}
 {{/* Vars */}}
+{{- $.Scratch.Set "guideline" "rgaa4.1" -}}
+{{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
+{{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
 
 {{- $.Scratch.Set "projectfolders" "" -}}
 {{- if eq (len (split .Path "/")) 3 -}}
@@ -137,7 +140,7 @@
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
     {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-      {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
+      {{- $s := where $criteresfile "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
@@ -156,6 +159,8 @@
   {{- end -}}
   {{- end -}}
 {{- end -}}
+
+
 
 {{/* If serveral pages tested */}}
 {{- if gt (len $pages) 1 -}}
@@ -186,7 +191,7 @@
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
       {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-        {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int ($thematiques)) -}}
+        {{- $s := where $criteresfile "number" "eq" (int ($thematiques)) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
@@ -217,7 +222,7 @@
   {{- $criteres := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
   <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong></p>
-  {{- $s := where (index $.Site.Data.criteres "topics") "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- $s := where $criteresfile "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
   <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ($content | markdownify) 100) | markdownify }}</em></p>
   </div>

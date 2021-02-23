@@ -1,12 +1,19 @@
 {{- define "main" -}}
+{{- $patharray :=  split .Path "/" -}}
+{{ $.Scratch.Set "guideline" "" }}
+{{- if ge ($patharray) 2 -}}
+  {{ $.Scratch.Set "guideline" (index $patharray 0) }}
+{{- end -}}
+{{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
+
 <div class="wrapper narrow">
-<h1>Critères RGAA4</h1>
+<h1>Critères {{ replace ($.Scratch.Get "guideline" | upper) "RGAA" "RGAA "}}</h1>
 {{ partial "elements/content.html" .Content }}
 <div class="tableofcontents">
 <h2>Thématiques</h2>
 <ol>
 {{/* Range all topics for anchors menu */}}
-{{- range $key1, $value1 := index $.Site.Data.criteres "topics" -}}
+{{- range $key1, $value1 := $criteresfile -}}
   <li><a href="#{{ .topic | urlize }}">{{ .topic }}</a></li>
 {{- end -}}
 </ol>
@@ -19,7 +26,7 @@
   <li><button id="auditcomplementary" class="btn">50 critères</button></li>
 </ul>
 {{/* Range all topics */}}
-{{- range $key1, $value1 := index $.Site.Data.criteres "topics" -}}
+{{- range $key1, $value1 := $criteresfile -}}
   <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
   {{/* Range level 1 */}}
   {{- range $key2, $value2 := .criteria -}}

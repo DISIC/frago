@@ -2,7 +2,7 @@
 <div class="wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- partial "elements/content.html" .Content -}}
-{{- range $key, $value := $.Site.Data.glossary -}}
+{{- range $key, $value := (index $.Site.Data "rgaa4.0").glossary -}}
   {{- range $value -}}
   <h2>{{ .section }}</h2>
   <dl>
