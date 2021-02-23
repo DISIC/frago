@@ -1,0 +1,29 @@
+{{- $project := .project -}}
+{{- $patharray :=  split .context.Path "/" -}}
+
+{{- if .datafilename -}}
+{{/* Condition about structure level */}}
+  {{- if eq (len $patharray) 3 -}}
+    {{ $.context.Scratch "auditpath" (printf "static/%s/quality/%s.json" $project .datafilename) }}
+  {{- else -}}
+    {{ $.context.Scratch "auditpath" (printf "static/quality/%s.json" .datafilename) }}
+  {{- end -}}
+  {{ $.context.Scratch "auditfile" (readFile (($.Scratch.Get "auditpath") | transform.Unmarshal)) }}
+{{- else -}}
+  {{- with ($.Scratch.Get "dir") -}}
+    {{- range last 1 ($.Scratch.Get "dir") -}}
+      {{/* Condition about structure level */}}
+      {{- if eq (len $patharray) 3 -}}
+        {{ $.context.Scratch "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
+      {{- else -}}
+        {{ $.context.Scratch "auditpath" (printf "static/quality/%s" .Name) }}
+      {{- end -}}
+      {{- with ($.Scratch.Get "auditpath") -}}
+        {{/* Set the audit file - it must exist */}}
+        {{ $.context.Scratch "auditfile" (readFile . | transform.Unmarshal) }}
+      {{- end -}}ss
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+sss
+{{- return ($.context.Scratch.Get "auditfile") -}}
