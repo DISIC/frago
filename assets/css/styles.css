@@ -18,7 +18,7 @@
   --base-font-name: 'Marianne';
   --title-font-name: 'Marianne';
 
-  --base-primary: 212;
+  --base-primary: 215;
   --base-secondary: calc(var(--base-primary) + 125);
 
   --color-primary-verylight: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) + var(--shader) * 2));
@@ -597,10 +597,10 @@ hr {
 
 .good.counter,
 .dataset-0 rect {
-  background: #3D9970;
+  background: #307f5c;
   /*background-image: repeating-linear-gradient(70deg, transparent, transparent 10%, rgba(255,255,255,0.1) 10%, rgba(255,255,255,0.1) 10.5%);*/
-  -webkit-mask-image: repeating-linear-gradient(70deg, #3D9970, #3D9970 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
-  mask-image: repeating-linear-gradient(70deg, #3D9970, #3D9970 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
+  -webkit-mask-image: repeating-linear-gradient(70deg, #fff, #000 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
+  mask-image: repeating-linear-gradient(70deg, #307f5c, #307f5c 10%, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0.9) 11%);
 }
 
 .bad.counter,
@@ -624,7 +624,7 @@ hr {
 }
 
 .good {
-  background: #3D9970;
+  background: #307f5c;
 }
 
 .medium {
