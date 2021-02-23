@@ -93,12 +93,12 @@
       labels: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{ if ne ($.context.Scratch.Get "graphcounter") 0 }},{{ end }}"{{ $.context.Scratch.Add "graphcounter" 1 }}{{ index $topics ((int $id)) }}"{{ end }}{{ end }}],
       datasets: [
         {
-          name: "Conforme",
-          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ sub 100 (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 1 | safeJS -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
-        },
-        {
           name: "Non Conforme",
           values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if or (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter3") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 1 | safeJS -}}{{- $.context.Scratch.Add "graphcounter3" 1 | safeJS  -}}{{- end -}}{{ end }}]
+        },
+        {
+          name: "Conforme",
+          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ sub 100 (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 1 | safeJS -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
         }
       ]
   }
@@ -112,7 +112,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#96cfb7','#ac3636']
+        colors: ['#ac3636','#96cfb7']
     })
 </script>
 {{- $.context.Scratch.Set "graphcounter" 0 -}}
