@@ -1,23 +1,6 @@
 {{- $project := .project -}}
 
-{{- if (fileExists "static/quality/") -}}
-  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
-{{- end -}}
-
-{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
-{{- end -}}
-
-{{- with ($.context.Scratch.Get "dir") -}}
-  {{- range last 1 . -}}
-    {{- if (fileExists "static/quality/") -}}
-      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/quality/%s" .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/%s/quality/%s" $project .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{- $.context.Scratch.Set "lastfilee" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project )) -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
@@ -35,6 +18,7 @@
   {{- end -}}
 {{- end -}}
 {{- end -}}
+
 {{- with $.context.Scratch.Get "pagesstatus" -}}
 <h3>Erreurs par criticité</h3>
 <table class="text-left">

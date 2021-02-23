@@ -1,28 +1,12 @@
 {{- $project := .project -}}
 
-{{- if (fileExists "static/quality/") -}}
-  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
-{{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
-{{- end -}}
-
-{{- with ($.context.Scratch.Get "dir") -}}
-  {{- range last 1 . -}}
-    {{- if (fileExists "static/quality/") -}}
-      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/quality/%s" .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-      {{- $.context.Scratch.Set "lastfilee" (readFile (printf "static/%s/quality/%s" $project .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{- $.context.Scratch.Set "lastfilee" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) -}}
 
 {{/* Create an array with all pages */}}
 {{- $.context.Scratch.Set "pages" slice -}}
 
-{{ $.context.Scratch.Set "delivery" slice }}
-{{ $.context.Scratch.Set "pagesdelivery" slice }}
+{{- $.context.Scratch.Set "delivery" slice -}}
+{{- $.context.Scratch.Set "pagesdelivery" slice -}}
 {{- range ($.context.Scratch.Get "lastfilee") -}}
 {{- range $idpage, $s := .pages -}}
   {{- $.context.Scratch.Add "pages" .name -}}
@@ -33,26 +17,26 @@
     {{- with .delivery -}}
     {{- $s := merge $s $block -}}
     {{- $s := merge $s $page -}}
-    {{ $.context.Scratch.Add "delivery" . }}
-    {{ $.context.Scratch.Add "pagesdelivery" $s }}
+    {{- $.context.Scratch.Add "delivery" . -}}
+    {{- $.context.Scratch.Add "pagesdelivery" $s -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- end -}}
 
-{{ if $.context.Scratch.Get "pagesdelivery" }}
+{{- if $.context.Scratch.Get "pagesdelivery" -}}
 <h3>Erreurs par lots de livraison <small>- <span class="counter">{{ len ($.context.Scratch.Get "pagesdelivery") }}</span> erreurs sélectionnées</small></h3>
-{{ range sort (uniq ($.context.Scratch.Get "delivery")) }}
-  {{ $delivery := . }}
+{{- range sort (uniq ($.context.Scratch.Get "delivery")) -}}
+  {{- $delivery := . -}}
   <table class="text-left">
     <caption>{{ if . }}{{ . | humanize }}{{ end }}</caption>
     <thead><tr ;><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Bloc</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
     <tbody>
     {{- $.context.Scratch.Set "blockid" 0 -}}
-    {{ range ($.context.Scratch.Get "pages") }}
-      {{ $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . }}
-      {{ if $lot }}
+    {{- range ($.context.Scratch.Get "pages") -}}
+      {{- $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . -}}
+      {{- if $lot -}}
       {{- $.context.Scratch.Set "blockname" "" -}}
       {{- range $id, $value := sort $lot "blockname" "asc" -}}
         {{ if ne ($.context.Scratch.Get "blockname") .blockname }}{{- $.context.Scratch.Add "blockid" 1 -}}{{ end }}
@@ -70,7 +54,7 @@
       {{- end -}}
     {{ end }}
 
-  {{ end }}
+  {{- end -}}
   </tbody>
   </table>
 {{- end -}}
