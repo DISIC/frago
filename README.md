@@ -102,7 +102,7 @@ L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). 
 ---
 type: accessibility // appel le gabarit accessibility :: data/nomdudéfi/accessibility.json
 accessibility:
-  guidelines: "RGAA4"
+  guidelines: "RGAA 4.0"
   technologies: ["HTML", "CSS", "Angular"]
   tools: ["Wave", "AXE", "MOZ DevTools","Usability Hike"]
   environment: ["MacOS", "Chrome", "ChromeVox"]
