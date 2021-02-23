@@ -3,29 +3,47 @@
   {{- $context := . -}}
   <div class="wrapper narrow">
 
-    {{- if eq $project "amendes" -}}
+    {{- $.Scratch.Set "listmonths" slice -}}
+    {{- range $id, $value := .Params.gantt -}}
+      {{- range .time -}}
+        {{- $.Scratch.Add "listmonths" (index (split . " ") 0) -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- with uniq ($.Scratch.Get "listmonths") -}}
+    {{ $months := . }}
     <h2 class="text-center">Planning</h2>
-    <div class="gantt">
-      <span class="d-1"></span>
-      <span class="d-1mid"></span>
-      <span class="d-2"></span>
-      <span class="d-2mid"></span>
-      <span class="d-3"></span>
-      <span class="d-3mid"></span>
-      <span class="d-4"></span>
-      <span class="d-4mid"></span>
-      <span class="d-5"></span>
-      <h3 class="h-sept">septembre</h3>
-      <div class="t-1" style="grid-column: sept-middle / oct-middle;">Découverte</div>
-      <h3 class="h-oct">octobre</h3>
-      <div class="t-2" style="grid-column: oct-middle / oct-end;">Collecte</div>
-      <h3 class="h-nov">novembre</h3>
-      <div class="t-3" style="grid-column: nov-start / nov-middle;">Étude</div>
-      <div class="t-4" style="grid-column: nov-middle / nov-end;">Proposition</div>
-      <h3 class="h-dec">décembre</h3>
-      <div class="t-5" style="grid-column: dec-start / dec-middle;">Application</div>
+    <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
+    {{- range $separator, $value := . -}}
+        <span class="d-{{ add $separator 1 }}"></span>
+        <span class="d-{{ add $separator 1 }}mid"></span>
+        {{- $.Scratch.Set "counter" (add $separator 2) -}}
+    {{- end -}}
+      <span class="d-{{ $.Scratch.Get "counter" }}"></span>
+    {{- range $separator, $value := . -}}
+        <h3 class="h-" style="grid-column: {{ add (mul $separator 2) 1 }}/span 2">{{ . }}</h3>
+        {{ $month := . }}
+        {{- range $id, $value := $.Params.gantt -}}
+          {{ if eq (index (split (index .time 0) " ") 0) $month }}
+            {{- $start := index (split (index .time 0) " ") 0 -}}
+            {{- $startpar := index (split (index .time 0) " ") 1 -}}
+            {{- $end := index (split (index .time 1) " ") 0 -}}
+            {{- $endpar := index (split (index .time 1) " ") 1 -}}
+            {{- $.Scratch.Set "startmod" 0 -}}
+            {{- $.Scratch.Set "endmod" 0 -}}
+            {{- if eq $startpar "middle" -}}{{ $.Scratch.Set "startmod" 1 }}{{- end -}}
+            {{- if eq $startpar "end" -}}{{ $.Scratch.Set "startmod" 2 }}{{- end -}}
+            {{- if eq $endpar "middle" -}}{{ $.Scratch.Set "endmod" 1 }}{{- end -}}
+            {{- if eq $endpar "end" -}}{{ $.Scratch.Set "endmod" 2 }}{{- end -}}
+            {{- range $id, $value := $months -}}{{ if eq . $start }}{{ $.Scratch.Set "positionstart" $id }}{{- end -}}{{- end -}}
+            {{- range $id, $value := $months -}}{{ if eq . $end }}{{ $.Scratch.Set "positionend" $id }}{{- end -}}{{- end -}}
+            <div class="t-{{ add $id 1}}" style="grid-column: {{ add (add (mul ($.Scratch.Get "positionstart") 2) 1) ($.Scratch.Get "startmod") }} / {{ add (add (mul ($.Scratch.Get "positionend") 2) 1) ($.Scratch.Get "endmod") }};">{{ .name }}</div>
+          {{- end -}}
+        {{- end -}}
+    {{- end -}}
     </div>
     {{- end -}}
+
 
     {{- $.Scratch.Set "projectfolders" "/static" -}}
     {{- $.Scratch.Set "accessibility-path" false -}}

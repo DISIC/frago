@@ -803,6 +803,10 @@ hr {
         border-left: 1px solid var(--text-color);
     }
 
+    [class$=mid] {
+      grid-row: 1 / span 9;
+    }
+
     h3.h-sept {
         grid-column: 1 / span 2;
     }
@@ -821,7 +825,6 @@ hr {
     }
     span.d-1mid {
         grid-column: 2;
-        grid-row: 1 / span 9;
         border-color: var(--text-color);
         border-left-style: dashed;
     }
@@ -830,7 +833,6 @@ hr {
     }
     span.d-2mid {
         grid-column: 4;
-        grid-row: 1 / span 9;
         border-color: var(--text-color);
         border-left-style: dashed;
     }
@@ -839,7 +841,6 @@ hr {
     }
     span.d-3mid {
         grid-column: 6;
-        grid-row: 1 / span 9;
         border-color: var(--text-color);
         border-left-style: dashed;
     }
@@ -848,7 +849,6 @@ hr {
     }
     span.d-4mid {
         grid-column: 8;
-        grid-row: 1 / span 9;
         border-color: var(--text-color);
         border-left-style: dashed;
     }
@@ -857,7 +857,6 @@ hr {
     }
     span.d-5mid {
         grid-column: 10;
-        grid-row: 1 / span 9;
         border-color: var(--text-color);
         border-left-style: dashed;
     }
