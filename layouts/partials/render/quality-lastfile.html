@@ -1,6 +1,8 @@
 {{- $project := .project -}}
 {{- $patharray :=  split .context.Path "/" -}}
 
+{{- $.context.Scratch.Delete "auditfile" -}}
+
 {{- if .datafilename -}}
 {{/* Condition about structure level */}}
   {{- if eq (len $patharray) 3 -}}

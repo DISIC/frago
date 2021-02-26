@@ -6,6 +6,7 @@
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
 {{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
+{{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
 
 {{- $.Scratch.Set "projectfolders" "" -}}
 {{- if eq (len $patharray) 3 -}}
@@ -109,14 +110,14 @@
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
-        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+        <p><em>{{ (replaceRE "=\"#" $glossaire ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
         {{- if (after 1 .) -}}
         <ol>
-          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{ end }}
+          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
         </ol>
         {{- end -}}
         {{- else -}}
-        <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -158,14 +159,14 @@
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
-          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+          <p><em>{{ (replaceRE "=\"#" $glossaire ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
           {{- if (after 1 .) -}}
           <ol>
-            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{ end }}
+            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
           </ol>
           {{- end -}}
           {{- else -}}
-          <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</em></p>
+          <p><em>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
@@ -187,7 +188,7 @@
   <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong></p>
   {{- $s := where $criteresfile "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
-  <p><em>{{ (replaceRE "=\"#" "=\"/glossaire/#" ($content | markdownify) 100) | markdownify }}</em></p>
+  <p><em>{{ (replaceRE "=\"#" $glossaire ($content | markdownify) 100) | markdownify }}</em></p>
   </div>
 {{- end -}}
 </div>

@@ -4,6 +4,7 @@
 {{- if ge ($patharray) 2 -}}
   {{ $.Scratch.Set "guideline" (index $patharray 0) }}
 {{- end -}}
+{{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
 {{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
 
 <div class="wrapper narrow">
@@ -32,20 +33,20 @@
   {{- range $key2, $value2 := .criteria -}}
     {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
     <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}">
-    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" "=\"/glossaire/#" (.criterium.title | markdownify) 100) | markdownify }}</h3>
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | markdownify }}</h3>
     {{/* Range level 2 */}}
     {{- range $key3, $value3 := .criterium.tests -}}
         <p id="{{ add $key1 1 }}-{{ add $key2 1 }}-{{ $key3 }}" {{ if reflect.IsSlice $value3 }}class="mb-0"{{ end }}><strong>Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }}</strong> -
         {{/* Test if value is an array */}}
         {{- if reflect.IsSlice $value3 -}}
-        {{ (replaceRE "=\"#" "=\"/glossaire/#" ((index $value3 0) | markdownify) 100) | markdownify }}</p>
+        {{ (replaceRE "=\"#" $glossaire ((index $value3 0) | markdownify) 100) | markdownify }}</p>
         <ol>
         {{/* Range array and prepend "glossaire" before all links */}}
-        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" "=\"/glossaire/#" (. | markdownify) 100) | markdownify }}</li>{{- end -}}
+        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{- end -}}
         </ol>
         {{- else -}}
         {{/* Prepend "glossaire" before all links */}}
-        {{ (replaceRE "=\"#" "=\"/glossaire/#" ($value3 | markdownify) 100) | markdownify }}</p>
+        {{ (replaceRE "=\"#" $glossaire ($value3 | markdownify) 100) | markdownify }}</p>
         {{- end -}}
     {{- end -}}
     <hr>

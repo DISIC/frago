@@ -36,6 +36,7 @@
     {{- $.context.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
   {{- end -}}
 {{- end -}}
+{{- $.context.Scratch.Delete "audit" -}}
 {{- $.context.Scratch.SetInMap "audit" "auditpath" ($.context.Scratch.Get "auditpath") -}}
 {{- $.context.Scratch.SetInMap "audit" "auditall" ($.context.Scratch.Get "allaudits") -}}
 {{- $.context.Scratch.SetInMap "audit" "auditallname" ($.context.Scratch.Get "allauditsname") -}}
