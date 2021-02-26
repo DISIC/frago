@@ -1,0 +1,42 @@
+{{- $project := .project -}}
+{{- $patharray := split .context.Path "/" -}}
+{{- if .datafilename -}}
+  {{/* Condition about structure level */}}
+  {{- if eq (len $patharray) 3 -}}
+  {{- $.context.Scratch.Set "auditpath" (printf "static/%s/%s.csv" $project .datafilename) -}}
+  {{- else -}}
+  {{- $.context.Scratch.Set "auditpath" (printf "static/%s.csv" .datafilename) -}}
+  {{- end -}}
+{{- else -}}
+  {{/* Set the audit file - test if a generic file is called */}}
+  {{/* Test if a set of archived audit exists */}}
+  {{- if fileExists (printf "static/%s/accessibility/" $project) -}}
+    {{- range $key, $value := (readDir (printf "static/%s/accessibility/" $project)) -}}
+      {{- $.context.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" $project .Name) -}}
+      {{- $.context.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
+    {{- end -}}
+    {{- $.context.Scratch.Set "auditpath" (index ($.context.Scratch.Get "allaudits") (string (len ($.context.Scratch.Get "allaudits")))) -}}
+  {{- else if fileExists (printf "static/accessibility/%s" $project) -}}
+    {{- range $key, $value := (readDir (printf "static/accessibility/%s" $project)) -}}
+      {{- $.context.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/accessibility/%s" $project .Name) -}}
+      {{- $.context.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
+    {{- end -}}
+    {{/* Keep only the last file - if a root file doesn't exist */}}
+    {{- $.context.Scratch.Set "auditpath" (index ($.context.Scratch.Get "allaudits") (string (len ($.context.Scratch.Get "allaudits")))) -}}
+  {{- end -}}
+  {{/* Condition about structure level for a root generic file */}}{{ $.context.Scratch.Get "projectfolders" }}ss
+  {{ (printf "static/%s/%s.csv" $project "accessibility") }}
+  {{- if or (fileExists (printf "static/%s/%s.csv" $project "accessibility")) (fileExists (printf "static/%s/%s.csv" $project "accessibility")) -}}
+    {{- if eq (len $patharray) 3 -}}
+      {{- $.context.Scratch.Set "auditpath" (printf "static/%s/%s.csv" $project "accessibility") -}}
+    {{- else -}}
+    {{- $.context.Scratch.Set "auditpath" (printf "static/%s/%s.csv" $project "accessibility") -}}
+    {{- end -}}
+    {{- $.context.Scratch.SetInMap "allaudits" "zz" ($.context.Scratch.Get "auditpath") -}}
+    {{- $.context.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
+  {{- end -}}
+{{- end -}}
+{{- $.context.Scratch.SetInMap "audit" "auditpath" ($.context.Scratch.Get "auditpath") -}}
+{{- $.context.Scratch.SetInMap "audit" "auditall" ($.context.Scratch.Get "allaudits") -}}
+{{- $.context.Scratch.SetInMap "audit" "auditallname" ($.context.Scratch.Get "allauditsname") -}}
+{{- return ($.context.Scratch.Get "audit") -}}

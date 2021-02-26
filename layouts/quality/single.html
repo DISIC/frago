@@ -61,7 +61,7 @@
 
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) -}}
-{{/* partial "components/quality/critical.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) */}}
+{{- partial "components/quality/critical.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) -}}
 
 <hr class="divider">
 
@@ -85,6 +85,7 @@
     {{- $name := .name -}}
     {{- $.Scratch.Set "countererrorspage" 0 -}}
     {{/* Range second level */}}
+    <h3 id="{{ .name | urlize }}">{{ $name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrorspage" }}</span> erreurs recensées sur cette page</small></h3>
     {{- range $idblock, $b := .blocks -}}
       {{- $.Scratch.Set "countererrorsblock" 0 -}}
       {{/* Range third level and count errors */}}
@@ -95,7 +96,6 @@
         {{- $.Scratch.SetInMap "countererrorsblocklist" (string $idblock) ($.Scratch.Get "countererrorsblock") -}}
       {{- end -}}
       {{- end -}}
-      <h3 id="{{ .name | urlize }}">{{ .name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrorspage" }}</span> erreurs recensées sur cette page</small></h3>
       {{- if .url -}}<p>URL : <a href="{{ .url }}">{{ .url }}</a></p>{{- end -}}
       {{- $.Scratch.Set "fileexist" false -}}
       {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
@@ -126,10 +126,10 @@
       {{- range $s := .errors -}}
         {{- $path := .name -}}
         {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
-        {{/* Create an array fir the images slider with screen capture */}}
+        {{/* Create an array for the images slider with screen capture */}}
         {{- $.Scratch.Add "index" (slice $path) -}}
         <dl>
-          <dt id="{{ .name | urlize }}">{{ if .checked }}☒{{ else }}☐{{ end }} {{ .name }}
+          <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
             {{- $.Scratch.Set "fileexist" false -}}
             {{- if (fileExists ($.Scratch.Get "pathimage")) -}}
               {{ range (readDir ($.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
@@ -186,8 +186,8 @@
         {{- end -}}
       {{- end -}}{{/* Range second level */}}
       <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s-%s-%s" ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
-      <hr>
   {{- end -}}{{/* Range first level */}}
+  <hr>
 {{- end -}}{{/* Range the quality file */}}
 </div>
 {{- end -}}

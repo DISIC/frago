@@ -11,7 +11,7 @@
 {{- if eq (len (split .RelPermalink "/")) 4 -}}
 {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
 {{- end -}}
-{{- $accessibilitypath := (printf "%s/accessibility.csv" ($.Scratch.Get "projectfolders")) -}}
+{{- $accessibilitypath := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
 {{- $accessibility     := (fileExists $accessibilitypath) -}}
 {{- $quality           := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
 {{- $lighthouse        := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}

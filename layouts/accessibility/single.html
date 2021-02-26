@@ -1,54 +1,19 @@
 {{- define "main" -}}
 {{/* Vars */}}
+{{- $patharray :=  split .Path "/" -}}
+{{- $project :=  (index $patharray 1) -}}
+{{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
 {{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
 
 {{- $.Scratch.Set "projectfolders" "" -}}
-{{- if eq (len (split .Path "/")) 3 -}}
-  {{- $.Scratch.Set "projectfolders" (index (split .Path "/") 1) -}}
+{{- if eq (len $patharray) 3 -}}
+  {{- $.Scratch.Set "projectfolders" $project -}}
 {{- end -}}
 {{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
-{{- $context := . -}}
-{{- $.Scratch.Set "auditfile-csv" "" }}
 
-{{/* Set the audit file */}}
-{{/* Set the audit file - test if a specific file is called */}}
-{{- if .Params.datafilename -}}
-  {{/* Condition about structure level */}}
-  {{- if eq (len (split .Path "/")) 3 -}}
-  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") .Params.datafilename) -}}
-  {{- else -}}
-  {{- $.Scratch.Set "auditpath-csv" (printf "static/%s.csv" .Params.datafilename) -}}
-  {{- end -}}
-{{- else -}}
-  {{/* Set the audit file - test if a generic file is called */}}
-  {{/* Test if a set of archived audit exists */}}
-  {{- if fileExists (printf "static/%s/accessibility/" ($.Scratch.Get "projectfolders")) -}}
-    {{- range $key, $value := (readDir (printf "static/%s/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
-      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" ($.Scratch.Get "projectfolders") .Name) -}}
-      {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
-    {{- end -}}
-    {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
-  {{- else if fileExists (printf "static/accessibility/" ($.Scratch.Get "projectfolders")) -}}
-    {{- range $key, $value := (readDir (printf "static/accessibility/" ($.Scratch.Get "projectfolders"))) -}}
-      {{- $.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/accessibility/%s" ($.Scratch.Get "projectfolders") .Name) -}}
-      {{- $.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
-    {{- end -}}
-    {{/* Keep only the last file - if a root file doesn't exist */}}
-    {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "allaudits") "1") -}}
-  {{- end -}}
-  {{/* Condition about structure level for a root generic file */}}
-  {{- if or (fileExists (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") "accessibility")) (fileExists (printf "static/%s%s.csv" ($.Scratch.Get "projectfolders") "accessibility")) -}}
-    {{- if eq (len (split .Path "/")) 3 -}}
-      {{- $.Scratch.Set "auditpath-csv" (printf "static/%s/%s.csv" ($.Scratch.Get "projectfolders") "accessibility") -}}
-    {{- else -}}
-    {{- $.Scratch.Set "auditpath-csv" (printf "static/%s%s.csv" ($.Scratch.Get "projectfolders") "accessibility") -}}
-    {{- end -}}
-    {{- $.Scratch.SetInMap "allaudits" "zz" ($.Scratch.Get "auditpath-csv") -}}
-    {{- $.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
-  {{- end -}}
-{{- end -}}
+{{- $.Scratch.Set "auditpath-csv" (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") ".datafilename" .Params.datafilename)) "auditpath") -}}
 
 <div class="wrapper narrow audit">
 
@@ -99,7 +64,7 @@
 
 <hr>
 
-{{/* If serveral pages tested */}}
+{{/* If several pages tested */}}
 
 <h2>Liste des pages auditées</h2>
 
@@ -160,8 +125,6 @@
   {{- end -}}
 {{- end -}}
 
-
-
 {{/* If serveral pages tested */}}
 {{- if gt (len $pages) 1 -}}
 
@@ -169,12 +132,12 @@
 <h3>B - Erreurs présentes sur les pages spécifiques</h3>
 {{/* Display errors presents on specific pages */}}
 {{- range $id, $value := $pages -}}
-  {{ $.Scratch.Set "text" 0 }}
-  {{ $page := . }}
+  {{- $.Scratch.Set "text" 0 -}}
+  {{- $page := . -}}
   <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
   {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
-  {{ if ne (len (uniq (after 3 .))) 1 }}
+  {{- if ne (len (uniq (after 3 .))) 1 -}}
     {{- $content := (string (index . (add $id 3))) -}}
     {{- $condcontentlen := gt (len $content) 2 -}}
     {{- $condcontentnc := (eq $content "nc") -}}
