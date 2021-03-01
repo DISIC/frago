@@ -13,7 +13,7 @@
   {{- $.Scratch.Set "projectfolders" $project -}}
 {{- end -}}
 {{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
-
+{{- $.Scratch.Delete "auditpath-csv" -}}
 {{- $.Scratch.Set "auditpath-csv" (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") ".datafilename" .Params.datafilename)) "auditpath") -}}
 
 <div class="wrapper narrow audit">

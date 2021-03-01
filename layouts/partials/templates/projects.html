@@ -50,6 +50,7 @@
     {{- if eq (len (split .RelPermalink "/")) 4 -}}
     {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
     {{- end -}}
+    {{ (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) }}
     {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
     {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
     {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}

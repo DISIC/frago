@@ -1,7 +1,8 @@
 {{- $project := .project -}}
 {{- $patharray := split .context.Path "/" -}}
-
-{{- $.context.Scratch.Delete "audit" -}}
+{{- $.context.Scratch.Delete "auditpath-accessibility" -}}
+{{- $.context.Scratch.Delete "allaudits" -}}
+{{- $.context.Scratch.Delete "allauditsname" -}}
 
 {{- if .datafilename -}}
   {{/* Condition about structure level */}}

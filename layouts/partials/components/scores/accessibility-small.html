@@ -1,2 +1,2 @@
-<small class="text-center d-inline-block">{{- if .scores -}}<b class="h3">{{- div (mul (len (index .scores "critereconforme")) 100) (sub (len (index .scores "criteretotal")) (len (index .scores "criterenonapplicable"))) -}}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
+<small class="text-center d-inline-block">{{- if .scores -}}<b class="h3">{{- index .scores "critereconformepercent" -}}%</b><br>de&nbsp;conformité{{ else }}<b class="h3">Conformité</b><br>En&nbsp;cours{{- end -}}</small>
 

@@ -17,8 +17,7 @@
     {{- end -}}
     {{- $.context.Scratch.Set "critere" $critere -}}
 {{- end -}}
-{{- $.context.Scratch.Delete "critereconforme" -}}
-{{- $.context.Scratch.Delete "scores" -}}
+
 {{- if and .auditfile ($.context.Scratch.Get "is-empty")  -}}
 {{- $auditfile := .auditfile }}
 {{- $.context.Scratch.Set "pages" slice -}}
@@ -41,6 +40,6 @@
 {{- $.context.Scratch.SetInMap "scores" "critereconforme" ($.context.Scratch.Get "critereconforme") -}}
 {{- $.context.Scratch.SetInMap "scores" "criterenonconforme" ($.context.Scratch.Get "criterenonconforme") -}}
 {{- $.context.Scratch.SetInMap "scores" "criterenonapplicable" ($.context.Scratch.Get "criterenonapplicable") -}}
-{{- $.context.Scratch.SetInMap "scores" "critereconformepercent" (math.Round (div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "criterenonapplicable")))))) -}}
+{{- $.context.Scratch.SetInMap "scores" "critereconformepercent" ((div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "criterenonapplicable")))))) -}}
 {{- return ($.context.Scratch.Get "scores") -}}
 {{- end -}}
