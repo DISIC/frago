@@ -1,31 +1,42 @@
 {{- $project := .project -}}
 {{- $patharray :=  split .context.Path "/" -}}
 
-{{- $.context.Scratch.Delete "auditfile" -}}
+{{- $.context.Scratch.Delete "auditfile-quality" -}}
+
+{{/* Condition about structure level */}}
+{{- if eq (len $patharray) 3 -}}
+  {{- if (fileExists (printf "static/%s/quality/" $project)) -}}
+    {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+  {{- end -}}
+{{- else -}}
+  {{- if (fileExists "static/quality/") -}}
+    {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+  {{- end -}}
+{{- end -}}
 
 {{- if .datafilename -}}
 {{/* Condition about structure level */}}
   {{- if eq (len $patharray) 3 -}}
-    {{ $.context.Scratch "auditpath" (printf "static/%s/quality/%s.json" $project .datafilename) }}
+    {{ $.context.Scratch "auditpath-quality" (printf "static/%s/quality/%s.yml" $project .datafilename) }}
   {{- else -}}
-    {{ $.context.Scratch "auditpath" (printf "static/quality/%s.json" .datafilename) }}
+    {{ $.context.Scratch "auditpath-quality" (printf "static/quality/%s.yml" .datafilename) }}
   {{- end -}}
-  {{ $.context.Scratch "auditfile" (readFile (($.Scratch.Get "auditpath") | transform.Unmarshal)) }}
+  {{ $.context.Scratch "auditfile-quality" (readFile (($.context.Scratch.Get "auditpath-quality") | transform.Unmarshal)) }}
 {{- else -}}
-  {{- with ($.Scratch.Get "dir") -}}
-    {{- range last 1 ($.Scratch.Get "dir") -}}
+  {{- with ($.context.Scratch.Get "dir") -}}
+    {{- range last 1 ($.context.Scratch.Get "dir") -}}
       {{/* Condition about structure level */}}
       {{- if eq (len $patharray) 3 -}}
-        {{ $.context.Scratch "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
+        {{ $.context.Scratch.Set "auditpath-quality" (printf "static/%s/quality/%s" $project .Name) }}
       {{- else -}}
-        {{ $.context.Scratch "auditpath" (printf "static/quality/%s" .Name) }}
+        {{ $.context.Scratch.Set "auditpath-quality" (printf "static/quality/%s" .Name) }}
       {{- end -}}
-      {{- with ($.Scratch.Get "auditpath") -}}
+      {{- with ($.context.Scratch.Get "auditpath-quality") -}}
         {{/* Set the audit file - it must exist */}}
-        {{ $.context.Scratch "auditfile" (readFile . | transform.Unmarshal) }}
-      {{- end -}}ss
+        {{ $.context.Scratch.Set "auditfile-quality" (readFile . | transform.Unmarshal) }}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
-{{- return ($.context.Scratch.Get "auditfile") -}}
+{{- return ($.context.Scratch.Get "auditfile-quality") -}}

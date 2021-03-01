@@ -3,46 +3,15 @@
 {{- $patharray :=  split .Path "/" -}}
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
-{{- $.Scratch.Set "dir" "" -}}
 
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
   {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
-  {{- if (fileExists (printf "static/%s/quality/" $project)) -}}
-    {{- $.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
-  {{- end -}}
 {{- else -}}
   {{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
-  {{- if (fileExists "static/quality/") -}}
-    {{- $.Scratch.Set "dir" (readDir "static/quality/") -}}
-  {{- end -}}
 {{- end -}}
 
-{{/* Set the audit file - test if a specific file is called */}}
-{{- if .Params.datafilename -}}
-{{/* Condition about structure level */}}
-  {{- if eq (len $patharray) 3 -}}
-    {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s.json" $project .Params.datafilename) }}
-  {{- else -}}
-    {{ $.Scratch.Set "auditpath" (printf "static/quality/%s.json" .Params.datafilename) }}
-  {{- end -}}
-  {{ $.Scratch.Set "auditfile" (readFile (($.Scratch.Get "auditpath") | transform.Unmarshal)) }}
-{{- else -}}
-  {{- with ($.Scratch.Get "dir") -}}
-    {{- range last 1 ($.Scratch.Get "dir") -}}
-      {{/* Condition about structure level */}}
-      {{- if eq (len $patharray) 3 -}}
-        {{ $.Scratch.Set "auditpath" (printf "static/%s/quality/%s" $project .Name) }}
-      {{- else -}}
-        {{ $.Scratch.Set "auditpath" (printf "static/quality/%s" .Name) }}
-      {{- end -}}
-      {{- with ($.Scratch.Get "auditpath") -}}
-        {{/* Set the audit file - it must exist */}}
-        {{ $.Scratch.Set "auditfile" (readFile . | transform.Unmarshal) }}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
+{{- $.Scratch.Set "auditfile" (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) -}}
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}

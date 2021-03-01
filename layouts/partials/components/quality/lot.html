@@ -1,13 +1,13 @@
 {{- $project := .project -}}
 
-{{- $.context.Scratch.Set "lastfilee" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) -}}
+{{- $.context.Scratch.Set "lastfile-quality" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) -}}
 
 {{/* Create an array with all pages */}}
 {{- $.context.Scratch.Set "pages" slice -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
-{{- range ($.context.Scratch.Get "lastfilee") -}}
+{{- range ($.context.Scratch.Get "lastfile-quality") -}}
 {{- range $idpage, $s := .pages -}}
   {{- $.context.Scratch.Add "pages" .name -}}
   {{- $page := dict "pagename" .name -}}

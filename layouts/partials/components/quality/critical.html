@@ -1,10 +1,10 @@
 {{- $project := .project -}}
 
-{{- $.context.Scratch.Set "lastfilee" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project )) -}}
+{{- $.context.Scratch.Set "lastfile-critical" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project )) -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
-{{- range ($.context.Scratch.Get "lastfilee") -}}
+{{- range ($.context.Scratch.Get "lastfile-critical") -}}
 {{- range $idpage, $s := .pages -}}
   {{- $page := dict "pagename" .name -}}
   {{- range $idblock, $s := .blocks -}}
@@ -12,14 +12,14 @@
     {{ $id := (printf "%s%s%s" (string $idpage) (string $idblock) (string $iderror)) }}
     {{- if .status -}}
     {{- $s := merge $s $page -}}
-    {{- $.context.Scratch.SetInMap "pagesstatus" (string $id) $s -}}
+    {{- $.context.Scratch.SetInMap "pagesstatus-critical" (string $id) $s -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- end -}}
 
-{{- with $.context.Scratch.Get "pagesstatus" -}}
+{{- with $.context.Scratch.Get "pagesstatus-critical" -}}
 <h3>Erreurs par criticité</h3>
 <table class="text-left">
   <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
