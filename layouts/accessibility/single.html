@@ -13,7 +13,7 @@
   {{- $.Scratch.Set "projectfolders" $project -}}
 {{- end -}}
 {{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
-{{- $.Scratch.Delete "auditpath-csv" -}}
+
 {{- $.Scratch.Set "auditpath-csv" (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") ".datafilename" .Params.datafilename)) "auditpath") -}}
 
 <div class="wrapper narrow audit">
@@ -38,7 +38,6 @@
 
 {{/* Create an array with all pages */}}
 {{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
-
 {{/* Call score components */}}
 <h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "criteretotal") -}}&nbsp;critères</h2>
 <h3>Conformité globale selon les critères</h3>

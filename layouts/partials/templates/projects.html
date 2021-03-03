@@ -66,7 +66,7 @@
       {{- $conforme := index $partial "critereconformepercent" -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- else -}}
-      <p>Le fichier d’audit est vide</p>
+      <p>Le fichier d’audit est vide.</p>
     {{- end -}}
     {{/* Display conformity in time */}}
     {{- with ($.Scratch.Get "allauditscsv") -}}

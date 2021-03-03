@@ -1,4 +1,11 @@
 {{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
+{{- $.context.Scratch.Delete "scores" -}}
+{{- $.context.Scratch.Delete "criterenonapplicable" -}}
+{{- $.context.Scratch.Delete "critereconforme" -}}
+{{- $.context.Scratch.Delete "criterenonconforme" -}}
+{{- $.context.Scratch.Delete "criteretotal" -}}
+{{- $.context.Scratch.Delete "critereconformepercent" -}}
+{{- $.context.Scratch.Delete "criterevalues" -}}
 {{- $.context.Scratch.Set "is-empty" 0 -}}
 {{- $.context.Scratch.Set "testtotal" 0 -}}
 {{- $.context.Scratch.Set "countercritere" 0 -}}
@@ -17,29 +24,31 @@
     {{- end -}}
     {{- $.context.Scratch.Set "critere" $critere -}}
 {{- end -}}
-
 {{- if and .auditfile ($.context.Scratch.Get "is-empty")  -}}
-{{- $auditfile := .auditfile }}
-{{- $.context.Scratch.Set "pages" slice -}}
+{{- $auditfile := after 1 .auditfile }}
 {{- range $id, $value := ($.context.Scratch.Get "criterevalues") -}}
   {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
     {{- if eq (index $value 0) "?" -}}{{- $.context.Scratch.SetInMap "criterenonapplicable" (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap "critereconforme" (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap "criterenonapplicable" (string $id) . -}}{{- end -}}
+    {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap "critereconforme" (string $id) . -}}{{- end -}}
     {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap "criterenonconforme" (string $id) . -}}{{- end -}}
   {{- else -}}
-    {{- if eq (len ($value | symdiff (slice "na" "c"))) 0 -}}{{- $.context.Scratch.SetInMap "critereconforme" (string $id) . -}}{{- end -}}
-    {{- if ge (len ($value | symdiff (slice "na" "c"))) 1 -}}{{- $.context.Scratch.SetInMap "criterenonconforme" (string $id) . -}}{{- end -}}
+    {{ $symdiff := $value | symdiff (slice "na" "c") }}
+    {{- if eq (len $symdiff) 0 -}}{{- $.context.Scratch.SetInMap "critereconforme" (string $id) . -}}  {{- end -}}
+    {{- if ge (len $symdiff) 1 -}}{{- $.context.Scratch.SetInMap "criterenonconforme" (string $id) . -}}{{- end -}}
   {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- $critereconformepercent := 0 -}}
+{{- $critereconformepercent := ((div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "criterenonapplicable")))))) -}}
+{{- if ($.context.Scratch.Get "criterenonconforme") -}}{{ $critereconformepercent := ((div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (len ($.context.Scratch.Get "criterenonconforme")))) -}}{{- end -}}
 {{- $.context.Scratch.SetInMap "scores" "criteretotal" ($.context.Scratch.Get "criteretotal") -}}
 {{- $.context.Scratch.SetInMap "scores" "testtotal" ($.context.Scratch.Get "testtotal") -}}
 {{- $.context.Scratch.SetInMap "scores" "is-empty" ($.context.Scratch.Get "is-empty") -}}
 {{- $.context.Scratch.SetInMap "scores" "critereconforme" ($.context.Scratch.Get "critereconforme") -}}
 {{- $.context.Scratch.SetInMap "scores" "criterenonconforme" ($.context.Scratch.Get "criterenonconforme") -}}
 {{- $.context.Scratch.SetInMap "scores" "criterenonapplicable" ($.context.Scratch.Get "criterenonapplicable") -}}
-{{- $.context.Scratch.SetInMap "scores" "critereconformepercent" ((div (mul (len ($.context.Scratch.Get "critereconforme")) 100) (sub (len ($.context.Scratch.Get "criteretotal")) ((len ($.context.Scratch.Get "criterenonapplicable")))))) -}}
+{{- $.context.Scratch.SetInMap "scores" "critereconformepercent" $critereconformepercent -}}
 {{- return ($.context.Scratch.Get "scores") -}}
 {{- end -}}
