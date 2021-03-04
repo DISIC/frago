@@ -60,6 +60,7 @@
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
     {{- if $accessibility -}}
+    {{- $.Scratch.Set "render" slice -}}
     {{- with ($.Scratch.Get "allauditscsv") -}}
       {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))))) -}}{{- end -}}
     {{- end -}}
