@@ -1,4 +1,5 @@
 {{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
+{{- $scorekey := sha1 (string now) -}}
 {{- $.context.Scratch.Delete "scores" -}}
 {{- $.context.Scratch.Delete "criterenonapplicable" -}}
 {{- $.context.Scratch.Delete "critereconforme" -}}
@@ -10,7 +11,6 @@
 {{- $.context.Scratch.Set "testtotal" 0 -}}
 {{- $.context.Scratch.Set "countercritere" 0 -}}
 {{- $.context.Scratch.Set "critere" "" -}}
-{{- $scorekey := (string .Now.Unix) -}}
 {{- range $key, $value := after 1 .auditfile -}}
     {{- $critere := printf "%s.%s" (index . 0) (index . 1) -}}
     {{- if ne $critere ($.context.Scratch.Get "critere") -}}{{- $.context.Scratch.Set "countercritere" 0 -}}{{- $.context.Scratch.Set "valuecriterepage" slice -}}{{- end -}}
