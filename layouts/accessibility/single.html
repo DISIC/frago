@@ -53,7 +53,7 @@
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
-<h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "criteretotal") -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span></h2>
+<h2 class="text-center">Scores{{- with ($.Scratch.Get "criteretotal") -}} -&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
 
 <h3>Conformité globale selon les critères</h3>
 {{/* Call accessibility partial */}}
