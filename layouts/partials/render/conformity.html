@@ -1,5 +1,5 @@
 {{/* Condition about if CSV is empty :: this is for init a project with a blank file */}}
-{{- $scorekey := (string now) -}}
+{{- $scorekey := sha1 (string now) -}}
 {{- $.context.Scratch.Delete $scorekey -}}
 {{- $.context.Scratch.Delete "rendercriterenonapplicable" -}}
 {{- $.context.Scratch.Delete "rendercritereconforme" -}}
