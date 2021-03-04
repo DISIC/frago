@@ -67,8 +67,8 @@
     {{- end -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- $partial := (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) -}}
-    {{ if last 1 ($.Scratch.Get "render") }}
-      {{- $conforme := index (index (last 1 ($.Scratch.Get "render")) 0) "critereconformepercent" -}}
+    {{ if $partial }}
+      {{- $conforme := index $partial "critereconformepercent" -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- else -}}
       <p>Le fichier d’audit est vide.</p>

@@ -4,7 +4,7 @@
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
-{{ $.Scratch.Delete "allscores" }}
+{{- $.Scratch.Delete "allscores" -}}
 {{- $rangepages := where $.Site.RegularPages "Section" "projects" -}}
 {{- range sort $rangepages ".Title" "desc" -}}
   {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
