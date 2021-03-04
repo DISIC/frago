@@ -39,7 +39,22 @@
 {{/* Create an array with all pages */}}
 {{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 {{/* Call score components */}}
-<h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "criteretotal") -}}&nbsp;critères</h2>
+{{- $auditquick := index .Site.Data.tests "25" -}}
+{{- $auditcomplementary := index .Site.Data.tests "50" -}}
+{{- $.Scratch.Set "criterecontrolquick" slice -}}
+{{- $.Scratch.Set "criterecontrolcomplementary" slice -}}
+{{- range $id, $criterium := $auditquick -}}
+  {{- range $key, $value := $.Scratch.Get "criteretotal" -}}
+    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolquick" $key }}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range $id, $criterium := $auditcomplementary -}}
+  {{- range $key, $value := $.Scratch.Get "criteretotal" -}}
+    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
+  {{- end -}}
+{{- end -}}
+<h2 class="text-center">Scores -&nbsp;{{- len ($.Scratch.Get "criteretotal") -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span></h2>
+
 <h3>Conformité globale selon les critères</h3>
 {{/* Call accessibility partial */}}
 {{- $conforme := index $scores "critereconformepercent" -}}
