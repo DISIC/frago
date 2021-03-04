@@ -76,11 +76,11 @@
     {{ $.Scratch.Get "allauditsname" }}<br>
     {{- range $id, $value := . -}}
       {{- (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) -}}
-      {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "critereconformepercent" }}% -<br>
-      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "critereconforme") }} -<br>
-      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "criterenonconforme") }} -<br>
-      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "criterenonapplicable") }} -<br>
-      {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "testtotal" }} -<br>
+      {{ index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "critereconformepercent" }}% -<br>
+      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "critereconforme") }} -<br>
+      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "criterenonconforme") }} -<br>
+      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "criterenonapplicable") }} -<br>
+      {{ index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "testtotal" }} -<br>
     {{- end -}}
     </div>
     <script>
