@@ -19,10 +19,11 @@
 {{- $lighthouse        := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
 <span class="hide">
   {{ $accessibilitypath }}<br>
-  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "critereconformepercent" }}% -
-  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "critereconforme" }}
-  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "criterenonconforme" }}
-  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "testtotal" }}
+  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "critereconformepercent" }}% -<br>
+  {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "critereconforme") }} -<br>
+  {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "criterenonconforme") }} -<br>
+  {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "criterenonapplicable") }} -<br>
+  {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," $accessibilitypath)))) "testtotal" }} -<br>
 </span>
   <li>
     <a class="card-inline card-shadow" href="{{ .Permalink }}">
