@@ -5,7 +5,7 @@
 {{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
-{{ $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics }}
+{{- $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics -}}
 {{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
 
 {{- $.Scratch.Set "projectfolders" "" -}}
@@ -44,16 +44,17 @@
 {{- $.Scratch.Set "criterecontrolquick" slice -}}
 {{- $.Scratch.Set "criterecontrolcomplementary" slice -}}
 {{- range $id, $criterium := $auditquick -}}
-  {{- range $key, $value := $.Scratch.Get "criteretotal" -}}
+  {{- range $key, $value := $.Scratch.Get "rendercriteretotal" -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolquick" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
 {{- range $id, $criterium := $auditcomplementary -}}
-  {{- range $key, $value := $.Scratch.Get "criteretotal" -}}
+  {{- range $key, $value := $.Scratch.Get "rendercriteretotal" -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
-<h2 class="text-center">Scores{{- with ($.Scratch.Get "criteretotal") -}} -&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
+{{ $.Scratch.Get "is-empty" }}
+<h2 class="text-center">Scores{{- with ($.Scratch.Get "rendercriteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
 
 <h3>Conformité globale selon les critères</h3>
 {{/* Call accessibility partial */}}

@@ -4,6 +4,7 @@
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
+{{ $.Scratch.Delete "allscores" }}
 {{- $rangepages := where $.Site.RegularPages "Section" "projects" -}}
 {{- range sort $rangepages ".Title" "desc" -}}
   {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
@@ -13,6 +14,7 @@
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
+<span class="hide">{{ ($.Scratch.Get "allscores") }}</span>
 <ul class="list-unstyled">
 {{- $.Scratch.Delete "projectfolders" -}}
 {{- range sort $rangepages ".Title" "desc" -}}

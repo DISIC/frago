@@ -1,6 +1,7 @@
 
   {{- $project := replace (replace (index (split .Path "/") 1) ".md" "") "_index" "" -}}
   {{- $context := . -}}
+
   <div class="wrapper narrow">
 
     {{- $.Scratch.Set "listmonths" slice -}}
