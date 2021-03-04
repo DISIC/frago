@@ -71,7 +71,18 @@
     {{/* Display conformity in time */}}
     {{- with ($.Scratch.Get "allauditscsv") -}}
     {{- if gt (len .) 1 -}}
-    <div id="chartconformity"></div>
+    <div id="chartconformity">
+    {{ $.Scratch.Get "allauditscsv" }}<br>
+    {{ $.Scratch.Get "allauditsname" }}<br>
+    {{- range $id, $value := . -}}
+      {{- (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) -}}
+      {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "critereconformepercent" }}% -<br>
+      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "critereconforme") }} -<br>
+      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "criterenonconforme") }} -<br>
+      {{ len (index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "criterenonapplicable") }} -<br>
+      {{ index (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," .)))) "testtotal" }} -<br>
+    {{- end -}}
+    </div>
     <script>
         const dataconformity = {
             labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
