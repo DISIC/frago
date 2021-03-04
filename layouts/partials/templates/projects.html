@@ -60,36 +60,28 @@
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
     {{- if $accessibility -}}
+    {{- with ($.Scratch.Get "allauditscsv") -}}
+      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))))) -}}{{- end -}}
+    {{- end -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- $partial := (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) -}}
-    {{ if $partial }}
-      {{- $conforme := index $partial "critereconformepercent" -}}
+    {{ if last 1 ($.Scratch.Get "render") }}
+      {{- $conforme := index (index (last 1 ($.Scratch.Get "render")) 0) "critereconformepercent" -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- else -}}
       <p>Le fichier d’audit est vide.</p>
     {{- end -}}
     {{/* Display conformity in time */}}
-    {{- with ($.Scratch.Get "allauditscsv") -}}
+    {{- with ($.Scratch.Get "render") -}}
     {{- if gt (len .) 1 -}}
-    <div id="chartconformity">
-    {{ $.Scratch.Get "allauditscsv" }}<br>
-    {{ $.Scratch.Get "allauditsname" }}<br>
-    {{- range $id, $value := . -}}
-      {{- (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) -}}
-      {{ index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "critereconformepercent" }}% -<br>
-      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "critereconforme") }} -<br>
-      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "criterenonconforme") }} -<br>
-      {{ len (index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "criterenonapplicable") }} -<br>
-      {{ index (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) "testtotal" }} -<br>
-    {{- end -}}
-    </div>
+    <div id="chartconformity"></div>
     <script>
         const dataconformity = {
             labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
             datasets: [
               {
                 name: "Conformité",
-                values: [{{- range $id, $value := . -}}{{ if ne $id "1" }},{{ end }}"{{- index (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))) "critereconformepercent" -}}"{{- end -}}]
+                values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- index . "critereconformepercent" -}}"{{- end -}}]
               }
             ],
             yRegions: [{ label: "", start: 0, end: 100 }]
