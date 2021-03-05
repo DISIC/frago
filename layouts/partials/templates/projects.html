@@ -11,7 +11,9 @@
       {{- end -}}
     {{- end -}}
 
+
     {{- with uniq ($.Scratch.Get "listmonths") -}}
+    <div class="hide">
     {{ $months := . }}
     <h2 class="text-center">Planning</h2>
     <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
@@ -42,6 +44,7 @@
           {{- end -}}
         {{- end -}}
     {{- end -}}
+    </div>
     </div>
     {{- end -}}
 
