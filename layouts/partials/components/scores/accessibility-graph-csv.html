@@ -62,7 +62,7 @@
 {{- $total := add $counterconformesum $counternonconformesum -}}
 
 <div id="chartpage-csv"></div>
-<div id="charttopic-csv"></div>
+<div id="charttopic-csv"></div>ﬂ
 <div id="chartpie-csv"></div>
 <script>
     const datapagecsv = {
@@ -76,7 +76,7 @@
             name: "Conforme",
             values: [{{ range $id, $value := ($.context.Scratch.Get "conformepage") }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float .) 100) (add . (index ($.context.Scratch.Get "nonconformepage") $id)) | lang.NumFmt 1 | safeJS }}{{ end }}]
           }
-        ]
+        ],
     }
     const chartpagecsv = new frappe.Chart("#chartpage-csv", {
         title: "Par page (en %)",

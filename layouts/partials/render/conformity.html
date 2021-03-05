@@ -35,7 +35,7 @@
     {{- if eq (index $value 0) "?" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
-    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap "criterenonconforme" (string $id) . -}}{{- end -}}
+    {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
   {{- else -}}
     {{ $symdiff := $value | symdiff (slice "na" "c") }}
     {{- if eq (len $symdiff) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}

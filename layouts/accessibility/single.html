@@ -41,25 +41,37 @@
 {{/* Call score components */}}
 {{- $auditquick := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
+{{/* Contraol which test are made with quickaudit */}}
 {{- $.Scratch.Set "criterecontrolquick" slice -}}
 {{- $.Scratch.Set "criterecontrolcomplementary" slice -}}
+{{- $.Scratch.Set "criterecontroltotal" slice -}}
+{{- $.Scratch.Set "criterecontroltotalid" slice -}}
 {{- range $id, $criterium := $auditquick -}}
-  {{- range $key, $value := $.Scratch.Get "rendercriteretotal" -}}
+  {{- range $key, $value := (index $scores "criteretotal") -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolquick" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
 {{- range $id, $criterium := $auditcomplementary -}}
-  {{- range $key, $value := $.Scratch.Get "rendercriteretotal" -}}
+  {{- range $key, $value := (index $scores "criteretotal") -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
-{{ $.Scratch.Get "is-empty" }}
-<h2 class="text-center">Scores{{- with ($.Scratch.Get "rendercriteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
+{{- range $id, $criterium := (index $scores "criteretotal") -}}
+  {{ $.Scratch.Add "criterecontroltotalid" $id }}
+  {{- range $key, $value := (index $scores "critereconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+  {{- range $key, $value := (index $scores "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+  {{- range $key, $value := (index $scores "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+{{- end -}}
+<hr>
+
+{{ index $scores "criterenonconforme" }}
+<hr>
+{{ $.Scratch.Get "criterecontroltotal" | symdiff ($.Scratch.Get "criterecontroltotalid") }}
+<h2 class="text-center">Scores{{- with (index $scores "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
 
 <h3>Conformité globale selon les critères</h3>
 {{/* Call accessibility partial */}}
-{{- $conforme := index $scores "critereconformepercent" -}}
-{{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+{{- partial "components/scores/accessibility" (dict "context" . "score" (index $scores "critereconformepercent")) -}}
 {{/* Call criterium partial */}}
 {{- partial "components/scores/criterium" (dict "context" . "criteres" $scores) -}}
 {{/* If serveral pages tested */}}
