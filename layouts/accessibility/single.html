@@ -243,7 +243,7 @@
     avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
     dérogations énumérées ci-dessous.</p>
   <h3>Résultats des tests</h3>
-  <p>L’audit de conformité réalisé par {{ with .realisation }}, {{ . }}{{ end }} révèle que :
+  <p>L’audit de conformité réalisé par {{ with .realisation }}{{ . }}{{ end }} révèle que :
   </p>
   <ul>
     <li>{{ (index $scores "critereconformepercent") }}% des critères du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>
