@@ -62,11 +62,7 @@
   {{- range $key, $value := (index $scores "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
   {{- range $key, $value := (index $scores "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
 {{- end -}}
-<hr>
 
-{{ index $scores "criterenonconforme" }}
-<hr>
-{{ $.Scratch.Get "criterecontroltotal" | symdiff ($.Scratch.Get "criterecontroltotalid") }}
 <h2 class="text-center">Scores{{- with (index $scores "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
 
 <h3>Conformité globale selon les critères</h3>
