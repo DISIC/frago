@@ -223,6 +223,7 @@
 {{- with .Params.accessibility -}}
 <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
 <section>
+  {{- if .name -}}
   <p>{{ with .name }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
     progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
     loi n°2005-102 du 11 février 2005.</p>
@@ -235,9 +236,10 @@
   </ul>
   {{ end }}
   {{- with .website -}}<p>Cette déclaration d’accessibilité s’applique à {{ . }}.</p>{{ end }}
+  {{- end -}}
 
   <h2>État de conformité</h2>
-  <p>{{ with .name }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est <span class="tofill">non/partiellement/totalement</span> conforme
+  <p>{{ with .name }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if lt (index $scores "critereconformepercent") 50 }}non{{ else if lt (index $scores "critereconformepercent") 50 }}partiellement{{ else if eq (index $scores "critereconformepercent") 100 }}totalement{{ end }} conforme
     avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
     dérogations énumérées ci-dessous.</p>
   <h3>Résultats des tests</h3>
