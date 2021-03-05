@@ -151,6 +151,14 @@ p+pre {
   margin-top: -1.5em;
 }
 
+h2 + time {
+  display: block;
+  margin: -1.5rem auto 3.5rem;
+  width: 100%;
+  font-size: 90%;
+  color: var(--color-grey);
+}
+
 /* = Divider = */
 
 .divider,
