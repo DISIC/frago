@@ -13,6 +13,8 @@
   {{- else -}}
   {{- $.context.Scratch.Set "auditpath-accessibility" (printf "static/%s.csv" .datafilename) -}}
   {{- end -}}
+  {{- $.context.Scratch.SetInMap "allaudits" "zz" ($.context.Scratch.Get "auditpath-accessibility") -}}
+  {{- $.context.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
 {{- else -}}
   {{/* Set the audit file - test if a generic file is called */}}
   {{/* Test if a set of archived audit exists */}}

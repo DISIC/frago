@@ -1,5 +1,5 @@
 {{- define "main" -}}
-  <h1 class="text-center">{{ .Title }}</h1>
+  <h1 class="text-center">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
   {{ if eq .Type "projects" }}{{- partial "templates/projects.html" . -}}{{ end }}
   {{- partial "elements/content.html" .Content -}}
 {{- end -}}

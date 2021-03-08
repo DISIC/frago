@@ -14,7 +14,7 @@
   {{- $.Scratch.Set "projectfolders" $project -}}
 {{- end -}}
 {{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
-{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") ".datafilename" .Params.datafilename) -}}
+{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
 {{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditpath") -}}
 
 <div class="wrapper narrow audit">
@@ -220,38 +220,43 @@
 </div>
 {{- end -}}
 <hr>
+{{- $.Scratch.Set "organisation" "" -}}
+{{- if .Site.Params.organisation -}}{{- $.Scratch.Set "organisation" .Site.Params.organisation -}}{{- end -}}
+{{- if .Params.accessibility.organisation -}}{{ $.Scratch.Set "organisation" .Params.accessibility.organisation }}{{ end }}
+{{- $.Scratch.Set "strategy" "" -}}
+{{- if .Site.Params.strategy -}}{{- $.Scratch.Set "strategy" .Site.Params.strategy -}}{{- end -}}
+{{- if .Params.accessibility.strategy -}}{{ $.Scratch.Set "strategy" .Params.accessibility.strategy }}{{ end }}
 {{- with .Params.accessibility -}}
 <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
 <section>
-  {{- if .name -}}
-  <p>{{ with .name }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
+  {{- if ($.Scratch.Get "organisation") -}}
+  <p>{{ with ($.Scratch.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
     progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
     loi n°2005-102 du 11 février 2005.</p>
-  {{- with .strategy -}}
+  {{- with $.Scratch.Get "strategy" -}}
   <p>À cette fin, elle met en œuvre la stratégie et les actions suivantes :</p>
   <ul>
     {{- with .schema -}}<li>Schéma pluriannuel de mise en accessibilité 2020-2022 : <a href="{{ . }}">Schéma pluriannuel</a></li>{{ end }}
     {{- with .actions -}}<li>Actions réalisées en 2019-2020 : <a href="{{ . }}">Actions réalisées</a></li>{{ end }}
     {{- with .plan -}}<li>Plan d’actions 2020-2021 : <a href="{{ . }}">Plan d’actions</a></li>{{ end }}
   </ul>
-  {{ end }}
+  {{- end -}}
   {{- with .website -}}<p>Cette déclaration d’accessibilité s’applique à {{ . }}.</p>{{ end }}
   {{- end -}}
 
   <h2>État de conformité</h2>
-  <p>{{ with .name }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if lt (index $scores "critereconformepercent") 50 }}non{{ else if lt (index $scores "critereconformepercent") 50 }}partiellement{{ else if eq (index $scores "critereconformepercent") 100 }}totalement{{ end }} conforme
+  <p>{{ with $.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if lt (index $scores "critereconformepercent") 50 }}non{{ else if ge (index $scores "critereconformepercent") 50 }}partiellement{{ else if eq (index $scores "critereconformepercent") 100 }}totalement{{ end }} conforme
     avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
     dérogations énumérées ci-dessous.</p>
   <h3>Résultats des tests</h3>
-  <p>L’audit de conformité réalisé par {{ with .realisation }}{{ . }}{{ end }} révèle que :
-  </p>
+  <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
   <ul>
-    <li>{{ (index $scores "critereconformepercent") }}% des critères du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>
+    <li>{{ (index $scores "critereconformepercent") }}% des {{ with (index $scores "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index $scores "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
-    <li class="hide">(Facultatif) Accès à la grille d’audit RGAA <span class="tofill">url pour télécharger la grille d’audit</span>
+    {{- if ($.Scratch.Get "auditpath-csv") -}}<li> Accès à la grille d’audit RGAA : <a href="{{ replace ($.Scratch.Get "auditpath-csv") "static" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
-  <h2>Contenus non accessibles</h2>
+  <h2>Critères non conformes</h2>
   {{/* Range map errors sort by RGAA order - on all pages */}}
   <div class="flex flex-column">
   {{- range $key, $value := (index $scores "criterenonconforme") -}}
@@ -268,9 +273,8 @@
 
   <h2>Établissement de cette déclaration d’accessibilité</h2>
 
-  <p>Cette déclaration a été établie le <time datetime="{{ $date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ $date.Day }} {{ index $.Site.Data.month (printf "%d" $date.Month) }} {{ $date.Year }}</time>.<span class="hide"> Elle a été mise à jour le <span
-      class="tofill">JJ/MM/AAAA</span>.</span></p>
-  <h3>Technologies utilisées pour la réalisation de {{ with .name }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
+  <p>Cette déclaration a été établie le <time datetime="{{ $date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ $date.Day }} {{ index $.Site.Data.month (printf "%d" $date.Month) }} {{ $date.Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
+  <h3>Technologies utilisées{{ with $.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
   <ul>
     {{- range $id, $value := .technologies -}}
     <li>{{ . }}</li>
@@ -297,7 +301,7 @@
     {{- end -}}
   </ol>
   <h2>Retour d’information et contact</h2>
-  <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .name }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
+  <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
     sous une autre forme.</p>
   {{ with .contact }}
   <ul>
