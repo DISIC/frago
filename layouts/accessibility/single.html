@@ -5,9 +5,10 @@
 {{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
-{{- $criteresfile := (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics -}}
-{{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
-
+{{- $.Scratch.Set "criteresfile" (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics -}}
+{{- $.Scratch.Set "glossaire" (printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline")) -}}
+{{- $.Scratch.Set "pages" "" -}}
+{{- $.Scratch.Set "scores" "" -}}
 
 {{- $.Scratch.Set "projectfolders" "" -}}
 {{- if eq (len $patharray) 3 -}}
@@ -22,8 +23,8 @@
 {{- if ($.Scratch.Get "auditpath-csv") -}}
 
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
-{{- $scores := partialCached "render/conformity" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) .Path -}}
-{{- $date := time (string (delimit (last 1 (sort (index $audits "auditallname"))) "")) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/conformity" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) .Path) -}}
+{{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
 {{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
@@ -36,10 +37,10 @@
 </div>
 {{- end -}}
 
-{{- if and ($.Scratch.Get "auditfile-csv") $scores -}}
+{{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "scores") -}}
 
 {{/* Create an array with all pages */}}
-{{- $pages := (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
+{{- $.Scratch.Set "pages" (index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
 {{/* Call score components */}}
 {{- $auditquick := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
@@ -49,32 +50,32 @@
 {{- $.Scratch.Set "criterecontroltotal" slice -}}
 {{- $.Scratch.Set "criterecontroltotalid" slice -}}
 {{- range $id, $criterium := $auditquick -}}
-  {{- range $key, $value := (index $scores "criteretotal") -}}
+  {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolquick" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
 {{- range $id, $criterium := $auditcomplementary -}}
-  {{- range $key, $value := (index $scores "criteretotal") -}}
+  {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
     {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
   {{- end -}}
 {{- end -}}
-{{- range $id, $criterium := (index $scores "criteretotal") -}}
+{{- range $id, $criterium := (index ($.Scratch.Get "scores") "criteretotal") -}}
   {{ $.Scratch.Add "criterecontroltotalid" $id }}
-  {{- range $key, $value := (index $scores "critereconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
-  {{- range $key, $value := (index $scores "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
-  {{- range $key, $value := (index $scores "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+  {{- range $key, $value := (index ($.Scratch.Get "scores") "critereconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+  {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
+  {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
 {{- end -}}
 
-<h2 class="text-center">Scores{{- with (index $scores "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
-<time class="text-center" datetime="{{ $date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ $date.Day }} {{ index $.Site.Data.month (printf "%d" $date.Month) }} {{ $date.Year }}</time>
+<h2 class="text-center">Scores{{- with (index ($.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
+<time class="text-center" datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>
 
 <h3>Conformité globale selon les critères</h3>
 {{/* Call accessibility partial */}}
-{{- partial "components/scores/accessibility" (dict "context" . "score" (index $scores "critereconformepercent")) -}}
+{{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
 {{/* Call criterium partial */}}
-{{- partial "components/scores/criterium" (dict "context" . "criteres" $scores) -}}
+{{- partial "components/scores/criterium" (dict "context" . "criteres" ($.Scratch.Get "scores")) -}}
 {{/* If serveral pages tested */}}
-{{- if gt (len $pages) 1 -}}
+{{- if gt (len ($.Scratch.Get "pages")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition des tests</h3>
 {{- partial "components/scores/accessibility-graph-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv")) -}}
 
@@ -101,7 +102,7 @@
   <ul>
     <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
     {{/* Loop all pages for anchor navigation */}}
-    {{- range $id, $value := $pages -}}
+    {{- range $id, $value := ($.Scratch.Get "pages") -}}
     <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
     {{- end -}}
   </ul>
@@ -110,7 +111,7 @@
 
 <h2>Par ordre des tests du référentiel RGAA</h2>
 
-{{- if gt (len $pages) 0 -}}
+{{- if gt (len ($.Scratch.Get "pages")) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">A - Erreurs présentes sur toutes les pages</h3>
 {{- end -}}
@@ -132,18 +133,18 @@
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
     {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-      {{- $s := where $criteresfile "number" "eq" (int ($thematiques)) -}}
+      {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
-        <p><em>{{ (replaceRE "=\"#" $glossaire ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+        <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
         {{- if (after 1 .) -}}
         <ol>
-          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
         </ol>
         {{- end -}}
         {{- else -}}
-        <p><em>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</em></p>
+        <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -153,12 +154,12 @@
 {{- end -}}
 
 {{/* If serveral pages tested */}}
-{{- if gt (len $pages) 1 -}}
+{{- if gt (len ($.Scratch.Get "pages")) 1 -}}
 
 {{/* Range map errors sort by RGAA order - on specifics pages */}}
 <h3>B - Erreurs présentes sur les pages spécifiques</h3>
 {{/* Display errors presents on specific pages */}}
-{{- range $id, $value := $pages -}}
+{{- range $id, $value := ($.Scratch.Get "pages") -}}
   {{- $.Scratch.Set "text" 0 -}}
   {{- $page := . -}}
   <h4 id="{{ . | urlize }}">♦︎ Page : {{ . }}</h4>
@@ -181,18 +182,18 @@
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
       {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-        {{- $s := where $criteresfile "number" "eq" (int ($thematiques)) -}}
+        {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int ($thematiques)) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
-          <p><em>{{ (replaceRE "=\"#" $glossaire ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+          <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
           {{- if (after 1 .) -}}
           <ol>
-            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
           </ol>
           {{- end -}}
           {{- else -}}
-          <p><em>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</em></p>
+          <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
@@ -202,22 +203,28 @@
 {{- if eq ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
 {{- end -}}
 {{- end -}}
-{{- if gt (len $pages) 0 -}}
+{{- if gt (len ($.Scratch.Get "pages")) 0 -}}
 <br><hr class="divider">
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
 <div class="flex flex-column">
-{{- range $key, $value := (index $scores "criterenonconforme") -}}
+{{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonconforme") -}}
   {{- $thematiques := index (split $key ".") 0 -}}
   {{- $criteres := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
   <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong></p>
-  {{- $s := where $criteresfile "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
-  <p><em>{{ (replaceRE "=\"#" $glossaire ($content | markdownify) 100) | markdownify }}</em></p>
+  <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
   </div>
 {{- end -}}
 </div>
+{{- end -}}
+{{- else -}}
+  <p>Le fichier d’audit RGAA est vide pour le moment.</p>
+{{- end -}}
+{{- else -}}
+  <p>Le fichier d’audit RGAA est manquant : `accessibility.csv`</p>
 {{- end -}}
 <hr>
 {{- $.Scratch.Set "organisation" "" -}}
@@ -245,35 +252,42 @@
   {{- end -}}
 
   <h2>État de conformité</h2>
-  <p>{{ with $.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if lt (index $scores "critereconformepercent") 50 }}non{{ else if ge (index $scores "critereconformepercent") 50 }}partiellement{{ else if eq (index $scores "critereconformepercent") 100 }}totalement{{ end }} conforme
+  <p>{{ with $.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.Scratch.Get "scores") }}{{ if lt (index ($.Scratch.Get "scores") "critereconformepercent") 50 }}non{{ else if ge (index ($.Scratch.Get "scores") "critereconformepercent") 50 }}partiellement{{ else if eq (index ($.Scratch.Get "scores") "critereconformepercent") 100 }}totalement{{ end }}{{ end }} conforme
     avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
     dérogations énumérées ci-dessous.</p>
+
   <h3>Résultats des tests</h3>
+  {{- if ($.Scratch.Get "scores") -}}
   <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
   <ul>
-    <li>{{ (index $scores "critereconformepercent") }}% des {{ with (index $scores "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index $scores "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>
+    {{ if ($.Scratch.Get "scores") }}<li>{{ (index ($.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
     {{- if ($.Scratch.Get "auditpath-csv") -}}<li> Accès à la grille d’audit RGAA : <a href="{{ replace ($.Scratch.Get "auditpath-csv") "static" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
+  {{- else -}}
+  <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
+  {{- end -}}
+
+  {{- if ($.Scratch.Get "scores") -}}
   <h2>Critères non conformes</h2>
   {{/* Range map errors sort by RGAA order - on all pages */}}
   <div class="flex flex-column">
-  {{- range $key, $value := (index $scores "criterenonconforme") -}}
+  {{- range $key, $value := (index . "criterenonconforme") -}}
     {{- $thematiques := index (split $key ".") 0 -}}
     {{- $criteres := index (split $key ".") 1 -}}
     <div style="order:{{ $thematiques }};">
     <p><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong><br>
-    {{- $s := where $criteresfile "number" "eq" (int (index (split $key ".") 0)) -}}
+    {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int (index (split $key ".") 0)) -}}
     {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
-    <em>{{ (replaceRE "=\"#" $glossaire ($content | markdownify) 100) | markdownify }}</em></p>
+    <em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
   </div>
   {{- end -}}
   </div>
 
   <h2>Établissement de cette déclaration d’accessibilité</h2>
 
-  <p>Cette déclaration a été établie le <time datetime="{{ $date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ $date.Day }} {{ index $.Site.Data.month (printf "%d" $date.Month) }} {{ $date.Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
+  <p>Cette déclaration a été établie le <time datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
   <h3>Technologies utilisées{{ with $.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
   <ul>
     {{- range $id, $value := .technologies -}}
@@ -294,12 +308,16 @@
     <li>{{ . }}</li>
     {{- end -}}
   </ul>
+  {{- with ($.Scratch.Get "pages") -}}
   <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
   <ol>
-    {{- range $id, $value := $pages -}}
+    {{- range $id, $value := . -}}
     <li>{{ . }}</li>
     {{- end -}}
   </ol>
+  {{- end -}}
+  {{- end -}}
+
   <h2>Retour d’information et contact</h2>
   <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
     sous une autre forme.</p>
@@ -325,12 +343,6 @@
       75342 Paris CEDEX 07<br></li>
   </ul>
 </section>
-{{- else -}}
-  <p>Le fichier d’audit RGAA est vide pour le moment.</p>
-{{- end -}}
-{{- else -}}
-  <p>Le fichier d’audit RGAA est manquant : `accessibility.csv`</p>
-{{- end -}}
-{{ end }}
 </div>
+{{- end -}}
 {{- end -}}
