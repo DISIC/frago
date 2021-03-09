@@ -3,13 +3,13 @@
 {{- $.context.Scratch.Set "lastfile-quality" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) -}}
 
 {{/* Create an array with all pages */}}
-{{- $.context.Scratch.Set "pages" slice -}}
+{{- $.context.Scratch.Set "pageslistlot" slice -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
 {{- range ($.context.Scratch.Get "lastfile-quality") -}}
 {{- range $idpage, $s := .pages -}}
-  {{- $.context.Scratch.Add "pages" .name -}}
+  {{- $.context.Scratch.Add "pageslistlot" .name -}}
   {{- $page := dict "pagename" .name -}}
   {{- range .blocks -}}
   {{- $block := dict "blockname" (printf "%s-%s" .name (string $idpage)) -}}
@@ -34,7 +34,7 @@
     <thead><tr ;><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Bloc</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
     <tbody>
     {{- $.context.Scratch.Set "blockid" 0 -}}
-    {{- range ($.context.Scratch.Get "pages") -}}
+    {{- range ($.context.Scratch.Get "pageslistlot") -}}
       {{- $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . -}}
       {{- if $lot -}}
       {{- $.context.Scratch.Set "blockname" "" -}}
