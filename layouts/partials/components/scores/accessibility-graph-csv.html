@@ -1,3 +1,4 @@
+{{ $scores := .scores }}
 {{- with .auditfile -}}
 {{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
@@ -60,10 +61,37 @@
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
-
+<div id="chartpagecriteres-csv"></div>
 <div id="chartpage-csv"></div>
 <div id="charttopic-csv"></div>
 <div id="chartpie-csv"></div>
+<script>
+    const datapagechartpagecriteres = {
+        labels: [{{ range $id, $value := $pages }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
+        datasets: [
+          {
+            name: "Non Conforme",
+            values: [{{ range $id, $value := index $scores "criterenonconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "critereconformepage" $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
+          },
+          {
+            name: "Conforme",
+            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage" $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
+          }
+        ],
+    }
+    const chartpagechartpagecriteres = new frappe.Chart("#chartpagecriteres-csv", {
+        title: "Critères par page (en %)",
+        data: datapagechartpagecriteres,
+        type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+        height: 400,
+        truncateLegends: true,
+        barOptions: {
+            stacked: 1,
+            spaceRatio: 0.2
+        },
+        colors: ['#ac3636','#96cfb7']
+    })
+</script>
 <script>
     const datapagecsv = {
         labels: [{{ range $id, $value := $pages }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
@@ -79,7 +107,7 @@
         ],
     }
     const chartpagecsv = new frappe.Chart("#chartpage-csv", {
-        title: "Par page (en %)",
+        title: "Test par page (en %)",
         data: datapagecsv,
         type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
         height: 400,
@@ -109,7 +137,7 @@
       ]
   }
     const charttopiccsv = new frappe.Chart("#charttopic-csv", {
-        title: "Par thématique (en %)",
+        title: "Tests par thématique (en %)",
         data: datatopiccsv,
         type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
         height: 400,
