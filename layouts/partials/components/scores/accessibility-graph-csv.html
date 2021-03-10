@@ -69,11 +69,11 @@
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ sub 100 (div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage" $id))))) | lang.NumFmt 0 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := index $scores "criterenonconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "critereconformepage" $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
           },
           {
             name: "Conforme",
-            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage" $id)))) | lang.NumFmt 0 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage" $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
           }
         ],
     }
@@ -99,11 +99,11 @@
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := ($.context.Scratch.Get "conformepage") }}{{ if ne $id "0" }},{{ end }}{{ sub 100 (div (mul (float .) 100) (add . (index ($.context.Scratch.Get "nonconformepage") $id))) | lang.NumFmt 0 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := ($.context.Scratch.Get "nonconformepage") }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float .) 100) (add . (index ($.context.Scratch.Get "conformepage") $id)) | lang.NumFmt 2 | safeJS }}{{ end }}]
           },
           {
             name: "Conforme",
-            values: [{{ range $id, $value := ($.context.Scratch.Get "conformepage") }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float .) 100) (add . (index ($.context.Scratch.Get "nonconformepage") $id)) | lang.NumFmt 0 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := ($.context.Scratch.Get "conformepage") }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float .) 100) (add . (index ($.context.Scratch.Get "nonconformepage") $id)) | lang.NumFmt 2 | safeJS }}{{ end }}]
           }
         ],
     }
@@ -129,11 +129,11 @@
       datasets: [
         {
           name: "Non Conforme",
-          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if or (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter3") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 0 | safeJS -}}{{- $.context.Scratch.Add "graphcounter3" 1 | safeJS  -}}{{- end -}}{{ end }}]
+          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if or (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter3") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 2 | safeJS -}}{{- $.context.Scratch.Add "graphcounter3" 1 | safeJS  -}}{{- end -}}{{ end }}]
         },
         {
           name: "Conforme",
-          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ sub 100 (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 0 | safeJS -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
+          values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ sub 100 (div (mul (float $value) 100) (add $value (index ($.context.Scratch.Get "conforme") $id))) | lang.NumFmt 2 | safeJS -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
         }
       ]
   }
