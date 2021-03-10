@@ -334,10 +334,8 @@
     sous une autre forme.</p>
   {{ with .contact }}
   <ul>
-    <li>Envoyer un message <span class="tofill">url du formulaire en ligne</span></li>
-    <li>Contacter <span class="tofill">Nom de l’entité responsable du service en ligne</span><span class="tofill">url
-        d’une page avec les coordonnées
-        de l’entité</span></li>
+    {{ if .email }}<li>Envoyer un message à <strong>{{ .email }}</strong></li>{{ end }}
+    {{ if .address }}<li>Contacter <strong>{{ with ($.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
   </ul>
   {{ end }}
   <h2>Voies de recours</h2>
