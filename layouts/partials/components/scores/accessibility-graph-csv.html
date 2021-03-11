@@ -62,8 +62,9 @@
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
 {{ if gt (len (index (index $scores "critereconformepage") "0")) 3 }}
-{{/*
-<div id="chartpagecriteres-csv" hidden></div>
+{{/* (index $scores "criterevalue") */}}
+
+<div id="chartpagecriteres-csv"></div>
 <script>
     const datapagechartpagecriteres = {
         labels: [{{ range $id, $value := $pages }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
@@ -91,7 +92,7 @@
         colors: ['#ac3636','#96cfb7']
     })
 </script>
-*/}}
+
 {{- end -}}
 {{- if gt (div (index $scores "testtotal") (len $pages)) 106 -}}
 <div id="chartpage-csv"></div>
@@ -163,7 +164,7 @@
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) $total) | lang.NumFmt 0 -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
+            values: [{{ range $id, $value := $.context.Scratch.Get "nonconforme" }}{{ if and (ne $value 0) (ne (index ($.context.Scratch.Get "nonconforme") $id) 0) }}{{- if ne ($.context.Scratch.Get "graphcounter2") 0 -}},{{- end -}}{{ (div (mul (float $value) 100) $total) | lang.NumFmt 1 -}}{{- $.context.Scratch.Add "graphcounter2" 1 | safeJS  -}}{{- end -}}{{ end }}]
           }
         ]
     }
