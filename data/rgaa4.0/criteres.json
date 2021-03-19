@@ -3028,10 +3028,10 @@
               "1": [
                 "Les indications du caractère obligatoire de la saisie des champs vérifient-elles une de ces conditions (hors cas particuliers) ?",
                 "Une indication de champ obligatoire est visible et permet d'identifier nommément le champ concerné préalablement à la validation du formulaire.",
-                "Le champ obligatoire dispose de l'attribut `aria-required=\"true\"` ou required préalablement à la validation du formulaire."
+                "Le champ obligatoire dispose de l'attribut `aria-required=\"true\"` ou `required` préalablement à la validation du formulaire."
               ],
               "2": [
-                "Les champs obligatoires ayant l'attribut `aria-required=\"true\"` ou required vérifient-ils une de ces conditions ?",
+                "Les champs obligatoires ayant l'attribut `aria-required=\"true\"` ou `required` vérifient-ils une de ces conditions ?",
                 "Une indication de champ obligatoire est visible et située dans l'étiquette associé au champ préalablement à la validation du formulaire.",
                 "Une indication de champ obligatoire est visible et située dans le [passage de texte](#passage-de-texte-lie-par-aria-labelledby-ou-aria-describedby) associé au champ préalablement à la validation du formulaire."
               ],
