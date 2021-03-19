@@ -57,7 +57,7 @@
     {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
     {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
     {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}
-    {{- $accessibility := $.Scratch.Get "accessibility-path" }}
+    {{- $accessibility := fileExists ($.Scratch.Get "accessibility-path") }}
     {{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
     {{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
     {{- if ($.Scratch.Get "projectfolders") -}}

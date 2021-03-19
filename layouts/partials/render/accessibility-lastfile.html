@@ -18,6 +18,7 @@
 {{- else -}}
   {{/* Set the audit file - test if a generic file is called */}}
   {{/* Test if a set of archived audit exists */}}
+  {{- $.context.Scratch.Set "auditpath-accessibility" "/false" -}}
   {{- if fileExists (printf "static/%s/accessibility/" $project) -}}
     {{- range $key, $value := (readDir (printf "static/%s/accessibility/" $project)) -}}
       {{- $.context.Scratch.SetInMap "allaudits" (string (add $key 1)) (printf "static/%s/accessibility/%s" $project .Name) -}}
