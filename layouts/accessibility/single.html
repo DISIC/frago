@@ -29,7 +29,7 @@
 {{- if eq (len (split .Path "/")) 3 -}}
 <p class="no-print">⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
-<h1>{{ .Title }}</h1>
+<h1>{{ with .Title }}{{ . }}{{ else }}Audit Accessibilité{{ end }}</h1>
 
 {{- if gt (len .Content) 10 -}}
 <div class="note">
@@ -285,7 +285,7 @@
     {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int (index (split $key ".") 0)) -}}
     {{- if ge (len $s) 1 -}}
     {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
-    <em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
+    <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
     {{- end -}}
   </div>
   {{- end -}}
