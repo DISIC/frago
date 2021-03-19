@@ -90,6 +90,18 @@
 <!-- <script type="text/javascript" src="https://khan.github.io/tota11y/dist/tota11y.min.js"></script> -->
 <script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
 <script>
+  let cls = 0;
+
+  new PerformanceObserver((entryList) => {
+    for (const entry of entryList.getEntries()) {
+      if (!entry.hadRecentInput) {
+        cls += entry.value;
+        console.log('Current CLS value:', cls, entry);
+      }
+    }
+  }).observe({type: 'layout-shift', buffered: true});
+</script>
+<script>
     console.group('-------- Hugo Debug: Theme -------')
     console.log('HUGO_ENV: ', '{{ (getenv "HUGO_ENV") | default "NOT SET" }}')
     console.log('Long Env: ', '{{ (getenv "HUGO_ENV") | default .Site.Params.env | default "DEV" }}')
