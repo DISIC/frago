@@ -55,13 +55,28 @@
     {{- $name := .name -}}
     {{- $.Scratch.Set "countererrorspage" 0 -}}
     {{/* Range second level */}}
-    <h3 id="{{ .name | urlize }}">{{ $name }} <small>- <span class="counter">{{ $.Scratch.Get "countererrorspage" }}</span> erreurs recensées sur cette page</small></h3>
+    {{- range $idblock, $b := .blocks -}}
+      {{/* Range third level and count errors */}}
+      {{- if .errors -}}
+      {{- range $s:= .errors -}}
+        {{- $.Scratch.Add "countererrorspage" 1 -}}
+        {{- $.Scratch.SetInMap "countererrorspagelist" (string $idpage) ($.Scratch.Get "countererrorspage") -}}
+      {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range ($.Scratch.Get "auditfile") -}}
+  {{/* Range first level */}}
+  {{- range $idpage, $s := .pages -}}
+    {{- $name := .name -}}
+    {{/* Range second level */}}
+    <h3 id="{{ .name | urlize }}">{{ $name }} <small>- <span class="counter">{{ index ($.Scratch.Get "countererrorspagelist") (string $idpage) }}</span> erreurs recensées sur cette page</small></h3>
     {{- range $idblock, $b := .blocks -}}
       {{- $.Scratch.Set "countererrorsblock" 0 -}}
       {{/* Range third level and count errors */}}
       {{- if .errors -}}
       {{- range $s:= .errors -}}
-        {{- $.Scratch.Add "countererrorspage" 1 -}}
         {{- $.Scratch.Add "countererrorsblock" 1 -}}
         {{- $.Scratch.SetInMap "countererrorsblocklist" (string $idblock) ($.Scratch.Get "countererrorsblock") -}}
       {{- end -}}
