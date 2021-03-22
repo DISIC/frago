@@ -1,3 +1,4 @@
+{{- define "title" -}}Audit Qualité {{ (index (split .Path "/") 1) }}{{- end -}}
 {{- define "main" -}}
 {{/* Var */}}
 {{- $patharray :=  split .Path "/" -}}

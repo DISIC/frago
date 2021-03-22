@@ -1,7 +1,95 @@
 <!DOCTYPE html>
 {{/* General variables */}}
 <html lang="{{ .Site.LanguageCode | default "fr" }}" dir="ltr">
-{{ partial "head" . }}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
+  <title>{{ block "title" . }}{{ .Title }}{{ end }} | {{ .Site.Title }}</title>
+
+  <!-- Informations -->
+  {{ hugo.Generator }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  <link rel="manifest" href="/manifest.json">
+  {{- if .IsTranslated -}}
+    {{- range .Translations -}}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+    {{- end -}}
+  {{- end -}}
+  {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") -}}
+  <meta name="robots" content="noindex, nofollow">
+  {{ else }}
+  <meta name="robots" content="noindex, nofollow">
+  {{- end -}}
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+  {{ with .Site.Params.tile_color }}<meta name="msapplication-TileColor" content="{{ . }}">{{ else }}<meta name="msapplication-TileColor" content="#000">{{ end }}
+  {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
+
+  <!-- CSS -->
+  {{/*- if .HasShortcode "parcours" -*/}}
+  <script src="/assets/js/simple-lightbox.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
+  {{/*- end -*/}}
+  {{/*- if .HasShortcode "graphic" -*/}}
+  <link rel="preload" href="/assets/js/frappe-charts.min.iife.js" as="script">
+  <script src="/assets/js/frappe-charts.min.iife.js"></script>
+  {{/*- end -*/}}
+  {{/*- if .HasShortcode "mermaid" -*/}}
+  <link rel="preload" href="/assets/js/mermaid.min.js" as="script">
+  <script src="/assets/js/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      theme: 'neutral',
+      themeCSS: '.node rect,.node polygon, .task { fill: #006be6; stroke: #333; stroke-width:0;}.node .label {color: #fff;}.edgeLabel {background: snow;}.task {fill: #189e57}.task0 {fill: #006be6}',
+      logLevel: 3,
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis' },
+      gantt: { axisFormat: '%m/%d/%Y' },
+      sequence: { actorMargin: 50 },
+      // sequenceDiagram: { actorMargin: 300 } // deprecated
+    });
+  </script>
+  {{/*- end -*/}}
+
+  <!-- CSS -->
+  {{- with resources.Match "**.css" -}}
+  <!-- Loop over all css of the base theme -->
+	{{- range . -}}
+    {{- if (in . "overgo") -}}{{- $.Scratch.Add "css" (slice .) -}}{{ end }}
+	{{- end -}}
+  {{- end -}}
+  <!-- Get the main styles CSS -->
+  {{- $styles := resources.Get "/css/styles.css" -}}
+  <!-- Union the both CSS -->
+  {{- $.Scratch.Add "css" (slice $styles) -}}
+  {{- $style := ($.Scratch.Get "css") | resources.Concat "styles.css" -}}
+  <!-- Optimise (purge, concat) if production -->
+  {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}
+  {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
+  {{- end -}}
+  <!-- Call font files -->
+  <link rel="preload" href="/assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="/assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="/assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
+  {{- partial "utils/css.html" (dict "context" . "filefolder" "" "filename" "fonts") -}}
+  <style id="style-screen">
+    {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
+  </style>
+
+  {{- with .OutputFormats.Get "RSS" -}}
+  <link href="{{ .RelPermalink }}" rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
+  <link href="{{ .RelPermalink }}" rel="feed" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
+  {{- end -}}
+
+  {{/*- template "_internal/opengraph.html" . -*/}}
+  {{/*- template "_internal/schema.html" . -*/}}
+  {{/*- template "_internal/twitter_cards.html" . -*/}}
+</head>
 <body class="hugo-{{ .Kind }}">
   <div class="skip-links">
     <a href="#nav">Navigation principale</a>
