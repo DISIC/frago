@@ -71,6 +71,48 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │        └── personas
 └── index.html
 ```
+#### Configuration
+
+*Exemple de fichier de configuration : `config.toml`*
+
+````
+baseURL = ""
+
+title = "DGFIP"
+theme = "overgo"
+paginate = "10"
+
+languageCode = "fr-FR"
+defaultContentLanguage = "fr"
+defaultContentLanguageInSubdir = false
+enableInlineShortcodes = true
+removePathAccents = true
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  phase = "phases"
+
+[params]
+  organisation = "La Direction Générale des Finances Publiques"
+  logo = "DGFIP <small>suivi de la conformité de démarches en ligne</small>"
+  env = "development"
+  style = "default"
+  description = "Suivi de la conformité de démarches en ligne"
+  copyright = "&copy;2020 MEFR"
+  [params.strategy]
+    schema = "https://www.impots.gouv.fr/portail/files/media/8_transverse/accessibilite/dgfip_schema_pluriannuel_2020-2022.pdf"
+    plan = "https://www.impots.gouv.fr/portail/files/media/8_transverse/accessibilite/dgfip_plan_annuel_2020.pdf"
+
+[markup]
+  defaultMarkdownHandler = "blackfriday"
+  [markup.tableOfContents]
+    endLevel = 2
+    ordered = false
+    startLevel = 2
+```
+
+### Contenus
 
 #### Accueil
 
