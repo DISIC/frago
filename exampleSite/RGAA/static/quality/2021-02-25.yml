@@ -1,0 +1,31 @@
+---
+- pages:
+  - name: Global
+    blocks:
+    - name: Page
+      errors:
+      - name: Titres de pages
+        element: title
+        description: Le titre des pages devrait être composé du titre de son contenu, suivi du nom du site
+        criterion: ER-01
+        codebefore: "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+        codeafter: "<title>Site officiel unique de télépaiement | Amendes.gouv.fr</title>"
+        type: structure
+        status: moindre
+      - name: Titres
+        element: h1
+        description: La structure des titres devrait remonter d’un cran. h2 => h1 et h3 => h2. En supprimant le h1 du header (sur le logo).
+        criterion: '9.1'
+        type: texte
+        status: important
+  - name: Accueil
+    url: https://data.inpi.fr
+    blocks:
+    - name: Bannière
+      errors:
+      - name: Titres
+        element: hx
+        description: 'Le titre de la bannière est renseigné comme titre 2. Alors qu’il n’y a pas de titre 1 dans la page (un h1 appliqué au logo n’est pas unebonne pratique). Ce titre doit : soit être un titre 1, soit précédé d‘un titre 1.'
+        type: structure
+        status: important
+        checked: true

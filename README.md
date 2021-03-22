@@ -20,7 +20,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ├── content
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
-│   │    └── 2020-10-22-reunion1.md // on indique la dat pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier.
+│   │    └── 2020-10-22-reunion1.md // on indique la date pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
 │   ├── personas
 │   │    ├── _index.md // liste tous les personas :: Ne fonctionne pas en mono projet
 │   │    ├── simon.md  // Ne fonctionne pas en mono projet
@@ -37,21 +37,21 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ├── static
 │   ├── projet1
 │   │    ├── accessibility
-│   │    │    ├── 2020-10-15.json
-│   │    │    └── 2020-11-15.json
+│   │    │    ├── 2020-10-15.csv
+│   │    │    └── 2020-11-15.csv
 │   │    ├── lighthouse
 │   │    │    ├── 2020-10-15.json
 │   │    │    └── 2020-11-15.json
 │   │    ├── quality // Pas de prise en compte de nom d'image d‘illustration avec le nom du fichier pour plusieurs rapports
-│   │    │    ├── 2020-10-15.json
-│   │    │    └── 2020-11-15.json
+│   │    │    ├── 2020-10-15.yml
+│   │    │    └── 2020-11-15.yml
 │   │    ├── testapic
 │   │    │    ├── test1.json
 │   │    │    └── test2.json
 │   │    ├── backlinks.json
 │   │    ├── personas.json
 │   │    └── similary.json
-│   ├── accessibility // Si pas 1 seul projets
+│   ├── accessibility // Si plusieurs seul projets
 │   │    ├── 2020-10-15.json
 │   │    └── 2020-11-15.json
 │   ├── quality // Ne fonctionne pas complètement en mono projet
@@ -74,36 +74,33 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 
 #### Accueil
 
-La page d’accueil `content/_index.md` est vide par défaut. En ajoutant, un appel au `shortcode` : `{{< list-projects section="projects">}}{{</ list-projects >}}` ; on affiche la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, 
-
-Actuellement, il affiche en bas de page la listes des études. Ces études sont un type de contenu (non définitif) à insérer dans le répertoire `content/studies`.
+La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, et que la type de la page d'accueil est `type: "projects"`, alors la page affiche la page de résumé du projet.
 
 ![Accueil](/images/accueil.png)
 
 #### Projets
 
-La page de projet doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`).
+La page de projets doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`).
 
 ![Projets](/images/projets.png)
 
 #### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité sera unique et évoluera au court du projet (pourra servir à la mise en conformité de la démarche). L’audit d'accompagnement a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique et évoluera au court du projet ou daté (ex: `2021-03-12.cv` et présent dans le répertoire `static/accessibility/`). L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
 ##### Accessibilité
 
+Éditer : `static/nomdudéfi/accessibility/YYYY-MM-JJ.csv`
 
-Éditer : `data/nomdudéfi/accessibility.json`
-
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Ls données relatives au test (optionnelles) doivent être indiquée dans l’entête du fichier. 
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) doivent être indiquée dans l’entête du fichier `.md` dans `content/audit/nomdudéfi/accessibility.md`. 
 
 ```
 ---
-type: accessibility // appel le gabarit accessibility :: data/nomdudéfi/accessibility.json
+type: accessibility // appel le gabarit accessibility :: static/nomdudéfi/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
 accessibility:
   guidelines: "RGAA 4.0"
-  technologies: ["HTML", "CSS", "Angular"]
-  tools: ["Wave", "AXE", "MOZ DevTools","Usability Hike"]
+  technologies: ["HTML", "CSS", "JS"]
+  tools: ["Wave", "AXE", "MOZ DevTools"]
   environment: ["MacOS", "Chrome", "ChromeVox"]
 ---
 ```
@@ -114,7 +111,7 @@ accessibility:
 
 ```
 ---
-type: quality // appel le gabarit quality :: le plus récent de data/nomdudéfi/audits/YYYY-MM-JJ.json
+type: quality // appel le gabarit quality :: le plus récent de data/nomdudéfi/audits/YYYY-MM-JJ.yml
 datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 ---
 ```
@@ -123,9 +120,9 @@ datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 
 #### Annuaire
 
-Lister les personnes contactés pendant la durée du défi. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
+Lister les personnes contactées pendant la durée du défi. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
 
-Éditer : `data/directory.json`
+Éditer : `static/directory.json`
 
 ![Annuaire](/images/annuaire.png)
 
@@ -133,9 +130,9 @@ Lister les personnes contactés pendant la durée du défi. Cet annuaire permet 
 
 Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *Testapic*, il existe une mise en forme pour l’analyse rapide de ces résultats.
 
-Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV (Penser à convertir le CSV en JSON).
+Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV directement (Ici, penser à convertir le CSV en JSON).
 
-Éditer : `data/nomdudéfi/testapic/nometude.json` (à faire évoluer)
+Éditer : `static/nomdudéfi/testapic/nometude.json` (à faire évoluer)
 
 Ajouter à l'entête du fichier de contenu :
 
@@ -153,7 +150,7 @@ datafilename: etudiants // appel le fichier nommé etudiants :: dans data/nomdud
 L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n'existe pas encore de gabarits d'analyse graphique dans le temps.
 
 
-Éditer : `data/nomdudéfi/lighthouse/YYYY-MM-JJ.json`
+Éditer : `static/nomdudéfi/lighthouse/YYYY-MM-JJ.json`
 
 ![Performance](/images/performance.png)
 
@@ -163,7 +160,7 @@ Définir des personas et les afficher sur une même page pour les partager à l'
 
 > Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdudéfi/prenom-nom.md`.
 
-Éditer : `data/nomdudéfi/personas.json`
+Éditer : `static/nomdudéfi/personas.json`
 
 ![Personas](/images/personas.png)
 
@@ -171,7 +168,7 @@ Définir des personas et les afficher sur une même page pour les partager à l'
 
 Ajouter un parcours type par personas pour fournir une base visuelle à l'équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possible dans la limite de 4 niveaux de profondeur (compatible mobile).
 
-Éditer : `data/nomdudéfi/personas.json`
+Éditer : `static/nomdudéfi/personas.json`
 
 ![Parcours](/images/parcours.png)
 
@@ -203,7 +200,7 @@ Afficher une liste de capture d’écran pour illustrer une étude comparative.
 
 Afficher la liste des sites similaires à la démarche (action de benchmarking). Les sites sont rangés par pays.
 
-Éditer : `data/nomdudéfi/similary.json`
+Éditer : `static/nomdudéfi/similary.json`
 
 ```
 {{< similary project="amendes" >}}{{< /similary >}}
@@ -312,21 +309,4 @@ ou tenter de modifier `~/.gitconfig`:
 ```git
 [url "ssh://git@gitlab.com/"]
 	insteadOf = https://gitlab.com/
-```
-
-## Tips 
-
-Code for transforming a CSV to JSON file :: CSV files can't be called from `data` folder of Hugo.
-
-```
-{{- $dataC := getCSV "," "/static/accessibility.csv" -}}
-{{ $.Scratch.Set "json" slice }}
-{{- range $key, $value := (after 1 $dataC) -}}
-  {{- range $id, $value := . -}}
-    {{- $.Scratch.SetInMap "element" (index (index $dataC 0) $id) . -}}
-    {{- $.Scratch.SetInMap "collection" (string $key) ($.Scratch.Get "element") -}}
-  {{- end -}}
-  {{ $.Scratch.Add "json" ($.Scratch.Get "collection") }}
-{{- end -}}
-{{ $.Scratch.Get "json" | jsonify }}
 ```
