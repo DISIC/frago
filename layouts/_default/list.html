@@ -6,23 +6,27 @@
 {{- else -}}
 {{.Scratch.Set "Paginator" (.Paginate .RegularPagesRecursive) }}
 {{- end -}}
-{{ $paginator:=(.Scratch.Get "Paginator") }}
+{{- $paginator:=(.Scratch.Get "Paginator") -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
 <div class="wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- $.Scratch.Set "linksingle" .RelPermalink -}}
 {{- $.Scratch.Set "hassection" .Sections -}}
-{{ range $paginator.Pages }}
+{{- range $paginator.Pages -}}
   <div>
-    <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <h2 class="h3"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{- if or .Date ($.Scratch.Get "hassection") -}}
     <p style="display:block;margin-top:-1.5em;">
       {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
-      {{ if $.Scratch.Get "hassection" }}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{ end }}{{ end }}
+      {{- if $.Scratch.Get "hassection" -}}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{- end -}}{{- end -}}
     </p>
+    {{- end -}}
+    {{- if .Params.summary -}}
     <p>{{ .Params.summary }}</p>
+    {{- end -}}
   </div>
   <hr>
-{{ end }}
+{{- end -}}
 <!--pagination-->
 <br>
 {{- partial "navigations/paginator.html" . -}}

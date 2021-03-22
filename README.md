@@ -17,7 +17,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 
 #### Arborescence
 
-> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clefs ou slug, ici : `projet1`. ⚠️   
+> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
 > Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans static est créé, mais il n'existe pas encore. La création doit se faire manuellement.
 
 ```
