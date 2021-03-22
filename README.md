@@ -4,20 +4,35 @@
 
 ## Présentation
 
-Le thème Commando a pour pour d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
+Le thème Commando a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi tous les défis en parallèle.
+Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.  
+Au choix.
 
 > Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème (sans modifier l'architecture de contenu).
 
 ### Architecture de contenu
 
-Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l'information technique pour des personnes éloignés du développement de sites web.
+Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l'information technique pour des personnes éloignées du développement de sites web.
+
+#### Arborescence
+
+> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clefs ou slug, ici : `projet1`.  
+> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans static est créé, mais il n'existe pas encore. La création doit se faire manuellement. 
 
 ```
 .
 ├── config.toml
 ├── content
+│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+│   │    ├── projet1
+│   │    │     ├── accessibility.md
+│   │    │     ├── quality.md
+│   │    │     └── performance.md
+│   │    └── projet2
+│   │          ├── accessibility.md
+│   │          ├── quality.md
+│   │          └── performance.md
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
 │   │    └── 2020-10-22-reunion1.md // on indique la date pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
@@ -71,11 +86,12 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │        └── personas
 └── index.html
 ```
+
 #### Configuration
 
 *Exemple de fichier de configuration : `config.toml`*
 
-````
+```toml
 baseURL = ""
 
 title = "DGFIP"
@@ -110,6 +126,7 @@ removePathAccents = true
     endLevel = 2
     ordered = false
     startLevel = 2
+
 ```
 
 ### Contenus
