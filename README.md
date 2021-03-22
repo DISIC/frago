@@ -17,8 +17,8 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 
 #### Arborescence
 
-> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clefs ou slug, ici : `projet1`.  
-> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans static est créé, mais il n'existe pas encore. La création doit se faire manuellement. 
+> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clefs ou slug, ici : `projet1`. ⚠️   
+> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans static est créé, mais il n'existe pas encore. La création doit se faire manuellement.
 
 ```
 .
@@ -145,22 +145,29 @@ La page de projets doit servir à présenter l’état de la démarche, puis le 
 
 #### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique et évoluera au court du projet ou daté (ex: `2021-03-12.cv` et présent dans le répertoire `static/accessibility/`). L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.cv`) et présent dans le répertoire `static/accessibility/`. 
+
+L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
 ##### Accessibilité
 
 Éditer : `static/nomdudéfi/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) doivent être indiquée dans l’entête du fichier `.md` dans `content/audit/nomdudéfi/accessibility.md`. 
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audit/nomdudéfi/accessibility.md`.
 
 ```
 ---
 type: accessibility // appel le gabarit accessibility :: static/nomdudéfi/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
 accessibility:
+  website: "amendes.gouv.fr"
   guidelines: "RGAA 4.0"
+  condition: "Auto-évaluation" // ou audit externe avec le nom de la structure qui a procédé à l’audit
   technologies: ["HTML", "CSS", "JS"]
   tools: ["Wave", "AXE", "MOZ DevTools"]
   environment: ["MacOS", "Chrome", "ChromeVox"]
+  contact:
+    email: stap-amendes@dgfip.finances.gouv.fr
+    address : 139 rue de Bercy, 75572 Paris, Cedex 12
 ---
 ```
 
@@ -170,7 +177,7 @@ accessibility:
 
 ```
 ---
-type: quality // appel le gabarit quality :: le plus récent de data/nomdudéfi/audits/YYYY-MM-JJ.yml
+type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdudéfi/quality/YYYY-MM-JJ.yml
 datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 ---
 ```
@@ -198,7 +205,7 @@ Ajouter à l'entête du fichier de contenu :
 ```
 ---
 type: testapic // appel le gabarit testapic
-datafilename: etudiants // appel le fichier nommé etudiants :: dans data/nomdudéfi/testapic/etudiants.json
+datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/nomdudéfi/testapic/etudiants.json
 ---
 ```
 
@@ -225,7 +232,7 @@ Définir des personas et les afficher sur une même page pour les partager à l'
 
 #### Parcours
 
-Ajouter un parcours type par personas pour fournir une base visuelle à l'équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possible dans la limite de 4 niveaux de profondeur (compatible mobile).
+Ajouter un parcours type par personas pour fournir une base visuelle à l'équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
 
 Éditer : `static/nomdudéfi/personas.json`
 
@@ -249,7 +256,7 @@ Les contenus listés sont donc hétérogènes.
 
 ##### Galerie de capture écrans
 
-Afficher une liste de capture d’écran pour illustrer une étude comparative.
+Afficher une liste de captures d’écran pour illustrer une étude comparative.
 
 ```
 {{< benchmark datafile="amendes" src="-explications" >}}{{< /benchmark >}}
