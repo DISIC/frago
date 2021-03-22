@@ -4,13 +4,11 @@
 
 ## Présentation
 
-Le thème DINUM Commando a pour pour d’aider à la génération de rapports pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
+Le thème Commando a pour pour d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
 Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, une interface intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi tous les défis en parallèle.
 
-Malheureusement, le thème pourrait être optimisé pour du mono projet, il ne l'est pas encore complètement car c'est assez long à tester. Il y a des éléments qui le sont mais pas toute.
-
-> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site plante. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème.
+> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème (sans modifier l'architecture de contenu).
 
 ### Architecture de contenu
 
@@ -36,8 +34,11 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── projet1.md
 │   │    └── projet2.md
 │   └── _index.md // page d’accueil du site
-├── data
+├── static
 │   ├── projet1
+│   │    ├── accessibility
+│   │    │    ├── 2020-10-15.json
+│   │    │    └── 2020-11-15.json
 │   │    ├── lighthouse
 │   │    │    ├── 2020-10-15.json
 │   │    │    └── 2020-11-15.json
@@ -47,26 +48,24 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── testapic
 │   │    │    ├── test1.json
 │   │    │    └── test2.json
-│   │    ├── accessibility.json
 │   │    ├── backlinks.json
 │   │    ├── personas.json
 │   │    └── similary.json
-│   ├── accessibility.json // Si pas de projets
+│   ├── accessibility // Si pas 1 seul projets
+│   │    ├── 2020-10-15.json
+│   │    └── 2020-11-15.json
 │   ├── quality // Ne fonctionne pas complètement en mono projet
 │   │    ├── 2020-10-15.json
 │   │    └── 2020-11-15.json
 │   ├── testapic // Ne fonctionne pas en mono projet
 │   │    ├── test1.json
 │   │    └── test2.json
-│   ├── criteres.json // Critères RGAA
 │   ├── directory.json // Annuaire
-│   └── glossaire.json // Glossaire RGAA
-├── static
 │   └── images
 │        ├── projet1
 │        │    └── benchmark
-│        │         ├── image1.png // nommage précis disponible sur le rapport
-│        │         └── image2.png // nommage précis disponible sur le rapport
+│        │         ├── image1.png // nommage précis disponible sur la page rapport générée par Hugo
+│        │         └── image2.png // nommage précis disponible sur la page rapport générée par Hugo
 │        │    └── quality
 │        ├── projet2
 │        └── personas
@@ -75,7 +74,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 
 #### Accueil
 
-La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, il n'y a pas (encore) de mécanisme pour afficher directement le gabarit de `projects`.
+La page d’accueil `content/_index.md` est vide par défaut. En ajoutant, un appel au `shortcode` : `{{< list-projects section="projects">}}{{</ list-projects >}}` ; on affiche la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, 
 
 Actuellement, il affiche en bas de page la listes des études. Ces études sont un type de contenu (non définitif) à insérer dans le répertoire `content/studies`.
 

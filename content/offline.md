@@ -1,5 +1,4 @@
 ---
-draft: false
 title: "Oops, vous êtes déconnecté du réseau."
 type: "offline"
 ---
