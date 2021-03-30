@@ -39,9 +39,17 @@
   </ul>
 </div>
 <h3 class="m-0">Écoindex</h3>
+    {{- if gt (int $result) 75 -}}{{- $.context.Scratch.Set "result" "A" -}}{{- $.context.Scratch.Set "resultclass" "good" -}}
+    {{- else if gt (int $result) 65 }}{{ $.context.Scratch.Set "result" "B" -}}{{- $.context.Scratch.Set "resultclass" "good" -}}
+    {{- else if gt (int $result) 50 }}{{ $.context.Scratch.Set "result" "C" -}}{{- $.context.Scratch.Set "resultclass" "medium" -}}
+    {{- else if gt (int $result) 35 }}{{ $.context.Scratch.Set "result" "D" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
+    {{- else if gt (int $result) 20 }}{{ $.context.Scratch.Set "result" "E" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
+    {{- else if gt (int $result) 5 }}{{ $.context.Scratch.Set "result" "F" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
+    {{- else if le (int $result) 5 }}{{ $.context.Scratch.Set "result" "G" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
+    {{- end -}}
     <div class="scores">
       <ul>
-        <li class="counter text-center bad"><span>Score<br><b class="h2">{{ $result | lang.NumFmt 0 }}</b></span></li>
+        <li class="counter text-center {{ $.context.Scratch.Get "resultclass" }}"><span>Score<br><b class="h2">{{ $.context.Scratch.Get "result" }}</b></span></li>
         <li class="counter text-center"><span>Eau (cl)<br><b class="h2">{{ $eau | lang.NumFmt 2 }}</b></span></li>
         <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">{{ $co2 | lang.NumFmt 2 }}</b></span></li>
       </ul>
