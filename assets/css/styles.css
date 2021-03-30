@@ -670,6 +670,7 @@ hr {
 .scores ul {
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
   justify-content: space-around;
   margin: 0 calc(var(--baseline) / -2);
   padding: 0;

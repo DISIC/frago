@@ -33,8 +33,11 @@ body {
   box-shadow: var(--enable-shadows, 0 0 5px 1px var(--color-primary));
 }
 
-/* Hide focus styles if they're not needed, for example,
-when an element receives focus via the mouse. */
+main:focus {
+  outline: none;
+}
+
+/* Hide focus styles if they're not needed, for example, when an element receives focus via the mouse. */
 :focus:not(:focus-visible) {
   outline: 0;
 }
@@ -98,7 +101,7 @@ a {
   color: var(--link-color);
 }
 
-a:hover {
+[href]:hover {
   text-decoration: none;
 }
 
