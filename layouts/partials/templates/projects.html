@@ -68,7 +68,7 @@
     {{- with ($.Scratch.Get "allauditscsv") -}}
       {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," .))))) -}}{{- end -}}
     {{- end -}}
-    <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+    <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- $partial := (partial "render/conformity" (dict "context" . "auditfile" ((getCSV "," ($.Scratch.Get "accessibility-path") )))) -}}
     {{ if $partial }}
       {{- $conforme := index $partial "critereconformepercent" -}}
@@ -112,12 +112,12 @@
     {{- end -}}
 
     {{- if $quality -}}
-    <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "/") "//" "/" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+    <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "/") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
     {{- end -}}
 
     {{- if $lighthouse -}}
-    <h3 class="m-0">Performance (3G) {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}">Accéder au rapport</a></small>{{- end -}}</h3>
+    <h3 class="m-0">Performance (3G) {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
 
