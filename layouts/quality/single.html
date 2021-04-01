@@ -5,14 +5,15 @@
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
 
+{{- $.Scratch.Set "auditfile" (index (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditfile-result") -}}
+{{- $.Scratch.Set "auditfile-name" (index (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditfile-name") -}}
+
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
-  {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/" $project) }}
+  {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/%s" $project ($.Scratch.Get "auditfile-name")) }}
 {{- else -}}
-  {{- $.Scratch.Set "pathimage" "./static/images/quality/" }}
+  {{- $.Scratch.Set "pathimage" "./static/images/quality/%s" ($.Scratch.Get "auditfile-name") }}
 {{- end -}}
-
-{{- $.Scratch.Set "auditfile" (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) -}}
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
@@ -92,12 +93,12 @@
         {{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if eq (replace (.Name) ".png" "") ((replace $name ".png" "-after.png")  | urlize) -}}{{ $.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
         {{- range (readDir ($.Scratch.Get "pathimage")) -}}
           {{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}
-          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">{{ if eq ($.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div></div>
+          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">{{ if eq ($.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div></div>
           {{- end -}}
         {{- end -}}
         {{- range (readDir ($.Scratch.Get "pathimage")) -}}
           {{- if eq (.Name) ((printf "%s-after.png" $name)  | urlize) -}}
-          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">Après - {{ $name }}</div></div>
+          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">Après - {{ $name }}</div></div>
           {{- end -}}
         {{- end -}}
       </div>
@@ -127,7 +128,7 @@
               {{ else }}
                 &nbsp-&nbsp;
                 {{- if $.Scratch.Get "fileexist" -}}
-                <a href="#{{ $filename }}">{{ $filename }}</a>
+                <a href="#{{ $filename }}">/{{ ($.Scratch.Get "auditfile-name") }}/{{ $filename }}</a>
                 {{- else -}}
                 {{ $filename }}
                 {{- end -}}
@@ -159,18 +160,18 @@
             {{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}{{ $.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
             {{- range (readDir ($.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string $filename) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">{{ if eq ($.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">{{ if eq ($.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
             {{- range (readDir ($.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">Après - {{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name">Après - {{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
           </div>
         {{- end -}}
       {{- end -}}{{/* Range second level */}}
-      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s-%s-%s" ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.Scratch.Get "pathimage")) -}}{{- range (readDir ($.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="/images/{{- if eq (len $patharray) 3 -}}{{ $project }}/{{ end }}quality/{{ ($.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchnmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
   {{- end -}}{{/* Range first level */}}
   <hr>
 {{- end -}}{{/* Range the quality file */}}

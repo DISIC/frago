@@ -38,5 +38,6 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-
-{{- return ($.context.Scratch.Get "auditfile-quality") -}}
+{{- $.context.Scratch.SetInMap "audit-quality" "auditfile-name" (replace (delimit (last 1 (split ($.context.Scratch.Get "auditpath-quality") "/")) "") ".yml" "") -}}
+{{- $.context.Scratch.SetInMap "audit-quality" "auditfile-result" ($.context.Scratch.Get "auditfile-quality") -}}
+{{- return ($.context.Scratch.Get "audit-quality") -}}

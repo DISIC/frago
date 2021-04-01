@@ -25,19 +25,19 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ├── config.toml
 ├── content
 │   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
-│   │    ├── projet1
+│   │    ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
 │   │    │     ├── accessibility.md
 │   │    │     ├── quality.md
 │   │    │     └── performance.md
-│   │    └── projet2
+│   │    └── projet2 // Doit reprendre le nom du répertoire donné au projet dans `static`
 │   │          ├── accessibility.md
 │   │          ├── quality.md
 │   │          └── performance.md
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
-│   │    └── 2020-10-22-reunion1.md // on indique la date pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
+│   │    └── 2020-10-22-reunion1.md // On indique la date dans le nom de fichier pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
 │   ├── personas
-│   │    ├── _index.md // liste tous les personas :: Ne fonctionne pas en mono projet
+│   │    ├── _index.md // Liste tous les personas :: Ne fonctionne pas en mono projet
 │   │    ├── simon.md  // Ne fonctionne pas en mono projet
 │   │    ├── annie.md  // Ne fonctionne pas en mono projet
 │   │    └── projet1
@@ -46,8 +46,8 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │         └── annie.md
 │   ├── projects // Les pages d’accueil des différents projets
 │   │    ├── _index.md // optionnel, liste tous les projets
-│   │    ├── projet1.md
-│   │    └── projet2.md
+│   │    ├── projet1.md // Doit reprendre le nom du répertoire donné au projet dans `static`
+│   │    └── projet2.md // Doit reprendre le nom du répertoire donné au projet dans `static`
 │   └── _index.md // page d’accueil du site
 ├── static
 │   ├── projet1
@@ -57,7 +57,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── lighthouse
 │   │    │    ├── 2020-10-15.json
 │   │    │    └── 2020-11-15.json
-│   │    ├── quality // Pas de prise en compte de nom d'image d‘illustration avec le nom du fichier pour plusieurs rapports
+│   │    ├── quality // Pas de prise en compte de nom d’image d‘illustration avec le nom du fichier pour plusieurs rapports qualité dans le même répertoire
 │   │    │    ├── 2020-10-15.yml
 │   │    │    └── 2020-11-15.yml
 │   │    ├── testapic
@@ -66,21 +66,25 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── backlinks.json
 │   │    ├── personas.json
 │   │    └── similary.json
-│   ├── accessibility // Si plusieurs seul projets
-│   │    ├── 2020-10-15.json
-│   │    └── 2020-11-15.json
+│   ├── projet2
+┋   ┋
+┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
+┋   ┋
+│   ├── accessibility // Si 1 seul projets
+│   │    ├── 2020-10-15.csv
+│   │    └── 2020-11-15.csv
 │   ├── quality // Ne fonctionne pas complètement en mono projet
-│   │    ├── 2020-10-15.json
-│   │    └── 2020-11-15.json
+│   │    ├── 2020-10-15.yml
+│   │    └── 2020-11-15.yml
 │   ├── testapic // Ne fonctionne pas en mono projet
 │   │    ├── test1.json
 │   │    └── test2.json
-│   ├── directory.json // Annuaire
+│   ├── directory.json // Annuaire de contacts
 │   └── images
-│        ├── projet1
+│        ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
 │        │    └── benchmark
-│        │         ├── image1.png // nommage précis disponible sur la page rapport générée par Hugo
-│        │         └── image2.png // nommage précis disponible sur la page rapport générée par Hugo
+│        │    │    ├── image1.png // nommage précis disponible sur la page rapport générée par Hugo
+│        │    │    └── image2.png // nommage précis disponible sur la page rapport générée par Hugo
 │        │    └── quality
 │        ├── projet2
 │        └── personas
@@ -376,3 +380,16 @@ ou tenter de modifier `~/.gitconfig`:
 [url "ssh://git@gitlab.com/"]
 	insteadOf = https://gitlab.com/
 ```
+
+## Licence
+
+Le code source de ce dépôt est publié sous licence [[https://opensource.org/licenses/mit-license.php][MIT]].
+
+La marque d'État est à usage exclusif des acteurs de la sphère
+étatique.  En particulier, la typographie Marianne© est protégée par
+le droit d'auteur.  Lire [[https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie][les explications]] sur le site de la marque
+d'État.
+
+## Auteur
+
+2020-2021, Bertrand Keller

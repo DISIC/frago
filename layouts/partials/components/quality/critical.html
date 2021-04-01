@@ -1,6 +1,6 @@
 {{- $project := .project -}}
 {{- $.context.Scratch.Delete "pagesstatus-critical" -}}
-{{- $.context.Scratch.Set "lastfile-critical" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project )) -}}
+{{- $.context.Scratch.Set "lastfile-quality" (index (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) "auditfile-result") -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}

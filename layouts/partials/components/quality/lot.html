@@ -1,6 +1,5 @@
 {{- $project := .project -}}
-
-{{- $.context.Scratch.Set "lastfile-quality" (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) -}}
+{{- $.context.Scratch.Set "lastfile-quality" (index (partial "render/quality-lastfile.html" (dict "context" .context "project" $project ".datafilename" .datafilename)) "auditfile-result") -}}
 
 {{/* Create an array with all pages */}}
 {{- $.context.Scratch.Set "pageslistlot" slice -}}
