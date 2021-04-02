@@ -85,10 +85,13 @@ time {
 figure > img {
   display: block;
   width: 100%;
+  max-width: min(55rem, 100%);
 }
 
 figcaption {
+  margin-top: 1rem;
   font-size: var(--smaller);
+  font-style: italic;
 }
 
 /* Links
