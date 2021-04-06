@@ -41,7 +41,13 @@
 {{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "scores") -}}
 
 {{/* Create an array with all pages */}}
-{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
+{{- $auditmethodology := (len (intersect (index ($.Scratch.Get "auditfile-csv") 0) (slice "Thématiques" "Critères" "Tests"))) -}}
+{{ if eq $auditmethodology 2 }}
+  {{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}
+{{ end }}
+{{ if eq $auditmethodology 3 }}
+  {{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
+{{ end }}
 {{/* Call score components */}}
 {{- $auditquick := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
@@ -117,14 +123,14 @@
 {{- end -}}
 {{- $.Scratch.Set "counterallpages" 0 -}}
 {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
-  {{ $content := delimit (uniq (after 3 .)) "" }}
+  {{- $content := delimit (uniq (after $auditmethodology .)) "" -}}
   {{- $condcontentlen := gt (len $content) 2 -}}
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
   {{- $thematiques := index $value 0 -}}
   {{- $criteres := index $value 1 -}}
   {{- $tests := index $value 2 -}}
-  {{ if eq (len (uniq (after 3 .))) 1 }}
+  {{ if eq (len (uniq (after $auditmethodology .))) 1 }}
   {{- range first 1 . -}}
     {{- if or $condcontentlen $condcontentnc -}}
     {{- $.Scratch.Set "counterallpages" 1 -}}
@@ -168,7 +174,7 @@
   <h4 id="{{ . | urlize }}">‣ Page : {{ . }}</h4>
   {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
-  {{- if ne (len (uniq (after 3 .))) 1 -}}
+  {{- if ne (len (uniq (after $auditmethodology .))) 1 -}}
     {{- $content := (string (index . (add $id 3))) -}}
     {{- $condcontentlen := gt (len $content) 2 -}}
     {{- $condcontentnc := (eq $content "nc") -}}

@@ -2,8 +2,15 @@
 {{- with .auditfile -}}
 {{- $auditfile := . }}
 {{- $.context.Scratch.Set "pages" slice -}}
+{{- $.context.Scratch.Set "pageslistgraph" slice -}}
 {{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l'information" "Formulaires" "Navigation" "Consultation" -}}
-{{- $pages := (index $auditfile 0) | symdiff (slice "Thématiques" "Critères" "Tests") -}}
+{{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
+{{ if eq $auditmethodology 2 }}
+  {{- $.context.Scratch.Set "pageslistgraph" ((index $auditfile 0) | symdiff (slice "Thématiques" "Critères")) -}}
+{{ end }}
+{{ if eq $auditmethodology 3 }}
+  {{- $.context.Scratch.Set "pageslistgraph" ((index $auditfile 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
+{{ end }}
 
 {{/* By topics */}}
 {{- range $key, $value := $topics -}}
@@ -18,7 +25,7 @@
   {{- end -}}
   {{- range $id, $value := after 1 $auditfile -}}
   {{- if eq (index . 0) (string (add $key 1)) -}}
-    {{- range after 3 . -}}
+    {{- range after $auditmethodology . -}}
       {{- $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") -}}
       {{- $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") -}}
       {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformetopic" 1 -}}{{ $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") }}{{ end }}
@@ -29,11 +36,11 @@
 {{- end -}}
 
 {{/* By pages */}}
-{{- range $key, $value := $pages -}}
+{{- range $key, $value := $.context.Scratch.Get "pageslistgraph" -}}
 {{- $.context.Scratch.Set "counterconformepage" 0 -}}
 {{- $.context.Scratch.Set "counternonconformepage" 0 -}}
   {{- range after 1 $auditfile -}}
-    {{- range $id, $value := after 3 . -}}
+    {{- range $id, $value := after $auditmethodology . -}}
     {{- if eq $id $key -}}
       {{- $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") -}}
       {{- $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") -}}
@@ -51,7 +58,7 @@
   {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
   {{- $.context.Scratch.Set "counternonapplicable" 0 -}}
   {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
-  {{ range $id, $value := after 3 $value }}
+  {{ range $id, $value := after $auditmethodology $value }}
     {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
     {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
     {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
@@ -67,15 +74,15 @@
 <div id="chartpagecriteres-csv"></div>
 <script>
     const datapagechartpagecriteres = {
-        labels: [{{ range $id, $value := $pages }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
+        labels: [{{ range $id, $value := $.context.Scratch.Get "pageslistgraph" }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := index $scores "criterenonconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "critereconformepage") (string $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := index $scores "criterenonconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "critereconformepage") (string $id)))) | lang.NumFmt 1 | safeJS }}{{ end }}]
           },
           {
             name: "Conforme",
-            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage") (string $id)))) | lang.NumFmt 2 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage") (string $id)))) | lang.NumFmt 1 | safeJS }}{{ end }}]
           }
         ],
     }
@@ -94,12 +101,12 @@
 </script>
 
 {{- end -}}
-{{- if gt (div (index $scores "testtotal") (len $pages)) 106 -}}
+{{- if gt (div (index $scores "testtotal") (len ($.context.Scratch.Get "pageslistgraph"))) 106 -}}
 <div id="chartpage-csv"></div>
 <div id="charttopic-csv"></div>
 <script>
     const datapagecsv = {
-        labels: [{{ range $id, $value := $pages }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
+        labels: [{{ range $id, $value := $.context.Scratch.Get "pageslistgraph" }}{{ if ne $id 0 }},{{ end }}"{{ . }}"{{ end }}],
         datasets: [
           {
             name: "Non Conforme",
