@@ -12,7 +12,7 @@
 {{- if eq (len $patharray) 3 -}}
   {{- $.Scratch.Set "pathimage" (printf "./static/images/%s/quality/%s" $project ($.Scratch.Get "auditfile-name")) }}
 {{- else -}}
-  {{- $.Scratch.Set "pathimage" "./static/images/quality/%s" ($.Scratch.Get "auditfile-name") }}
+  {{- $.Scratch.Set "pathimage" (printf "./static/images/quality/%s" ($.Scratch.Get "auditfile-name") }}
 {{- end -}}
 
 <div class="wrapper audit">
