@@ -69,8 +69,6 @@
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
 {{ if gt (len (index (index $scores "critereconformepage") "0")) 3 }}
-{{/* (index $scores "criterevalue") */}}
-
 <div id="chartpagecriteres-csv"></div>
 <script>
     const datapagechartpagecriteres = {
@@ -176,7 +174,7 @@
         ]
     }
     const chartpiecsv = new frappe.Chart("#chartpie-csv", {
-        title: "Part du total des tests non conformes (en %)",
+        title: "Part du total des {{ if eq $auditmethodology 3 }}tests{{ else }}critères{{ end }} non conformes (en %)",
         data: datapiecsv,
         type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
         height: 400,

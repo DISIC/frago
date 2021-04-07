@@ -135,7 +135,7 @@
     {{- if or $condcontentlen $condcontentnc -}}
     {{- $.Scratch.Set "counterallpages" 1 -}}
     <p class="mb-0"><strong>
-      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }}&nbsp;Test {{ $thematiques }}.{{ $criteres }}.{{ $tests}} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteres }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
@@ -175,7 +175,7 @@
   {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{- if ne (len (uniq (after $auditmethodology .))) 1 -}}
-    {{- $content := (string (index . (add $id 3))) -}}
+    {{- $content := (string (index . (add $id $auditmethodology))) -}}
     {{- $condcontentlen := gt (len $content) 2 -}}
     {{- $condcontentnc := (eq $content "nc") -}}
     {{- $condcontentc := (eq $content "c") -}}
@@ -185,7 +185,7 @@
     {{- if or $condcontentlen $condcontentnc -}}
     {{- $.Scratch.Add "is-page-error" 1 -}}
         <p class="mb-0"><strong>
-        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if ne $tests "0" }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteres }}{{ if ne $tests "0" }}.{{ $tests }}{{ end }} <small>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteres }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
@@ -308,7 +308,7 @@
     {{- end -}}
   </ul>
   {{- end -}}
-  {{ with .environment }}
+  {{- with .environment -}}
   <h3>Environnement de test</h3>
   <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
     par la base de référence du RGAA, avec les versions suivantes :</p>
@@ -318,7 +318,7 @@
     {{- end -}}
   </ul>
   {{- end -}}
-  {{ with .tools }}
+  {{- with .tools -}}
   <h3>Outils pour évaluer l’accessibilité</h3>
   <ul>
     {{- range $id, $value := . -}}
@@ -339,12 +339,12 @@
   <h2>Retour d’information et contact</h2>
   <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
     sous une autre forme.</p>
-  {{ with .contact }}
+  {{- with .contact -}}
   <ul>
     {{ if .email }}<li>Envoyer un message à <strong>{{ .email }}</strong></li>{{ end }}
     {{ if .address }}<li>Contacter <strong>{{ with ($.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
   </ul>
-  {{ end }}
+  {{- end -}}
   <h2>Voies de recours</h2>
   <p>Cette procédure est à utiliser dans le cas suivant.</p>
   <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
