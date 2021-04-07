@@ -37,9 +37,6 @@
   {{- end -}}
 {{- end -}}
 
-{{ ($.context.Scratch.Get "conforme") }}
-{{ ($.context.Scratch.Get "nonconforme") }}
-
 {{/* By pages */}}
 {{- range $key, $value := $.context.Scratch.Get "pageslistgraph" -}}
 {{- $.context.Scratch.Set "counterconformepage" 0 -}}
