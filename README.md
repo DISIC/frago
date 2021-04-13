@@ -1,6 +1,6 @@
-# Hugo theme for Commando UX
+# Génération de rapports de synthèses pour le suivi et l’amélioration de l’accessibilité web.
 
-> Generate accessibility audit reports and much more
+> Generate accessibility audits reports and much more with a goHugo theme
 
 ## Présentation
 
@@ -9,16 +9,16 @@ Le thème Commando a pour objectif d’aider à la génération de synthèses po
 Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.  
 Au choix.
 
-> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change il n'est plus possible de mettre à jour le thème (sans modifier l'architecture de contenu).
+> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n'est plus possible d’utiliser les dernières version du thème (sans modifier l'architecture de contenu).
 
 ### Architecture de contenu
 
-Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l'information technique pour des personnes éloignées du développement de sites web.
+Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l’information technique pour des personnes éloignées du développement de sites web.
 
 #### Arborescence
 
 > Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
-> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans static est créé, mais il n'existe pas encore. La création doit se faire manuellement.
+> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
 
 ```
 .
@@ -60,7 +60,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   │    ├── quality // Pas de prise en compte de nom d’image d‘illustration avec le nom du fichier pour plusieurs rapports qualité dans le même répertoire
 │   │    │    ├── 2020-10-15.yml
 │   │    │    └── 2020-11-15.yml
-│   │    ├── testapic
+│   │    ├── usertests
 │   │    │    ├── test1.json
 │   │    │    └── test2.json
 │   │    ├── backlinks.json
@@ -76,7 +76,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   ├── quality // Ne fonctionne pas complètement en mono projet
 │   │    ├── 2020-10-15.yml
 │   │    └── 2020-11-15.yml
-│   ├── testapic // Ne fonctionne pas en mono projet
+│   ├── usertests // Ne fonctionne pas en mono projet
 │   │    ├── test1.json
 │   │    └── test2.json
 │   ├── directory.json // Annuaire de contacts
@@ -96,10 +96,8 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 *Exemple de fichier de configuration : `config.toml`*
 
 ```toml
-baseURL = ""
-
-title = "DGFIP"
-theme = "overgo"
+title = "Mon administration"
+theme = "fargo"
 paginate = "10"
 
 languageCode = "fr-FR"
@@ -114,23 +112,11 @@ removePathAccents = true
   phase = "phases"
 
 [params]
-  organisation = "La Direction Générale des Finances Publiques"
-  logo = "DGFIP <small>suivi de la conformité de démarches en ligne</small>"
-  env = "development"
-  style = "default"
-  description = "Suivi de la conformité de démarches en ligne"
-  copyright = "&copy;2020 MEFR"
+  organisation = "Le nom complet de mon administration"
+  logo = "Mon administration <small>suivi de la conformité de démarches en ligne</small>"
   [params.strategy]
-    schema = "https://www.impots.gouv.fr/portail/files/media/8_transverse/accessibilite/dgfip_schema_pluriannuel_2020-2022.pdf"
-    plan = "https://www.impots.gouv.fr/portail/files/media/8_transverse/accessibilite/dgfip_plan_annuel_2020.pdf"
-
-[markup]
-  defaultMarkdownHandler = "blackfriday"
-  [markup.tableOfContents]
-    endLevel = 2
-    ordered = false
-    startLevel = 2
-
+    schema = "https://www.monadministration.gouv.fr/schema_pluriannuel_2020-2022.pdf" // Optionnel
+    plan = "https://www.monadministration.gouv.fr/plan_annuel_2020.pdf" // Optionnel
 ```
 
 ### Contenus
@@ -149,19 +135,19 @@ La page de projets doit servir à présenter l’état de la démarche, puis le 
 
 #### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.cv`) et présent dans le répertoire `static/accessibility/`. 
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.cv`) et présent dans le répertoire `static/accessibility/`.
 
 L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
 ##### Accessibilité
 
-Éditer : `static/nomdudéfi/accessibility/YYYY-MM-JJ.csv`
+Éditer : `static/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audit/nomdudéfi/accessibility.md`.
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audit/nomdelademarche/accessibility.md`.
 
 ```
 ---
-type: accessibility // appel le gabarit accessibility :: static/nomdudéfi/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
+type: accessibility // appel le gabarit accessibility :: static/nomdelademarche/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
 accessibility:
   website: "amendes.gouv.fr"
   guidelines: "RGAA 4.0"
@@ -181,7 +167,7 @@ accessibility:
 
 ```
 ---
-type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdudéfi/quality/YYYY-MM-JJ.yml
+type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdelademarche/quality/YYYY-MM-JJ.yml
 datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 ---
 ```
@@ -190,55 +176,53 @@ datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 
 #### Annuaire
 
-Lister les personnes contactées pendant la durée du défi. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
+Lister les personnes contactées pendant la durée du défi de mise en conformité. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
 
 Éditer : `static/directory.json`
 
-![Annuaire](/images/annuaire.png)
+#### Recueil de tests utilisateurs
 
-#### Testapic
-
-Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *Testapic*, il existe une mise en forme pour l’analyse rapide de ces résultats.
+Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *usertests*, il existe une mise en forme pour l’analyse rapide de ces résultats.
 
 Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV directement (Ici, penser à convertir le CSV en JSON).
 
-Éditer : `static/nomdudéfi/testapic/nometude.json` (à faire évoluer)
+Éditer : `static/nomdelademarche/usertests/nometude.json` (à faire évoluer)
 
 Ajouter à l'entête du fichier de contenu :
 
 ```
 ---
-type: testapic // appel le gabarit testapic
-datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/nomdudéfi/testapic/etudiants.json
+type: usertests // appel le gabarit usertests
+datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/nomdelademarche/usertests/etudiants.json
 ---
 ```
 
-![Testapic](/images/testapic.png)
+![usertests](/images/usertests.png)
 
 #### Performance
 
 L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n'existe pas encore de gabarits d'analyse graphique dans le temps.
 
 
-Éditer : `static/nomdudéfi/lighthouse/YYYY-MM-JJ.json`
+Éditer : `static/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
 
 ![Performance](/images/performance.png)
 
 #### Personas
 
-Définir des personas et les afficher sur une même page pour les partager à l'équipe projet. On peut sélectionner les profils retenus pour les tests.
+Définir des personas et les afficher sur une même page pour les partager à l’équipe projet. On peut sélectionner les profils retenus pour les tests.
 
-> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdudéfi/prenom-nom.md`.
+> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
 
-Éditer : `static/nomdudéfi/personas.json`
+Éditer : `static/nomdelademarche/personas.json`
 
 ![Personas](/images/personas.png)
 
 #### Parcours
 
-Ajouter un parcours type par personas pour fournir une base visuelle à l'équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
+Ajouter un parcours type par personas pour fournir une base visuelle à l’équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
 
-Éditer : `static/nomdudéfi/personas.json`
+Éditer : `static/nomdelademarche/personas.json`
 
 ![Parcours](/images/parcours.png)
 
@@ -250,7 +234,7 @@ Ajouter un parcours type par personas pour fournir une base visuelle à l'équip
 
 ##### Phases
 
-Nécessite d'ajouter un type de catégorie dans le `config.toml` ; et d’ajouter le *tag* dans chacun des contenus qu’on souhaite voir afficher dans une phase.
+Nécessite d’ajouter un type de catégorie dans le `config.toml` ; et d’ajouter le *tag* dans chacun des contenus qu’on souhaite voir afficher dans une phase.
 
 Les contenus listés sont donc hétérogènes.
 
@@ -270,7 +254,7 @@ Afficher une liste de captures d’écran pour illustrer une étude comparative.
 
 Afficher la liste des sites similaires à la démarche (action de benchmarking). Les sites sont rangés par pays.
 
-Éditer : `static/nomdudéfi/similary.json`
+Éditer : `static/nomdelademarche/similary.json`
 
 ```
 {{< similary project="amendes" >}}{{< /similary >}}
@@ -353,7 +337,7 @@ par exemple :
     path = "gitlab.com/bertrandkeller/commando-hugo-template"
 ```
 
-3. C'est installé ?
+3. C’est installé ?
   - En mode dev, lancer `hugo server`. Mais préférer : `HUGO_ENV=production hugo server --buildFuture`, pour le mode production.
   - Mettre à jour le thème, lancer: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template` ou juste `hugo mod get -u`.
 
@@ -361,8 +345,7 @@ par exemple :
 
 Modifier la source dans `go.mod` :
 ```go
-replace gitlab.com/bertrandkeller/commando-hugo-template => ~/workspace/dinum/commando-hugo-template
-```
+replace github.com/DISIC/frago => ~/workspace/DISIC/frago
 
 **Attention :**
 
@@ -385,10 +368,8 @@ ou tenter de modifier `~/.gitconfig`:
 
 Le code source de ce dépôt est publié sous licence [[https://opensource.org/licenses/mit-license.php][MIT]].
 
-La marque d'État est à usage exclusif des acteurs de la sphère
-étatique.  En particulier, la typographie Marianne© est protégée par
-le droit d'auteur.  Lire [[https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie][les explications]] sur le site de la marque
-d'État.
+La marque d'État est à usage exclusif des acteurs de la sphère étatique. En particulier, la typographie Marianne© est protégée par le droit d'auteur.  
+Lire [[https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie][les explications]] sur le site de la marque d’État.
 
 ## Auteur
 
