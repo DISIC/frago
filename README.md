@@ -4,12 +4,11 @@
 
 ## Présentation
 
-Le thème Commando a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
+Le thème Frago a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un commando, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaire/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.  
-Au choix.
+Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un défi de mise en conformité, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaires/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.  
 
-> Attention, Hugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n'est plus possible d’utiliser les dernières version du thème (sans modifier l'architecture de contenu).
+> Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n'est plus possible d’utiliser les dernières version du thème (sans modifier l'architecture de contenu).
 
 ### Architecture de contenu
 
@@ -340,6 +339,7 @@ par exemple :
 3. C’est installé ?
   - En mode dev, lancer `hugo server`. Mais préférer : `HUGO_ENV=production hugo server --buildFuture`, pour le mode production.
   - Mettre à jour le thème, lancer: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template` ou juste `hugo mod get -u`.
+  - L’appel de thème n'est pas possible avec Netlify, il est nécessaire d’indiquer cette commande dans l’interface `git submodule add https://github.com/DISIC/frago.git/ themes/overgo -f && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics`
 
 ## Procéder à des modifications sur le thème.
 
