@@ -1,13 +1,10 @@
-# theme.toml template for a Hugo theme
-# See https://github.com/spf13/hugoThemes#themetoml for an example
-
-name = "overgo"
+name = "frago"
 license = "MIT"
-licenselink = ""
-description = "Governemental theme"
-homepage = ""
-tags = ["report", "accessibility"]
-min_version = 0.1
+licenselink = "https://github.com/DISIC/frago/blob/master/LICENSE"
+description = "Tool for a French governemental Reports for Accessibility compliance with goHugo"
+homepage = "https://github.com/DISIC/frago/"
+tags = ["audits", "accessibility", "compliance","RGAA","quality","front-end"]
+min_version = 1.0
 
 [author]
   name = "Bertrand Keller"
