@@ -7,7 +7,7 @@
   {{- if eq (len (split .Path "/")) 3 -}}
   <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
   {{- end -}}
-  <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+  <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
   {{- partial "elements/content.html" .Content -}}
   {{/* Vars */}}
   {{- $.Scratch.Set "projectfolders" "/" -}}
