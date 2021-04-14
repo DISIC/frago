@@ -5,7 +5,7 @@
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
 <br>
 {{- $.Scratch.Delete "allscores" -}}
-{{- $rangepages := where $.Site.RegularPages "Section" "projects" -}}
+{{- $rangepages := where .Site.Pages "Section" "audits" -}}
 {{- range sort $rangepages ".Title" "desc" -}}
   {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
   {{- $context := . -}}
@@ -18,6 +18,7 @@
 <ul class="list-unstyled">
 {{- $.Scratch.Delete "projectfolders" -}}
 {{- range sort $rangepages ".Title" "desc" -}}
+{{- if eq (len (intersect (split .Path "/") (slice "index.md" "_index.md"))) 1 -}}
 {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
 {{- $.Scratch.Set "projectfolders" "/static" -}}
 {{- if eq (len (split .RelPermalink "/")) 4 -}}
@@ -40,6 +41,7 @@
       {{- end -}}
     </a>
   </li>
+{{- end -}}
 {{- end -}}
 </ul>
 </div>
