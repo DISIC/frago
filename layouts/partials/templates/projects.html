@@ -55,14 +55,13 @@
     {{- else -}}
       {{- $.Scratch.Set "mainpath" "static" -}}
     {{- end -}}
-    {{/* test level of the page in file tree */}}
-    {{- if eq (len (split .RelPermalink "/")) 4 -}}
     {{- $.Scratch.Set "projectfolders" (printf "/%s/%s" ($.Scratch.Get "mainpath") $project) -}}
-    {{- end -}}
+    {{/* test level of the page in file tree */}}
     {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
     {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
     {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}
     {{- $accessibility := fileExists ($.Scratch.Get "accessibility-path") }}
+
     {{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
     {{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
     {{- if ($.Scratch.Get "projectfolders") -}}
