@@ -1,19 +1,26 @@
 {{- $project := .project -}}
 
-{{- if (fileExists "static/lighthouse/") -}}
-  {{- $.context.Scratch.Set "dir" (readDir "static/lighthouse/") -}}
+{{/* Test if files are in static or in each projets */}}
+{{- if fileExists (printf "content/audits/%s/lighthouse/" $project) -}}
+  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
+{{- else -}}
+  {{- $.context.Scratch.Set "mainpath" "static" -}}
 {{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/lighthouse/" $project)) -}}
+
+{{- if (fileExists (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+{{- end -}}
+{{- if and $project (not (eq $project "index")) (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project)) -}}
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
-    {{- if (fileExists "static/lighthouse/") -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/lighthouse/%s" .Name)) -}}
+    {{- if (fileExists (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") .Name)) -}}
     {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "static/%s/lighthouse/" $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "static/%s/lighthouse/%s" $project .Name)) -}}
+    {{- if and $project (not (eq $project "index")) (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "%s/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") $project .Name)) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

@@ -49,9 +49,15 @@
 
     {{- $.Scratch.Set "projectfolders" "/static" -}}
     {{- $.Scratch.Set "accessibility-path" false -}}
+    {{/* Test if files are in static or in each projets */}}
+    {{- if or (fileExists (printf "content/audits/%s/accessibility/" $project)) (fileExists (printf "content/audits/%s/quality/" $project)) (fileExists (printf "content/audits/%s/lighthouse/" $project)) -}}
+      {{- $.Scratch.Set "mainpath" "content/audits" -}}
+    {{- else -}}
+      {{- $.Scratch.Set "mainpath" "static" -}}
+    {{- end -}}
     {{/* test level of the page in file tree */}}
     {{- if eq (len (split .RelPermalink "/")) 4 -}}
-    {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
+    {{- $.Scratch.Set "projectfolders" (printf "/%s/%s" ($.Scratch.Get "mainpath") $project) -}}
     {{- end -}}
     {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
     {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}

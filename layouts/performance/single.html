@@ -16,7 +16,7 @@
   {{- end -}}
 
   {{/* Test if files are in static or in each projets */}}
-  {{- if fileExists (printf "content/audits/%s/performance/" $project) -}}
+  {{- if fileExists (printf "content/audits/%s/lighthouse/" ($.Scratch.Get "projectfolders")) -}}
     {{- $.Scratch.Set "mainpath" "content/audits" -}}
   {{- else -}}
     {{- $.Scratch.Set "mainpath" "static" -}}
@@ -24,15 +24,15 @@
 
   {{/* Test id exist and call performance file */}}
   {{- if (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "mainpath")))  -}}
-    {{- $.Scratch.Set "dir" (readDir (printf "%s/lighthouse/") ($.Scratch.Get "mainpath")) -}}
+    {{- $.Scratch.Set "dir" (readDir (replace (printf "%s/lighthouse/" ($.Scratch.Get "mainpath")) "//" "/")) -}}
   {{- end -}}
   {{- if and ($.Scratch.Get "projectfolders") (ne ($.Scratch.Get "projectfolders") "index") (printf "%s/%s/lighthouse/" ($.Scratch.Get "mainpath") ($.Scratch.Get "projectfolders")) -}}
-    {{- $.Scratch.Set "dir" (readDir (printf "%s/%s/lighthouse/" ($.Scratch.Get "mainpath") ($.Scratch.Get "projectfolders"))) -}}
+    {{- $.Scratch.Set "dir" (readDir (replace (printf "%s/%s/lighthouse/" ($.Scratch.Get "mainpath") ($.Scratch.Get "projectfolders")) "//" "/")) -}}
   {{- end -}}
 
   {{- with ($.Scratch.Get "dir") -}}
     {{- range last 1 . -}}
-      {{- if (fileExists "static/lighthouse/") -}}
+      {{- if (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "mainpath"))) -}}
         {{- $.Scratch.Set "lastfile" (getJSON (printf "%s/lighthouse/%s" ($.Scratch.Get "mainpath") .Name)) -}}
       {{- end -}}
       {{- if and ($.Scratch.Get "projectfolders") (ne ($.Scratch.Get "projectfolders") "index") (printf "%s/%s/lighthouse/" ($.Scratch.Get "mainpath") ($.Scratch.Get "projectfolders")) -}}
@@ -54,7 +54,7 @@
     {{/* Display only errors - with score different of null */}}
     {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}
     <details>
-    <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">H</small> {{ else if eq .score 0.5 }}<small class="counter medium">M</small> {{ else if gt .score 0.5 }}<small class="counter good">F</small> {{ end }}{{ i18n (printf "%s%s" .id "title") }}</h3></summary>
+    <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">Haute</small> {{ else if eq .score 0.5 }}<small class="counter medium">Medium</small> {{ else if gt .score 0.5 }}<small class="counter good">Faible</small> {{ end }}{{ .id }}</h3></summary>
     <p>{{ i18n (printf "%s%s" .id "description") | markdownify }}<br>
     => <small><strong>{{ replace (replace .displayValue "Potential savings of" "Gain potentiel") "resources found" "ressources trouvées" }}</strong></small>
     </p>
