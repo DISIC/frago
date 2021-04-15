@@ -10,6 +10,68 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 
 > Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n'est plus possible d’utiliser les dernières version du thème (sans modifier l'architecture de contenu).
 
+## Démarrage (Configuration simplifiée)
+
+### Architecture de contenu
+
+```
+.
+├── config.toml
+├── content
+│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
+│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+│   │    ├── projet1 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
+│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
+│   │    │     └── accessibility.md
+│   │    └── projet2 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
+│   │          ├── _index.md
+│   │          └── accessibility.md
+└── static
+    ├── projet1
+    │    └── accessibility
+    │         ├── 2020-10-15.csv
+    │         └── 2020-11-15.csv
+    └── projet2
+         └── accessibility
+              ├── 2020-10-15.csv
+              └── 2020-11-15.csv
+```
+
+### Configuration
+
+#### Ajouter le fichier : `config.toml`
+
+```toml
+[module]
+  [[module.imports]]
+    path = "github.com/disic/frago"
+
+title = "Mon administration"
+theme = "fargo"
+
+[params]
+  organisation = "Le nom complet de mon administration"
+  logo = "Mon administration <small>suivi de la conformité de démarches en ligne</small>"
+```
+
+#### Appeler le thème Hugo
+
+##### Créer le fichier `go.mod`
+
+```bash
+hugo mod init github.com/disic/frago
+```
+
+Modifier le contenu du fichier `go.mod` (Ajouter https://) : module github.com/DISIC/frago => module https://github.com/DISIC/frago
+
+##### Créer le fichier `go.sum`
+
+```bash
+hugo mod get -u https://github.com/disic/frago
+```
+
+## Configuration détaillée
+
 ### Architecture de contenu
 
 Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l’information technique pour des personnes éloignées du développement de sites web.
@@ -19,75 +81,136 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 > Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
 > Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
 
+##### Architecture simplifiée
+
 ```
 .
 ├── config.toml
 ├── content
+│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
+│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+│   │    ├── projet1 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
+│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
+│   │    │     ├── accessibility.md
+│   │    │     ├── quality.md
+│   │    │     └── performance.md
+│   │    └── projet2 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
+│   │          ├── _index.md
+│   │          ├── accessibility.md
+│   │          ├── quality.md
+│   │          └── performance.md
+┋   ┋
+┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
+┋   ┋
+│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
+│         ├── accessibility.md
+│         ├── quality.md
+│         └── performance.md
+└── static
+    ├── projet1
+    │    └── accessibility
+    │         ├── 2020-10-15.csv
+    │         └── 2020-11-15.csv
+    ├── projet2
+    │    └── accessibility
+    │         ├── 2020-10-15.csv
+    │         └── 2020-11-15.csv
+    ┋
+    ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
+    ┋
+    └── accessibility
+         ├── 2020-10-15.csv
+         └── 2020-11-15.csv
+```
+
+##### Architecture complète
+
+```
+.
+├── config.toml
+├── content
+│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
 │   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
 │   │    ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
+│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
 │   │    │     ├── accessibility.md
 │   │    │     ├── quality.md
 │   │    │     └── performance.md
 │   │    └── projet2 // Doit reprendre le nom du répertoire donné au projet dans `static`
+│   │          ├── _index.md
 │   │          ├── accessibility.md
 │   │          ├── quality.md
 │   │          └── performance.md
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
 │   │    └── 2020-10-22-reunion1.md // On indique la date dans le nom de fichier pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
-│   ├── personas
-│   │    ├── _index.md // Liste tous les personas :: Ne fonctionne pas en mono projet
-│   │    ├── simon.md  // Ne fonctionne pas en mono projet
-│   │    ├── annie.md  // Ne fonctionne pas en mono projet
+│   ├── personas // ⚠️ Ne fonctionne pas en mono projet
+│   │    ├── _index.md // Liste tous les personas
+│   │    ├── simon.md
+│   │    ├── annie.md
 │   │    └── projet1
 │   │         ├── _index.md // liste tous les personas
 │   │         ├── simon.md
 │   │         └── annie.md
-│   ├── projects // Les pages d’accueil des différents projets
-│   │    ├── _index.md // optionnel, liste tous les projets
-│   │    ├── projet1.md // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   │    └── projet2.md // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   └── _index.md // page d’accueil du site
-├── static
-│   ├── projet1
-│   │    ├── accessibility
-│   │    │    ├── 2020-10-15.csv
-│   │    │    └── 2020-11-15.csv
-│   │    ├── lighthouse
-│   │    │    ├── 2020-10-15.json
-│   │    │    └── 2020-11-15.json
-│   │    ├── quality // Pas de prise en compte de nom d’image d‘illustration avec le nom du fichier pour plusieurs rapports qualité dans le même répertoire
-│   │    │    ├── 2020-10-15.yml
-│   │    │    └── 2020-11-15.yml
-│   │    ├── usertests
-│   │    │    ├── test1.json
-│   │    │    └── test2.json
-│   │    ├── backlinks.json
-│   │    ├── personas.json
-│   │    └── similary.json
-│   ├── projet2
 ┋   ┋
 ┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
 ┋   ┋
-│   ├── accessibility // Si 1 seul projets
-│   │    ├── 2020-10-15.csv
-│   │    └── 2020-11-15.csv
-│   ├── quality // Ne fonctionne pas complètement en mono projet
-│   │    ├── 2020-10-15.yml
-│   │    └── 2020-11-15.yml
-│   ├── usertests // Ne fonctionne pas en mono projet
-│   │    ├── test1.json
-│   │    └── test2.json
-│   ├── directory.json // Annuaire de contacts
-│   └── images
-│        ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
-│        │    └── benchmark
-│        │    │    ├── image1.png // nommage précis disponible sur la page rapport générée par Hugo
-│        │    │    └── image2.png // nommage précis disponible sur la page rapport générée par Hugo
-│        │    └── quality
-│        ├── projet2
-│        └── personas
-└── index.html
+│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
+│         ├── accessibility.md
+│         ├── quality.md
+│         └── performance.md
+└── static
+    ├── projet1
+    │    ├── accessibility
+    │    │    ├── 2020-10-15.csv
+    │    │    └── 2020-11-15.csv
+    │    ├── lighthouse
+    │    │    ├── 2020-10-15.json
+    │    │    └── 2020-11-15.json
+    │    ├── quality
+    │    │    ├── 2020-10-15.yml
+    │    │    └── 2020-11-15.yml
+    │    ├── usertests
+    │    │    ├── test1.json
+    │    │    └── test2.json
+    │    ├── backlinks.json
+    │    ├── personas.json
+    │    └── similary.json
+    ├── projet2
+    │    └── accessibility
+    │         ├── 2020-10-15.csv
+    │         └── 2020-11-15.csv
+    ┋
+    ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
+    ┋
+    ├── accessibility
+    │    ├── 2020-10-15.csv
+    │    └── 2020-11-15.csv
+    ├── quality // Ne fonctionne pas complètement en mono projet
+    │    ├── 2020-10-15.yml
+    │    └── 2020-11-15.yml
+    ├── usertests // Ne fonctionne pas en mono projet
+    │    ├── test1.json
+    │    └── test2.json
+    ├── directory.json // Annuaire de contacts
+    └── images
+         ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
+         │    ├── benchmark
+         │    │    ├── titresiteweb-titreelementacomparer.png // nommage précis disponible sur la page rapport générée par Hugo
+         │    │    ├── ojdcourtsepay.tylerhost.net-navigation-step.png
+         │    │    ├── pages.fivepointpayments.com-navigation-step.png
+         │    │    └── finepayment.saskatchewan.ca-navigation-step.png
+         │    └── quality
+         │         └── 2020-10-16 // Les titre formant les noms d‘images doivent correspondre à des termes existant dans le fichier `.yml`
+         │             ├── titrepage-[before ou after].png
+         │             ├── titrepage-titrebloc-titreerreur-[before ou after].png
+         │             ├── accueil-before.png
+         │             ├── accueil-after.png
+         │             ├── accueil-banniere-titres-before.png
+         │             └── accueil-banniere-titres-after.png
+         ├── projet2
+         └── personas
+
 ```
 
 #### Configuration
@@ -97,18 +220,6 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ```toml
 title = "Mon administration"
 theme = "fargo"
-paginate = "10"
-
-languageCode = "fr-FR"
-defaultContentLanguage = "fr"
-defaultContentLanguageInSubdir = false
-enableInlineShortcodes = true
-removePathAccents = true
-
-[taxonomies]
-  category = "categories"
-  tag = "tags"
-  phase = "phases"
 
 [params]
   organisation = "Le nom complet de mon administration"
@@ -327,42 +438,19 @@ https://gohugo.io/hugo-modules/use-modules/#use-a-module-for-a-theme
 1. Initialiser votre projet pour utiliser les modules hugo :
 `$ hugo mod init [MON_GESTIONNAIRE_DE_DEPOT]/[MON_COMPTE]/[MON_PROJET]`
 par exemple :
-`$ hugo mod init gitlab.com/toto_dev/mon_generateur_de_rapports`
+`$ hugo mod init github.com/disic/frago`
 
 2. Importer ce module dans le fichier `config.toml`:
 ```toml
 [module]
   [[module.imports]]
-    path = "gitlab.com/bertrandkeller/commando-hugo-template"
+    path = "github.com/disic/frago"
 ```
 
 3. C’est installé ?
   - En mode dev, lancer `hugo server`. Mais préférer : `HUGO_ENV=production hugo server --buildFuture`, pour le mode production.
-  - Mettre à jour le thème, lancer: `hugo mod get -u gitlab.com/bertrandkeller/commando-hugo-template` ou juste `hugo mod get -u`.
-  - L’appel de thème n'est pas possible avec Netlify, il est nécessaire d’indiquer cette commande dans l’interface `git submodule add https://github.com/DISIC/frago.git/ themes/overgo -f && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics`
-
-## Procéder à des modifications sur le thème.
-
-Modifier la source dans `go.mod` :
-```go
-replace github.com/DISIC/frago => ~/workspace/DISIC/frago
-
-**Attention :**
-
-Si difficultés avec un repo privé de Gitlab, c’est peut-être parce que `go get` utilise HTTPS.
-
-Modifier le fichier `go.mod` à la racine du projet, ajouter `https://`:
-```
-module https://gitlab.com/bertrandkeller/commando-hugo-template // au lieu de : module gitlab.com/bertrandkeller/commando-hugo-template
-```
-
-Lire : https://golang.org/doc/faq#git_https
-
-ou tenter de modifier `~/.gitconfig`:
-```git
-[url "ssh://git@gitlab.com/"]
-	insteadOf = https://gitlab.com/
-```
+  - Mettre à jour le thème, lancer: `hugo mod get -u github.com/disic/frago/` ou juste `hugo mod get -u`.
+  - L’appel de thème n'est pas possible avec Netlify, il est nécessaire d’indiquer cette commande dans l’interface `git submodule add https://github.com/disic/frago.git/ themes/frago -f && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics`
 
 ## Licence
 
