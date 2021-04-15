@@ -10,7 +10,7 @@
 {{- end -}}
 
 <div class="wrapper">
-<p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+<p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 <h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{/* List the data for this files with range personas files on the project */}}
 {{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}

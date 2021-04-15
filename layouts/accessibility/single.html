@@ -28,7 +28,7 @@
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
 {{- if eq (len (split .Path "/")) 3 -}}
-<p class="no-print">⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p class="no-print" hidden>⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
 <h1>{{ with .Title }}{{ . }}{{ else }}Audit Accessibilité{{ end }}</h1>
 

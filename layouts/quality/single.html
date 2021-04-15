@@ -17,7 +17,7 @@
 
 <div class="wrapper audit">
 {{- if eq (len (split .Path "/")) 3 -}}
-  <p class="no-print">⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+  <p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
 <h1>{{ with .Title }}{{ . }}{{ else }}Audit Qualité{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- if gt (len .Content) 10 -}}
