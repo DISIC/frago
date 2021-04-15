@@ -44,7 +44,7 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
     path = "github.com/disic/frago"
 
 title = "Mon administration"
-theme = "fargo"
+theme = "frago"
 
 [params]
   organisation = "Le nom complet de mon administration"
@@ -471,10 +471,10 @@ par exemple :
 
 ## Licence
 
-Le code source de ce dépôt est publié sous licence [[https://opensource.org/licenses/mit-license.php][MIT]].
+Le code source de ce dépôt est publié sous licence (MIT)[https://opensource.org/licenses/mit-license.php].
 
 La marque d'État est à usage exclusif des acteurs de la sphère étatique. En particulier, la typographie Marianne© est protégée par le droit d'auteur.  
-Lire [[https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie][les explications]] sur le site de la marque d’État.
+Lire (les explications)[https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie] sur le site de la marque d’État.
 
 ## Auteur
 
