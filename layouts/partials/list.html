@@ -1,6 +1,6 @@
-{{- $tags := (slice .context.File.BaseFileName) -}}
+{{- with .context.File -}}{{- $.context.Scratch.Set "tags" (slice .BaseFileName) -}}{{- end -}}
 {{- $section := where .context.Site.RegularPages "Section" .section -}}
-{{- $taxonomy := where .context.Site.Pages ".Params.tags" "intersect" $tags -}}
+{{- $taxonomy := where .context.Site.Pages ".Params.tags" "intersect" ($.context.Scratch.Get "tags") -}}
 {{- $.context.Scratch.Set "linksingle" "" -}}
 
 {{/* Set the audit file */}}
