@@ -1,3 +1,3 @@
-module github.com/bertrandkeller/overgo.git
+module github.com/disic/frago
 
 go 1.14
