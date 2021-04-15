@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
-  <title>{{ block "title" . }}{{ .Title }}{{ end }} | {{ .Site.Title }}</title>
+  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité d'accessibilité</title>
 
   <!-- Informations -->
   {{ hugo.Generator }}
@@ -58,17 +58,17 @@
 
   <!-- CSS -->
   {{- with resources.Match "**.css" -}}
-  <!-- Loop over all css of the base theme -->
+  {{/* Loop over all css of the base theme */}}
 	{{- range . -}}
     {{- if (in . "overgo") -}}{{- $.Scratch.Add "css" (slice .) -}}{{ end }}
 	{{- end -}}
   {{- end -}}
-  <!-- Get the main styles CSS -->
+  {{/* Get the main styles CSS */}}
   {{- $styles := resources.Get "/css/styles.css" -}}
-  <!-- Union the both CSS -->
+  {{/* Union the both CSS */}}
   {{- $.Scratch.Add "css" (slice $styles) -}}
   {{- $style := ($.Scratch.Get "css") | resources.Concat "styles.css" -}}
-  <!-- Optimise (purge, concat) if production -->
+  {{/* Optimise (purge, concat) if production */}}
   {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
@@ -129,4 +129,3 @@
   {{- end -}}
 </body>
 </html>
-

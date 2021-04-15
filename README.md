@@ -17,24 +17,21 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 ```
 .
 ├── config.toml
-├── content
-│   ├── _index.md // Page d’accueil
-│   ├── audits
-│   │    ├── projet1 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
-│   │    │     ├── _index.md // Lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
-│   │    │     └── accessibility.md
-│   │    └── projet2 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
-│   │          ├── _index.md
-│   │          └── accessibility.md
-└── static
-    ├── projet1 (slug mentionné précédemment)
-    │    └── accessibility
-    │         ├── 2020-10-15.csv
-    │         └── 2020-11-15.csv
-    └── projet2 (slug mentionné précédemment)
-         └── accessibility
-              ├── 2020-10-15.csv
-              └── 2020-11-15.csv
+└── content
+    ├── _index.md // Page d’accueil
+    └── audits
+         ├── projet1
+         │     ├── _index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
+         │     ├── accessibility.md
+         │     └── accessibility
+         │          ├── 2020-10-15.csv
+         │          └── 2020-11-15.csv
+         └── projet2
+                ├── _index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
+                ├── accessibility.md
+                └── accessibility
+                    ├── 2020-10-15.csv
+                    └── 2020-11-15.csv
 ```
 
 ### Configuration
@@ -93,44 +90,57 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ```
 .
 ├── config.toml
-├── content
-│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
-│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
-│   │    ├── projet1 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
-│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
-│   │    │     ├── accessibility.md
-│   │    │     ├── quality.md
-│   │    │     └── performance.md
-│   │    └── projet2 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
-│   │          ├── _index.md
-│   │          ├── accessibility.md
-│   │          ├── quality.md
-│   │          └── performance.md
-┋   ┋
-┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
-┋   ┋
-│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
-│         ├── accessibility.md
-│         ├── quality.md
-│         └── performance.md
-└── static
-    ├── projet1
-    │    └── accessibility
-    │         ├── 2020-10-15.csv
-    │         └── 2020-11-15.csv
-    ├── projet2
-    │    └── accessibility
-    │         ├── 2020-10-15.csv
-    │         └── 2020-11-15.csv
+└── content
+    ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
+    ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+    │     ├── projet1
+    │     │      ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
+    │     │      ├── accessibility.md
+    │     │      ├── quality.md
+    │     │      ├── performance.md
+    │     │      ├── accessibility
+    │     │      │   ├── 2020-10-15.csv
+    │     │      │   └── 2020-11-15.csv
+    │     │      ├── lighthouse
+    │     │      │   ├── 2020-10-15.csv
+    │     │      │   └── 2020-11-15.csv
+    │     │      └── quality
+    │     │          ├── 2020-10-15.csv
+    │     │          └── 2020-11-15.csv
+    │     │
+    │     └── projet2
+    │          ├── _index.md
+    │          ├── accessibility.md
+    │          ├── quality.md
+    │          ├── performance.md
+    │          ├── accessibility
+    │          │   ├── 2020-10-15.csv
+    │          │   └── 2020-11-15.csv
+    │          ├── lighthouse
+    │          │   ├── 2020-10-15.csv
+    │          │   └── 2020-11-15.csv
+    │          └── quality
+    │              ├── 2020-10-15.csv
+    │              └── 2020-11-15.csv
     ┋
     ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
     ┋
-    └── accessibility
-         ├── 2020-10-15.csv
-         └── 2020-11-15.csv
+    └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
+          ├── accessibility.md
+          ├── quality.md
+          ├── performance.md
+          ├── accessibility
+          │   ├── 2020-10-15.csv
+          │   └── 2020-11-15.csv
+          ├── lighthouse
+          │   ├── 2020-10-15.csv
+          │   └── 2020-11-15.csv
+          └── quality
+              ├── 2020-10-15.csv
+              └── 2020-11-15.csv
 ```
 
-##### Architecture complète
+##### Architecture complète (⚠️ Ancienne présente une architecture alternative elle doit évoluer pour correspondre à tous les types de contenus)
 
 ```
 .
@@ -252,7 +262,7 @@ La page de projets doit servir à présenter l’état de la démarche, puis le 
 
 #### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.cv`) et présent dans le répertoire `static/accessibility/`.
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.csv`) et présent dans le répertoire `static/accessibility/`.
 
 L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
@@ -260,7 +270,7 @@ L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs a
 
 Éditer : `static/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audit/nomdelademarche/accessibility.md`.
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audits/nomdelademarche/accessibility.md`.
 
 ```
 ---

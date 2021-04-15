@@ -1,25 +1,32 @@
 {{- $project := .project -}}
 {{- $patharray :=  split .context.Path "/" -}}
 
+{{/* Test if files are in static or in each projets */}}
+{{- if fileExists (printf "content/audits/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
+{{- else -}}
+  {{- $.context.Scratch.Set "mainpath" "static" -}}
+{{- end -}}
+
 {{- $.context.Scratch.Delete "auditfile-quality" -}}
 
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 3 -}}
-  {{- if (fileExists (printf "static/%s/quality/" $project)) -}}
-    {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+  {{- if (fileExists (printf "%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project)) -}}
+    {{- $.context.Scratch.Set "dir" (readDir (printf "%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project)) -}}
   {{- end -}}
 {{- else -}}
-  {{- if (fileExists "static/quality/") -}}
-    {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+  {{- if (fileExists (printf "%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
+    {{- $.context.Scratch.Set "dir" (readDir (printf "%s/quality/" ($.context.Scratch.Get "mainpath")))  -}}
   {{- end -}}
 {{- end -}}
 
 {{- if .datafilename -}}
 {{/* Condition about structure level */}}
   {{- if eq (len $patharray) 3 -}}
-    {{ $.context.Scratch "auditpath-quality" (printf "static/%s/quality/%s.yml" $project .datafilename) }}
+    {{ $.context.Scratch "auditpath-quality" (printf "%s/%s/quality/%s.yml" ($.context.Scratch.Get "mainpath") $project .datafilename) }}
   {{- else -}}
-    {{ $.context.Scratch "auditpath-quality" (printf "static/quality/%s.yml" .datafilename) }}
+    {{ $.context.Scratch "auditpath-quality" (printf "%s/quality/%s.yml" ($.context.Scratch.Get "mainpath") .datafilename) }}
   {{- end -}}
   {{ $.context.Scratch "auditfile-quality" (readFile (($.context.Scratch.Get "auditpath-quality") | transform.Unmarshal)) }}
 {{- else -}}
@@ -27,9 +34,9 @@
     {{- range last 1 ($.context.Scratch.Get "dir") -}}
       {{/* Condition about structure level */}}
       {{- if eq (len $patharray) 3 -}}
-        {{ $.context.Scratch.Set "auditpath-quality" (printf "static/%s/quality/%s" $project .Name) }}
+        {{ $.context.Scratch.Set "auditpath-quality" (printf "%s/%s/quality/%s" ($.context.Scratch.Get "mainpath") $project .Name) }}
       {{- else -}}
-        {{ $.context.Scratch.Set "auditpath-quality" (printf "static/quality/%s" .Name) }}
+        {{ $.context.Scratch.Set "auditpath-quality" (printf "%s/quality/%s" ($.context.Scratch.Get "mainpath") .Name) }}
       {{- end -}}
       {{- with ($.context.Scratch.Get "auditpath-quality") -}}
         {{/* Set the audit file - it must exist */}}
