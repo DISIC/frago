@@ -1,14 +1,14 @@
-# Génération de rapports de synthèses pour le suivi et l’amélioration de l’accessibilité web.
+# Génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.
 
-> Generate accessibility audits reports and much more with a goHugo theme
+> FRAGO : French governemental Reports for Accessibility compliance with goHugo
 
 ## Présentation
 
 Le thème Frago a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
 
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un défi de mise en conformité, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaires/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.  
+Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un défi de mise en conformité, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaires/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.
 
-> Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n'est plus possible d’utiliser les dernières version du thème (sans modifier l'architecture de contenu).
+> Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n’est plus possible d’utiliser les dernières version du thème (sans modifier l’architecture de contenu).
 
 ## Démarrage (Configuration simplifiée)
 
@@ -54,7 +54,7 @@ theme = "fargo"
   logo = "Mon administration <small>suivi de la conformité de démarches en ligne</small>"
 ```
 
-#### Appeler le thème Hugo
+#### Appeler le thème Hugo (avec le système de module `Go`)
 
 ##### Créer le fichier `go.mod` (commande dans le terminal)
 
@@ -69,6 +69,12 @@ Modifier le contenu du fichier `go.mod` (Ajouter https://) :
 
 ```bash
 hugo mod get -u https://github.com/disic/frago
+```
+
+#### Appeler le thème Hugo (avec un submodule)
+
+```
+git submodule add https://github.com/disic/frago.git/ themes/frago && git submodule update --init --recursive
 ```
 
 ## Configuration détaillée
