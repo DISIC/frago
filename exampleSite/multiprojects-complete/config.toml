@@ -1,0 +1,22 @@
+[module]
+  [[module.imports]]
+    path = "github.com/disic/frago"
+
+title = "Commando UX"
+theme = ["frago"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  phase = "phases"
+
+[params]
+  logo = "Commando UX <small>Défi de mise en conformité de démarches en ligne</small>"
+  description = "Défi de mise en conformité de démarches en ligne"
+
+[markup]
+  defaultMarkdownHandler = "blackfriday"
+  [markup.tableOfContents]
+    endLevel = 2
+    ordered = false
+    startLevel = 2
