@@ -18,20 +18,20 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 .
 ├── config.toml
 ├── content
-│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
-│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+│   ├── _index.md // Page d’accueil
+│   ├── audits
 │   │    ├── projet1 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
-│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
+│   │    │     ├── _index.md // Lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
 │   │    │     └── accessibility.md
 │   │    └── projet2 // Doit reprendre le nom (slug) du répertoire donné au projet dans `static`
 │   │          ├── _index.md
 │   │          └── accessibility.md
 └── static
-    ├── projet1
+    ├── projet1 (slug mentionné précédemment)
     │    └── accessibility
     │         ├── 2020-10-15.csv
     │         └── 2020-11-15.csv
-    └── projet2
+    └── projet2 (slug mentionné précédemment)
          └── accessibility
               ├── 2020-10-15.csv
               └── 2020-11-15.csv
@@ -56,15 +56,16 @@ theme = "fargo"
 
 #### Appeler le thème Hugo
 
-##### Créer le fichier `go.mod`
+##### Créer le fichier `go.mod` (commande dans le terminal)
 
 ```bash
 hugo mod init github.com/disic/frago
 ```
 
-Modifier le contenu du fichier `go.mod` (Ajouter https://) : module github.com/DISIC/frago => module https://github.com/DISIC/frago
+Modifier le contenu du fichier `go.mod` (Ajouter https://) :  
+`module github.com/DISIC/frago => module https://github.com/DISIC/frago`
 
-##### Créer le fichier `go.sum`
+##### Créer le fichier `go.sum`  (commande dans le terminal)
 
 ```bash
 hugo mod get -u https://github.com/disic/frago
