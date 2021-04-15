@@ -1,12 +1,16 @@
-{{- $rangepages := where .Site.RegularPages "Section" "projects" -}}
-{{- if $rangepages -}}
+{{- if (where .Site.RegularPages "Section" "projects") -}}
+{{- $.Scratch.Set "rangepages" (where .Site.RegularPages "Section" "projects") -}}
+{{- else -}}
+{{- $.Scratch.Set "rangepages" (where .Site.Pages "Section" "audits") -}}
+{{- end -}}
+{{- if ($.Scratch.Get "rangepages") -}}
 <section class="section text-center">
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
 <br>
 {{- $.Scratch.Delete "allscores" -}}
-{{- $rangepages := where .Site.Pages "Section" "audits" -}}
-{{- range sort $rangepages ".Title" "desc" -}}
+
+{{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
   {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
   {{- $context := . -}}
   {{- range $id, $value := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
@@ -17,8 +21,10 @@
 <span class="hide">{{ ($.Scratch.Get "allscores") }}</span>
 <ul class="list-unstyled">
 {{- $.Scratch.Delete "projectfolders" -}}
-{{- range sort $rangepages ".Title" "desc" -}}
-{{- if eq (len (intersect (split .Path "/") (slice "index.md" "_index.md"))) 1 -}}
+{{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
+{{- $pathfirst := first 1 (split .Path "/") -}}
+{{- $pathlast  := substr (delimit (last 1 (split .Path "/")) "") -8 -}}
+{{- if or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md") -}}
 {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
 {{- $.Scratch.Set "projectfolders" "/static" -}}
 {{- if eq (len (split .RelPermalink "/")) 4 -}}
