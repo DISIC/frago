@@ -4,7 +4,8 @@ licenselink = "https://github.com/DISIC/frago/blob/master/LICENSE"
 description = "Tool for a French governemental Reports for Accessibility compliance with goHugo"
 homepage = "https://github.com/DISIC/frago/"
 tags = ["audits", "accessibility", "compliance","RGAA","quality","front-end"]
-min_version = 1.0
+min_version = 0.8
+theme_version = "1.0.0"
 
 [author]
   name = "Bertrand Keller"
