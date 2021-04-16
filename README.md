@@ -82,14 +82,14 @@ Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les in
 
 **Exemple d’un tableau avec la prise uniquement en compte des critères**
 
-Thématiques | Critères | Accueil
-:---------: | :------: | :-----:
-     1      |    1     |   nc
-     1      |    2     |    c
-     1      |    3     |   na
-     1      |    4     |   nt
-     …      |    …     |   …
-     13     |    12    |   nt
+| Thématiques | Critères | Accueil |
+| :---------: | :------: | :-----: |
+|      1      |    1     |   nc    |
+|      1      |    2     |    c    |
+|      1      |    3     |   na    |
+|      1      |    4     |   nt    |
+|      …      |    …     |   …     |
+|      13     |    12    |   nt    |
 
 **Liste des fichiers exemples à télécharger**
 
