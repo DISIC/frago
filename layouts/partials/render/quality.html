@@ -2,20 +2,27 @@
 {{- $project := .project -}}
 {{- $pathlen := len (split .context.Path "/") -}}
 
-{{- if (fileExists "static/quality/") -}}
-  {{- $.context.Scratch.Set "dir" (readDir "static/quality/") -}}
+{{/* Test if files are in static or in each projets */}}
+{{- if fileExists (printf "content/audits/%s/quality/" $project) -}}
+  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
+{{- else -}}
+  {{- $.context.Scratch.Set "mainpath" "static" -}}
+{{- end -}}
+
+{{- if (fileExists (printf "%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
 {{- end -}}
 {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "static/%s/quality/" $project)) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project)) -}}
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
-    {{- if (fileExists "static/quality/") -}}
-      {{- $.context.Scratch.Set "lastfile" (readFile (printf "static/quality/%s" .Name) | transform.Unmarshal) -}}
+    {{- if (fileExists (printf "%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
+      {{- $.context.Scratch.Set "lastfile" (readFile (printf "%s/quality/%s" ($.context.Scratch.Get "mainpath") .Name) | transform.Unmarshal) -}}
     {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (readFile (printf "static/%s/quality/%s" $project .Name) | transform.Unmarshal) -}}
+    {{- if and $project (not (eq $project "index")) (printf "%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (readFile (printf "%s/%s/quality/%s" ($.context.Scratch.Get "mainpath") $project .Name) | transform.Unmarshal) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

@@ -3,7 +3,7 @@
 {{/* Vars */}}
 {{- $patharray :=  split .Path "/" -}}
 {{- $project :=  replace (index $patharray 1) ".md" "" -}}
-<div class="wrapper">
+<div class="wrapper narrow">
   {{- if eq (len (split .Path "/")) 3 -}}
   <p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
   {{- end -}}

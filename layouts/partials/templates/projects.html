@@ -116,12 +116,12 @@
     {{- end -}}
 
     {{- if $quality -}}
-    <h3 class="m-0">Qualité {{ $pageauditpath := (printf "/content/audits/%s/quality.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "/") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
+    <h3 class="m-0">Qualité {{ $pageauditpath := (printf "%s/%s/quality.md" ($.Scratch.Get "projectfolders") $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "/") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
     {{- end -}}
 
     {{- if $lighthouse -}}
-    <h3 class="m-0">Performance {{ $pageauditpath := (printf "/content/audits/%s/performance.md" $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
+    <h3 class="m-0">Performance {{ $pageauditpath := (printf "%s/%s/performance.md" ($.Scratch.Get "projectfolders") $project) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ replace (replace (replace $pageauditpath ".md" "/") "/content" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
     {{- end -}}
 

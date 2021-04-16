@@ -42,12 +42,10 @@
 
 {{/* Create an array with all pages */}}
 {{- $auditmethodology := (len (intersect (index ($.Scratch.Get "auditfile-csv") 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-{{ if eq $auditmethodology 2 }}
-  {{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}
-{{ end }}
-{{ if eq $auditmethodology 3 }}
-  {{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
-{{ end }}
+
+{{- if eq $auditmethodology 2 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}{{- end -}}
+{{- if eq $auditmethodology 3 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}{{- end -}}
+
 {{/* Call score components */}}
 {{- $auditquick := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
@@ -67,12 +65,11 @@
   {{- end -}}
 {{- end -}}
 {{- range $id, $criterium := (index ($.Scratch.Get "scores") "criteretotal") -}}
-  {{ $.Scratch.Add "criterecontroltotalid" $id }}
+  {{- $.Scratch.Add "criterecontroltotalid" $id -}}
   {{- range $key, $value := (index ($.Scratch.Get "scores") "critereconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
   {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
   {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
 {{- end -}}
-
 <h2 class="text-center">Scores{{- with (index ($.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>
 <h3>Conformité globale selon les critères</h3>
