@@ -80,7 +80,7 @@
 {{/* If serveral pages tested */}}
 {{- if gt (len ($.Scratch.Get "pageslist")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition</h3>
-{{- partial "components/scores/accessibility-graph-csv" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv") "scores" ($.Scratch.Get "scores")) -}}
+{{- partial "components/scores/accessibility-graph" (dict "context" . "auditfile" ($.Scratch.Get "auditfile-csv") "scores" ($.Scratch.Get "scores")) -}}
 
 {{/* Call page parameters */}}
 {{- with .Params.accessibility -}}

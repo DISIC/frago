@@ -98,10 +98,10 @@
         const chartconformity = new frappe.Chart("#chartconformity", {
             title: "Taux de conformité dans le temps (en %)",
             data: dataconformity,
-            type: 'line', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
+            type: 'line',
             height: 400,
             lineOptions: {
-                regionFill: 1 // default: 0
+                regionFill: 1
             },
             truncateLegends: true,
             barOptions: {
