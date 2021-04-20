@@ -80,7 +80,7 @@ git submodule add https://github.com/disic/frago.git/ themes/frago && git submod
 
 Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respectés un nommage précis (Thématiques, Critères, Tests,… puis le titre de chaque page).
 
-**Exemple d’un tableau avec la prise uniquement en compte des critères**
+**Exemple d’un tableau avec uniquement la prise en compte des critères**
 
 | Thématiques | Critères | Accueil |
 | :---------: | :------: | :-----: |
@@ -98,7 +98,7 @@ Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les in
   * [Grille tests RGAA 4.1 vierge](/static/grille-tests-rgaa4.1.csv)
 
 Dans chacun des ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères),intermédiaire (81 critères).  
-Pour un audit rapide, ne traiter que les cases avec les numéroe *25*.
+Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
 
 ## Configuration détaillée
 
