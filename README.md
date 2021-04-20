@@ -8,7 +8,7 @@ Le thème Frago a pour objectif d’aider à la génération de synthèses pour 
 
 Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un défi de mise en conformité, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaires/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.
 
-> Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n’est plus possible d’utiliser les dernières version du thème (sans modifier l’architecture de contenu).
+> Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n’est plus possible d’utiliser les dernières versions du thème (sans modifier l’architecture de contenu).
 
 ## Démarrage (Configuration simplifiée)
 
@@ -78,7 +78,7 @@ git submodule add https://github.com/disic/frago.git/ themes/frago && git submod
 
 #### Accessibilité
 
-Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respectés un nommage précis (Thématiques, Critères, Tests,… puis le titre de chaque page).
+Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests,… puis le titre de chaque page).
 
 **Exemple d’un tableau avec uniquement la prise en compte des critères**
 
@@ -107,9 +107,6 @@ Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
 Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l’information technique pour des personnes éloignées du développement de sites web.
 
 #### Arborescence
-
-> Attention : ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
-> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
 
 ##### Architecture simplifiée
 
@@ -166,7 +163,10 @@ Les différents types de contenus servent à la publication d’audits, l’anal
               └── 2020-11-15.csv
 ```
 
-##### Architecture complète (⚠️ Ancienne présente une architecture alternative elle doit évoluer pour correspondre à tous les types de contenus)
+##### Architecture complète (⚠️ Ancienne présente une architecture alternative, elle doit évoluer pour correspondre à tous les types de contenus)
+
+> Attention dans ce cas de figure: ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
+> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
 
 ```
 .
