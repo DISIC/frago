@@ -298,7 +298,7 @@ L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs a
 
 L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audits/nomdelademarche/accessibility.md`.
 
-```
+```yaml
 ---
 type: accessibility // appel le gabarit accessibility :: static/nomdelademarche/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
 accessibility:
@@ -318,7 +318,7 @@ accessibility:
 
 ##### Qualité
 
-```
+```yaml
 ---
 type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdelademarche/quality/YYYY-MM-JJ.yml
 datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
@@ -343,7 +343,7 @@ Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV directement (
 
 Ajouter à l'entête du fichier de contenu :
 
-```
+```yaml
 ---
 type: usertests // appel le gabarit usertests
 datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/nomdelademarche/usertests/etudiants.json
@@ -365,7 +365,7 @@ L’audit de performance apporte une complémentarité à l’audit d’accessib
 
 Définir des personas et les afficher sur une même page pour les partager à l’équipe projet. On peut sélectionner les profils retenus pour les tests.
 
-> Hugo nécessite de créer les pages correspondantes pour chaque personas si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
+> Hugo nécessite de créer les pages correspondantes pour chaque personas ; si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
 
 Éditer : `static/nomdelademarche/personas.json`
 
