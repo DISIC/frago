@@ -21,10 +21,12 @@
 </div>
 {{- $auditquick := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
+{{- $auditnecessary := index .Site.Data.tests "81" -}}
 <ul class="list-unstyled list-inline">
-  <li><button id="auditall" class="btn">Tous les critères</button></li>&nbsp;
-  <li><button id="auditquick" class="btn">25 critères</button></li>&nbsp;
-  <li><button id="auditcomplementary" class="btn">50 critères</button></li>
+  <li><button id="auditall" class="btn btn-small mb-0">Tous les critères</button></li>&nbsp;
+  <li><button id="auditquick" class="btn btn-small mb-0">25 critères</button></li>&nbsp;
+  <li><button id="auditcomplementary" class="btn btn-small mb-0">50 critères</button></li>&nbsp;
+  <li><button id="auditnecessary" class="btn btn-small mb-0">81 critères</button></li>
 </ul>
 {{/* Range all topics */}}
 {{- range $key1, $value1 := $criteresfile -}}
@@ -32,7 +34,7 @@
   {{/* Range level 1 */}}
   {{- range $key2, $value2 := .criteria -}}
     {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
-    <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}">
+    <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}{{ if ge (len (intersect $auditnecessary (slice $key))) 1 }} auditnecessary{{ end }}">
     <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | markdownify }}</h3>
     {{/* Range level 2 */}}
     {{- range $key3, $value3 := .criterium.tests -}}
@@ -72,6 +74,14 @@
     document.querySelectorAll(".topic").forEach(function(elm){
       elm.classList.remove("hide");
       if (!elm.classList.contains("auditcomplementary")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+  document.querySelector("#auditnecessary").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditnecessary")) {
         elm.classList.add("hide");
       }
     })
