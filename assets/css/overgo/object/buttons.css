@@ -79,3 +79,10 @@ input[type="submit"]:disabled,
   --btn-bg--type: calc(var(--base-hue) + 120);
 }
 
+.btn-large {
+  font-size: var(--bigger);
+}
+
+.btn-small {
+  font-size: var(--smaller);
+}
