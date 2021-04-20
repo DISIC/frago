@@ -950,7 +950,7 @@ details summary ~ ul {
 details summary:last-of-type {
   border-bottom: none;
 }
-details summary::-webkit-details-marker {
+details summary::marker {
   display: none;
 }
 
