@@ -399,7 +399,7 @@ Les contenus listés sont donc hétérogènes.
 
 Afficher une liste de captures d’écran pour illustrer une étude comparative.
 
-```
+```go
 {{< benchmark datafile="amendes" src="-explications" >}}{{< /benchmark >}}
 ```
 
@@ -409,7 +409,7 @@ Afficher la liste des sites similaires à la démarche (action de benchmarking).
 
 Éditer : `static/nomdelademarche/similary.json`
 
-```
+```go
 {{< similary project="amendes" >}}{{< /similary >}}
 ```
 
@@ -417,7 +417,7 @@ Afficher la liste des sites similaires à la démarche (action de benchmarking).
 
 Appel de la librairie *mermaid.JS*. Ajouter la syntaxe *Mermaid* dans le contenu du shortcode.
 
-```
+```go
 {{< mermaid >}}
     graph TD
       A(Je reçois un avis)
@@ -438,7 +438,7 @@ Appel de la librairie *mermaid.JS*. Ajouter la syntaxe *Mermaid* dans le contenu
 
 Petit aide pour l’affichage de graphiques. Passer les données dans le contenu du *shortcode*. Choisir le titre et le type de graphique à afficher : bar, line, donut…
 
-```
+```go
 {{< graphic title="Ventilation des paiements dans l’année (en milliers)" type="bar">}}
 {
     labels: ["Vitesse", "PV électronique", "Feux rouges"],
@@ -461,7 +461,7 @@ Petit aide pour l’affichage de graphiques. Passer les données dans le contenu
 
 Afficher les personas sur la page de son choix en fonction du projet de son choix.
 
-```
+```go
 {{< personas project="amendes" >}} {{< /personas >}}
 ```
 
@@ -469,7 +469,7 @@ Afficher les personas sur la page de son choix en fonction du projet de son choi
 
 Afficher les parcours sur la page de son choix en fonction du projet de son choix.
 
-```
+```go
 {{< parcours project="amendes" >}} {{< /parcours >}}
 ```
 
