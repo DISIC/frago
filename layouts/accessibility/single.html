@@ -46,12 +46,11 @@
 {{- if eq $auditmethodology 2 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}{{- end -}}
 {{- if eq $auditmethodology 3 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}{{- end -}}
 
-{{/* Call score components */}}
+{{/* Control which tests are made for each type of audit */}}
 {{- $auditquick         := index .Site.Data.tests "25" -}}
 {{- $auditcomplementary := index .Site.Data.tests "50" -}}
 {{- $auditnecessary     := index .Site.Data.tests "81" -}}
-{{- $auditobligatory         := index .Site.Data.tests "106" -}}
-{{/* Control which tests are made with quickaudit */}}
+{{- $auditobligatory     := index .Site.Data.tests "106" -}}
 {{- $.Scratch.Set "criterecontrolquick" slice -}}
 {{- $.Scratch.Set "criterecontrolcomplementary" slice -}}
 {{- $.Scratch.Set "criterecontrolnecessary" slice -}}
@@ -106,32 +105,31 @@
   <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
 </p>
 {{- end -}}
-
 <hr>
+{{- end -}}
 
 {{/* If several pages tested */}}
-
+{{- if and (gt (len ($.Scratch.Get "pageslist")) 1) (eq $auditmethodology 3) -}}
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
-<div class="tableofcontents">
+<div class="tableofcontents">s
   <h3>Accéder aux pages auditées</h3>
   <ul>
     <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
     {{/* Loop all pages for anchor navigation */}}
     {{- range $id, $value := $.Scratch.Get "pageslist" -}}
-    <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
+    <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
     {{- end -}}
   </ul>
 </div>
-{{- end -}}
+
 
 <h2>Par ordre des critères du référentiel RGAA</h2>
 
-{{- if gt (len ($.Scratch.Get "pageslist")) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">A - Anomalies présentes sur toutes les pages</h3>
-{{- end -}}
+
 {{- $.Scratch.Set "counterallpages" 0 -}}
 {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{- $content := delimit (uniq (after $auditmethodology .)) "" -}}
@@ -173,16 +171,13 @@
 {{- end -}}
 {{ if not ($.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 
-{{/* If serveral pages tested */}}
-{{- if gt (len ($.Scratch.Get "pageslist")) 1 -}}
-
 {{/* Range map errors sort by RGAA order - on specifics pages */}}
 <h3>B - Anomalies présentes sur les pages spécifiques</h3>
 {{/* Display errors presents on specific pages */}}
 {{- range $id, $value := ($.Scratch.Get "pageslist") -}}
   {{- $.Scratch.Set "text" 0 -}}
   {{- $page := . -}}
-  <h4 id="{{ . | urlize }}">‣ Page : {{ . }}</h4>
+  <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">‣ Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
   {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{- if ne (len (uniq (after $auditmethodology .))) 1 -}}
@@ -222,9 +217,10 @@
 {{- end -}}
 {{- if eq ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
 {{- end -}}
-{{- end -}}
-{{- if gt (len ($.Scratch.Get "pageslist")) 0 -}}
 <br><hr class="divider">
+{{- end -}}
+
+{{- if gt (len ($.Scratch.Get "pageslist")) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
 <div class="flex flex-column">
@@ -341,7 +337,7 @@
   <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
   <ol>
     {{- range $id, $value := . -}}
-    <li>{{ . }}</li>
+    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
     {{- end -}}
   </ol>
   {{- end -}}
