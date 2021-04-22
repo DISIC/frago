@@ -107,13 +107,12 @@
 {{- end -}}
 <hr>
 {{- end -}}
-
 {{/* If several pages tested */}}
 {{- if and (gt (len ($.Scratch.Get "pageslist")) 1) (eq $auditmethodology 3) -}}
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
-<div class="tableofcontents">s
+<div class="tableofcontents">
   <h3>Accéder aux pages auditées</h3>
   <ul>
     <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
