@@ -28,18 +28,13 @@ body {
 } */
 
 /* Selection focus */
-*:focus {
-  outline: 1px solid var(--color-primary-light);
-  box-shadow: var(--enable-shadows, 0 0 5px 1px var(--color-primary));
-}
-
 main:focus {
   outline: none;
 }
 
 :focus {
-  outline: max(1px, 0.1em) dashed currentColor;
-  outline-offset: -0.25em;
+  outline: max(1px, 0.1em) dashed var(--color-primary);
+  outline-offset: 0.15em;
 }
 
 @supports selector(:focus-visible) {
@@ -47,11 +42,20 @@ main:focus {
     outline: none;
   }
 
-  :focus-visible {
-    outline: max(1px, 0.1em) dashed currentColor;
-    outline-offset: -0.25em;
-    box-shadow: var(--enable-shadows, 0 0 4px 1px var(--color-primary));
+  [tabindex="-1"]:focus:not(:focus-visible) {
+    outline: 0;
   }
+
+  :focus-visible {
+    outline: max(1px, 0.1em) dashed var(--color-primary);
+    outline-offset: 0.15em;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :focus-visible {
+      transition: outline-offset .25s ease;
+      outline-offset: 5px;
+    }
+}
 }
 
 /* Chunk rendering for all but the first article */
