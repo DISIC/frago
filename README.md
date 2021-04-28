@@ -80,16 +80,18 @@ git submodule add https://github.com/disic/frago.git/ themes/frago && git submod
 
 Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests,… puis le titre de chaque page).
 
+Le titre d’une page peut être suivi de l’URL de la page ; titre et URL séparés par le caractère `|`.
+
 **Exemple d’un tableau avec uniquement la prise en compte des critères**
 
-| Thématiques | Critères | Accueil |
-| :---------: | :------: | :-----: |
-|      1      |    1     |   nc    |
-|      1      |    2     |    c    |
-|      1      |    3     |   na    |
-|      1      |    4     |   nt    |
-|      …      |    …     |   …     |
-|      13     |    12    |   nt    |
+| Thématiques | Critères | Accueil|https://monsite.fr |
+| :---------: | :------: | :------------------------: |
+|      1      |    1     |              nc            |
+|      1      |    2     |              c             |
+|      1      |    3     |              na            |
+|      1      |    4     |              nt            |
+|      …      |    …     |              …             |
+|      13     |    12    |              nc            |
 
 **Liste des fichiers exemples à télécharger**
 
