@@ -15,7 +15,7 @@
   {{- $.Scratch.Set "pathimage" (printf "./static/images/quality/%s" ($.Scratch.Get "auditfile-name")) }}
 {{- end -}}
 
-<div class="wrapper audit">
+<div class="wrapper narrow audit">
 {{- if eq (len (split .Path "/")) 3 -}}
   <p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 {{- end -}}
@@ -33,8 +33,6 @@
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) -}}
 {{- partial "components/quality/critical.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) -}}
-
-<hr class="divider">
 
 {{/* Create a anchors menu */}}
 <div class="tableofcontents page-break">
