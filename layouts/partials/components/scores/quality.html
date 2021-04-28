@@ -4,16 +4,20 @@
     <li class="counter text-center d-inline-block good"><span><b class="h2">{{ index .counter "countererrorschecked" }}</b><br>Erreurs corrigées</span></li>
   </ul>
   {{- if eq (index .counter "pathlen") 3 -}}
+  {{- if or (index .counter "countererrorscritical") (index .counter "countererrorsimportant") (index .counter "countererrorsmedium") -}}
   <ul>
     <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ index .counter "countererrorscritical" }}</b><br><b class="emoticon">🚫 Critique</b></span></li>
     <li class="counter text-center d-inline-block medium"><span><b class="h2">{{ index .counter "countererrorsimportant" }}</b><br><b class="emoticon">❗️ Important</b></span></li>
     <li class="counter text-center d-inline-block normal"><span><b class="h2">{{ index .counter "countererrorsmedium" }}</b><br><b class="emoticon">➰ Moindre</b></span></li>
   </ul>
+  {{- end -}}
+  {{- if or (index .counter "countererrorstypecode") (index .counter "countererrorstypevisual") (index .counter "countererrorstypestructure") (index .counter "countererrorstypetext") -}}
   <ul>
     <li class="counter text-center d-inline-block"><span><b class="h2">{{ index .counter "countererrorstypecode" }}</b><br>Erreurs de code</span></li>
     <li class="counter text-center d-inline-block"><span><b class="h2">{{ index .counter "countererrorstypevisual" }}</b><br>Erreurs visuelles</span></li>
     <li class="counter text-center d-inline-block"><span><b class="h2">{{ index .counter "countererrorstypestructure" }}</b><br>Erreurs de structure</span></li>
     <li class="counter text-center d-inline-block"><span><b class="h2">{{ index .counter "countererrorstypetext" }}</b><br>Erreurs textuelles</span></li>
   </ul>
+  {{- end -}}
   {{- end -}}
 </div>
