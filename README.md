@@ -84,7 +84,7 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
 
 **Exemple d’un tableau avec uniquement la prise en compte des critères**
 
-| Thématiques | Critères | Accueil|https://monsite.fr |
+| Thématiques | Critères | Accueil।https://monsite.fr |
 | :---------: | :------: | :------------------------: |
 |      1      |    1     |              nc            |
 |      1      |    2     |              c             |
