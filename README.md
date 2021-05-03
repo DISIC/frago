@@ -74,6 +74,20 @@ hugo mod get -u https://github.com/disic/frago
 git submodule add https://github.com/disic/frago.git/ themes/frago && git submodule update --init --recursive
 ```
 
+#### Génération du site (mise en ligne)
+
+##### Héberger avec Github
+
+Consulter la page [Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) pour plus d‘informations.
+
+Github utilise son système interne GitHub Action. Un exemple de fichier de configuration est disponible : [gh-pages.yml](exampleSite/.github/workflows/gh-pages.yml).
+
+##### Héberger avec Gitlab
+
+Consulter la page [Host on Gitlab](https://gohugo.io/hosting-and-deployment/hosting-on-gitlab/) pour plus d‘informations
+
+Github utilise son système interne Gitlab CI. Un exemple de fichier de configuration est disponible : [.gitlab-ci.yml](exampleSite/.gitlab-ci.yml).
+
 ### Audits
 
 #### Accessibilité
