@@ -48,26 +48,26 @@
   {{- with ($.Scratch.Get "lastfile") -}}
   {{/* Vars with the last file of the lighthouse directory */}}
   <h2>Règles</h2>
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "summary") }}
   {{ $lastfile := $.Scratch.Get "lastfile" }}
     {{/* Range the file */}}
     {{- range $key, $value := sort (index $lastfile "audits") ".score" "asc" -}}
     {{/* Display only errors - with score different of null */}}
     {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}
     <details>
-    <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">Haute</small> {{ else if eq .score 0.5 }}<small class="counter medium">Medium</small> {{ else if gt .score 0.5 }}<small class="counter good">Faible</small> {{ end }}{{ .id }}</h3></summary>
-    <p>{{ i18n (printf "%s%s" .id "description") | markdownify }}<br>
-    => <small><strong>{{ replace (replace .displayValue "Potential savings of" "Gain potentiel") "resources found" "ressources trouvées" }}</strong></small>
-    </p>
-    <ul>
-      {{- range .details.items -}}
-        {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
-      {{- end -}}
-    </ul>
+      <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">Haute</small> {{ else if eq .score 0.5 }}<small class="counter medium">Medium</small> {{ else if gt .score 0.5 }}<small class="counter good">Faible</small> {{ end }}{{ .id }}</h3></summary>
+      <p>
+        {{ i18n (printf "%s%s" .id "description") | markdownify }}<br>
+        => <small><strong>{{ replace (replace .displayValue "Potential savings of" "Gain potentiel") "resources found" "ressources trouvées" }}</strong></small>
+      </p>
+      <ul>
+        {{- range .details.items -}}
+          {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
+        {{ end }}
+      </ul>
     </details>
     {{- end -}}
     {{- end -}}
 </div>
 {{- end -}}
-{{- end -}}
-{{- define "script" -}}
 {{- end -}}

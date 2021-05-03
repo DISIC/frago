@@ -1,0 +1,21 @@
+/*
+/// Mermaid JS
+*/
+
+.mermaid {
+  margin: 0 auto 1.5rem;
+  max-width: 1400px;
+  text-align: center;
+}
+
+.mermaid.meetings text {
+  fill: black !important;
+}
+
+.mermaid svg {
+  margin: auto;
+  padding: 0 var(--baseline);
+  max-width: 98%;
+  border-radius: 4px;
+  background: #ffffff;
+}

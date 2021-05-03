@@ -87,3 +87,29 @@
   height: 1px;
   border: 0;
 }
+
+/* Scores Colors */
+
+.good {
+  background: var(--color-score-good,#307f5c);
+}
+
+.medium {
+  background: var(--color-score-medium,#dd9c0a);
+}
+
+.normal {
+  background: var(--color-score,#204f93);
+}
+
+.none {
+  background: #222;
+}
+
+.bad {
+  background: var(--color-score-bad,#ac3636);
+}
+
+.verybad {
+  background: var(--color-score-verybad,#510000);
+}

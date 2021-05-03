@@ -13,8 +13,9 @@
 
     {{- with uniq ($.Scratch.Get "listmonths") -}}
     <div class="hide">
-    {{ $months := . }}
+    {{- $months := . -}}
     <h2 class="text-center">Planning</h2>
+    {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "gantt") }}
     <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
     {{- range $separator, $value := . -}}
         <span class="d-{{ add $separator 1 }}"></span>
@@ -83,6 +84,8 @@
     {{/* Display conformity in time */}}
     {{- with ($.Scratch.Get "render") -}}
     {{- if gt (len .) 1 -}}
+    <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
+    <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
     <div id="chartconformity"></div>
     <script>
         const dataconformity = {

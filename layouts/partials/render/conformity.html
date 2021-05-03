@@ -15,7 +15,7 @@
     {{- $critere := printf "%s.%s" (index . 0) (index . 1) -}}
     {{- if ne $critere ($.context.Scratch.Get (printf "%s%s" $scorekey "critere")) -}}{{- $.context.Scratch.Set (printf "%s%s" $scorekey "countercritere") 0 -}}{{- $.context.Scratch.Set (printf "%s%s" $scorekey "valuecriterepage") slice -}}{{- end -}}
     {{- range $id, $value2 := after $auditmethodology . -}}
-      {{- if or (eq . "c") (eq . "nc") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 -}}{{- end -}}
+      {{- if or (eq (index (split . "|") 0) "c") (eq . "nc") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 -}}{{- end -}}
       {{- if or (eq . "c") (eq . "nc") (eq . "na") (eq . "?") (gt (len .) 3) -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "rendertesttotal") 1 -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "countercritere") 1 -}}{{- end -}}
       {{- if ne ($.context.Scratch.Get (printf "%s%s" $scorekey "countercritere")) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriteretotal") (string $critere) ($.context.Scratch.Get (printf "%s%s" $scorekey "countercritere")) -}}{{- end -}}
       {{- if . -}}

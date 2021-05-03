@@ -34,17 +34,19 @@
   {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
 
   <!-- CSS -->
-  {{/*- if .HasShortcode "parcours" -*/}}
-  <script src="/assets/js/simple-lightbox.min.js"></script>
-  <link rel="stylesheet" href="/assets/css/simple-lightbox.min.css" />
-  {{/*- end -*/}}
-  {{/*- if .HasShortcode "graphic" -*/}}
-  <link rel="preload" href="/assets/js/frappe-charts.min.iife.js" as="script">
-  <script src="/assets/js/frappe-charts.min.iife.js"></script>
-  {{/*- end -*/}}
+  {{- if .HasShortcode "parcours" -}}
+  <link rel="preload" href="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}" as="script">
+  <script src="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}"></script>
+  <link rel="stylesheet" href="/{{ (resources.Get "css/simple-lightbox.min.css").Permalink }}" media="print" onload="this.media='all'" />
+  {{- end -}}
+  {{- if .HasShortcode "graphic" -}}
+  <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
+  <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+  {{- end -}}
   {{- if .HasShortcode "mermaid" -}}
-  <link rel="preload" href="/assets/js/mermaid.min.js" as="script">
-  <script src="/assets/js/mermaid.min.js"></script>
+  <link rel="preload" href="/{{ (resources.Get "js/mermaid.min.js").Permalink }}" as="script">
+  <script src="/{{ (resources.Get "js/mermaid.min.js").Permalink }}"></script>
+  <link rel="stylesheet" href="/{{ (resources.Get "css/mermaid.css").Permalink }}" media="print" onload="this.media='all'" />
   <script>
     mermaid.initialize({
       theme: 'neutral',
@@ -54,7 +56,6 @@
       flowchart: { curve: 'basis' },
       gantt: { axisFormat: '%m/%d/%Y' },
       sequence: { actorMargin: 50 },
-      // sequenceDiagram: { actorMargin: 300 } // deprecated
     });
   </script>
   {{- end -}}
@@ -76,19 +77,35 @@
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
   <!-- Call font files -->
+  {{- if (fileExists "static/assets/fonts") -}}
+  {{ range readDir "static/assets/fonts" }}
+  <link rel="preload" href="/assets/fonts/{{ .Name }}" as="font" crossorigin=anonymous>
+  {{- end -}}
+  {{ else }}
   <link rel="preload" href="/assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
   <link rel="preload" href="/assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
   <link rel="preload" href="/assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
-  {{- partial "utils/css.html" (dict "context" . "filefolder" "" "filename" "fonts") -}}
+  {{ end }}
   <style id="style-screen">
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>
-
+  <link rel="stylesheet" href="/assets/css/fonts.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="/assets/css/fonts.css" media="screen">
+  </noscript>
+  {{- if (fileExists "static/assets/css") -}}
+  {{ range readDir "static/assets/css" }}{{ if ne .Name "fonts.css"}}
+  <link rel="stylesheet" href="/assets/css/{{ .Name }}" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="/assets/css/{{ .Name }}" media="screen">
+  </noscript>
+  {{- end -}}
+  {{ end }}
+  {{- end -}}
   {{- with .OutputFormats.Get "RSS" -}}
   <link href="{{ .RelPermalink }}" rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
   <link href="{{ .RelPermalink }}" rel="feed" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
   {{- end -}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
   {{/*- template "_internal/opengraph.html" . -*/}}
   {{/*- template "_internal/schema.html" . -*/}}
   {{/*- template "_internal/twitter_cards.html" . -*/}}

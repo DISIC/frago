@@ -1,5 +1,8 @@
 {{- $src := .Get "src" -}}
 {{- $datafile := .Get "datafile" -}}
+{{- if eq .Ordinal 0 -}}
+{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "benchmark") }}
+{{- end -}}
 <div class="benchmark grid grid-4 lightbox-{{ .Ordinal }}">
 {{ range sort (getJSON (printf "static/%s/similary.json" $datafile)) "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}

@@ -11,7 +11,7 @@
 
 ::selection {
   color: inherit; /* 1. */
-  background-color: #accef7; /* 3. */
+  background-color: var(--background-color-selection,#accef7); /* 3. */
   text-shadow: inherit; /* 2. */
 }
 

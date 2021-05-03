@@ -14,9 +14,6 @@
   --base-color-light: hsl(var(--base-color-hs), 85%);
   --base-color-dark: hsl(var(--base-color-hs), 20%);
   --base-color-translucent: hsla(var(--base-color-hs), 50%, .5);
-}
-
-:root {
 
   /* set initial (main) HSL color values to use */
   --base-hue: 0;
@@ -25,6 +22,14 @@
   --base-opacity: 1;
 
   --shader: 23.5%;
+  --l-0: 0%;
+  --l-10: 10%;
+  --l-20: 20%;
+	--l-30: 30%;
+	--l-40: 40%;
+	--l-50: 50%;
+	--l-90: 90%;
+	--l-100: 100%;
 
   --base-red: var(--base-hue);
   --base-pink: calc(var(--base-hue) + 330);
@@ -38,4 +43,41 @@
   --base-lime: calc(var(--base-hue) + 90);
   --base-yellow: calc(var(--base-hue) + 60);
   --base-orange: calc(var(--base-hue) + 30);
+
+  --color-primary-verylight: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) + var(--shader) * 2));
+  --color-primary-light: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) + var(--shader)));
+  --color-primary: hsl(var(--base-primary), var(--base-sat), var(--base-light));
+  --color-primary-dark: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) - var(--shader)));
+  --color-primary-verydark: hsl(var(--base-primary), var(--base-sat), calc(var(--base-light) - var(--shader) * 2));
+  --color-secondary-verylight: hsl(var(--base-secondary), var(--base-sat), calc(var(--base-light) + var(--shader) * 2));
+  --color-secondary-light: hsl(var(--base-secondary), var(--base-sat), calc(var(--base-light) + var(--shader)));
+  --color-secondary: hsl(var(--base-secondary), var(--base-sat), var(--base-light));
+  --color-secondary-dark: hsl(var(--base-secondary), var(--base-sat), calc(var(--base-light) - var(--shader)));
+  --color-secondary-verydark: hsl(var(--base-secondary), var(--base-sat), calc(var(--base-light) - var(--shader) * 2));
+  --color-grey-verylight: #f8f9fa;
+  --color-grey-light: #e9ecef;
+  --color-grey: #868e96;
+  --color-grey-dark: #343a40;
+  --color-grey-verydark: #212529;
+
+  --color-score: hsl(var(--base-blue), 65%, calc(var(--base-light) - 15%));
+  --color-score-verygood: hsl(var(--base-green), 45%, calc(var(--base-light) - 5%));
+  --color-score-good: hsl(var(--base-green), 25%, calc(var(--base-light) - 5%));
+  --color-score-medium: hsl(var(--base-orange), 25%, calc(var(--base-light) - 5%));
+  --color-score-bad: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
+  --color-score-verybad: hsl(var(--base-red), 55%, calc(var(--base-light) - 5%));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --shader: -26.5%;
+    --base-light: 60%;
+    --l-0: 100%;
+    --l-10: 90%;
+    --l-20: 80%;
+    --l-30: 70%;
+    --l-40: 60%;
+    --l-90: 10%;
+    --l-100: 0%;
+  }
 }

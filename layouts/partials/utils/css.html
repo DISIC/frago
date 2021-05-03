@@ -1,7 +1,7 @@
 {{ $filepath := printf "/css/%s/%s.css" .filefolder .filename }}
 {{- $css := resources.Get $filepath -}}
 <link rel="preload" href="{{ $css.Permalink }}" as="style">
-<link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{ end }} media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{- end -}} media="print" onload="this.media='all'">
 <noscript>
-  <link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{ end }} media="screen">
+  <link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{- end -}} media="screen">
 </noscript>
