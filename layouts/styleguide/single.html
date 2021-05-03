@@ -1,12 +1,22 @@
 {{- define "main" -}}
 <div class="wrapper">
 <h2>Colors</h2>
+<div class="primary hide">
 <h3>Primary</h3>
-<ul class="primary colors"></ul>
+<ul class="colors"></ul>
+</div>
+<div class="secondary hide">
 <h3>Secondary</h3>
-<ul class="secondary colors"></ul>
+<ul class="colors"></ul>
+</div>
+<div class="tertiary hide">
+<h3>Tertiary</h3>
+<ul class="colors"></ul>
+</div>
+<div class="grey hide">
 <h3>Grey</h3>
-<ul class="grey colors"></ul>
+<ul class="colors"></ul>
+</div>
 
 <br><br>
 <hr>
@@ -332,9 +342,14 @@ ol li::before {
   let cssCustomPropIndexFinal = Array.from(set).map(JSON.parse);
   let cssCustomPropIndexPrimary = cssCustomPropIndexFinal.filter(propName => propName[0].includes('primary'))
   let cssCustomPropIndexSecondary = cssCustomPropIndexFinal.filter(propName => propName[0].includes('secondary'))
+  let cssCustomPropIndexTertiary = cssCustomPropIndexFinal.filter(propName => propName[0].includes('tertiary'))
   let cssCustomPropIndexGrey = cssCustomPropIndexFinal.filter(propName => propName[0].includes('grey'))
+  if (cssCustomPropIndexPrimary.length != 0) {document.querySelector(".primary").classList.remove("hide")}
+  if (cssCustomPropIndexSecondary.length != 0) {document.querySelector(".secondary").classList.remove("hide")}
+  if (cssCustomPropIndexTertiary.length != 0) {document.querySelector(".tertiary").classList.remove("hide")}
+  if (cssCustomPropIndexGrey.length != 0) {document.querySelector(".grey").classList.remove("hide")}
   // Add the swatches to the DOM
-  document.querySelector(".primary").innerHTML = cssCustomPropIndexPrimary.reduce(
+  document.querySelector(".primary ul").innerHTML = cssCustomPropIndexPrimary.slice(Math.max(cssCustomPropIndexPrimary.length - 5, 1)).reduce(
     (str, [prop, val]) => `${str}<li class="color">
     <b class="color__swatch" style="--color: ${val}"></b>
     <div class="color__details">
@@ -344,7 +359,7 @@ ol li::before {
    </li>`,
     ""
   );
-  document.querySelector(".secondary").innerHTML = cssCustomPropIndexSecondary.reduce(
+  document.querySelector(".secondary ul").innerHTML = cssCustomPropIndexSecondary.slice(Math.max(cssCustomPropIndexSecondary.length - 5, 1)).reduce(
     (str, [prop, val]) => `${str}<li class="color">
     <b class="color__swatch" style="--color: ${val}"></b>
     <div class="color__details">
@@ -354,7 +369,17 @@ ol li::before {
    </li>`,
     ""
   );
-  document.querySelector(".grey").innerHTML = cssCustomPropIndexGrey.reduce(
+  document.querySelector(".tertiary ul").innerHTML = cssCustomPropIndexTertiary.slice(Math.max(cssCustomPropIndexTertiary.length - 5, 1)).reduce(
+    (str, [prop, val]) => `${str}<li class="color">
+    <b class="color__swatch" style="--color: ${val}"></b>
+    <div class="color__details">
+      <input value="${prop}" readonly />
+      <input value="${val}" readonly />
+    </div>
+   </li>`,
+    ""
+  );
+  document.querySelector(".grey ul").innerHTML = cssCustomPropIndexGrey.slice(Math.max(cssCustomPropIndexGrey.length - 5, 1)).reduce(
     (str, [prop, val]) => `${str}<li class="color">
     <b class="color__swatch" style="--color: ${val}"></b>
     <div class="color__details">
