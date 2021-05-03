@@ -430,8 +430,8 @@ footer a {
   display: inline-grid;
   align-items: center;
   padding: calc(var(--baseline) / 8) calc(var(--baseline) / 4);
-  font-family: Futura;
-  color: var(--color-grey-verylight);
+  font-family: Futura, Helvetica, Arial, sans-serif;
+  color: #fff;
   background: var(--color-score,#204f93);
   background-image: radial-gradient(rgba(255,255,255,0.1) 5%, transparent 10%);
   background-position: 0 0, 100px 100px;
