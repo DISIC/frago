@@ -11,7 +11,6 @@
 {{ if eq $auditmethodology 3 }}
   {{- $.context.Scratch.Set "pageslistgraph" ((index $auditfile 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
 {{ end }}
-
 {{/* By topics */}}
 {{- range $key, $value := $topics -}}
 {{- $.context.Scratch.Set "criterecounterconformetopic" 0 -}}
@@ -74,6 +73,7 @@
 <div id="chartpagecriteres-csv"></div>
 <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
 <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+<script src="/{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
 <script>
     const options = {
         type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
@@ -83,7 +83,7 @@
             stacked: 1,
             spaceRatio: 0.2
         },
-        colors: ['#ac3636','#96cfb7']
+        colors: [hslToHex(hslprimary),hslToHex(hslsecondary),hslToHex(hsltertiary),hslToHex(hslquartenary)]
     }
     const datapagechartpagecriteres = {
         labels: [{{ range $id, $value := $.context.Scratch.Get "pageslistgraph" }}{{ if ne $id 0 }},{{ end }}"{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}"{{ end }}],
@@ -125,4 +125,5 @@
         ...options
     })
 </script>
+
 {{- end -}}

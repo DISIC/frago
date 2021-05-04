@@ -86,6 +86,7 @@
     {{- if gt (len .) 1 -}}
     <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
     <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+    <script src="/{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
     <div id="chartconformity"></div>
     <script>
         const dataconformity = {
@@ -111,7 +112,7 @@
                 stacked: 1,
                 spaceRatio: 0.2
             },
-            colors: ['#ac3636','#96cfb7']
+            colors: [hslToHex(hslprimary),hslToHex(hslsecondary),hslToHex(hsltertiary),hslToHex(hslquartenary)]
         })
     </script>
     {{- end -}}
