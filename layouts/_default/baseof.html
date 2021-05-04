@@ -39,10 +39,6 @@
   <script src="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}"></script>
   <link rel="stylesheet" href="/{{ (resources.Get "css/simple-lightbox.min.css").Permalink }}" media="print" onload="this.media='all'" />
   {{- end -}}
-  {{- if .HasShortcode "graphic" -}}
-  <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
-  <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
-  {{- end -}}
   {{- if .HasShortcode "mermaid" -}}
   <link rel="preload" href="/{{ (resources.Get "js/mermaid.min.js").Permalink }}" as="script">
   <script src="/{{ (resources.Get "js/mermaid.min.js").Permalink }}"></script>
