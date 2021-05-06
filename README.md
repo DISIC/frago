@@ -1,6 +1,8 @@
 # Génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.
 
-> FRAGO : French governemental Reports for Accessibility compliance with goHugo
+> FRAGO : French governmental Reports for Accessibility compliance with goHugo
+
+![Logo de Frago](/images/frago.png)
 
 ## Présentation
 
@@ -75,6 +77,16 @@ git submodule add https://github.com/disic/frago.git/ themes/frago && git submod
 ```
 
 #### Génération du site (mise en ligne)
+
+Ligne de commande pour construire les pages du site.
+
+```bash
+hugo --buildFuture --gc --minify
+```
+
+  * `--buildFuture` permet de publier des éléments avec une date future dans la partie [phase](#phases) (optionnel).
+  * `--gc` permet de remettre à jour le répertoire de génération du code (au cas ou du code d’une précédente génération serait encore présent).
+  * `--minify` permet de compresser le code `HTML` en ligne.
 
 ##### Héberger avec Github
 
