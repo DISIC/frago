@@ -1,0 +1,38 @@
+{{- $patharray :=  split .Path "/" -}}
+{{- $project :=  (index $patharray 1) -}}
+{{- $context := . -}}
+{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/conformity" (dict "context" $context "auditfile" (index ($audits) "auditpath")) .Path) -}}
+{
+  "title": "{{ with .GetPage (printf "audits/%s/_index.md" $project) }}{{ .Title }}{{ end }}",
+  "slug": "{{ $project }}",
+  "conditions": {{ with .GetPage (printf "audits/%s/accessibility.md" $project) }}{{ .Params.accessibility | jsonify }}{{ end }},
+  {{ with ($.Scratch.Get "scores") }}"scores": {
+    "criterium" : {
+      {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
+      {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
+      {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
+      {{ if (index . "criterenonconforme") }}"criterenonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
+    },
+    "conformity" : {
+      "conforme": {{ index . "critereconformepercent" }}
+    }
+  },{{ end }}
+  "audits": [
+    {{ range $id, $value := (index ($audits) "auditall") }}{
+      "path": "{{ replace . "content/" "" }}",
+      "date": "{{ replace (index ((index ($audits) "auditall")) $id) "content/" "" }}"
+      {{ with (partialCached "render/conformity" (dict "context" $context "auditfile" .) $context.Path) }}"scores": {
+        "criterium" : {
+          {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
+          {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
+          {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
+          {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
+        },
+        "conformity" : {
+          "conforme": {{ index . "critereconformepercent" }}
+        }
+      }{{ end }}
+    }{{ if ne (int $id) (len ((index ($audits) "auditall"))) }},{{ end }}{{ end }}
+ ]
+}

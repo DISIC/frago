@@ -1,0 +1,41 @@
+{{- $context := . -}}
+{{- $pagetype := slice "accessibility" "quality" "performance" -}}
+{{- $.Scratch.Set "folder" "" -}}
+{{- $.Scratch.Set "slugs" slice -}}
+{{- range $id, $value := $pagetype -}}
+  {{- range readDir "content/audits/" -}}{{- $slug := .Name -}}
+    {{- $.Scratch.Add "slugs" $slug -}}
+    {{- range readDir (printf "content/audits/%s/" $slug) -}}
+    {{- $.Scratch.Set "folder" $value -}}{{- if eq $value "performance" -}}{{- $.Scratch.Set "folder" "lighthouse" -}}{{- end -}}
+    {{- if fileExists (printf "content/audits/%s/%s" $slug ($.Scratch.Get "folder")) -}}
+        {{- $name := .Name -}}{{- if eq $name (printf "%s.md" $value) -}}{{- $.Scratch.SetInMap $value $slug (printf "audits/%s/" $slug) -}}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- $.Scratch.SetInMap "jsona11y" $value ($.Scratch.Get $value) -}}
+{{- end -}}
+{{- $.Scratch.Set "counter1" 0 -}}
+{
+{{ range $id, $value := $.Scratch.Get "jsona11y" }}{{ $.Scratch.Set "counter2" 0 }}{{ $.Scratch.Add "counter1" 1 }}
+  "{{ $id }}": {
+    "websites": [{{ range $slug, $path := $value }}{{ $.Scratch.Add "counter2" 1 }}{{ if $context.GetPage (replace . "accessibility/" "") }}
+      {
+        "title": "{{ with $context.GetPage . }}{{ .Title }}{{ end }}",
+        "slug": "{{ $slug }}",
+        "url": "{{ printf "%s%s/index.json" . $id }}"{{ if eq $id "accessibility" }}{{ with (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "scores":{
+          "criterium": {
+            {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
+            {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
+            {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
+            {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
+          },
+          "conformity" : {
+            "conforme": {{ index . "critereconformepercent" }}
+          }
+        }{{ end }}{{ end }}
+      }{{ if ne ($.Scratch.Get "counter2") (len $value) }},{{ end }}{{ end }}{{ end }}
+    ]
+  }{{ if ne ($.Scratch.Get "counter1") (len ($.Scratch.Get "jsona11y")) }},{{ end }}
+{{- end -}}
+}
