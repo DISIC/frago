@@ -75,7 +75,7 @@
   {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "usertests") }}
   <div class="usertests">
     {{ if gt ($.Scratch.Get "counter") (len $userid) }}
-    <div class="flex-column graph-vis">
+    <div class="flex-column usertests-vis">
     {{ range $id, $val := $value }}
       {{/* Find the number of Answer for each answer */}}
       <div class="counter" style="display: grid;--base-primary: calc(220 + {{ mul $id 20 }});--base-light: calc(60% + {{ mul $id 1 }}%);max-width: {{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) (len $userid) }}%"><span>{{ div (mul 100 (int (index ($.Scratch.Get "countanswer") .))) (len $userid) }}%</span> {{ . }}</div>
