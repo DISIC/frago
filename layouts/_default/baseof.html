@@ -34,29 +34,6 @@
   {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
 
   <!-- CSS -->
-  {{- if .HasShortcode "parcours" -}}
-  <link rel="preload" href="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}" as="script">
-  <script src="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}"></script>
-  <link rel="stylesheet" href="/{{ (resources.Get "css/simple-lightbox.min.css").Permalink }}" media="print" onload="this.media='all'" />
-  {{- end -}}
-  {{- if .HasShortcode "mermaid" -}}
-  <link rel="preload" href="/{{ (resources.Get "js/mermaid.min.js").Permalink }}" as="script">
-  <script src="/{{ (resources.Get "js/mermaid.min.js").Permalink }}"></script>
-  <link rel="stylesheet" href="/{{ (resources.Get "css/mermaid.css").Permalink }}" media="print" onload="this.media='all'" />
-  <script>
-    mermaid.initialize({
-      theme: 'neutral',
-      themeCSS: '.node rect,.node polygon, .task { fill: #006be6; stroke: #333; stroke-width:0;}.node .label {color: #fff;}.edgeLabel {background: snow;}.task {fill: #189e57}.task0 {fill: #006be6}',
-      logLevel: 3,
-      securityLevel: 'loose',
-      flowchart: { curve: 'basis' },
-      gantt: { axisFormat: '%m/%d/%Y' },
-      sequence: { actorMargin: 50 },
-    });
-  </script>
-  {{- end -}}
-
-  <!-- CSS -->
   {{- with resources.Match "**.css" -}}
   {{/* Loop over all css of the base theme */}}
 	{{- range . -}}
@@ -136,6 +113,31 @@
     </div>
   </header>
   <main id="main" class="page main">
+  {{ $context := . }}
+  {{ $pagetype := slice "accessibility" "quality" "performance" }}
+  {{- $.Scratch.Set "folder" "" -}}
+  <pre>
+  {{- range $id, $value := $pagetype -}}
+  {{- range readDir "content/audits/" -}}{{ $slug := .Name }}
+    {{- range readDir (printf "content/audits/%s/" $slug) -}}
+    {{- $.Scratch.Set "folder" $value -}}{{- if eq $value "performance" -}}{{- $.Scratch.Set "folder" "lighthouse" -}}{{- end -}}
+    {{- if fileExists (printf "content/audits/%s/%s" $slug ($.Scratch.Get "folder")) -}}
+        {{- $name := .Name -}}{{- if eq $name (printf "%s.md" $value) -}}{{- $.Scratch.SetInMap $value $slug (printf "/audits/%s/%s/index.json" $slug $value) -}}{{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $.Scratch.SetInMap "json" $value ($.Scratch.Get $value) -}}
+  {{- end -}}
+  {{- $loop := (where $.Site.Pages "Section" "audits") -}}
+    [{{ range $id, $value := $.Scratch.Get "json" }}
+      "{{ $id }}" : [{{ range $value }}
+        {
+          "url": {{ . }}
+        },{{ end }}
+      ]
+    {{ end }}
+  {
+  </pre>
   {{ block "main" . }}{{- end -}}
   </main>
   {{- partialCached "footer" . -}}
