@@ -4,6 +4,7 @@
 
 ![Logo de Frago](/images/frago.png)
 
+
 ## Présentation
 
 Le thème Frago a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
