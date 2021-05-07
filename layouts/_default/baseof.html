@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
-  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité d'accessibilité</title>
+  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité</title>
   <script type="module">
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
@@ -89,12 +89,12 @@
     <a href="#main">Contenu principal</a>
   </div>
   <header role="banner">
-    <div class="wrapper flex align-items-center margin-baseline padding-baseline">
+    <div class="wrapper flex align-items-center padding-baseline">
           <div class="flex align-items-center">
-            <a href="/" title="Accueil - L’observatoire de la qualité des démarches en ligne" rel="home" class="navbar-brand">
+            <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}" rel="home" class="site-logo">
               <picture>
                 <source srcset="/assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
-                <img src="/assets/images/logo.svg" width="150" alt="Logo République française">
+                <img src="/assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}">
               </picture>
               <span class="demarches-titlebar-sitename"></span>
             </a>
@@ -113,13 +113,6 @@
     </div>
   </header>
   <main id="main" class="page main">
-  {{ $context := . }}
-  {{ range where .Site.RegularPages "Section" "audits" }}
-    {{ if eq (index (last 1 (split .Path "/")) 0) "accessibility.md" }}<br>
-    {{ $auditss =: partial "render/accessibility-lastfile.html" (dict "context" $context "project" ((index (last 2 (split .Path "/")) 0))) }}
-    {{- (partial "render/conformity" (dict "context" $context "auditfile" (index ($auditss) "auditpath"))) -}}
-    {{ end }}
-  {{ end }}
   {{ block "main" . }}{{- end -}}
   </main>
   {{- partialCached "footer" . -}}

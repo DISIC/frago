@@ -244,28 +244,9 @@ h3 + time {
 /* LOGO
    ----------------------------- */
 
-.site-title small {
-  display: block;
-  font-family: var(--base-font);
-  font-size: 40%;
-  color: var(--color-primary-verylight);
-}
-
-.site-logo {
-  margin: 0.5em;
-  padding: 0.2em 0.5em;
-  font-family: Futura;
-  font-weight: 900;
-  transition: all 0.5s ease;
-  color: var(--color-primary-dark);
-  border-radius: 50px;
-  background: #fff;
-}
-
-.site-logo:hover {
-  text-decoration: none;
-  color: var(--color-primary-verydark);
-  background: var(--color-primary-verylight);
+.site-logo img {
+  max-width: 100px;
+  height: initial;
 }
 
 /* NAVIGATION
@@ -426,7 +407,7 @@ footer a {
   display: inline-grid;
   align-items: center;
   padding: calc(var(--baseline) / 8) calc(var(--baseline) / 4);
-  font-family: Futura, Helvetica, Arial, sans-serif;
+  font-family: Futura, Tahoma, Helvetica, Arial, sans-serif;
   color: #fff;
   background: var(--color-score,#204f93);
   background-image: radial-gradient(rgba(255,255,255,0.1) 5%, transparent 10%);
