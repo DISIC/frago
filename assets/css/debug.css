@@ -75,21 +75,26 @@ table.debugprint {
   font-size: 15px;
   color: #ffffff;
   background-color: transparent;
-
+  border: 1px solid;
   -webkit-font-smoothing: antialiased;
 }
 
+table.debugprint tbody tr {
+  height: auto;
+}
 
-.debugprint th {
-  padding: 5px 20px;
+.debugprint th,
+.debugprint td {
+  padding: 0 1&em;
+  border: 1px solid;
 }
 
 .debugprint td {
-  vertical-align: top;
+  text-align: left;
+  vertical-align: center;
 }
 
 .debugprint th {
-  padding: 5px 20px;
   font-weight: 700;
   text-align: left;
   background-color: #000;
@@ -97,19 +102,6 @@ table.debugprint {
 
 .debugprint th.type {
   display: none;
-}
-
-.debugprint td {
-  padding: 5px 20px;
-  text-align: left;
-}
-
-.debugprint th:first-of-type {
-  padding-left: 0 !important;
-}
-
-.debugprint td:first-of-type {
-  padding-left: 0 !important;
 }
 
 .debugprint td.key {

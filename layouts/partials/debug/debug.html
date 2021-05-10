@@ -16,35 +16,38 @@
         </div>
         <div id="tab-overview" class="tabcontent" style="display: block;">
           <table class="debugprint">
-            <tr>
-              <th class="key">Key</th>
-              <th class="value">Value</th>
-            </tr>
-            <tr>
-              <td class="key">Template</td>
-              <td class="value">{{ .template }}</td>
-            </tr>
-            <tr>
-              <td class="key">Content Source</td>
-              <td class="value">{{ with .context.File }}{{ .Path }}{{ end }}</td>
-            </tr>
-            <tr>
-              <td class="key">Type</td>
-              <td class="value">{{ .context.Page.Type }}</td>
-            </tr>
-            <tr>
-              <td class="key">Kind</td>
-              <td class="value">{{ .context.Page.Kind }}</td>
-            </tr>
-            <tr>
-              <td class="key">Section</td>
-              <td class="value">{{ .context.Page.Section }}</td>
-            </tr>
-            <tr>
-              <td class="key">Layout</td>
-              <td class="value">{{ .context.Page.Layout }}</td>
-            </tr>
-
+            <thead>
+              <tr>
+                <th class="key">Key</th>
+                <th class="value">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="key">Template</td>
+                <td class="value">{{ .template }}</td>
+              </tr>
+              <tr>
+                <td class="key">Content Source</td>
+                <td class="value">{{ with .context.File }}{{ .Path }}{{ end }}</td>
+              </tr>
+              <tr>
+                <td class="key">Type</td>
+                <td class="value">{{ .context.Page.Type }}</td>
+              </tr>
+              <tr>
+                <td class="key">Kind</td>
+                <td class="value">{{ .context.Page.Kind }}</td>
+              </tr>
+              <tr>
+                <td class="key">Section</td>
+                <td class="value">{{ .context.Page.Section }}</td>
+              </tr>
+              <tr>
+                <td class="key">Layout</td>
+                <td class="value">{{ .context.Page.Layout }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
