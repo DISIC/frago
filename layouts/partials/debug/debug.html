@@ -106,6 +106,7 @@
 </script>
 <script>
     console.group('-------- Hugo Debug: Theme -------')
+    console.log('Version: ', '{{ hugo.Version }}')
     console.log('HUGO_ENV: ', '{{ (getenv "HUGO_ENV") | default "NOT SET" }}')
     console.log('Long Env: ', '{{ (getenv "HUGO_ENV") | default .Site.Params.env | default "DEV" }}')
     console.log('Is Prod?: ', '{{ (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) }}')
