@@ -1,4 +1,4 @@
 ---
 title: Critères
-type: criterions
+type: criteria
 ---

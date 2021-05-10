@@ -1,0 +1,704 @@
+{
+  "topics": [{
+      "topic": "Images",
+      "number": 1,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Certaines images [porteuse d'information](#image-porteuse-d-information) n’ont pas d’[alternative textuelle](#alternative-textuelle-image)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Chaque [image de décoration](#image-de-decoration) est-elle correctement ignorée par les technologies d'assistance."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Pour chaque image [porteuse d'information](#image-porteuse-d-information) ayant une [alternative textuelle](#alternative-textuelle-image), cette alternative est-elle pertinente (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque image utilisée comme [CAPTCHA](#captcha) ou comme [image-test](#image-test), ayant une [alternative textuelle](#alternative-textuelle-image), cette alternative permet-elle d'identifier la nature et la fonction de l'image."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Pour chaque image utilisée comme [CAPTCHA](#captcha), une solution d'accès alternatif au contenu ou à la fonction du CAPTCHA est-elle présente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Chaque image [porteuse d'information](#image-porteuse-d-information) a-t-elle, si nécessaire, une [description détaillée](#description-detaillee-image)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Pour chaque image [porteuse d'information](#image-porteuse-d-information) ayant une [description détaillée](#description-detaillee-image), cette description est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Chaque [image texte](#image-texte) [porteuse d'information](#image-porteuse-d-information), en l'absence d'un [mécanisme de remplacement](#mecanisme-de-remplacement), doit si possible être remplacée par du [texte stylé](#texte-style). Cette règle est-elle respectée (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Chaque [légende](#legende) d'image est-elle, si nécessaire, correctement reliée à l'image correspondante."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Cadres",
+      "number": 2,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque cadre a-t-il un titre de cadre."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Pour chaque cadre ayant un titre de cadre, ce titre de cadre est-il pertinent."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Couleurs",
+      "number": 3,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Dans chaque page web, l'[information](#information-donnee-par-la-couleur) ne doit pas être donnée uniquement par la couleur. Cette règle est-elle respectée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque page web, le [contraste](#contraste) entre la couleur du texte et la couleur de son arrière-plan est-il suffisamment élevé (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque page web, les couleurs utilisées dans les [composants d'interface](#composant-d-interface) ou les éléments graphiques porteurs d'informations sont-elles suffisamment contrastées (hors cas particuliers)"
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Multimedia",
+      "number": 4,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [média temporel](#media-temporel-type-son-video-et-synchronise) pré-enregistré a-t-il, si nécessaire, une [transcription textuelle](#transcription-textuelle-media-temporel) ou une [audiodescription](#audiodescription-synchronisee-media-temporel) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Pour chaque [média temporel](#media-temporel-type-son-video-et-synchronise) pré-enregistré ayant une [transcription textuelle](#transcription-textuelle-media-temporel) ou une [audiodescription](#audiodescription-synchronisee-media-temporel) synchronisée, celles-ci sont-elles pertinentes (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Chaque [média temporel](#media-temporel-type-son-video-et-synchronise) synchronisé pré-enregistré a-t-il, si nécessaire, des [sous-titres synchronisés](#sous-titres-synchronises-objet-multimedia) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque [média temporel](#media-temporel-type-son-video-et-synchronise) synchronisé pré-enregistré ayant des [sous-titres synchronisés](#sous-titres-synchronises-objet-multimedia), ces sous-titres sont-ils pertinents."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Chaque [média temporel](#media-temporel-type-son-video-et-synchronise) pré-enregistré a-t-il, si nécessaire, une [audiodescription](#audiodescription-synchronisee-media-temporel) synchronisée (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Pour chaque [média temporel](#media-temporel-type-son-video-et-synchronise) pré-enregistré ayant une [audiodescription](#audiodescription-synchronisee-media-temporel) synchronisée, celle-ci est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Chaque [média temporel](#media-temporel-type-son-video-et-synchronise) est-il clairement identifiable (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Chaque [média non temporel](#media-non-temporel) a-t-il, si nécessaire, une alternative (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Pour chaque [média non temporel](#media-non-temporel) ayant une alternative, cette alternative est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Chaque son déclenché automatiquement est-il [contrôlable](#controle-son-declenche-automatiquement) par l'utilisateur."
+          }
+        },
+        {
+          "criterium": {
+            "number": 11,
+            "title": "La consultation de chaque [média temporel](#media-temporel-type-son-video-et-synchronise) est-elle, si nécessaire, [contrôlable par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 12,
+            "title": "La consultation de chaque [média non temporel](#media-non-temporel) est-elle [contrôlable par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 13,
+            "title": "Chaque [média temporel](#media-temporel-type-son-video-et-synchronise) et [non temporel](#media-non-temporel) est-il compatible avec les technologies d'assistance (hors cas particuliers)."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Tableaux",
+      "number": 5,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [tableau de données complexe](#tableau-de-donnees-complexe) a-t-il un [résumé](#resume)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Pour chaque [tableau de données complexe](#tableau-de-donnees-complexe) ayant un [résumé](#resume), celui-ci est-il pertinent."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Pour chaque [tableau de mise en forme](#tableau-de-mise-en-forme), le contenu linéarisé reste-t-il compréhensible (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque [tableau de données ayant un titre](#tableau-de-donnees-ayant-un-titre), le titre est-il correctement [associé au tableau de données](#passage-de-texte-associe-au-tableau-de-donnees)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Pour chaque [tableau de données ayant un titre](#tableau-de-donnees-ayant-un-titre), celui-ci est-il pertinent."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Pour chaque [tableau de données](#tableau-de-donnees), chaque [en-tête de colonnes](#en-tete-de-colonne-ou-de-ligne) et chaque [en-tête de lignes](#en-tete-de-colonne-ou-de-ligne) sont-ils correctement déclarés."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Pour chaque [tableau de données](#tableau-de-donnees), la technique appropriée permettant d'associer chaque cellule avec ses [en-têtes](#en-tete-de-colonne-ou-de-ligne) est-elle utilisée (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Chaque [tableau de mise en forme](#tableau-de-mise-en-forme) ne doit pas utiliser d'éléments propres aux [tableaux de données](#tableau-de-donnees). Cette règle est-elle respectée."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Liens",
+      "number": 6,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [lien](#lien) est-il explicite (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque page web, chaque [lien](#lien), à l'exception des [ancres](#ancre), a-t-il un [intitulé](#intitule-ou-nom-accessible-de-lien)."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Scripts",
+      "number": 7,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [script](#script) est-il, si nécessaire, [compatible avec les technologies d'assistance](#compatible-avec-les-technologies-d-assistance)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Pour chaque [script](#script) ayant une alternative, cette alternative est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Chaque [script](#script) est-il [contrôlable par le clavier et par tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque [script](#script) qui initie un [changement de contexte](#changement-de-contexte), l'utilisateur est-il averti ou en a-t-il le contrôle."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Dans chaque page web, les [messages de statut](#message-de-statut) sont-ils correctement restitués par les technologies d'assistance."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Éléments obligatoires",
+      "number": 8,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque page web est-elle définie par un [type de document](#type-de-document)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Pour chaque page web, le code source généré est-il valide selon le [type de document](#type-de-document) spécifié (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque page web, la [langue par défaut](#langue-par-defaut) est-elle présente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque page web ayant une [langue par défaut](#langue-par-defaut), le [code de langue](#code-de-langue) est-il pertinent."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Chaque page web a-t-elle un [titre de page](#titre-de-page)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Pour chaque page web ayant un [titre de page](#titre-de-page), ce titre est-il pertinent."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Dans chaque page web, chaque [changement de langue](#changement-de-langue) est-il indiqué dans le code source (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Dans chaque page web, le code de langue de chaque [changement de langue](#changement-de-langue) est-il valide et pertinent."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Dans chaque page web, les balises ne doivent pas être utilisées [uniquement à des fins de présentation](#uniquement-a-des-fins-de-presentation). Cette règle est-elle respectée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Dans chaque page web, les changements du [sens de lecture](#sens-de-lecture) sont-ils signalés."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Structuration de l'information",
+      "number": 9,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Dans chaque page web, l'information est-elle structurée par l'utilisation appropriée de [titres](#titre)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque page web, la structure du document est-elle cohérente (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque page web, chaque [liste](#listes) est-elle correctement structurée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Dans chaque page web, chaque citation est-elle correctement indiquée."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Présentation de l'information",
+      "number": 10,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Dans le site web, des [feuilles de styles](#feuille-de-style) sont-elles utilisées pour contrôler la [présentation de l'information](#presentation-de-l-information)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque page web, le [contenu visible](#contenu-visible) reste-t-il présent lorsque les [feuilles de styles](#feuille-de-style) sont désactivées."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque page web, l'information reste-t-elle [compréhensible](#comprehensible-ordre-de-lecture) lorsque les [feuilles de styles](#feuille-de-style) sont désactivées."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Dans chaque page web, le texte reste-t-il lisible lorsque la [taille des caractères](#taille-des-caracteres) est augmentée jusqu'à 200%, au moins (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Dans chaque page web, les déclarations CSS de couleurs de fond d'élément et de police sont-elles correctement utilisées."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Dans chaque page web, chaque [lien dont la nature n'est pas évidente](#lien-dont-la-nature-n-est-pas-evidente) est-il visible par rapport au texte environnant."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Dans chaque page web, pour chaque élément recevant le focus, la [prise de focus](#prise-de-focus) est-elle visible."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Pour chaque page web, les [contenus cachés](#contenu-cache) ont-ils vocation à être ignorés par les technologies d'assistance."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Dans chaque page web, l'information ne doit pas être donnée uniquement [par la forme, taille ou position](#indication-donnee-par-la-forme-la-taille-ou-la-position). Cette règle est-elle respectée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Dans chaque page web, l'information ne doit pas être donnée [par la forme, taille ou position](#indication-donnee-par-la-forme-la-taille-ou-la-position) uniquement. Cette règle est-elle implémentée de façon pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 11,
+            "title": "Pour chaque page web, les contenus peuvent-ils être présentés sans avoir recours à la fois à un défilement vertical pour une fenêtre ayant une hauteur de 256px ou une largeur de 320px (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 12,
+            "title": "Dans chaque page web, les propriétés d'espacement du texte peuvent-elles être redéfinies par l'utilisateur sans perte de contenu ou de fonctionnalité (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 13,
+            "title": "Dans chaque page web, les contenus additionnels apparaissant à la prise de focus ou au survol d'un [composant d'interface](#composant-d-interface) sont-ils contrôlables par l'utilisateur (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 14,
+            "title": "Dans chaque page web, les contenus additionnels apparaissant via les styles CSS uniquement peuvent-ils être rendus visibles au clavier et par tout dispositif de pointage."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Formulaires",
+      "number": 11,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [champ de formulaire](#champ-de-saisie-de-formulaire) a-t-il une [étiquette](#etiquette-de-champ-de-formulaire)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Chaque [étiquette](#etiquette-de-champ-de-formulaire) associée à un [champ de formulaire](#champ-de-saisie-de-formulaire) est-elle pertinente (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque formulaire, chaque [étiquette](#etiquette-de-champ-de-formulaire) associée à un [champ de formulaire](#champ-de-saisie-de-formulaire) ayant la même fonction et répété plusieurs fois dans une même page ou dans un [ensemble de pages](#ensemble-de-pages) est-elle [cohérente](#etiquettes-coherentes)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Dans chaque formulaire, chaque [étiquette de champ](#etiquette-de-champ-de-formulaire) et son champ associé sont-ils [accolés](#accoles-etiquette-et-champ-accoles) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Dans chaque formulaire, les champs de même nature sont-ils regroupés, si nécessaire."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Dans chaque formulaire, chaque regroupement de champs de formulaire a-t-il une [légende](#legende)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Dans chaque formulaire, chaque [légende](#legende) associée à un regroupement de champs de même nature est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Dans chaque formulaire, les items de même nature d'une liste de choix sont-ils regroupées de manière pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Dans chaque formulaire, l'intitulé de chaque bouton est-il pertinent (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Dans chaque formulaire, le contrôle de saisie est-il utilisé de manière pertinente (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 11,
+            "title": "Dans chaque formulaire, le contrôle de saisie est-il accompagné, si nécessaire, de suggestions facilitant la correction des erreurs de saisie."
+          }
+        },
+        {
+          "criterium": {
+            "number": 12,
+            "title": "Pour chaque formulaire qui modifie ou supprime des données, ou qui transmet des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données vérifie-t-elle une de ces conditions."
+          }
+        },
+        {
+          "criterium": {
+            "number": 13,
+            "title": "La finalité d'un champ de saisie peut-elle être déduite pour faciliter le remplissage automatique des champs avec les données de l'utilisateur."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Navigation",
+      "number": 12,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Chaque [ensemble de pages](#ensemble-de-pages) dispose-t-il de deux [systèmes de navigation](#systeme-de-navigation) différents, au moins (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque [ensemble de pages](#ensemble-de-pages), le [menu et les barres de navigation](#menu-et-barre-de-navigation) sont-ils toujours à la même place (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "La [page « plan du site »](#page-plan-du-site) est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Dans chaque [ensemble de pages](#ensemble-de-pages), la [page « plan du site »](#page-plan-du-site) est-elle atteignable de manière identique."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Dans chaque [ensemble de pages](#ensemble-de-pages), le [moteur de recherche](#moteur-de-recherche-interne-a-un-site-web) est-il atteignable de manière identique."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Les zones de regroupement de contenus présentes dans plusieurs pages web (zones d'[en-tête](#zone-d-en-tete), de [navigation principale](#menu-et-barre-de-navigation), de [contenu principal](#zone-de-contenu-principal), de [pied de page](#zone-de-pied-de-page) et de [moteur de recherche](#moteur-de-recherche-interne-a-un-site-web)) peuvent-elles être atteintes ou évitées."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Dans chaque page web, un [lien d'évitement ou d'accès rapide](#liens-d-evitement-ou-d-acces-rapide) à la [zone de contenu principal](#zone-de-contenu-principal) est-il présent (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Dans chaque page web, l'[ordre de tabulation](#ordre-de-tabulation) est-il [cohérent](#comprehensible-ordre-de-lecture)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Dans chaque page web, la navigation ne doit pas contenir de piège au clavier. Cette règle est-elle respectée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Dans chaque page web, les [raccourcis clavier](#raccourci-clavier) n'utilisant qu'une seule touche (lettre minuscule ou majuscule, ponctuation, chiffre ou symbole) sont-ils contrôlables par l’utilisateur."
+          }
+        },
+        {
+          "criterium": {
+            "number": 11,
+            "title": "Dans chaque page web, les contenus additionnels apparaissant au survol, à la prise de focus ou à l'activation d'un [composant d'interface](#composant-d-interface) sont-ils si nécessaire atteignables au clavier."
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Consultation",
+      "number": 13,
+      "criteria": [{
+          "criterium": {
+            "number": 1,
+            "title": "Pour chaque page web, l'utilisateur a-t-il le contrôle de chaque limite de temps modifiant le contenu (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 2,
+            "title": "Dans chaque page web, l'ouverture d'une nouvelle fenêtre ne doit pas être déclenchée sans action de l'utilisateur. Cette règle est-elle respectée."
+          }
+        },
+        {
+          "criterium": {
+            "number": 3,
+            "title": "Dans chaque page web, chaque document bureautique en téléchargement possède-t-il, si nécessaire, une [version accessible](#version-accessible-pour-un-document-en-telechargement) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 4,
+            "title": "Pour chaque document bureautique ayant une [version accessible](#version-accessible-pour-un-document-en-telechargement), cette version offre-t-elle la même information."
+          }
+        },
+        {
+          "criterium": {
+            "number": 5,
+            "title": "Dans chaque page web, chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) a-t-il une alternative."
+          }
+        },
+        {
+          "criterium": {
+            "number": 6,
+            "title": "Dans chaque page web, pour chaque contenu cryptique (art ASCII, émoticon, syntaxe cryptique) ayant une alternative, cette alternative est-elle pertinente."
+          }
+        },
+        {
+          "criterium": {
+            "number": 7,
+            "title": "Dans chaque page web, les [changements brusques de luminosité ou les effets de flash](#changement-brusque-de-luminosite-ou-effet-de-flash) sont-ils correctement utilisés."
+          }
+        },
+        {
+          "criterium": {
+            "number": 8,
+            "title": "Dans chaque page web, chaque contenu en mouvement ou clignotant est-il [contrôlable](#controle-contenu-en-mouvement-ou-clignotant) par l'utilisateur."
+          }
+        },
+        {
+          "criterium": {
+            "number": 9,
+            "title": "Dans chaque page web, le contenu proposé est-il consultable quelle que soit l'orientation de l'écran (portait ou paysage) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 10,
+            "title": "Dans chaque page web, les fonctionnalités utilisables ou disponibles au moyen d'un [geste complexe](#gestes-complexes-et-gestes-simples) peuvent-elles être également disponibles au moyen d'un [geste simple](#gestes-complexes-et-gestes-simples) (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 11,
+            "title": "Dans chaque page web, les actions déclenchées au moyen d'un dispositif de pointage sur un point unique de l'écran peuvent-elles faire l'objet d'une annulation (hors cas particuliers)."
+          }
+        },
+        {
+          "criterium": {
+            "number": 12,
+            "title": "Dans chaque page web, les fonctionnalités qui impliquent un mouvement de l'appareil ou vers l'appareil peuvent-elles être satisfaites de manière alternative (hors cas particuliers)."
+          }
+        }
+      ]
+    }
+  ]
+}

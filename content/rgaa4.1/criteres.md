@@ -1,6 +1,6 @@
 ---
 title: Critères
-type: criterions
+type: criteria
 menu:
   footer:
     title: "Critères"

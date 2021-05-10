@@ -1,9 +1,9 @@
-{{- if (index .criteres "testtotal") -}}
+{{- if (index .criteria "testtotal") -}}
 <div class="scores">
     <ul>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ if (index .criteres "critereconforme") -}}{{ len (index .criteres "critereconforme") }}{{ else }}0{{ end }}</b><br>Critères conformes</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ if (index .criteres "criterenonapplicable") }}{{ len (index .criteres "criterenonapplicable") }}{{ else }}0{{ end }}</b><br>Critères non applicables</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ if (index .criteres "criterenonconforme") }}{{ len (index .criteres "criterenonconforme") }}{{ else }}0{{ end }}</b><br>Critères non conformes</span></li>
+      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ if (index .criteria "critereconforme") -}}{{ len (index .criteria "critereconforme") }}{{ else }}0{{ end }}</b><br>Critères conformes</span></li>
+      <li class="counter text-center d-inline-block"><span><b class="h2">{{ if (index .criteria "criterenonapplicable") }}{{ len (index .criteria "criterenonapplicable") }}{{ else }}0{{ end }}</b><br>Critères non applicables</span></li>
+      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ if (index .criteria "criterenonconforme") }}{{ len (index .criteria "criterenonconforme") }}{{ else }}0{{ end }}</b><br>Critères non conformes</span></li>
     </ul>
 </div>
 {{- end -}}

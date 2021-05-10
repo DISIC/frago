@@ -7,8 +7,8 @@
 {{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
-{{- $.Scratch.Set "criteresfile" (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics -}}
-{{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" $.Site.BaseURL ($.Scratch.Get "guideline")) -}}
+{{- $.Scratch.Set "criteriafile" (index $.Site.Data ($.Scratch.Get "guideline")).criteria.topics -}}
+{{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guideline")) -}}
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
@@ -32,7 +32,7 @@
 {{- partial "elements/content.html" .Content -}}
 </div>
 {{- end -}}
-
+{{ ($.Scratch.Get "scores") }}
 {{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "scores") -}}
 
 {{/* Create an array with all pages */}}
@@ -83,7 +83,7 @@
 {{/* Call accessibility partial */}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
 {{/* Call criterium partial */}}
-{{- partial "components/scores/criterium" (dict "context" . "criteres" ($.Scratch.Get "scores")) -}}
+{{- partial "components/scores/criterium" (dict "context" . "criteria" ($.Scratch.Get "scores")) -}}
 {{/* If several pages tested */}}
 {{- if gt (len ($.Scratch.Get "pageslist")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition</h3>
@@ -129,21 +129,21 @@
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
   {{- $thematiques := index $value 0 -}}
-  {{- $criteres := index $value 1 -}}
+  {{- $criteria := index $value 1 -}}
   {{- $tests := index $value 2 -}}
   {{ if eq (len (uniq (after $auditmethodology .))) 1 }}
   {{- range first 1 . -}}
     {{- if or $condcontentlen $condcontentnc -}}
     {{- $.Scratch.Set "counterallpages" 1 -}}
     <p class="mb-0"><strong>
-      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteres }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
     {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-      {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int ($thematiques)) -}}
-      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+      {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
         {{- if reflect.IsSlice . -}}
         <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
@@ -178,19 +178,19 @@
     {{- $condcontentnc := (eq $content "nc") -}}
     {{- $condcontentc := (eq $content "c") -}}
     {{- $thematiques := index $value 0 -}}
-    {{- $criteres := index $value 1 -}}
+    {{- $criteria := index $value 1 -}}
     {{- $tests := index $value 2 -}}
     {{- if or $condcontentlen $condcontentnc -}}
     {{- $.Scratch.Add "is-page-error" 1 -}}
         <p class="mb-0"><strong>
-        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteres }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
         {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
       {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
-        {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int ($thematiques)) -}}
-        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium).tests -}}
+        {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
           <p><em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
@@ -218,12 +218,12 @@
 <div class="flex flex-column">
 {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonconforme") -}}
   {{- $thematiques := index (split $key ".") 0 -}}
-  {{- $criteres := index (split $key ".") 1 -}}
+  {{- $criteria := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
-  <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong></p>
-  {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int (index (split $key ".") 0)) -}}
+  <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong></p>
+  {{- $s := where ($.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
-    {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
+    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
     <em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
   {{- end -}}
   </div>
@@ -285,12 +285,12 @@
   <div class="flex flex-column">
   {{- range $key, $value := (index . "criterenonconforme") -}}
     {{- $thematiques := index (split $key ".") 0 -}}
-    {{- $criteres := index (split $key ".") 1 -}}
+    {{- $criteria := index (split $key ".") 1 -}}
     <div style="order:{{ $thematiques }};">
-    <p><strong>Critère {{ $thematiques }}.{{ $criteres }}</strong><br>
-    {{- $s := where ($.Scratch.Get "criteresfile") "number" "eq" (int (index (split $key ".") 0)) -}}
+    <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
+    {{- $s := where ($.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
     {{- if ge (len $s) 1 -}}
-    {{- $content := (index (index $s 0).criteria (sub (int ($criteres)) 1)).criterium.title -}}
+    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
     <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
     {{- end -}}
   </div>
