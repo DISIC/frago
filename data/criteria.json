@@ -5,7 +5,7 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Certaines images [porteuse d’information](#image-porteuse-d-information) n’ont pas d’[alternative textuelle](#alternative-textuelle-image)."
+            "title": "Certaines images [porteuses d’information](#image-porteuse-d-information) n’ont pas d’[alternative textuelle](#alternative-textuelle-image)."
           }
         },
         {
