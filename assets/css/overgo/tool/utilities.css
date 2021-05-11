@@ -31,6 +31,14 @@
   top: 0;
 }
 
+.p-bottom {
+  bottom: 0;
+}
+
+.p-left {
+  left: 0;
+}
+
 .p-right {
   right: 0;
 }

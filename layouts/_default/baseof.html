@@ -121,7 +121,7 @@
   </main>
   {{- partialCached "footer" . -}}
   {{ block "script" . }}{{- end -}}
-  {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production")) -}}
+  {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
   {{- partial "debug/debug.html" (dict "context" .) -}}
   {{- end -}}
 </body>
