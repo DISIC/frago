@@ -17,6 +17,24 @@
   margin-left: auto;
 }
 
+/* Position */
+
+.p-relative {
+  position: relative;
+}
+
+.p-absolute {
+  position: absolute;
+}
+
+.p-top {
+  top: 0;
+}
+
+.p-right {
+  right: 0;
+}
+
 .left {
   float: left;
 }
