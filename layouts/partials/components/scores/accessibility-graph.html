@@ -16,14 +16,7 @@
 {{- $.context.Scratch.Set "criterecounterconformetopic" 0 -}}
 {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
 {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
-  {{/* Something done but without knowing why - commented because this loopis very slow
-  {{- range $keycritere, $value := index (partial "render/conformity" (dict "context" $.context "auditfile" $auditfile)) "criterenonconforme" -}}
-    {{- if eq $key (int (index (split $keycritere ".") 0)) -}}
-      {{- $.context.Scratch.Add "criterecounterconformetopic" 1 -}}
-      {{- $.context.Scratch.SetInMap "criterenonconformecounter" (string $key) ($.context.Scratch.Get "criterecounterconformetopic") -}}
-    {{- end -}}
-  {{- end -}}
-  */}}
+
   {{- range $id, $value := after 1 $auditfile -}}
   {{- if eq (index . 0) (string (add $key 1)) -}}
     {{- range after $auditmethodology . -}}

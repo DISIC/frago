@@ -33,10 +33,13 @@
       {{- $.context.Scratch.SetInMap "allaudits" (string (add $key 1)) (replace (printf "/%s/%s/accessibility/%s" ($.context.Scratch.Get "mainpath") $project .Name) "//" "/") -}}
       {{- $.context.Scratch.SetInMap "allauditsname" (string (add $key 1)) (replace .Name ".csv" "") -}}
     {{- end -}}
+    {{- if ($.context.Scratch.Get "allaudits") -}}
     {{- $.context.Scratch.Set "auditpath-accessibility" (index ($.context.Scratch.Get "allaudits") (string (len ($.context.Scratch.Get "allaudits")))) -}}
+    {{- else -}}
+    {{- warnf "The folder %s is empty - csv audit file is missing" (printf "/%s/%s/accessibility/" ($.context.Scratch.Get "mainpath") $project) -}}
+    {{- end -}}
   {{- end -}}
   {{/* Condition about structure level for a root generic file */}}
-  {{ (printf "static/%s/%s.csv" $project "accessibility") }}
   {{- if or (fileExists (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) (fileExists (printf "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) -}}
     {{- if eq (len $patharray) 3 -}}
       {{- $.context.Scratch.Set "auditpath-accessibility" (replace (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project) "//" "/") -}}

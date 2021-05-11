@@ -10,7 +10,7 @@
   {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
   {{- $context := . -}}
   {{- range $id, $value := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
-    {{- $.Scratch.SetInMap $project (string $id) (partial "render/conformity" (dict "context" $context "auditfile" ((getCSV "," .)))) -}}
+    {{- $.Scratch.SetInMap $project (string $id) (partial "render/conformity" (dict "context" $context "auditfile" . )) -}}
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}

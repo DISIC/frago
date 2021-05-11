@@ -7,5 +7,5 @@
   <link rel="stylesheet" href="{{ $css.Permalink }}" {{ with $css.Data.Integrity }}integrity="{{ . }}"{{- end -}} media="screen">
 </noscript>
 {{- else -}}
-  {{- warnf "this css doesn't exist" $css -}}
+  {{- warnf "The file css %s doesn't exist" $filepath -}}
 {{- end -}}

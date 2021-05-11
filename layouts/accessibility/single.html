@@ -2,7 +2,7 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray :=  split .Path "/" -}}
-{{- $project :=  (index $patharray 1) -}}
+{{- $project := (index $patharray 1) -}}
 {{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
@@ -18,10 +18,9 @@
 
 <div class="wrapper narrow audit">
 
-{{- if ($.Scratch.Get "auditpath-csv") -}}
-
+{{- if and ($.Scratch.Get "auditpath-csv") (ne ($.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
-{{- $.Scratch.Set "scores" (partialCached "render/conformity" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) .Path) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/conformity" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
 {{- if eq (len (split .Path "/")) 3 -}}
@@ -39,7 +38,6 @@
 
 {{/* Create an array with all pages */}}
 {{- $auditmethodology := (len (intersect (index ($.Scratch.Get "auditfile-csv") 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-
 {{- if eq $auditmethodology 2 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}{{- end -}}
 {{- if eq $auditmethodology 3 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}{{- end -}}
 
@@ -119,7 +117,6 @@
     {{- end -}}
   </ul>
 </div>
-
 
 <h2>Par ordre des critères du référentiel RGAA</h2>
 
@@ -235,7 +232,7 @@
 </div>
 {{- end -}}
 {{- else -}}
-  <p>Le fichier d’audit RGAA est vide pour le moment.</p>
+  <p>Le fichier d’audit RGAA ({{ $.Scratch.Get "auditpath-csv" }}) est vide pour le moment.</p>
 {{- end -}}
 {{- else -}}
   <p>Le fichier d’audit RGAA est manquant : `accessibility.csv`</p>

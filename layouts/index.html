@@ -3,7 +3,7 @@
   {{- if eq .Type "projects" -}}
   {{- partial "templates/projects.html" . -}}
   {{- else -}}
-  {{- partial "templates/projects-list.html" . -}}
+  {{- partialCached "templates/projects-list.html" . -}}
   {{- end -}}
   {{- partial "elements/content.html" .Content -}}
 {{- end -}}
