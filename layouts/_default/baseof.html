@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
-  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité</title>
+  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité{{ with .Site.Title }}{{ . }}{{ end }}</title>
   <script type="module">
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
@@ -26,7 +26,7 @@
   <meta name="robots" content="noindex, nofollow">
   {{- end -}}
 
-  <!-- Favicon -->
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
@@ -35,10 +35,8 @@
 
   <!-- CSS -->
   {{- with resources.Match "**.css" -}}
-  {{/* Loop over all css of the base theme */}}
-	{{- range . -}}
-    {{- if (in . "overgo") -}}{{- $.Scratch.Add "css" (slice .) -}}{{ end }}
-	{{- end -}}
+  {{/* Loop over all css of the base theme called overgo */}}
+	{{- range . -}}{{- if (in . "overgo") -}}{{- $.Scratch.Add "css" (slice .) -}}{{- end -}}{{- end -}}
   {{- end -}}
   {{/* Get the main styles CSS */}}
   {{- $styles := resources.Get "/css/styles.css" -}}
@@ -49,7 +47,8 @@
   {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
-  <!-- Call font files -->
+  <!-- Preload font files -->
+  {{/* Find font files for preloading fonts */}}
   {{- if (fileExists "static/assets/fonts") -}}
   {{ range readDir "static/assets/fonts" }}
   <link rel="preload" href="/assets/fonts/{{ .Name }}" as="font" crossorigin=anonymous>
@@ -59,13 +58,17 @@
   <link rel="preload" href="/assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
   <link rel="preload" href="/assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
   {{ end }}
+  <!-- CSS styles -->
+  <!-- CSS critical -->
   <style id="style-screen">
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>
+  <!-- CSS fonts file -->
   <link rel="stylesheet" href="/assets/css/fonts.css" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="/assets/css/fonts.css" media="screen">
   </noscript>
+  <!-- CSS style file -->
   {{- if (fileExists "static/assets/css") -}}
   {{ range readDir "static/assets/css" }}{{ if ne .Name "fonts.css"}}
   <link rel="stylesheet" href="/assets/css/{{ .Name }}" media="print" onload="this.media='all'" />
@@ -75,6 +78,7 @@
   {{- end -}}
   {{ end }}
   {{- end -}}
+  <!-- RSS -->
   {{- with .OutputFormats.Get "RSS" -}}
   <link href="{{ .RelPermalink }}" rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
   <link href="{{ .RelPermalink }}" rel="feed" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
@@ -90,30 +94,30 @@
   </div>
   <header role="banner">
     <div class="wrapper flex align-items-center padding-baseline">
-          <div class="flex align-items-center">
-            <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}" rel="home" class="site-logo">
-              <picture>
-                <source srcset="/assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
-                <img src="/assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}">
-              </picture>
-              <span class="demarches-titlebar-sitename"></span>
-            </a>
-          </div>
-          <!-- <nav class="nav nav-main">
-            <ul class="list-unstyled list-inline">
-              {{- $currentPage := . -}}
-              {{- range where $.Site.RegularPages "Section" "projects" -}}
-                <li><a class="sidebar-nav-item" href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
-              {{- end -}}
-              {{/* range .Site.Menus.main }}
-                <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{ end }} href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
-              {{- end -*/}}
-            </ul>
-          </nav> -->
+      <div class="flex align-items-center">
+        <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}" rel="home" class="site-logo">
+          <picture>
+            <source srcset="/assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
+            <img src="/assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}">
+          </picture>
+          <span class="demarches-titlebar-sitename"></span>
+        </a>
+      </div><!--
+      <nav class="nav nav-main">
+        <ul class="list-unstyled list-inline">
+          {{- $currentPage := . -}}
+          {{- range where $.Site.RegularPages "Section" "projects" -}}
+            <li><a class="sidebar-nav-item" href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
+          {{- end -}}
+          {{/* range .Site.Menus.main }}
+            <li><a class="sidebar-nav-item" {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{ end }} href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></li>
+          {{- end -*/}}
+        </ul>
+      </nav> -->
     </div>
   </header>
   <main id="main" class="page main">
-  {{ block "main" . }}{{- end -}}
+    {{ block "main" . }}{{- end -}}
   </main>
   {{- partialCached "footer" . -}}
   {{ block "script" . }}{{- end -}}

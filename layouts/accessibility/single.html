@@ -11,11 +11,8 @@
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
-{{- $.Scratch.Set "projectfolders" "" -}}
-{{- if eq (len $patharray) 3 -}}
-  {{- $.Scratch.Set "projectfolders" $project -}}
-{{- end -}}
-{{- $pathimage := printf "./static/images/%s/" ($.Scratch.Get "projectfolders") }}
+{{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 3) $project "") -}}
+
 {{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
 {{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditpath") -}}
 
