@@ -14,7 +14,6 @@
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
-<span class="hide">{{ ($.Scratch.Get "allscores") }}</span>
 <ul class="list-unstyled">
 {{- $.Scratch.Delete "projectfolders" -}}
 {{- range sort $rangepages ".Title" "desc" -}}
@@ -26,8 +25,8 @@
 {{- $accessibilitypath := "" -}}
 {{- $accessibilitypath := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
 {{- $accessibility     := (fileExists $accessibilitypath) -}}
-{{- $quality           := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
-{{- $lighthouse        := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+{{- $quality           := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+{{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   <li>
     <a class="card-inline card-shadow" href="{{ .Permalink }}">
       <h3 class="h4">{{ .Title }}</h3>

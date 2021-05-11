@@ -33,7 +33,7 @@
   <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
   {{/* Range level 1 */}}
   {{- range $key2, $value2 := .criteria -}}
-    {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
+    {{- $key := printf "/%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
     <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}{{ if ge (len (intersect $auditnecessary (slice $key))) 1 }} auditnecessary{{ end }}">
     <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | markdownify }}</h3>
     {{/* Range level 2 */}}

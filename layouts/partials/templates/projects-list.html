@@ -18,7 +18,6 @@
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
-<span class="hide">{{ ($.Scratch.Get "allscores") }}</span>
 <ul class="list-unstyled">
 {{- $.Scratch.Delete "projectfolders" -}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
@@ -26,15 +25,15 @@
 {{- $pathlast  := substr (delimit (last 1 (split .Path "/")) "") -8 -}}
 {{- if or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md") -}}
 {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
-{{- $.Scratch.Set "projectfolders" "/static" -}}
+{{- $.Scratch.Set "projectfolders" "content/audits" -}}
 {{- if eq (len (split .RelPermalink "/")) 4 -}}
-{{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
+{{- $.Scratch.Set "projectfolders" (printf "content/audits/%s" $project) -}}
 {{- end -}}
 {{- $accessibilitypath := "" -}}
 {{- $accessibilitypath := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
 {{- $accessibility     := (fileExists $accessibilitypath) -}}
-{{- $quality           := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
-{{- $lighthouse        := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+{{- $quality           := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+{{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   <li>
     <a class="card-inline card-shadow" href="{{ .Permalink }}">
       <h3 class="h4">{{ .Title }}</h3>

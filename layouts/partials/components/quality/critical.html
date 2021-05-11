@@ -9,7 +9,7 @@
   {{- $page := dict "pagename" .name -}}
   {{- range $idblock, $s := .blocks -}}
   {{- range $iderror, $s:= .errors -}}
-    {{ $id := (printf "%s%s%s" (string $idpage) (string $idblock) (string $iderror)) }}
+    {{ $id := (printf "/%s%s%s" (string $idpage) (string $idblock) (string $iderror)) }}
     {{- if .status -}}
     {{- $s := merge $s $page -}}
     {{- $.context.Scratch.SetInMap "pagesstatus-critical" (string $id) $s -}}

@@ -7,20 +7,20 @@
   {{- $.context.Scratch.Set "mainpath" "static" -}}
 {{- end -}}
 
-{{- if (fileExists (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+{{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
 {{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project)) -}}
+{{- if and $project (not (eq $project "index")) (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
+  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project)) -}}
 {{- end -}}
 
 {{- with ($.context.Scratch.Get "dir") -}}
   {{- range last 1 . -}}
-    {{- if (fileExists (printf "%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") .Name)) -}}
+    {{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") .Name)) -}}
     {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "%s/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") $project .Name)) -}}
+    {{- if and $project (not (eq $project "index")) (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
+      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "/%s/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") $project .Name)) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

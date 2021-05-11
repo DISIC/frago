@@ -63,8 +63,8 @@
     {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}
     {{- $accessibility := fileExists ($.Scratch.Get "accessibility-path") }}
 
-    {{- $quality       := (fileExists (printf "%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
-    {{- $lighthouse    := (fileExists (printf "%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+    {{- $quality       := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
+    {{- $lighthouse    := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
     {{- if ($.Scratch.Get "projectfolders") -}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
