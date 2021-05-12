@@ -4,8 +4,8 @@
 <script>
     {{ if eq .Ordinal 0 }}
     <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
-    <script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
-    <script src="/{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
+    <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+    <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
     const options = {
         height: 450,
         truncateLegends: true,

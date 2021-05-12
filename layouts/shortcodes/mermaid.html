@@ -1,6 +1,6 @@
 {{ if eq .Ordinal 0 }}
 <link rel="preload" href="/{{ (resources.Get "js/mermaid.min.js").Permalink }}" as="script">
-<script src="/{{ (resources.Get "js/mermaid.min.js").Permalink }}"></script>
+<script src="{{ (resources.Get "js/mermaid.min.js").Permalink }}"></script>
 <link rel="stylesheet" href="/{{ (resources.Get "css/mermaid.css").Permalink }}" media="print" onload="this.media='all'" />
 <script>
   mermaid.initialize({

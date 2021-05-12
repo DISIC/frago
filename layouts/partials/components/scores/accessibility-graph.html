@@ -65,8 +65,8 @@
 {{- if gt (len (index (index $scores "critereconformepage") "0")) 3 -}}
 <div id="chartpagecriteres-csv"></div>
 <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
-<script src="/{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
-<script src="/{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
+<script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+<script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
 <script>
     const options = {
         type: 'bar', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
