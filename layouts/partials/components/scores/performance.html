@@ -1,7 +1,7 @@
 {{- $project := .project -}}
 
 {{/* Test if files are in static or in each projets */}}
-{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
+{{- $.context.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
 
 {{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
