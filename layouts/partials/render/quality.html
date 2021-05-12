@@ -1,13 +1,9 @@
 
 {{- $project := .project -}}
-{{- $pathlen := len (split .context.Path "/") -}}
+{{- $pathlen := len (split (path.Dir .Path) "/") -}}
 
 {{/* Test if files are in static or in each projets */}}
-{{- if fileExists (printf "content/audits/%s/quality/" $project) -}}
-  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
-{{- else -}}
-  {{- $.context.Scratch.Set "mainpath" "static" -}}
-{{- end -}}
+{{- $.context.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "quality")) -}}
 
 {{- if (fileExists (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
@@ -42,13 +38,13 @@
     {{- range .errors -}}
       {{- $.context.Scratch.Add "countererrorstotal" 1 -}}
       {{- if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{- end -}}
-      {{- if in .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
-      {{- if in .type "vis" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
-      {{- if in .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
-      {{- if in .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
-      {{- if in .status "criti" }}{{ $.context.Scratch.Add "countererrorscritical" 1 }}{{- end -}}
-      {{- if in .status "important" }}{{ $.context.Scratch.Add "countererrorsimportant" 1 }}{{- end -}}
-      {{- if in .status "moindre" }}{{ $.context.Scratch.Add "countererrorsmedium" 1 }}{{- end -}}
+      {{- if in .type "code" -}}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{- end -}}
+      {{- if in .type "vis" -}}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{- end -}}
+      {{- if in .type "structure" -}}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{- end -}}
+      {{- if in .type "text" -}}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{- end -}}
+      {{- if in .status "criti" -}}{{ $.context.Scratch.Add "countererrorscritical" 1 }}{{- end -}}
+      {{- if in .status "important" -}}{{ $.context.Scratch.Add "countererrorsimportant" 1 }}{{- end -}}
+      {{- if in .status "moindre" -}}{{ $.context.Scratch.Add "countererrorsmedium" 1 }}{{- end -}}
     {{- end -}}
     {{- end -}}
     {{- end -}}

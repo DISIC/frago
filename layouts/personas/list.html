@@ -1,6 +1,7 @@
 {{- define "main" -}}
 {{/* Vars */}}
-{{ $project := (index (split .Path "/") 1) }}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
 {{ if $project }}
 <div class="wrapper">
   <h1>{{ .Title }}</h1>

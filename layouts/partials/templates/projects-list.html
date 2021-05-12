@@ -1,3 +1,5 @@
+{{- $.Scratch.Delete "allscores" -}}
+{{- $.Scratch.Delete "projectfolders" -}}
 {{- if (where .Site.RegularPages "Section" "projects") -}}
 {{- $.Scratch.Set "rangepages" (where .Site.RegularPages "Section" "projects") -}}
 {{- else -}}
@@ -8,29 +10,27 @@
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
 <br>
-{{- $.Scratch.Delete "allscores" -}}
-
+{{/* Build a map with all conformity score for using it later in code */}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
-  {{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
+  {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
   {{- $context := . -}}
-  {{- range $id, $value := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
+  {{- range $id, $value := (index (partialCached "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename) $project) "auditall") -}}
     {{- $.Scratch.SetInMap $project (string $id) (partial "render/conformity" (dict "context" $context "auditfile" . )) -}}
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
 <ul class="list-unstyled">
-{{- $.Scratch.Delete "projectfolders" -}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
-{{- $pathfirst := first 1 (split .Path "/") -}}
-{{- $pathlast  := substr (delimit (last 1 (split .Path "/")) "") -8 -}}
+{{/* Build $pathfirst & $pathlast when projects type page existe <= to remove */}}
+{{- $pathfirst := first 1 (split (path.Dir .Path) "/") -}}
+{{- $pathlast  := substr (path.Base .Path) -8 -}}
 {{- if or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md") -}}
-{{- $project := (replace (index (split .Path "/") 1) ".md" "") -}}
-{{- $.Scratch.Set "projectfolders" "content/audits" -}}
-{{- if eq (len (split .RelPermalink "/")) 4 -}}
-{{- $.Scratch.Set "projectfolders" (printf "content/audits/%s" $project) -}}
-{{- end -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
+{{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) "content/audits" (printf "content/audits/%s" $project)) -}}
+
 {{- $accessibilitypath := "" -}}
-{{- $accessibilitypath := (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
+{{- $accessibilitypath := (index (partialCached "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename) $project) "auditpath") -}}
 {{- $accessibility     := (fileExists $accessibilitypath) -}}
 {{- $quality           := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
 {{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
@@ -39,9 +39,9 @@
       <h3 class="h4">{{ .Title }}</h3>
       {{- if or $accessibility $quality $lighthouse -}}
       <div class="flex flex-gap align-items-center text-center">
-      {{- if $quality -}}<p class="mb-0">{{- partial "components/scores/quality-small" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}</p>{{ end }}
+      {{- if $quality -}}<p class="mb-0">{{- partialCached "components/scores/quality-small" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project) $project)) $project -}}</p>{{ end }}
       {{- if $lighthouse -}}<p class="mb-0">{{- partialCached "components/scores/performance-small" (dict "context" . "project" $project) $project -}}</p>{{ end }}
-      {{- if $accessibility -}}{{- $scoressmall := index (last 1 (sort (index ($.Scratch.Get "allscores") $project))) 0 -}}<p class="mb-0">{{- partial "components/scores/accessibility-small" (dict "context" . "scores" $scoressmall) -}}</p>{{ end }}
+      {{- if $accessibility -}}{{- $scoressmall := index (last 1 (sort (index ($.Scratch.Get "allscores") $project))) 0 -}}<p class="mb-0">{{- partialCached "components/scores/accessibility-small" (dict "context" . "scores" $scoressmall) $project -}}</p>{{ end }}
       </div>
       {{- end -}}
     </a>

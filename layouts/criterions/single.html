@@ -1,7 +1,7 @@
 {{- define "main" -}}
-{{- $patharray :=  split .Path "/" -}}
+{{- $patharray :=  split (path.Dir .Path) "/" -}}
 {{ $.Scratch.Set "guideline" "" }}
-{{- if ge ($patharray) 2 -}}
+{{- if ge ($patharray) 1 -}}
   {{ $.Scratch.Set "guideline" (index $patharray 0) }}
 {{- end -}}
 {{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}

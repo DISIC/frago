@@ -1,5 +1,5 @@
 
-  {{- $project := replace (replace (index (split .Path "/") 1) ".md" "") "_index" "" -}}
+  {{- $project := replace (replace (index (split (path.Dir .Path) "/") 1) ".md" "") "_index" "" -}}
   {{- $context := . -}}
 
   <div class="wrapper narrow">
@@ -48,7 +48,6 @@
     </div>
     {{- end -}}
 
-    {{- $.Scratch.Set "projectfolders" "/static" -}}
     {{- $.Scratch.Set "accessibility-path" false -}}
     {{/* Test if files are in static or in each projets */}}
     {{- if or (fileExists (printf "content/audits/%s/accessibility/" $project)) (fileExists (printf "content/audits/%s/quality/" $project)) (fileExists (printf "content/audits/%s/lighthouse/" $project)) -}}

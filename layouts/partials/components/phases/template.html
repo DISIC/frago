@@ -1,10 +1,10 @@
 {{- if .context.Site.Taxonomies -}}
 {{- if .context.Site.Taxonomies.phases -}}
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") -}}
-{{- $tags := (slice .context.File.BaseFileName (index (last 2 (split .context.Path "/")) 0 )) -}}
+{{- $tags := (slice .context.File.BaseFileName (index (last 2 (split (path.Dir .context.Path) "/")) 0 )) -}}
 {{- $site := .context.Site -}}
 {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
-{{- $.context.Scratch.Set "lenghtcondition" (ge (len (split .context.Path "/")) 2) -}}
+{{- $.context.Scratch.Set "lenghtcondition" (ge (len (split (path.Dir .context.Path) "/")) 2) -}}
 {{- $.context.Scratch.Set "isphases" false -}}
 {{- $.context.Scratch.Set "phases" .context.Site.Taxonomies.phases -}}
 

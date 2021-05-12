@@ -1,10 +1,5 @@
 {{- $project := .project -}}
-
-{{- if fileExists (printf "content/audits/%s/lighthouse/" $project) -}}
-  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
-{{- else -}}
-  {{- $.context.Scratch.Set "mainpath" "static" -}}
-{{- end -}}
+{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
 
 {{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}

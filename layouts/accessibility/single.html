@@ -1,8 +1,9 @@
 {{- define "title" -}}Audit Accessibilité {{ (index (split .Path "/") 0) }}{{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
-{{- $patharray :=  split .Path "/" -}}
-{{- $project := (index $patharray 1) -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
+{{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}
 {{- $context := . -}}
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
@@ -10,8 +11,6 @@
 {{- $.Scratch.Set "glossaire" (printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline")) -}}
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
-
-{{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 3) $project "") -}}
 
 {{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
 {{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditpath") -}}
@@ -23,7 +22,7 @@
 {{- $.Scratch.Set "scores" (partialCached "render/conformity" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
-{{- if eq (len (split .Path "/")) 3 -}}
+{{- if eq (len $patharray) 1 -}}
 <p class="no-print" hidden>⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
 <h1>{{ with .Title }}{{ . }}{{ else }}Audit Accessibilité{{ end }}</h1>
@@ -235,7 +234,7 @@
   <p>Le fichier d’audit RGAA ({{ $.Scratch.Get "auditpath-csv" }}) est vide pour le moment.</p>
 {{- end -}}
 {{- else -}}
-  <p>Le fichier d’audit RGAA est manquant : `accessibility.csv`</p>
+  <p>Le fichier d’audit RGAA est manquant : {{ $.Scratch.Get "auditpath-csv" }}.</p>
 {{- end -}}
 <hr>
 {{- $.Scratch.Set "organisation" "" -}}

@@ -1,5 +1,5 @@
 {{- $project := .project -}}
-{{- $patharray := split .context.Path "/" -}}
+{{- $patharray := split (path.Dir .context.Path) "/" -}}
 {{- $.context.Scratch.Delete "audit" -}}
 {{- $.context.Scratch.Delete "auditpath-accessibility" -}}
 {{- $.context.Scratch.Delete "allaudits" -}}
@@ -8,15 +8,11 @@
 {{- $.context.Scratch.Delete "mainpath" -}}
 
 {{/* Test if files are in static or in each projets */}}
-{{- if fileExists (printf "content/audits/%s/accessibility/" $project) -}}
-  {{- $.context.Scratch.Set "mainpath" "content/audits" -}}
-{{- else -}}
-  {{- $.context.Scratch.Set "mainpath" "static" -}}
-{{- end -}}
+{{- $.context.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "accessibility")) -}}
 
 {{- if .datafilename -}}
   {{/* Condition about structure level */}}
-  {{- if eq (len $patharray) 3 -}}
+  {{- if eq (len $patharray) 2 -}}
   {{- $.context.Scratch.Set "auditpath-accessibility" (printf "/%s/%s/%s.csv" ($.context.Scratch.Get "mainpath") $project .datafilename) -}}
   {{- else -}}
   {{- $.context.Scratch.Set "auditpath-accessibility" (printf "/%s/%s.csv" ($.context.Scratch.Get "mainpath") .datafilename) -}}
@@ -41,7 +37,7 @@
   {{- end -}}
   {{/* Condition about structure level for a root generic file */}}
   {{- if or (fileExists (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) (fileExists (printf "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) -}}
-    {{- if eq (len $patharray) 3 -}}
+    {{- if eq (len $patharray) 2 -}}
       {{- $.context.Scratch.Set "auditpath-accessibility" (replace (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project) "//" "/") -}}
     {{- else -}}
     {{- $.context.Scratch.Set "auditpath-accessibility" "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") -}}

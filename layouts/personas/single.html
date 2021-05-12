@@ -1,9 +1,9 @@
 {{- define "main" -}}
 {{/* Vars */}}
-{{ $project := (index (split .Path "/") 1) }}
-
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
 {{/* Condition about structure level */}}
-{{- if eq (len (split .Path "/")) 3 -}}
+{{- if eq (len (split (path.Dir .Path) "/")) 2 -}}
 {{- $.Scratch.Set "auditfile" (getJSON (printf "static/%s/personas.json" $project)) -}}
 {{- else -}}
 {{- $.Scratch.Set "auditfile" (getJSON "static/personas.json") -}}

@@ -4,7 +4,7 @@
 {{- $.context.Scratch.Set "linksingle" "" -}}
 
 {{/* Set the audit file */}}
-{{- if eq (len (split .Path "/")) 3 -}}
+{{- if eq (len (split (path.Dir .Path) "/")) 2 -}}
 {{- $.context.Scratch.Set "element" ($section | intersect $taxonomy) -}}
 {{- else -}}
 {{- $.context.Scratch.Set "element" ($section) -}}
