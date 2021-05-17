@@ -179,14 +179,14 @@
 
 {{- define "script" -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "benchmark") }}
-{{- $csslightbox  := resources.Get "js/simple-lightbox.min.js" -}}
-{{- $csshighlight := resources.Get "js/highlight.min.js" -}}
+{{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
+{{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
 {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
 {{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
 {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/qualityBundle.css" -}}
 {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/qualityBundle.js" -}}
 <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
-<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+<script type="text/javascript" src="{{ $js.Permalink }}"></script>
 {{- range ($.Scratch.Get "auditfile") -}}
   {{- range $idpage, $p := .pages -}}
   {{- $name := .name -}}
