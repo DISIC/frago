@@ -9,11 +9,11 @@
   <li class="card card-shadow card-animate">
     {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-    {{- if .Params.tags -}}{{ range .Params.tags }}<a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}
+    {{- if .Params.tags -}}{{ range .Params.tags }}<a href="{{ $.Site.BaseURL }}/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}
   </li>
 {{- end -}}
 </ul>
-<a href="/{{ (.Get "section") }}/" class="btn secondary">Voir les {{ with .Site.GetPage (.Get "section") }}{{ lower .Title }}{{ end }}</a>
+<a href="{{ $.Site.BaseURL }}/{{ (.Get "section") }}/" class="btn secondary">Voir les {{ with .Site.GetPage (.Get "section") }}{{ lower .Title }}{{ end }}</a>
 </div>
 {{- .Inner -}}
 </section>

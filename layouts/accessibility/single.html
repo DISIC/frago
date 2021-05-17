@@ -1,4 +1,4 @@
-{{- define "title" -}}Audit Accessibilité {{ (index (split .Path "/") 0) }}{{- end -}}
+{{- define "title" -}}Audit Accessibilité {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
@@ -8,7 +8,7 @@
 {{- $.Scratch.Set "guideline" "rgaa4.1" -}}
 {{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
 {{- $.Scratch.Set "criteresfile" (index $.Site.Data ($.Scratch.Get "guideline")).criteres.topics -}}
-{{- $.Scratch.Set "glossaire" (printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline")) -}}
+{{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" $.Site.BaseURL ($.Scratch.Get "guideline")) -}}
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
@@ -23,7 +23,7 @@
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
 {{- if eq (len $patharray) 1 -}}
-<p class="no-print" hidden>⬅ <a href="/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
 <h1>{{ with .Title }}{{ . }}{{ else }}Audit Accessibilité{{ end }}</h1>
 
@@ -272,7 +272,7 @@
   <ul>
     {{ if ($.Scratch.Get "scores") }}<li>{{ (index ($.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
-    {{- if ($.Scratch.Get "auditpath-csv") -}}<li> Accès à la grille d’audit RGAA : <a href="{{ replace ($.Scratch.Get "auditpath-csv") "static" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
+    {{- if ($.Scratch.Get "auditpath-csv") -}}<li> Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.Scratch.Get "auditpath-csv") "/static/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
   {{- else -}}

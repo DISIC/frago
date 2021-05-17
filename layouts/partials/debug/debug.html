@@ -90,8 +90,7 @@
 {{- $checka11y := resources.Get "/css/checka11y.css" -}}
 {{- $debug := slice $debug $checka11y | resources.Concat "/assets/js/debug.css" -}}
 <link rel="stylesheet" href="{{ $debug.Permalink }}" media="screen">
-<!-- <script type="text/javascript" src="https://khan.github.io/tota11y/dist/tota11y.min.js"></script> -->
-<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+<script type="text/javascript" src="{{ $js.Permalink }}"></script>
 <script>
   let cls = 0;
 

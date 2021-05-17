@@ -7,9 +7,9 @@
 
 <div class="wrapper narrow">
   {{- if eq (len $patharray) 2 -}}
-  <p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+  <p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
   {{- end -}}
-  <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+  <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL }}/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
   {{- partial "elements/content.html" .Content -}}
   {{/* Vars */}}
 

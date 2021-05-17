@@ -1,7 +1,7 @@
 {{- if .context.Site.Taxonomies -}}
 {{- if .context.Site.Taxonomies.phases -}}
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") -}}
-{{- $tags := (slice .context.File.BaseFileName (index (last 2 (split (path.Dir .context.Path) "/")) 0 )) -}}
+{{- $tags := (slice .context.File.BaseFileName (index (last 2 (split (path.Dir .context.Path) "/")) 1 )) -}}
 {{- $site := .context.Site -}}
 {{- $projecttaxonomy := where $site.Pages ".Params.tags" "intersect" $tags -}}
 {{- $.context.Scratch.Set "lenghtcondition" (ge (len (split (path.Dir .context.Path) "/")) 2) -}}

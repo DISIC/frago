@@ -6,7 +6,7 @@
         <ul class="list-unstyled list-inline">
           {{- $currentPage := . -}}
           {{- range .Site.Menus.footer -}}
-          <li>&nbsp;<a class="sidebar-nav-item" href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>&nbsp;</li>
+          <li>&nbsp;<a class="sidebar-nav-item" href="{{ $.Site.BaseURL}}{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>&nbsp;</li>
           {{- end -}}
         </ul>
       </div>

@@ -1,10 +1,10 @@
 {{- $.Scratch.Set "countries" slice -}}
 {{ $project := .Get "project" }}
-{{- $.Scratch.Set "auditpath" "static/similary.json" -}}
+{{- $.Scratch.Set "auditpath" "/static/similary.json" -}}
 {{- if $project -}}
 {{- $.Scratch.Set "projectfolders" (printf "/static/%s" $project) -}}
-{{- $.Scratch.Set "auditpath" (printf "static/%s/similary.json" $project) -}}
-{{- end -}}
+{{- $.Scratch.Set "auditpath" (printf "/static/%s/similary.json" $project) -}}
+{{- end -}}sss
 {{- range sort (index (getJSON ($.Scratch.Get "auditpath"))) "country" "asc" -}}
     {{- $.Scratch.Add "countries" (slice .country) -}}
 {{- end -}}

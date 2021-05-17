@@ -13,8 +13,8 @@
   {{ if or .PrevInSection .NextInSection}}
   {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "pagination") }}
   <div class="grid">
-  {{with .PrevInSection}}<span class="pagination--prev"><a href="{{.RelPermalink}}" class="pagination--item">{{.Title}}</a></span>{{- end -}}
-  {{with .NextInSection}}<span class="pagination--next text-right"><a href="{{.RelPermalink}}" class="pagination--item">{{.Title}}</a></span>{{- end -}}
+  {{with .PrevInSection}}<span class="pagination--prev"><a href="{{.Permalink}}" class="pagination--item">{{.Title}}</a></span>{{- end -}}
+  {{with .NextInSection}}<span class="pagination--next text-right"><a href="{{.Permalink}}" class="pagination--item">{{.Title}}</a></span>{{- end -}}
   </div>
   {{- end -}}
 
@@ -28,7 +28,7 @@
     <div class="card card-shadow">
       <h3>{{.Title}}</h3>
       <p>{{ .Params.description }}</p>
-      <p><a href="{{ .RelPermalink }}" class="btn secondary">En savoir plus</a></p>
+      <p><a href="{{ .Permalink }}" class="btn secondary">En savoir plus</a></p>
     </div>
   {{- end -}}
   </div>

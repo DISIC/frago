@@ -28,10 +28,10 @@
 {{- $.Scratch.Set "hassection" .Sections -}}
 {{- range $paginator.Pages -}}
   <div>
-    <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
     <p style="display:block;margin-top:-1.5em;">
       {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
-      {{ if $.Scratch.Get "hassection" }}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{ end }}{{ end }}
+      {{ if $.Scratch.Get "hassection" }}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="{{ $.Site.BaseURL }}/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{ end }}{{ end }}
     </p>
     <p>{{ .Params.summary }}</p>
   </div>

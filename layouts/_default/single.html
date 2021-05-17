@@ -8,7 +8,7 @@
   <ul>
   {{- range . -}}
     {{- range $id, $p := where $.Site.Data.directory "name" . -}}
-      {{ if . }}<li><a href="/directory#{{ .name | urlize }}">{{ .name }}{{ if . }}</a>{{ end }}{{ if .ministry }} - {{ .ministry }}{{ end }}{{ if not (eq .job "") }} - {{ .job }}{{ end }}</li>{{ end }}
+      {{ if . }}<li><a href="{{ $.Site.BaseURL }}/directory#{{ .name | urlize }}">{{ .name }}{{ if . }}</a>{{ end }}{{ if .ministry }} - {{ .ministry }}{{ end }}{{ if not (eq .job "") }} - {{ .job }}{{ end }}</li>{{ end }}
     {{- end -}}
   {{- end -}}
   </ul>

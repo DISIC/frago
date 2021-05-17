@@ -10,15 +10,15 @@
 {{- end -}}
 
 <div class="wrapper">
-<p class="no-print" hidden>⬅ <a href="/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
-<h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+<h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL }}/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{/* List the data for this files with range personas files on the project */}}
 {{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}
   {{ $name := .name | urlize }}
   <figure class="rounded">
   {{ if (fileExists "/static/images/personas") }}
   {{- range (readDir "/static/images/personas") -}}
-    {{ if eq $name (replace .Name ".png" "") }}<img class="full" src="/images/personas/{{ .Name }}">{{ end }}
+    {{ if eq $name (replace .Name ".png" "") }}<img class="full" src="{{ $.Site.BaseURL }}/images/personas/{{ .Name }}">{{ end }}
   {{- end -}}
   {{- end -}}
   </figure>

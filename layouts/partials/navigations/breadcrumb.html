@@ -3,7 +3,7 @@
     {{ $.Scratch.Set "index" $i }}{{- end -}}
     <li class="breadcrumb-item">
       {{- if not (eq ($.Scratch.Get "index") 1) -}}
-        <a href="/" data-i18n="home">
+        <a href="{{ $.Site.BaseURL }}/" data-i18n="home">
       {{- end -}}
       {{ i18n "home" }}
       {{ if not (eq ($.Scratch.Get "index") 0) }}
@@ -13,7 +13,7 @@
   {{- range $i, $e := (split .URL "/") -}}
       {{- if (and (gt (len $e ) 1) (lt $i 2)) -}}
           <li class="breadcrumb-item">
-              <a href="/{{ . }}">
+              <a href="{{ $.Site.BaseURL }}/{{ . }}">
                 {{ humanize $e }}
               </a>
           </li>
