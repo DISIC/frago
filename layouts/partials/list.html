@@ -1,11 +1,11 @@
-{{- with .context.File -}}{{- $.context.Scratch.Set "tags" (slice .BaseFileName) -}}{{- end -}}
+{{- $patharray := split (path.Dir .context.Path) "/" -}}
+{{- $project := index $patharray 1 -}}
 {{- $section := where .context.Site.RegularPages "Section" .section -}}
-{{- $taxonomy := where .context.Site.Pages ".Params.tags" "intersect" ($.context.Scratch.Get "tags") -}}
-{{- $.context.Scratch.Set "linksingle" "" -}}
-
 {{/* Set the audit file */}}
-{{- if eq (len (split (path.Dir .Path) "/")) 2 -}}
-{{- $.context.Scratch.Set "element" ($section | intersect $taxonomy) -}}
+{{- if eq (len $patharray) 2 -}}
+{{- range $id, $value := $section -}}
+  {{- if in .Path $project -}}{{- $.context.Scratch.SetInMap "element" (string $id) . -}}{{- end -}}
+{{- end -}}
 {{- else -}}
 {{- $.context.Scratch.Set "element" ($section) -}}
 {{- end -}}
@@ -16,11 +16,10 @@
 <h2>{{ with .context.Site.GetPage .section }}{{ .Title }}{{ end }}</h2>
 <br>
 <ul class="grid">
-{{- range first 4 ($.context.Scratch.Get "element") -}}
+{{- range first 4 (sort ($.context.Scratch.Get "element")) -}}
   <li class="card card-shadow card-animate">
     {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index .Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
     <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-    {{- if not $taxonomy -}}{{- if .Params.tags -}}{{ range .Params.tags }}<a href="/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}{{ end }}
   </li>
   {{- $.context.Scratch.Set "linksingle" .RelPermalink -}}
 {{- end -}}
