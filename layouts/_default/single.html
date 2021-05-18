@@ -1,6 +1,6 @@
 {{- define "main" -}}
 {{- if .Content -}}
-<div class="wrapper">
+<div class="wrapper narrow">
   <p class="no-print hide">⬅ <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
   <h1>{{ .Title }}</h1>
   {{ with .Params.persons }}
