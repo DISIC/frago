@@ -11,7 +11,7 @@
         {
           "criterium": {
             "number": 2,
-            "title": "Certaines [images de décoration](#image-de-decoration) ne sont pas correctement ignorée par les technologies d’assistance."
+            "title": "Certaines [images de décoration](#image-de-decoration) ne sont pas correctement ignorées par les technologies d’assistance."
           }
         },
         {
@@ -41,19 +41,19 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Certaines images [porteuses d’information](#image-porteuse-d-information) ayant une [description détaillée](#description-detaillee-image), on une cette description non pertinente."
+            "title": "Certaines images [porteuses d’information](#image-porteuse-d-information) ayant une [description détaillée](#description-detaillee-image), ont une description non pertinente."
           }
         },
         {
           "criterium": {
             "number": 8,
-            "title": "Certaines [images texte](#image-texte) [porteuses d’information](#image-porteuse-d-information), en l’absence d’un [mécanisme de remplacement](#mecanisme-de-remplacement), ne sont pas remplacée par du [texte stylé](#texte-style)."
+            "title": "Certaines [images texte](#image-texte) [porteuses d’information](#image-porteuse-d-information), en l’absence d’un [mécanisme de remplacement](#mecanisme-de-remplacement), ne sont pas remplacées par du [texte stylé](#texte-style)."
           }
         },
         {
           "criterium": {
             "number": 9,
-            "title": "Certaines [légendes](#legende) d’image ne sont pas correctement reliée à l’image correspondante."
+            "title": "Certaines [légendes](#legende) d’image ne sont pas correctement reliées à l’image correspondante."
           }
         }
       ]
@@ -64,13 +64,13 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Certains cadres n’ont pas de cadre."
+            "title": "Certains cadres n’ont pas de titre de cadre."
           }
         },
         {
           "criterium": {
             "number": 2,
-            "title": "Certains cadres ayant un titre de cadre, ont une titre de cadre non pertinent."
+            "title": "Certains cadres ayant un titre de cadre, ont un titre de cadre non pertinent."
           }
         }
       ]
@@ -134,7 +134,7 @@
         {
           "criterium": {
             "number": 6,
-            "title": "Certains [médias temporels](#media-temporel-type-son-video-et-synchronise) pré-enregistrés ayant une [audiodescription](#audiodescription-synchronisee-media-temporel) synchronisée, une audiodescription non pertinente."
+            "title": "Certains [médias temporels](#media-temporel-type-son-video-et-synchronise) pré-enregistrés ayant une [audiodescription](#audiodescription-synchronisee-media-temporel) synchronisée, ont une audiodescription non pertinente."
           }
         },
         {
@@ -170,7 +170,7 @@
         {
           "criterium": {
             "number": 12,
-            "title": "La consultation de certains [médias non temporel](#media-non-temporel) ne sont pas [contrôlables par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
+            "title": "Certains [médias non temporel](#media-non-temporel) ne sont pas [contrôlables par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
           }
         },
         {
@@ -193,25 +193,25 @@
         {
           "criterium": {
             "number": 2,
-            "title": "Pour certains [tableaux de données complexe](#tableau-de-donnees-complexe) ayant un [résumé](#resume), celui-ci non pertinent."
+            "title": "Pour certains [tableaux de données complexe](#tableau-de-donnees-complexe) ayant un [résumé](#resume), celui-ci est non pertinent."
           }
         },
         {
           "criterium": {
             "number": 3,
-            "title": "Pour certains [tableaux de mise en forme](#tableau-de-mise-en-forme), le contenu linéarisé ne sont pas compréhensible."
+            "title": "Pour certains [tableaux de mise en forme](#tableau-de-mise-en-forme), le contenu linéarisé n’est pas compréhensible."
           }
         },
         {
           "criterium": {
             "number": 4,
-            "title": "Pour certains [tableaux de données ayant un titre](#tableau-de-donnees-ayant-un-titre), le titre ne sont pas correctement [associé au tableau de données](#passage-de-texte-associe-au-tableau-de-donnees)."
+            "title": "Pour certains [tableaux de données ayant un titre](#tableau-de-donnees-ayant-un-titre), le titre n’est pas correctement [associé au tableau de données](#passage-de-texte-associe-au-tableau-de-donnees)."
           }
         },
         {
           "criterium": {
             "number": 5,
-            "title": "Pour certains [tableaux de données ayant un titre](#tableau-de-donnees-ayant-un-titre), celui-ci non pertinent."
+            "title": "Pour certains [tableaux de données ayant un titre](#tableau-de-donnees-ayant-un-titre), celui-ci est non pertinent."
           }
         },
         {
@@ -223,7 +223,7 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certains [tableaux de données](#tableau-de-donnees), la technique appropriée permettant d’associer certains cellule avec ses [en-têtes](#en-tete-de-colonne-ou-de-ligne) ne sont pas utilisée."
+            "title": "Pour certains [tableaux de données](#tableau-de-donnees), la technique appropriée permettant d’associer certaines cellules avec ses [en-têtes](#en-tete-de-colonne-ou-de-ligne) n’est pas utilisée."
           }
         },
         {
@@ -246,7 +246,7 @@
         {
           "criterium": {
             "number": 2,
-            "title": "Pour certaines pages web, certains [liens](#lien) n’ont pas un [intitulé](#intitule-ou-nom-accessible-de-lien)."
+            "title": "Pour certaines pages web, certains [liens](#lien) n’ont pas d’[intitulé](#intitule-ou-nom-accessible-de-lien)."
           }
         }
       ]
@@ -257,13 +257,13 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Certains [scripts](#script) ne sont pas [compatible avec les technologies d’assistance](#compatible-avec-les-technologies-d-assistance)."
+            "title": "Certains [scripts](#script) ne sont pas [compatibles avec les technologies d’assistance](#compatible-avec-les-technologies-d-assistance)."
           }
         },
         {
           "criterium": {
             "number": 2,
-            "title": "Pour certains [scripts](#script) ayant une alternative, ont une alternative non pertinente."
+            "title": "Pour certains [scripts](#script) ayant une alternative, l’alternative est non pertinente."
           }
         },
         {
@@ -292,7 +292,7 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Certaines pages web ne sont pas définie par un [type de document](#type-de-document)."
+            "title": "Certaines pages web ne sont pas définies par un [type de document](#type-de-document)."
           }
         },
         {
@@ -328,13 +328,13 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certaines pages web, certains [changement de langue](#changement-de-langue) n’est pas indiqué dans le code source."
+            "title": "Pour certaines pages web, certains [changements de langue](#changement-de-langue) n’est pas indiqué dans le code source."
           }
         },
         {
           "criterium": {
             "number": 8,
-            "title": "Pour certaines pages web, le code de langue de certains [changement de langue](#changement-de-langue) n’est pas valide et pertinent."
+            "title": "Pour certaines pages web, le code de langue de certains [changements de langue](#changement-de-langue) n’est pas valide et pertinent."
           }
         },
         {
@@ -375,7 +375,7 @@
         {
           "criterium": {
             "number": 4,
-            "title": "Pour certaines pages web, certains citation ne sont pas correctement indiquée."
+            "title": "Pour certaines pages web, certaines citations ne sont pas correctement indiquées."
           }
         }
       ]
@@ -386,7 +386,7 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Dans le site web, des [feuilles de styles](#feuille-de-style) sont-elles utilisées pour contrôler la [présentation de l’information](#presentation-de-l-information)."
+            "title": "Dans le site web, des [feuilles de styles](#feuille-de-style) ne sont utilisées pour contrôler la [présentation de l’information](#presentation-de-l-information)."
           }
         },
         {
@@ -410,19 +410,19 @@
         {
           "criterium": {
             "number": 5,
-            "title": "Pour certaines pages web, les déclarations CSS de couleurs de fond d’élément et de police ne sont correctement utilisées."
+            "title": "Pour certaines pages web, les déclarations CSS de couleurs de fond d’élément et de police ne sont pas correctement utilisées."
           }
         },
         {
           "criterium": {
             "number": 6,
-            "title": "Pour certaines pages web, certains [liens dont la nature ne sont pas évidentes](#lien-dont-la-nature-n-est-pas-evidente) ne sont pas visibles par rapport au texte environnant."
+            "title": "Pour certaines pages web, certains [liens dont la nature n’est pas évidentes](#lien-dont-la-nature-n-est-pas-evidente) ne sont pas visibles par rapport au texte environnant."
           }
         },
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certaines pages web, pour certains éléments recevant le focus, la [prise de focus](#prise-de-focus) ne n’est pas visible."
+            "title": "Pour certaines pages web, pour certains éléments recevant le focus, la [prise de focus](#prise-de-focus) n’est pas visible."
           }
         },
         {
@@ -440,7 +440,7 @@
         {
           "criterium": {
             "number": 10,
-            "title": "Pour certaines pages web, certaines informations sont donnée [par la forme, taille ou position](#indication-donnee-par-la-forme-la-taille-ou-la-position) uniquement."
+            "title": "Pour certaines pages web, certaines informations sont données [par la forme, taille ou position](#indication-donnee-par-la-forme-la-taille-ou-la-position) uniquement."
           }
         },
         {
@@ -481,13 +481,13 @@
         {
           "criterium": {
             "number": 2,
-            "title": "Certaines [étiquettes](#etiquette-de-champ-de-formulaire) associée à un [champ de formulaire](#champ-de-saisie-de-formulaire) sont non pertinentes."
+            "title": "Certaines [étiquettes](#etiquette-de-champ-de-formulaire) associées à un [champ de formulaire](#champ-de-saisie-de-formulaire) ne sont pas pertinentes."
           }
         },
         {
           "criterium": {
             "number": 3,
-            "title": "Pour certains formulaires, certaines [étiquettes](#etiquette-de-champ-de-formulaire) associées à un [champ de formulaire](#champ-de-saisie-de-formulaire) ayant la même fonction et répété plusieurs fois dans une même page ou dans un [ensemble de pages](#ensemble-de-pages) ne sont pas [cohérentes](#etiquettes-coherentes)."
+            "title": "Pour certains formulaires, certaines [étiquettes](#etiquette-de-champ-de-formulaire) associées à un [champ de formulaire](#champ-de-saisie-de-formulaire) ayant la même fonction et répétées plusieurs fois dans une même page ou dans un [ensemble de pages](#ensemble-de-pages) ne sont pas [cohérentes](#etiquettes-coherentes)."
           }
         },
         {
@@ -511,7 +511,7 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certains formulaires, certains [légendes](#legende) associées à un regroupement de champs de même nature sont non pertinente."
+            "title": "Pour certains formulaires, certaines [légendes](#legende) associées à un regroupement de champs de même nature ne sont pas pertinente."
           }
         },
         {
@@ -523,7 +523,7 @@
         {
           "criterium": {
             "number": 9,
-            "title": "Pour certains formulaires, certains intitulés de certains boutons sont non pertinents."
+            "title": "Pour certains formulaires, certains intitulés de certains boutons ne sont pas pertinents."
           }
         },
         {
@@ -558,7 +558,7 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Certains [ensembles de pages](#ensemble-de-pages) ne dispose pas de deux [systèmes de navigation](#systeme-de-navigation) différents, au moins."
+            "title": "Certains [ensembles de pages](#ensemble-de-pages) ne disposent pas de deux [systèmes de navigation](#systeme-de-navigation) différents, au moins."
           }
         },
         {
@@ -576,7 +576,7 @@
         {
           "criterium": {
             "number": 4,
-            "title": "Pour certains [ensembles de pages](#ensemble-de-pages), la [page « plan du site »](#page-plan-du-site) ne sont pas atteignable de manière identique."
+            "title": "Pour certains [ensembles de pages](#ensemble-de-pages), la [page « plan du site »](#page-plan-du-site) ne sont pas atteignables de manière identique."
           }
         },
         {
@@ -659,7 +659,7 @@
         {
           "criterium": {
             "number": 6,
-            "title": "Pour certaines pages web, pour certains contenus cryptiques (art ASCII, émoticon, syntaxe cryptique) ayant une alternative, cette alternative est non pertinente."
+            "title": "Pour certaines pages web, pour certains contenus cryptiques (art ASCII, émoticon, syntaxe cryptique) ayant une alternative, cette alternative n’est pas pertinente."
           }
         },
         {
