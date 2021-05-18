@@ -1,5 +1,4 @@
 function hslToHex(hsl) {
-
   var h = hsl[0]
       s = hsl[1]
       l = hsl[02]

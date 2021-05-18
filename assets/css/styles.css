@@ -490,6 +490,7 @@ footer a {
 
 .dot {
   display: inline-block;
+  margin-right: 3px;
   clip: rect(0 0 0 0);
   width: 20px;
   height: 20px;

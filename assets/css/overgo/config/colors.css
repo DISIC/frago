@@ -67,10 +67,10 @@
   --color-score-bad: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
   --color-score-verybad: hsl(var(--base-red), 55%, calc(var(--base-light) - 5%));
 
-  --color-graph-primary: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
-  --color-graph-secondary: hsl(var(--base-green), 25%, calc(var(--base-light) + 20%));
-  --color-graph-tertiary: hsl(var(--base-primary), var(--base-sat), var(--base-light));
-  --color-graph-quartenary: hsl(var(--base-secondary), var(--base-sat), var(--base-light));
+  --color-graph-primary: hsl(var(--base-primary), var(--base-sat), var(--base-light));
+  --color-graph-quartenary: hsl(var(--base-green), 25%, calc(var(--base-light) + 20%));
+  --color-graph-tertiary: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
+  --color-graph-secondary: hsl(var(--base-secondary), var(--base-sat), var(--base-light));
 }
 
 @media (prefers-color-scheme: dark) {
