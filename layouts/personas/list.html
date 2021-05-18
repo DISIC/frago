@@ -2,44 +2,46 @@
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project := index $patharray 1 -}}
-{{ if $project }}
+{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "personas.json")) -}}
+{{- if $project -}}
 <div class="wrapper">
   <h1>{{ .Title }}</h1>
   {{ partial "elements/content.html" .Content }}
   <div class="grid">
   {{/* Range all regular pages */}}
+  {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
   {{- range .RegularPages -}}
     {{/* Range the personas file in the project and find/list the pages on `content/personas/` directory */}}
-    {{- range where (getJSON (printf "static/%s/personas.json" $project)) "name" "eq" .Title -}}
+    {{- range where (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) "name" "eq" .Title -}}
       {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project) }}
     {{- end -}}
   {{- end -}}
   </div>
 </div>
-{{ else }}
+{{- else -}}
 <!--$paginator-->
-{{.Scratch.Set "Paginator" (.Paginate .Pages) }}
+{{ .Scratch.Set "Paginator" (.Paginate .Pages) }}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
 <div class="wrapper narrow">
-<h1>{{ .Title }}</h1>
-{{ partial "elements/content.html" .Content }}
-{{- $.Scratch.Set "linksingle" .RelPermalink -}}
-{{- $.Scratch.Set "hassection" .Sections -}}
-{{- range $paginator.Pages -}}
-  <div>
-    <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
-    <p style="display:block;margin-top:-1.5em;">
-      {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
-      {{ if $.Scratch.Get "hassection" }}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="{{ $.Site.BaseURL }}/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{ end }}{{ end }}
-    </p>
-    <p>{{ .Params.summary }}</p>
-  </div>
-  <hr>
-{{- end -}}
-<!--pagination-->
-<br>
-{{- partial "navigations/paginator.html" . -}}
+  <h1>{{ .Title }}</h1>
+  {{ partial "elements/content.html" .Content }}
+  {{- $.Scratch.Set "linksingle" .RelPermalink -}}
+  {{- $.Scratch.Set "hassection" .Sections -}}
+  {{- range $paginator.Pages -}}
+    <div>
+      <h2 {{ with .Params.slug }} class="icon {{ . }}"{{ end }}><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+      <p class="d-block">
+        {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
+        {{ if $.Scratch.Get "hassection" }}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="{{ $.Site.BaseURL }}/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{ end }}{{ end }}
+      </p>
+      <p>{{ .Params.summary }}</p>
+    </div>
+    <hr>
+  {{- end -}}
+  <!--pagination-->
+  <br>
+  {{- partial "navigations/paginator.html" . -}}
 </div>
 {{- end -}}
 {{- end -}}

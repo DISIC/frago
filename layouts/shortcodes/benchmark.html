@@ -1,5 +1,8 @@
 {{- $src := .Get "src" -}}
 {{- $datafile := .Get "datafile" -}}
+{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $datafile "type" "similary.json")) -}}
+{{- $filepath := (printf "%s/%s/similary.json" ($.Scratch.Get "mainpath") $datafile) -}}
+{{- if fileExists $filepath -}}
 {{- if eq .Ordinal 0 -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "benchmark") }}
 <link rel="preload" href="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}" as="script">
@@ -7,7 +10,7 @@
 <link rel="stylesheet" href="/{{ (resources.Get "css/simple-lightbox.min.css").Permalink }}" media="print" onload="this.media='all'" />
 {{- end -}}
 <div class="benchmark grid grid-4 lightbox-{{ .Ordinal }}">
-{{ range sort (getJSON (printf "static/%s/similary.json" $datafile)) "country" "asc" }}
+{{ range sort (getJSON $filepath) "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}
     {{- $pathfile :=(printf "/static/images/%s/benchmark/" $datafile) -}}
     {{- if (fileExists $pathfile) -}}
@@ -18,4 +21,7 @@
 {{- end -}}
 </div>
 <script>var {{ printf "$gallery%s" (replace ( .Ordinal | anchorize) "-" "") | safeJS }} = new SimpleLightbox('.lightbox-{{ .Ordinal }} figure a', {});</script>
+{{- else -}}
+<p>Le fichier {{ (printf "`%s`" $filepath) | markdownify }} est manquant.</p>
+{{- end -}}
 {{- .Inner -}}
