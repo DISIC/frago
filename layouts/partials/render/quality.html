@@ -8,7 +8,7 @@
 {{- if (fileExists (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
 {{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "static/%s/quality/" $project) -}}
+{{- if and $project (not (eq $project "index")) (printf "/%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project) -}}
   {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project)) -}}
 {{- end -}}
 

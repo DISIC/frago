@@ -48,6 +48,7 @@
 {{- end -}}
 
 {{- $.context.Scratch.SetInMap "audit" "auditpath" ($.context.Scratch.Get "auditpath-accessibility") -}}
+{{- $.context.Scratch.SetInMap "audit" "auditmainpath" ($.context.Scratch.Get "mainpath") -}}
 {{- $.context.Scratch.SetInMap "audit" "auditall" ($.context.Scratch.Get "allaudits") -}}
 {{- $.context.Scratch.SetInMap "audit" "auditallname" ($.context.Scratch.Get "allauditsname") -}}
 {{- return ($.context.Scratch.Get "audit") -}}
