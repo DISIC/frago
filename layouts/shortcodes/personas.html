@@ -1,7 +1,16 @@
 {{- $project := .Get "project" -}}
+{{ if eq .Ordinal 0 }}
+{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
+{{- end -}}
+{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "personas.json")) -}}
+{{- $filepath := (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") (.Get "project")) -}}
+{{- if fileExists $filepath -}}
 <div class="flex grid">
 {{- range (getJSON (printf "static/%s/personas.json" $project)) -}}
   {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project)}}
 {{- end -}}
 </div>
+{{- else -}}
+<p>Le fichier {{ (printf "`%s`" $filepath) | markdownify }} est manquant.</p>
+{{- end -}}
 {{- .Inner -}}

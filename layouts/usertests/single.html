@@ -1,13 +1,19 @@
 {{- define "main" -}}
 {{/* Variables */}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
+{{- $.Scratch.Get "project" }}
+{{- $.Scratch.Get "patharray" }}
+{{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}
 {{- $.Scratch.Set "userid" slice -}}
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
-{{- $loop := index (index (index $.Site.Data (index (split (path.Dir .Path) "/") 1)) "usertests") .Params.datafilename -}}
+{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "usertests")) -}}
+{{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/usertests/%s.json" ($.Scratch.Get "mainpath") $project .Params.datafilename)) -}}
 
 <div class="wrapper">
 {{/* Find all task id */}}
-{{- range $key, $value := $loop -}}
+{{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
   {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}
   {{- $.Scratch.Add "tasknumber" (slice (index . "Task Number")) -}}
 {{- end -}}
@@ -17,7 +23,7 @@
 {{/* Find array of answers */}}
 {{- range $tasknumber -}}
 {{ $.Scratch.Set "answers" slice }}
-{{- range where $loop "Task Number" . -}}
+{{- range where ($.Scratch.Get "auditfile") "Task Number" . -}}
   {{ $answers := index . "Answer" }}
   {{- $.Scratch.Add "answers" (slice $answers) -}}
 {{- end -}}
@@ -30,7 +36,7 @@
 {{/* Initialize map for answers counting */}}
 {{ range $idx, $m := $answer }}
 {{ range $p := . }}
-{{ range $s := $loop }}
+{{ range $s := ($.Scratch.Get "auditfile") }}
   {{ range $id, $h := (split .Answer "|") }}
     {{ if in $p . }}
     {{ $.Scratch.SetInMap "countanswer" . 0 }}
@@ -45,7 +51,7 @@
 {{/* Initialize for each question the list of answer */}}
 {{ $.Scratch.Set "listanswers" slice }}
 {{ range $p := . }}
-{{ range $s := $loop }}
+{{ range $s := ($.Scratch.Get "auditfile") }}
   {{ $ans := .Answer }}
   {{ $question := .Question }}
   {{ range $id, $h := (split .Answer "|") }}
