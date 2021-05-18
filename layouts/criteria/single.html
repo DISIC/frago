@@ -1,0 +1,117 @@
+{{- define "main" -}}
+{{- $patharray :=  split .Path "/" -}}
+{{ $.Scratch.Set "guideline" "" }}
+{{- if ge ($patharray) 2 -}}
+  {{ $.Scratch.Set "guideline" (index $patharray 0) }}
+{{- end -}}
+{{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
+{{ $criteriafile := (index $.Site.Data ($.Scratch.Get "guideline")).criteria.topics }}
+
+<div class="wrapper narrow">
+<h1>Critères {{ replace ($.Scratch.Get "guideline" | upper) "RGAA" "RGAA "}}</h1>
+{{ partial "elements/content.html" .Content }}
+<div class="tableofcontents">
+<h2>Thématiques</h2>
+<ol>
+{{/* Range all topics for anchors menu */}}
+{{- range $key1, $value1 := $criteriafile -}}
+  <li><a href="#{{ .topic | urlize }}">{{ .topic }}</a></li>
+{{- end -}}
+</ol>
+</div>
+{{- $auditquick := index .Site.Data.tests "25" -}}
+{{- $auditcomplementary := index .Site.Data.tests "50" -}}
+{{- $auditnecessary := index .Site.Data.tests "81" -}}
+<ul class="list-unstyled list-inline">
+  <li><button id="auditall" class="btn btn-small mb-0">Tous les critères</button></li>&nbsp;
+  <li><button id="auditquick" class="btn btn-small mb-0">25 critères</button></li>&nbsp;
+  <li><button id="auditcomplementary" class="btn btn-small mb-0">50 critères</button></li>&nbsp;
+  <li><button id="auditnecessary" class="btn btn-small mb-0">81 critères</button></li>
+</ul>
+{{/* Range all topics */}}
+{{- range $key1, $value1 := $criteriafile -}}
+  <h2 id="{{ .topic | urlize }}" >{{ add $key1 1 }} - {{ .topic }}</h2>
+  {{/* Range level 1 */}}
+  {{- range $key2, $value2 := .criteria -}}
+    {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
+    <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}{{ if ge (len (intersect $auditnecessary (slice $key))) 1 }} auditnecessary{{ end }}">
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | markdownify }}</h3>
+
+      {{- if or .criterium.technicalNote .criterium.particularCases -}}
+      <div class="note">
+      {{- if or .criterium.technicalNote -}}<h4 class="m-0">Note technique</h4>
+      {{- range $key5, $value5 := .criterium.technicalNote -}}
+        {{ if reflect.IsMap . }}
+          <ul>
+            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+          </ul>
+        {{ else }}
+        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</p>
+        {{ end }}
+      {{- end -}}
+      {{- end -}}
+      {{- if .criterium.particularCases -}}<h4 class="m-0">Cas particuliers</h4>
+      {{- range $key5, $value5 := .criterium.particularCases -}}
+        {{ if reflect.IsMap . }}
+          <ul>
+            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+          </ul>
+        {{ else }}
+        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</p>
+        {{ end }}
+      {{- end -}}
+      {{- end -}}
+      </div>
+      {{- end -}}
+    {{/* Range level 2 */}}
+    {{- range $key3, $value3 := .criterium.tests -}}
+        <p id="{{ add $key1 1 }}-{{ add $key2 1 }}-{{ $key3 }}" {{ if reflect.IsSlice $value3 }}class="mb-0"{{ end }}><strong>Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }}</strong> -
+        {{/* Test if value is an array */}}
+        {{- if reflect.IsSlice $value3 -}}
+        {{ (replaceRE "=\"#" $glossaire ((index $value3 0) | markdownify) 100) | markdownify }}</p>
+        <ol>
+        {{/* Range array and prepend "glossaire" before all links */}}
+        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{- end -}}
+        </ol>
+        {{- else -}}
+        {{/* Prepend "glossaire" before all links */}}
+        {{ (replaceRE "=\"#" $glossaire ($value3 | markdownify) 100) | markdownify }}</p>
+        {{- end -}}
+    {{- end -}}
+    <hr>
+    </div>
+  {{- end -}}
+{{- end -}}
+</div>
+<script>
+  document.querySelector("#auditall").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+    })
+  });
+  document.querySelector("#auditquick").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditquick")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+  document.querySelector("#auditcomplementary").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditcomplementary")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+  document.querySelector("#auditnecessary").addEventListener("click", function(){
+    document.querySelectorAll(".topic").forEach(function(elm){
+      elm.classList.remove("hide");
+      if (!elm.classList.contains("auditnecessary")) {
+        elm.classList.add("hide");
+      }
+    })
+  });
+</script>
+{{- end -}}
