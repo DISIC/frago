@@ -14,7 +14,7 @@
   <!-- Informations -->
   {{ hugo.Generator }}
   <link rel="canonical" href="{{ .Permalink }}">
-  <link rel="manifest" href="{{ $.Site.BaseURL }}/manifest.json">
+  <link rel="manifest" href="{{ $.Site.BaseURL }}manifest.json">
   {{- if .IsTranslated -}}
     {{- range .Translations -}}
     <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
@@ -27,9 +27,9 @@
   {{- end -}}
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ $.Site.BaseURL }}/assets/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ $.Site.BaseURL }}/assets/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ $.Site.BaseURL }}/assets/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ $.Site.BaseURL }}assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ $.Site.BaseURL }}assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ $.Site.BaseURL }}assets/favicons/favicon-16x16.png">
   {{ with .Site.Params.tile_color }}<meta name="msapplication-TileColor" content="{{ . }}">{{ else }}<meta name="msapplication-TileColor" content="#000">{{ end }}
   {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
 
@@ -49,14 +49,14 @@
   {{- end -}}
   <!-- Preload font files -->
   {{/* Find font files for preloading fonts */}}
-  {{- if (fileExists "static/assets/fonts") -}}
-  {{ range readDir "static/assets/fonts" }}
+  {{- if (fileExists "/static/assets/fonts") -}}
+  {{ range readDir "/static/assets/fonts" }}
   <link rel="preload" href="/assets/fonts/{{ .Name }}" as="font" crossorigin=anonymous>
   {{- end -}}
   {{ else }}
-  <link rel="preload" href="{{ $.Site.BaseURL }}/assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
-  <link rel="preload" href="{{ $.Site.BaseURL }}/assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
-  <link rel="preload" href="{{ $.Site.BaseURL }}/assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL }}assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL }}assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL }}assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
   {{ end }}
   <!-- CSS styles -->
   <!-- CSS critical -->
@@ -64,13 +64,13 @@
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>
   <!-- CSS fonts file -->
-  <link rel="stylesheet" href="{{ $.Site.BaseURL }}/assets/css/fonts.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="{{ $.Site.BaseURL }}assets/css/fonts.css" media="print" onload="this.media='all'" />
   <noscript>
-    <link rel="stylesheet" href="{{ $.Site.BaseURL }}/assets/css/fonts.css" media="screen">
+    <link rel="stylesheet" href="{{ $.Site.BaseURL }}assets/css/fonts.css" media="screen">
   </noscript>
   <!-- CSS style file -->
-  {{- if (fileExists "static/assets/css") -}}
-  {{ range readDir "static/assets/css" }}{{ if ne .Name "fonts.css"}}
+  {{- if (fileExists "/static/assets/css") -}}
+  {{ range readDir "/static/assets/css" }}{{ if ne .Name "fonts.css"}}
   {{ . }}
   <link rel="stylesheet" href="{{ $.Site.BaseURL }}/assets/css/{{ .Name }}" media="print" onload="this.media='all'" />
   <noscript>
@@ -98,8 +98,8 @@
       <div class="flex align-items-center">
         <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}" rel="home" class="site-logo">
           <picture>
-            <source srcset="{{ $.Site.BaseURL }}/assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
-            <img src="{{ $.Site.BaseURL }}/assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}">
+            <source srcset="{{ $.Site.BaseURL }}assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
+            <img src="{{ $.Site.BaseURL }}assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}">
           </picture>
           <span class="demarches-titlebar-sitename"></span>
         </a>
