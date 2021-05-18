@@ -272,7 +272,7 @@
   <ul>
     {{ if ($.Scratch.Get "scores") }}<li>{{ (index ($.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
-    {{- if ($.Scratch.Get "auditpath-csv") -}}<li> Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.Scratch.Get "auditpath-csv") "/static/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
+    {{- if ($.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.Scratch.Get "auditpath-csv") (printf "/%s/" (index ($audits) "auditmainpath")) "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
   {{- else -}}
