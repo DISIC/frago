@@ -32,7 +32,7 @@
 {{- partial "elements/content.html" .Content -}}
 </div>
 {{- end -}}
-{{ ($.Scratch.Get "scores") }}
+
 {{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "scores") -}}
 
 {{/* Create an array with all pages */}}
