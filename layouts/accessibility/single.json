@@ -21,7 +21,7 @@
   "audits": [
     {{ range $id, $value := (index ($audits) "auditall") }}{
       "path": "{{ replace . "content/" "" }}",
-      "date": "{{ replace (index ((index ($audits) "auditall")) $id) "content/" "" }}"
+      "date": "{{ index (index ($audits) "auditallname") $id }}",
       {{ with (partialCached "render/conformity" (dict "context" $context "auditfile" .) $context.Path) }}"scores": {
         "criterium" : {
           {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
