@@ -89,7 +89,7 @@
     <div id="chartconformity"></div>
     <script>
         const dataconformity = {
-            labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
+            labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
             datasets: [
               {
                 name: "Conformité",
@@ -101,16 +101,12 @@
         const chartconformity = new frappe.Chart("#chartconformity", {
             title: "Taux de conformité dans le temps (en %)",
             data: dataconformity,
-            type: 'line',
+            type: 'bar',
             height: 400,
             lineOptions: {
                 regionFill: 1
             },
             truncateLegends: true,
-            barOptions: {
-                stacked: 1,
-                spaceRatio: 0.2
-            },
             colors: [hslToHex(hslprimary),hslToHex(hslsecondary),hslToHex(hsltertiary),hslToHex(hslquartenary)]
         })
     </script>
@@ -132,7 +128,7 @@
     <div id="chartperformance"></div>
       <script>
           const dataperformance = {
-              labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{- $value -}}"{{- end -}}],
+              labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
               datasets: [
                 {
                   name: "Erreurs",
