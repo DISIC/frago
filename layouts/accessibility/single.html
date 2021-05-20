@@ -20,7 +20,7 @@
 {{- if and ($.Scratch.Get "auditpath-csv") (ne ($.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
 {{- $.Scratch.Set "scores" (partial "render/accessibility" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
-{{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
+{{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditfile-all-name"))) ""))) -}}
 
 {{- if eq (len $patharray) 1 -}}
 <p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
