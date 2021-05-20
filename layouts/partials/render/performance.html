@@ -18,5 +18,18 @@
 {{- else if gt (int ($.context.Scratch.Get "score")) 5  -}}{{- $.context.Scratch.Set "index" "F" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
 {{- else if le (int ($.context.Scratch.Get "score")) 5  -}}{{- $.context.Scratch.Set "index" "G" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
 {{- end -}}
-{{- return (dict "LCP" ($.context.Scratch.Get "LCP") "pageweight" ($.context.Scratch.Get "pageweight") "domsize" ($.context.Scratch.Get "domsize") "requests" ($.context.Scratch.Get "requests") "index" ($.context.Scratch.Get "index") "indexclass" ($.context.Scratch.Get "indexclass") "score" ($.context.Scratch.Get "score") "eau" ($.context.Scratch.Get "eau") "co2" ($.context.Scratch.Get "co2")) -}}
+
+{{- return
+  (dict
+    "LCP" ($.context.Scratch.Get "LCP")
+    "pageweight" ($.context.Scratch.Get "pageweight")
+    "domsize" ($.context.Scratch.Get "domsize")
+    "requests" ($.context.Scratch.Get "requests")
+    "index" ($.context.Scratch.Get "index")
+    "indexclass" ($.context.Scratch.Get "indexclass")
+    "score" ($.context.Scratch.Get "score")
+    "eau" ($.context.Scratch.Get "eau")
+    "co2" ($.context.Scratch.Get "co2")
+  )
+-}}
 {{- end -}}
