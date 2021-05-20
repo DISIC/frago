@@ -25,7 +25,7 @@
       "title": "{{ with $context.GetPage (printf "audits/%s" $slug) }}{{ .Title }}{{ end }}",
       "slug": "{{ $slug }}",{{ range $id, $path := $value }}{{ $.Scratch.Add "counter2" 1 }}
       "{{ $id }}":{
-        "url": "{{ printf "%sindex.json" . }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "url": "{{ printf "%sindex.json" . }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path")))) }},
         "scores": {
           "criteria": {
             {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
@@ -36,7 +36,7 @@
           "accessibility" : {
             "compliance": {{ index . "critereconformepercent" }}
           }
-        }{{ end }}{{ end }}{{ if eq $id "performance" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        }{{ end }}{{ end }}{{ if eq $id "performance" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path")))) }},
         "scores": {
           "criteria": {
             {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}

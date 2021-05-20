@@ -12,8 +12,8 @@
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
-{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
-{{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditpath") -}}
+{{- $audits := partial "render/lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "type" "accessibility" "datafilename" .Params.datafilename) -}}
+{{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditfile-path") -}}
 
 <div class="wrapper narrow audit">
 

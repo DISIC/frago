@@ -23,7 +23,7 @@
       {
         "title": "{{ with $context.GetPage . }}{{ .Title }}{{ end }}",
         "slug": "{{ $slug }}",
-        "url": "{{ printf "%s%s/index.json" . $id }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "url": "{{ printf "%s%s/index.json" . $id }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path")))) }},
         "scores":{
           "criteria": {
             {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}

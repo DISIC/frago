@@ -56,20 +56,23 @@
       {{- $.Scratch.Set "mainpath" "static" -}}
     {{- end -}}
     {{- $.Scratch.Set "projectfolders" (printf "/%s/%s" ($.Scratch.Get "mainpath") $project) -}}
-    {{/* test level of the page in file tree */}}
-    {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
-    {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
-    {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}
-    {{- $accessibility := fileExists ($.Scratch.Get "accessibility-path") }}
 
-    {{- $quality       := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
-    {{- $lighthouse    := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+    {{/* test level of the page in file tree */}}
+    {{- $.Scratch.Set "accessibility-lastfile"  (partial "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename)) -}}
+    {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path") -}}
+    {{- $.Scratch.Set "accessibility-all-path"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-path") -}}
+    {{- $.Scratch.Set "accessibility-all-name"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-name") -}}
+
+    {{- $accessibility := fileExists (printf "/%s" ($.Scratch.Get "accessibility-path")) }}
+    {{- $quality       := fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders")) -}}
+    {{- $lighthouse    := fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders")) -}}
+
     {{- if ($.Scratch.Get "projectfolders") -}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
     {{- if $accessibility -}}
     {{- $.Scratch.Set "render" slice -}}
-    {{- with ($.Scratch.Get "allauditscsv") -}}
+    {{- with ($.Scratch.Get "accessibility-all-path") -}}
       {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/accessibility" (dict "context" $context "auditfile" . )))) -}}{{- end -}}
     {{- end -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
@@ -89,7 +92,7 @@
     <div id="chartaccessibility"></div>
     <script>
         const dataaccessibility = {
-            labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+            labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
             datasets: [
               {
                 name: "Conformité",
@@ -128,7 +131,7 @@
     <div id="chartperformance"></div>
       <script>
           const dataperformance = {
-              labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+              labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
               datasets: [
                 {
                   name: "Erreurs",

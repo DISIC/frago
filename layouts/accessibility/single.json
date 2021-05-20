@@ -1,8 +1,8 @@
 {{- $patharray :=  split .Path "/" -}}
 {{- $project :=  (index $patharray 1) -}}
 {{- $context := . -}}
-{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
-{{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" (index ($audits) "auditpath")) .Path) -}}
+{{- $audits := partial "render/lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "type" "accessibility" "datafilename" .Params.datafilename) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" (index ($audits) "auditfile-path")) .Path) -}}
 {
   "title": "{{ with .GetPage (printf "audits/%s/_index.md" $project) }}{{ .Title }}{{ end }}",
   "slug": "{{ $project }}",

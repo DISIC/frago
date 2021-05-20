@@ -1,62 +1,22 @@
-{{- $project := .project -}}
-
-{{/* Test if files are in static or in each projets */}}
-{{- $.context.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
-
-{{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
-{{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project)) -}}
-{{- end -}}
-
-{{- with ($.context.Scratch.Get "dir") -}}
-  {{- range last 1 . -}}
-    {{- if (fileExists (printf "/%s/lighthouse/" ($.context.Scratch.Get "mainpath"))) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") .Name)) -}}
-    {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "/%s/%s/lighthouse/" ($.context.Scratch.Get "mainpath") $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (getJSON (printf "/%s/%s/lighthouse/%s" ($.context.Scratch.Get "mainpath") $project .Name)) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
-{{- with ($.context.Scratch.Get "lastfile") -}}
-{{- if .audits.metrics.details.items -}}
-{{/* https://blog.octo.com/sous-le-capot-de-la-mesure-ecoindex/ */}}
-{{- $pageweight := (index (.audits.diagnostics.details.items) 0).totalByteWeight -}}
-{{- $domsize    := (index .audits "dom-size").numericValue  -}}
-{{- $requests   := (index (.audits.diagnostics.details.items) 0).numRequests -}}
-{{- $ecobest    := sub 100 (mul 0.833333333 (add (add (mul 3 150) (mul 15 2)) 130000)) -}}
-{{- $ecoworth   := sub 100 (mul 0.833333333 (add (add (mul 3 3000) (mul 120 2)) 5000000)) -}}
-{{- $eco        := sub 100 (mul 0.833333333 (add (add (mul 3 $domsize) (mul $requests 2)) $pageweight)) -}}
-{{- $result     := sub 100 (div (mul $eco 100) (sub $ecoworth $ecobest)) -}}
-{{- $eau        := add (mul (sub 50 $result) 0.03) 3 -}}
-{{- $co2        := add (mul (sub 50 $result) 0.02) 2 -}}
+{{- $project     := .project -}}
+{{- $lastfile    := (getJSON (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path")) -}}
+{{- $performance := partial "render/performance.html" (dict "context" .context "file" $lastfile) -}}
+{{- with $lastfile -}}
 <div class="scores">
   <ul>
-    <li class="counter text-center"><span>Page chargée<br><b class="h2">{{ div ((index .audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}s</b></span></li>
-    <li class="counter text-center"><span>Poids de la page<br><b class="h2">{{ div $pageweight 10000 | lang.NumFmt 0 }}kb</b></span></li>
-    <li class="counter text-center"><span>Éléments sur la page<br><b class="h2">{{ $domsize | lang.NumFmt 0 }}</b></span></li>
-    <li class="counter text-center"><span>Nombre de requêtes<br><b class="h2">{{ $requests }}</b></span></li>
+    <li class="counter text-center"><span>Page chargée<br><b class="h2">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b></span></li>
+    <li class="counter text-center"><span>Poids de la page<br><b class="h2">{{ div $performance.pageweight 10000 | lang.NumFmt 0 }}kb</b></span></li>
+    <li class="counter text-center"><span>Éléments sur la page<br><b class="h2">{{ $performance.domsize | lang.NumFmt 0 }}</b></span></li>
+    <li class="counter text-center"><span>Nombre de requêtes<br><b class="h2">{{ $performance.requests }}</b></span></li>
   </ul>
 </div>
 <h3 class="m-0">Écoindex</h3>
-    {{- if gt (int $result) 75 -}}{{- $.context.Scratch.Set "result" "A" -}}{{- $.context.Scratch.Set "resultclass" "good" -}}
-    {{- else if gt (int $result) 65 }}{{ $.context.Scratch.Set "result" "B" -}}{{- $.context.Scratch.Set "resultclass" "good" -}}
-    {{- else if gt (int $result) 50 }}{{ $.context.Scratch.Set "result" "C" -}}{{- $.context.Scratch.Set "resultclass" "medium" -}}
-    {{- else if gt (int $result) 35 }}{{ $.context.Scratch.Set "result" "D" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
-    {{- else if gt (int $result) 20 }}{{ $.context.Scratch.Set "result" "E" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
-    {{- else if gt (int $result) 5 }}{{ $.context.Scratch.Set "result" "F" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
-    {{- else if le (int $result) 5 }}{{ $.context.Scratch.Set "result" "G" -}}{{- $.context.Scratch.Set "resultclass" "bad" -}}
-    {{- end -}}
     <div class="scores">
       <ul>
-        <li class="counter text-center {{ $.context.Scratch.Get "resultclass" }}"><span>Score<br><b class="h2">{{ $.context.Scratch.Get "result" }}</b></span></li>
-        <li class="counter text-center"><span>Eau (cl)<br><b class="h2">{{ $eau | lang.NumFmt 2 }}</b></span></li>
-        <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">{{ $co2 | lang.NumFmt 2 }}</b></span></li>
+        <li class="counter text-center {{ $performance.indexclass }}"><span>Score<br><b class="h2">{{ $performance.index }}</b></span></li>
+        <li class="counter text-center"><span>Eau (cl)<br><b class="h2">{{ $performance.eau | lang.NumFmt 2 }}</b></span></li>
+        <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">{{ $performance.co2 | lang.NumFmt 2 }}</b></span></li>
       </ul>
     </div>
-{{- end -}}
 {{- end -}}
 
