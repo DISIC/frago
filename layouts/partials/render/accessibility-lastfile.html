@@ -17,13 +17,12 @@
   {{- else -}}
   {{- $.context.Scratch.Set "auditpath-accessibility" (printf "/%s/%s.csv" ($.context.Scratch.Get "mainpath") .datafilename) -}}
   {{- end -}}
-  {{- $.context.Scratch.SetInMap "allaudits" "zz" ($.context.Scratch.Get "auditpath-accessibility") -}}
-  {{- $.context.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
+  {{- $.context.Scratch.SetInMap "allaudits" "999" ($.context.Scratch.Get "auditpath-accessibility") -}}
+  {{- $.context.Scratch.SetInMap "allauditsname" "999" (now.Format "2006-01-02") -}}
 {{- else -}}
   {{/* Set the audit file - test if a generic file is called */}}
   {{/* Test if a set of archived audit exists */}}
   {{- $.context.Scratch.Set "auditpath-accessibility" "/false" -}}
-
   {{- if fileExists (printf "/%s/%s/accessibility/" ($.context.Scratch.Get "mainpath") $project) -}}
     {{- range $key, $value := (readDir (printf "/%s/%s/accessibility/" ($.context.Scratch.Get "mainpath") $project)) -}}
       {{- $.context.Scratch.SetInMap "allaudits" (string (add $key 1)) (replace (printf "/%s/%s/accessibility/%s" ($.context.Scratch.Get "mainpath") $project .Name) "//" "/") -}}
@@ -36,14 +35,14 @@
     {{- end -}}
   {{- end -}}
   {{/* Condition about structure level for a root generic file */}}
-  {{- if or (fileExists (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) (fileExists (printf "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) -}}
+  {{- if or (fileExists (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project)) (fileExists (printf "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath"))) -}}
     {{- if eq (len $patharray) 2 -}}
       {{- $.context.Scratch.Set "auditpath-accessibility" (replace (printf "/%s/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") $project) "//" "/") -}}
     {{- else -}}
-    {{- $.context.Scratch.Set "auditpath-accessibility" "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath") -}}
+    {{- $.context.Scratch.Set "auditpath-accessibility" (printf "/%s/accessibility.csv" ($.context.Scratch.Get "mainpath")) -}}
     {{- end -}}
-    {{- $.context.Scratch.SetInMap "allaudits" "zz" ($.context.Scratch.Get "auditpath-accessibility") -}}
-    {{- $.context.Scratch.SetInMap "allauditsname" "zz" (now.Format "2006-01-02") -}}
+    {{- $.context.Scratch.SetInMap "allaudits" "999" ($.context.Scratch.Get "auditpath-accessibility") -}}
+    {{- $.context.Scratch.SetInMap "allauditsname" "999" (now.Format "2006-01-02") -}}
   {{- end -}}
 {{- end -}}
 

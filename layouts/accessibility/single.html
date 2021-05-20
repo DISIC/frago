@@ -19,7 +19,7 @@
 
 {{- if and ($.Scratch.Get "auditpath-csv") (ne ($.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
-{{- $.Scratch.Set "scores" (partial "render/conformity" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
+{{- $.Scratch.Set "scores" (partial "render/accessibility" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
 
 {{- if eq (len $patharray) 1 -}}

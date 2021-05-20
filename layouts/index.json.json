@@ -5,9 +5,10 @@
 {{- range $id, $value := $pagetype -}}
   {{- range readDir "content/audits/" -}}{{- $slug := .Name -}}
     {{- $.Scratch.Add "slugs" $slug -}}
+    {{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $slug "type" "accessibility")) -}}
     {{- range readDir (printf "content/audits/%s/" $slug) -}}
     {{- $.Scratch.Set "folder" $value -}}{{- if eq $value "performance" -}}{{- $.Scratch.Set "folder" "lighthouse" -}}{{- end -}}
-    {{- if fileExists (printf "content/audits/%s/%s" $slug ($.Scratch.Get "folder")) -}}
+    {{- if fileExists (printf "%s/%s/%s" ($.Scratch.Get "mainpath") $slug ($.Scratch.Get "folder")) -}}
         {{- $name := .Name -}}{{- if eq $name (printf "%s.md" $value) -}}{{- $.Scratch.SetInMap (printf "slug-%s" $slug) $value (printf "audits/%s/%s/" $slug $value) -}}{{- end -}}
     {{- end -}}
     {{- end -}}
@@ -24,15 +25,26 @@
       "title": "{{ with $context.GetPage (printf "audits/%s" $slug) }}{{ .Title }}{{ end }}",
       "slug": "{{ $slug }}",{{ range $id, $path := $value }}{{ $.Scratch.Add "counter2" 1 }}
       "{{ $id }}":{
-        "url": "{{ printf "%sindex.json" . }}"{{ if eq $id "accessibility" }}{{ with (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "url": "{{ printf "%sindex.json" . }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
         "scores": {
-          "criterium": {
+          "criteria": {
             {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
             {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
             {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
             {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
           },
-          "conformity" : {
+          "accessibility" : {
+            "compliance": {{ index . "critereconformepercent" }}
+          }
+        }{{ end }}{{ end }}{{ if eq $id "performance" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "scores": {
+          "criteria": {
+            {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
+            {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
+            {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
+            {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
+          },
+          "accessibility" : {
             "conforme": {{ index . "critereconformepercent" }}
           }
         }{{ end }}{{ end }}

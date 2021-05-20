@@ -10,12 +10,12 @@
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
 <br>
-{{/* Build a map with all conformity score for using it later in code */}}
+{{/* Build a map with all accessibility score for using it later in code */}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
   {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
   {{- $context := . -}}
   {{- range $id, $value := (index (partialCached "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename) $project) "auditall") -}}
-    {{- $.Scratch.SetInMap $project (string $id) (partial "render/conformity" (dict "context" $context "auditfile" . )) -}}
+    {{- $.Scratch.SetInMap $project (string $id) (partial "render/accessibility" (dict "context" $context "auditfile" . )) -}}
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}

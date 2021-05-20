@@ -6,8 +6,9 @@
   {{- range readDir "content/audits/" -}}{{- $slug := .Name -}}
     {{- $.Scratch.Add "slugs" $slug -}}
     {{- range readDir (printf "content/audits/%s/" $slug) -}}
+    {{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $slug "type" "accessibility")) -}}
     {{- $.Scratch.Set "folder" $value -}}{{- if eq $value "performance" -}}{{- $.Scratch.Set "folder" "lighthouse" -}}{{- end -}}
-    {{- if fileExists (printf "content/audits/%s/%s" $slug ($.Scratch.Get "folder")) -}}
+    {{- if fileExists (printf "%s/%s/%s" ($.Scratch.Get "mainpath") $slug ($.Scratch.Get "folder")) -}}
         {{- $name := .Name -}}{{- if eq $name (printf "%s.md" $value) -}}{{- $.Scratch.SetInMap $value $slug (printf "audits/%s/" $slug) -}}{{- end -}}
     {{- end -}}
     {{- end -}}
@@ -22,16 +23,16 @@
       {
         "title": "{{ with $context.GetPage . }}{{ .Title }}{{ end }}",
         "slug": "{{ $slug }}",
-        "url": "{{ printf "%s%s/index.json" . $id }}"{{ if eq $id "accessibility" }}{{ with (partial "render/conformity" (dict "context" $context "auditfile" (getCSV "," (index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
+        "url": "{{ printf "%s%s/index.json" . $id }}"{{ if eq $id "accessibility" }}{{ with (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/accessibility-lastfile.html" (dict "context" $context "project" $slug)) "auditpath")))) }},
         "scores":{
-          "criterium": {
+          "criteria": {
             {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
             {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
             {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
             {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
           },
-          "conformity" : {
-            "conforme": {{ index . "critereconformepercent" }}
+          "compliance" : {
+            "score": {{ index . "critereconformepercent" }}
           }
         }{{ end }}{{ end }}
       }{{ if ne ($.Scratch.Get "counter2") (len $value) }},{{ end }}{{ end }}{{ end }}
