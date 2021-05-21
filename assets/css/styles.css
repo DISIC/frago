@@ -229,7 +229,7 @@ h3 + time {
 
 .note {
   margin-bottom: var(--baseline);
-  padding: var(--baseline) var(--baseline) 1px;
+  padding: var(--baseline) var(--baseline) calc(var(--baseline) / 2);
   font-size: var(--smaller);
   color: var(--text-color);
   background: var(--color-primary-verylight);

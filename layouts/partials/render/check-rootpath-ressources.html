@@ -1,1 +1,1 @@
-{{- return (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" "static") -}}
+{{- return (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" (cond (fileExists (printf "content/audits/%s/" .type)) "content/audits" "static")) -}}

@@ -1,7 +1,8 @@
 {{- $project     := .project -}}
-{{- $lastfile    := (getJSON (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path")) -}}
-{{- $performance := partial "render/performance.html" (dict "context" .context "file" $lastfile) -}}
+{{- $lastfile    := (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path") -}}
+{{- $performance := partial "render/performance.html" (dict "context" .context "file" (getJSON $lastfile)) -}}
 {{- with $lastfile -}}
+{{- if $performance.LCP -}}
 <div class="scores">
   <ul>
     <li class="counter text-center"><span>Page chargée<br><b class="h2">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b></span></li>
@@ -18,5 +19,10 @@
         <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">{{ $performance.co2 | lang.NumFmt 2 }}</b></span></li>
       </ul>
     </div>
+{{- else -}}
+<div class="note">
+  <p>The Lighthouse file {{ $lastfile }} has to be deleted or relaunch.</p>
+</div>
+{{- end -}}
 {{- end -}}
 

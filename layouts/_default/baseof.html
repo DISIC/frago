@@ -71,7 +71,6 @@
   <!-- CSS style file -->
   {{- if (fileExists "/static/assets/css") -}}
   {{ range readDir "/static/assets/css" }}{{ if ne .Name "fonts.css"}}
-  {{ . }}
   <link rel="stylesheet" href="{{ $.Site.BaseURL }}/assets/css/{{ .Name }}" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="{{ $.Site.BaseURL }}/assets/css/{{ .Name }}" media="screen">

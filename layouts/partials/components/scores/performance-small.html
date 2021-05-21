@@ -1,8 +1,9 @@
 {{- $project := .project -}}
-{{- $lastfile    := (getJSON (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path")) -}}
-{{- $performance := partial "render/performance.html" (dict "context" .context "file" $lastfile) -}}
+{{- $lastfile    := (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path") -}}
+{{- $performance := partialCached "render/performance.html" (dict "context" .context "file" (getJSON $lastfile)) $lastfile -}}
 
-{{- with $performance -}}
+{{- if $performance.LCP -}}
   <small class="text-center"><b class="h3">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b><br>de&nbsp;chargement</small>
+{{- else -}}
+  {{- warnf "Lighthouse file %s has to a test to be relaunched" $lastfile -}}
 {{- end -}}
-
