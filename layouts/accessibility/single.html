@@ -83,7 +83,7 @@
 {{/* Call accessibility partial */}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
 {{/* Call criterium partial */}}
-{{- partial "components/scores/criterium" (dict "context" . "criteria" ($.Scratch.Get "scores")) -}}
+{{- partial "components/scores/criteria" (dict "context" . "criteria" ($.Scratch.Get "scores")) -}}
 {{/* If several pages tested */}}
 {{- if gt (len ($.Scratch.Get "pageslist")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition</h3>
@@ -296,6 +296,7 @@
   </div>
   {{- end -}}
   </div>
+  {{- partial "templates/declaration.html" . -}}
 
   <h2>Établissement de cette déclaration d’accessibilité</h2>
   {{ with .technologies }}

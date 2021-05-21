@@ -3,36 +3,18 @@
 {{- $context := . -}}
 {{- $audits := partial "render/lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "type" "accessibility" "datafilename" .Params.datafilename) -}}
 {{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" (index ($audits) "auditfile-path")) .Path) -}}
-{
-  "title": "{{ with .GetPage (printf "audits/%s/_index.md" $project) }}{{ .Title }}{{ end }}",
-  "slug": "{{ $project }}",
-  "conditions": {{ with .GetPage (printf "audits/%s/accessibility.md" $project) }}{{ .Params.accessibility | jsonify }}{{ end }},
-  {{ with ($.Scratch.Get "scores") }}"scores": {
-    "criterium" : {
-      {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
-      {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
-      {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
-      {{ if (index . "criterenonconforme") }}"criterenonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
-    },
-    "accessibility" : {
-      "compliance": {{ index . "critereconformepercent" }}
-    }
-  },{{ end }}
-  "audits": [
-    {{ range $id, $value := (index ($audits) "auditall") }}{
-      "path": "{{ replace . "content/" "" }}",
-      "date": "{{ index (index ($audits) "auditallname") $id }}",
-      {{ with (partialCached "render/accessibility" (dict "context" $context "auditfile" .) $context.Path) }}"scores": {
-        "criterium" : {
-          {{ if (index . "criteretotal") }}"total": {{ len (index . "criteretotal") }},{{ end }}
-          {{ if (index . "critereconforme") }}"conforme": {{ len (index . "critereconforme") }},{{ end }}
-          {{ if (index . "criterenonapplicable") }}"nonapplicable": {{ len (index . "criterenonapplicable") }},{{ end }}
-          {{ if (index . "criterenonconforme") }}"nonconforme": {{ len (index . "criterenonconforme") }}{{ end }}
-        },
-        "compliance" : {
-          "score": {{ index . "critereconformepercent" }}
-        }
-      }{{ end }}
-    }{{ if ne (int $id) (len ((index ($audits) "auditall"))) }},{{ end }}{{ end }}
- ]
-}
+
+{{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
+{{- with .GetPage (printf "audits/%s/accessibility.md" $project) -}}{{ $.Scratch.Set "conditions" .Params.accessibility }}{{- end -}}
+
+{{- range $idx, $value := (index ($audits) "auditfile-all-path") -}}
+    {{- $results := (partial "render/accessibility" (dict "context" $context "auditfile" . ) . ) -}}
+    {{- $.Scratch.Set "scores" (dict "url" . "score" $results.scores "criteria" (dict  "critereconforme" $results.criterenonconforme "criterenonconforme" $results.criterenonconforme)) -}}
+{{- end -}}
+
+{{- (dict
+  "name" ($.Scratch.Get "title")
+  "slug" $project
+  "conditions" ($.Scratch.Get "conditions")
+  "scores" ($.Scratch.Get "scores")
+) | jsonify -}}

@@ -61,7 +61,7 @@
 {{- $.context.Scratch.SetInMap $scorekey "key"                    ($scorekey) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criteretotal"           ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "rendertesttotal")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "is-empty"               ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "isempty"                ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "critereconforme"        ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criterenonconforme"     ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criterenonapplicable"   ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonapplicable")) -}}
