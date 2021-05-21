@@ -1,5 +1,5 @@
 {{- $scorekey := sha1 (string now) -}}
-{{ if (getCSV "," .auditfile) }}
+{{- if (getCSV "," .auditfile) -}}
 {{- $auditfile := (getCSV "," .auditfile) -}}
 {{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
 {{- $.context.Scratch.Set (printf "%s%s" $scorekey "rendercriterevalues") 0 -}}
@@ -39,14 +39,14 @@
 {{- range $id, $value := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevaluesuniq"))) -}}
   {{- if ne (len $value) 0 -}}
   {{- if eq (len $value) 1 -}}
-    {{- if eq (index $value 0) "?" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
+    {{- if eq (index $value 0) "?"  -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
     {{- if eq (index $value 0) "na" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
-    {{- if eq (index $value 0) "c" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
+    {{- if eq (index $value 0) "c"  -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
     {{- if or (eq (index $value 0) "nc") (gt (len (index $value 0)) 3) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
   {{- else -}}
     {{ $symdiff := $value | symdiff (slice "na" "c") }}
     {{- if ((and (eq (len (intersect $value (slice "na"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
-    {{- if ((and (eq (len (intersect $value (slice "c"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
+    {{- if ((and (eq (len (intersect $value (slice "c"))) 1)  (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
     {{- if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
     {{- if eq (len $symdiff) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}
     {{- if ge (len $symdiff) 1 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
@@ -57,17 +57,19 @@
 {{- $critereconformepercent := 0 -}}
 {{- $critereconformepercent := ((div (mul (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme"))) 100) (sub (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal"))) ((len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonapplicable"))))))) -}}
 {{- if ($.context.Scratch.Get "criterenonconforme") -}}{{ $critereconformepercent := ((div (mul (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme"))))) -}}{{- end -}}
-{{- $.context.Scratch.SetInMap $scorekey "key" $scorekey -}}
-{{- $.context.Scratch.SetInMap $scorekey "criteretotal" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "testtotal" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendertesttotal")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "is-empty" ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "critereconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "criterenonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "criterenonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonapplicable")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "critereconformepercent" $critereconformepercent -}}
-{{- $.context.Scratch.SetInMap $scorekey "critereconformepage" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconformepage")) -}}
+
+{{- $.context.Scratch.SetInMap $scorekey "key"                    ($scorekey) -}}
+{{- $.context.Scratch.SetInMap $scorekey "criteretotal"           ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "rendertesttotal")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "isempty"                ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "critereconforme"        ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "criterenonconforme"     ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "criterenonapplicable"   ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonapplicable")) -}}
+{{- $.context.Scratch.SetInMap $scorekey "critereconformepercent" ($critereconformepercent) -}}
+{{- $.context.Scratch.SetInMap $scorekey "critereconformepage"    ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconformepage")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criterenonconformepage" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconformepage")) -}}
-{{- $.context.Scratch.SetInMap $scorekey "criterevalue" ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevalues"))) -}}
+{{- $.context.Scratch.SetInMap $scorekey "criterevalue"           ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevalues"))) -}}
+{{- $.context.Scratch.SetInMap $scorekey "scores"                 (dict "criteria" (dict "total" (len (index ($.context.Scratch.Get $scorekey) "criteretotal")) "conforme" (len (index ($.context.Scratch.Get $scorekey) "critereconforme")) "nonapplicable" (len (index ($.context.Scratch.Get $scorekey) "criterenonapplicable")) "nonconforme" (len (index ($.context.Scratch.Get $scorekey) "criterenonconforme"))) "accessibility" (dict "compliance" (index ($.context.Scratch.Get $scorekey) "critereconformepercent")) ) -}}
 {{- return ($.context.Scratch.Get $scorekey) -}}
 {{- end -}}
 {{- else -}}

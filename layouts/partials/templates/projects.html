@@ -56,40 +56,43 @@
       {{- $.Scratch.Set "mainpath" "static" -}}
     {{- end -}}
     {{- $.Scratch.Set "projectfolders" (printf "/%s/%s" ($.Scratch.Get "mainpath") $project) -}}
-    {{/* test level of the page in file tree */}}
-    {{- $.Scratch.Set "accessibility-path" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditpath") -}}
-    {{- $.Scratch.Set "allauditscsv" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditall") -}}
-    {{- $.Scratch.Set "allauditsname" (index (partial "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditallname") -}}
-    {{- $accessibility := fileExists ($.Scratch.Get "accessibility-path") }}
 
-    {{- $quality       := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
-    {{- $lighthouse    := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
+    {{/* test level of the page in file tree */}}
+    {{- $.Scratch.Set "accessibility-lastfile"  (partial "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename)) -}}
+    {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path")     -}}
+    {{- $.Scratch.Set "accessibility-all-path"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-path") -}}
+    {{- $.Scratch.Set "accessibility-all-name"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-name") -}}
+
+    {{- $accessibility := fileExists (printf "/%s" ($.Scratch.Get "accessibility-path")) }}
+    {{- $quality       := fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders")) -}}
+    {{- $lighthouse    := fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders")) -}}
+
     {{- if ($.Scratch.Get "projectfolders") -}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">Scores</h2>
     {{- if $accessibility -}}
     {{- $.Scratch.Set "render" slice -}}
-    {{- with ($.Scratch.Get "allauditscsv") -}}
-      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/conformity" (dict "context" $context "auditfile" . )))) -}}{{- end -}}
+    {{- with ($.Scratch.Get "accessibility-all-path") -}}
+      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
     {{- end -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- $partial := (partial "render/conformity" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path") )) -}}
+    {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
     {{ if $partial }}
       {{- $conforme := index $partial "critereconformepercent" -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- else -}}
       <p>Le fichier d’audit ({{ ($.Scratch.Get "accessibility-path") }}) est vide.</p>
     {{- end -}}
-    {{/* Display conformity in time */}}
+    {{/* Display accessibility in time */}}
     {{- with ($.Scratch.Get "render") -}}
     {{- if gt (len .) 1 -}}
     <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
     <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
     <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
-    <div id="chartconformity"></div>
+    <div id="chartaccessibility"></div>
     <script>
-        const dataconformity = {
-            labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+        const dataaccessibility = {
+            labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
             datasets: [
               {
                 name: "Conformité",
@@ -98,9 +101,9 @@
             ],
             yRegions: [{ label: "", start: 0, end: 100 }]
         }
-        const chartconformity = new frappe.Chart("#chartconformity", {
+        const chartaccessibility = new frappe.Chart("#chartaccessibility", {
             title: "Taux de conformité dans le temps (en %)",
-            data: dataconformity,
+            data: dataaccessibility,
             type: 'bar',
             height: 400,
             lineOptions: {
@@ -122,13 +125,13 @@
     {{- if $lighthouse -}}
     <h3 class="m-0">Performance {{ $pageauditpath := (printf "/content/audits/%s/performance.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
-    {{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
-    {{- if ge (len (readDir (printf "/%s/%s/lighthouse/" ($.Scratch.Get "mainpath") $project))) 2 -}}
+    {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
+    {{- if ge (len $lastfiles) 1 -}}
     {{- range $id, $value := readDir (printf "/%s/%s/lighthouse/" ($.Scratch.Get "mainpath") $project) -}}{{- $.Scratch.Set "performancecounter" 0 -}}{{- $performancefile := getJSON (printf "/%s/%s/lighthouse/%s" ($.Scratch.Get "mainpath") $project .Name) -}}{{ range (index $performancefile "audits") }}{{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}{{ $.Scratch.Add "performancecounter" 1 }}{{ $.Scratch.SetInMap "performancecountermap" (string $id) ($.Scratch.Get "performancecounter") }}{{ end }}{{ end }}{{- end -}}
     <div id="chartperformance"></div>
       <script>
           const dataperformance = {
-              labels: [{{- range $id, $value := ($.Scratch.Get "allauditsname") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+              labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
               datasets: [
                 {
                   name: "Erreurs",
@@ -136,8 +139,8 @@
                   chartType: 'bar'
                 },
                 {
-                  name: "Chargement de la page",
-                  values: [{{ range $id, $value := readDir (printf "/%s/%s/lighthouse/" ($.Scratch.Get "mainpath") $project) }}{{ $performancefile := getJSON (printf "/%s/%s/lighthouse/%s" ($.Scratch.Get "mainpath") $project .Name) }}{{ if ne $id 0 }},{{ end }}"{{ div ((index $performancefile.audits.metrics.details.items 0).largestContentfulPaint) 1000 | lang.NumFmt 1 }}"{{- end -}}],
+                  name: "Chargement",
+                  values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partial "render/performance.html" (dict "context" $context "file" (getJSON .)) }}{{ if ne $id "1" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
                   chartType: 'bar'
                 }
               ],

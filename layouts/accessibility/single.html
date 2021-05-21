@@ -12,15 +12,15 @@
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
-{{- $audits := partial "render/accessibility-lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "datafilename" .Params.datafilename) -}}
-{{- $.Scratch.Set "auditpath-csv" (index ($audits) "auditpath") -}}
+{{- $.Scratch.Set "audits" (partial "render/lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "type" "accessibility" "datafilename" .Params.datafilename)) -}}
+{{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "audits") "auditfile-path") -}}
 
 <div class="wrapper narrow audit">
 
 {{- if and ($.Scratch.Get "auditpath-csv") (ne ($.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
-{{- $.Scratch.Set "scores" (partial "render/conformity" (dict "context" $context "auditfile" (($.Scratch.Get "auditpath-csv")))) -}}
-{{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditallname"))) ""))) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.Scratch.Get "auditpath-csv")) ($.Scratch.Get "auditpath-csv") ) -}}
+{{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index ($.Scratch.Get "audits") "auditfile-all-name"))) ""))) -}}
 
 {{- if eq (len $patharray) 1 -}}
 <p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
@@ -83,7 +83,7 @@
 {{/* Call accessibility partial */}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
 {{/* Call criterium partial */}}
-{{- partial "components/scores/criterium" (dict "context" . "criteria" ($.Scratch.Get "scores")) -}}
+{{- partialCached "components/scores/criteria" (dict "context" . "criteria" ($.Scratch.Get "scores")) ($.Scratch.Get "scores") -}}
 {{/* If several pages tested */}}
 {{- if gt (len ($.Scratch.Get "pageslist")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition</h3>
@@ -237,127 +237,5 @@
   <p>Le fichier d’audit RGAA est manquant : {{ $.Scratch.Get "auditpath-csv" }}.</p>
 {{- end -}}
 <hr>
-{{- $.Scratch.Set "organisation" "" -}}
-{{- if .Site.Params.organisation -}}{{- $.Scratch.Set "organisation" .Site.Params.organisation -}}{{- end -}}
-{{- if .Params.accessibility.organisation -}}{{ $.Scratch.Set "organisation" .Params.accessibility.organisation }}{{ end }}
-{{- $.Scratch.Set "strategy" "" -}}
-{{- if .Site.Params.strategy -}}{{- $.Scratch.Set "strategy" .Site.Params.strategy -}}{{- end -}}
-{{- if .Params.accessibility.strategy -}}{{ $.Scratch.Set "strategy" .Params.accessibility.strategy }}{{ end }}
-{{- with .Params.accessibility -}}
-<h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
-<section>
-  {{- if ($.Scratch.Get "organisation") -}}
-  <p>{{ with ($.Scratch.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
-    progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
-    loi n°2005-102 du 11 février 2005.</p>
-  {{- with $.Scratch.Get "strategy" -}}
-  <p>À cette fin, elle met en œuvre la stratégie et les actions suivantes :</p>
-  <ul>
-    {{- with .schema -}}<li>Schéma pluriannuel de mise en accessibilité 2020-2022 : <a href="{{ . }}">Schéma pluriannuel</a></li>{{ end }}
-    {{- with .actions -}}<li>Actions réalisées en 2019-2020 : <a href="{{ . }}">Actions réalisées</a></li>{{ end }}
-    {{- with .plan -}}<li>Plan d’actions 2020-2021 : <a href="{{ . }}">Plan d’actions</a></li>{{ end }}
-  </ul>
-  {{- end -}}
-  {{- with .website -}}<p>Cette déclaration d’accessibilité s’applique à {{ . }}.</p>{{ end }}
-  {{- end -}}
-
-  <h2>État de conformité</h2>
-  <p>{{ with $.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.Scratch.Get "scores") }}{{ if lt (index ($.Scratch.Get "scores") "critereconformepercent") 50 }}non{{ else if ge (index ($.Scratch.Get "scores") "critereconformepercent") 50 }}partiellement{{ else if eq (index ($.Scratch.Get "scores") "critereconformepercent") 100 }}totalement{{ end }}{{ end }} conforme
-    avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
-    dérogations énumérées ci-dessous.</p>
-
-  <h3>Résultats des tests</h3>
-  {{- if ($.Scratch.Get "scores") -}}
-  <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
-  <ul>
-    {{ if ($.Scratch.Get "scores") }}<li>{{ (index ($.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
-    <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
-    {{- if ($.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.Scratch.Get "auditpath-csv") (printf "/%s/" (index ($audits) "auditmainpath")) "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
-    </li>
-  </ul>
-  {{- else -}}
-  <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
-  {{- end -}}
-
-  {{- with ($.Scratch.Get "scores") -}}
-  <h2>Critères non conformes</h2>
-  {{/* Range map errors sort by RGAA order - on all pages */}}
-  <div class="flex flex-column">
-  {{- range $key, $value := (index . "criterenonconforme") -}}
-    {{- $thematiques := index (split $key ".") 0 -}}
-    {{- $criteria := index (split $key ".") 1 -}}
-    <div style="order:{{ $thematiques }};">
-    <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
-    {{- $s := where ($.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
-    {{- if ge (len $s) 1 -}}
-    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
-    <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
-    {{- end -}}
-  </div>
-  {{- end -}}
-  </div>
-
-  <h2>Établissement de cette déclaration d’accessibilité</h2>
-  {{ with .technologies }}
-  <p>Cette déclaration a été établie le <time datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
-  <h3>Technologies utilisées{{ with $.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
-  <ul>
-    {{- range $id, $value := .technologies -}}
-    <li>{{ . }}</li>
-    {{- end -}}
-  </ul>
-  {{- end -}}
-  {{- with .environment -}}
-  <h3>Environnement de test</h3>
-  <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
-    par la base de référence du RGAA, avec les versions suivantes :</p>
-  <ul>
-    {{- range $id, $value := . -}}
-    <li>{{ . }}</li>
-    {{- end -}}
-  </ul>
-  {{- end -}}
-  {{- with .tools -}}
-  <h3>Outils pour évaluer l’accessibilité</h3>
-  <ul>
-    {{- range $id, $value := . -}}
-    <li>{{ . }}</li>
-    {{- end -}}
-  </ul>
-  {{- end -}}
-  {{- with ($.Scratch.Get "pageslist") -}}
-  <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
-  <ol>
-    {{- range $id, $value := . -}}
-    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
-    {{- end -}}
-  </ol>
-  {{- end -}}
-  {{- end -}}
-
-  <h2>Retour d’information et contact</h2>
-  <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
-    sous une autre forme.</p>
-  {{- with .contact -}}
-  <ul>
-    {{ if .email }}<li>Envoyer un message à <strong>{{ .email }}</strong></li>{{ end }}
-    {{ if .address }}<li>Contacter <strong>{{ with ($.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
-  </ul>
-  {{- end -}}
-  <h2>Voies de recours</h2>
-  <p>Cette procédure est à utiliser dans le cas suivant.</p>
-  <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
-    ou à un des services du portail et vous n’avez pas obtenu de réponse satisfaisante.</p>
-  <ul>
-    <li><a href="https://formulaire.defenseurdesdroits.fr">Écrire un message au Défenseur des droits</a></li>
-    <li><a href="https://www.defenseurdesdroits.fr/saisir/delegues">Contacter le délégué du Défenseur des droits dans
-        votre région</a></li>
-    <li>Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre)<br>
-      Défenseur des droits<br>
-      Libre réponse 71120<br>
-      75342 Paris CEDEX 07<br></li>
-  </ul>
-</section>
-</div>
-{{- end -}}
+{{- partial "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits") "pagelist" ($.Scratch.Get "pageslist")) -}}
 {{- end -}}

@@ -1,0 +1,125 @@
+{{ $audits := .audits }}
+{{ $context := .context }}
+
+{{- $.context.Scratch.Set "organisation" (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
+{{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $.Site.Params.strategy "") $.Site.Params.strategy "")) -}}
+
+{{- $.context.Scratch.Set "auditpath-csv" (index $audits "auditfile-path") -}}
+{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
+
+{{- with .context.Params.accessibility -}}
+<h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
+<section>
+  {{- if ($.context.Scratch.Get "organisation") -}}
+  <p>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
+    progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
+    loi n°2005-102 du 11 février 2005.</p>
+  {{- with $.context.Scratch.Get "strategy" -}}
+  <p>À cette fin, elle met en œuvre la stratégie et les actions suivantes :</p>
+  <ul>
+    {{- with .schema -}}<li>Schéma pluriannuel de mise en accessibilité 2020-2022 : <a href="{{ . }}">Schéma pluriannuel</a></li>{{ end }}
+    {{- with .actions -}}<li>Actions réalisées en 2019-2020 : <a href="{{ . }}">Actions réalisées</a></li>{{ end }}
+    {{- with .plan -}}<li>Plan d’actions 2020-2021 : <a href="{{ . }}">Plan d’actions</a></li>{{ end }}
+  </ul>
+  {{- end -}}
+  {{- with .website -}}<p>Cette déclaration d’accessibilité s’applique à {{ . }}.</p>{{ end }}
+  {{- end -}}
+
+  <h2>État de conformité</h2>
+  <p>{{ with $.context.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.context.Scratch.Get "scores") }}{{ if lt (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}non{{ else if ge (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}partiellement{{ else if eq (index ($.context.Scratch.Get "scores") "critereconformepercent") 100 }}totalement{{ end }}{{ end }} conforme
+    avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
+    dérogations énumérées ci-dessous.</p>
+
+  <h3>Résultats des tests</h3>
+  {{- if ($.context.Scratch.Get "scores") -}}
+  <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
+  <ul>
+    {{ if ($.context.Scratch.Get "scores") }}<li>{{ (index ($.context.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
+    <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
+    {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.context.Scratch.Get "auditpath-csv") (printf "/%s/" (index ($audits) "auditmainpath")) "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
+    </li>
+  </ul>
+  {{- else -}}
+  <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
+  {{- end -}}
+
+  {{- with ($.context.Scratch.Get "scores") -}}
+  <h2>Critères non conformes</h2>
+  {{/* Range map errors sort by RGAA order - on all pages */}}
+  <div class="flex flex-column">
+  {{- range $key, $value := (index . "criterenonconforme") -}}
+    {{- $thematiques := index (split $key ".") 0 -}}
+    {{- $criteria := index (split $key ".") 1 -}}
+    <div style="order:{{ $thematiques }};">
+      <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
+      {{- $s := where ($.context.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+      {{- if ge (len $s) 1 -}}
+      {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
+      <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
+      {{- end -}}
+    </div>
+  {{- end -}}
+  </div>
+
+  <h2>Établissement de cette déclaration d’accessibilité</h2>
+  {{ with .technologies }}
+  <p>Cette déclaration a été établie le <time datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.context.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
+  <h3>Technologies utilisées{{ with $.context.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
+  <ul>
+    {{- range $id, $value := .technologies -}}
+    <li>{{ . }}</li>
+    {{- end -}}
+  </ul>
+  {{- end -}}
+  {{- with .environment -}}
+  <h3>Environnement de test</h3>
+  <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
+    par la base de référence du RGAA, avec les versions suivantes :</p>
+  <ul>
+    {{- range $id, $value := . -}}
+    <li>{{ . }}</li>
+    {{- end -}}
+  </ul>
+  {{- end -}}
+  {{- with .tools -}}
+  <h3>Outils pour évaluer l’accessibilité</h3>
+  <ul>
+    {{- range $id, $value := . -}}
+    <li>{{ . }}</li>
+    {{- end -}}
+  </ul>
+  {{- end -}}
+  {{- with ($.context.Scratch.Get "pageslist") -}}
+  <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
+  <ol>
+    {{- range $id, $value := . -}}
+    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
+    {{- end -}}
+  </ol>
+  {{- end -}}
+  {{- end -}}
+
+  <h2>Retour d’information et contact</h2>
+  <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
+    sous une autre forme.</p>
+  {{- with .contact -}}
+  <ul>
+    {{ if .email }}<li>Envoyer un message à <strong>{{ .email }}</strong></li>{{ end }}
+    {{ if .address }}<li>Contacter <strong>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
+  </ul>
+  {{- end -}}
+  <h2>Voies de recours</h2>
+  <p>Cette procédure est à utiliser dans le cas suivant.</p>
+  <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
+    ou à un des services du portail et vous n’avez pas obtenu de réponse satisfaisante.</p>
+  <ul>
+    <li><a href="https://formulaire.defenseurdesdroits.fr">Écrire un message au Défenseur des droits</a></li>
+    <li><a href="https://www.defenseurdesdroits.fr/saisir/delegues">Contacter le délégué du Défenseur des droits dans
+        votre région</a></li>
+    <li>Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre)<br>
+      Défenseur des droits<br>
+      Libre réponse 71120<br>
+      75342 Paris CEDEX 07<br></li>
+  </ul>
+</section>
+{{- end -}}

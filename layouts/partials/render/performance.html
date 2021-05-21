@@ -1,0 +1,37 @@
+{{- with .file -}}
+{{/* https://blog.octo.com/sous-le-capot-de-la-mesure-ecoindex/ */}}
+{{- if and .audits.metrics.details.items .audits.diagnostics.details.items -}}
+{{- $.context.Scratch.Set "LCP"        ((index (.audits.metrics.details.items) 0).largestContentfulPaint) -}}
+{{- $.context.Scratch.Set "pageweight" ((index (.audits.diagnostics.details.items) 0).totalByteWeight) -}}
+{{- $.context.Scratch.Set "domsize"    ((index .audits "dom-size").numericValue ) -}}
+{{- $.context.Scratch.Set "requests"   ((index (.audits.diagnostics.details.items) 0).numRequests) -}}
+{{- $.context.Scratch.Set "ecobest"    (sub 100 (mul 0.833333333 (add (add (mul 3 150) (mul 15 2)) 130000))) -}}
+{{- $.context.Scratch.Set "ecoworth"   (sub 100 (mul 0.833333333 (add (add (mul 3 3000) (mul 120 2)) 5000000))) -}}
+{{- $.context.Scratch.Set "eco"        (sub 100 (mul 0.833333333 (add (add (mul 3 ($.context.Scratch.Get "domsize")) (mul ($.context.Scratch.Get "requests") 2)) ($.context.Scratch.Get "pageweight")))) -}}
+{{- $.context.Scratch.Set "score"      (sub 100 (div (mul ($.context.Scratch.Get "eco") 100) (sub ($.context.Scratch.Get "ecoworth") ($.context.Scratch.Get "ecobest")))) -}}
+{{- $.context.Scratch.Set "eau"        (add (mul (sub 50 ($.context.Scratch.Get "score")) 0.03) 3) -}}
+{{- $.context.Scratch.Set "co2"        (add (mul (sub 50 ($.context.Scratch.Get "score")) 0.02) 2) -}}
+{{- if gt      (int ($.context.Scratch.Get "score")) 75 -}}{{- $.context.Scratch.Set "index" "A" -}}{{- $.context.Scratch.Set "indexclass" "good" -}}
+{{- else if gt (int ($.context.Scratch.Get "score")) 65 -}}{{- $.context.Scratch.Set "index" "B" -}}{{- $.context.Scratch.Set "indexclass" "good" -}}
+{{- else if gt (int ($.context.Scratch.Get "score")) 50 -}}{{- $.context.Scratch.Set "index" "C" -}}{{- $.context.Scratch.Set "indexclass" "medium" -}}
+{{- else if gt (int ($.context.Scratch.Get "score")) 35 -}}{{- $.context.Scratch.Set "index" "D" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
+{{- else if gt (int ($.context.Scratch.Get "score")) 20 -}}{{- $.context.Scratch.Set "index" "E" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
+{{- else if gt (int ($.context.Scratch.Get "score")) 5  -}}{{- $.context.Scratch.Set "index" "F" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
+{{- else if le (int ($.context.Scratch.Get "score")) 5  -}}{{- $.context.Scratch.Set "index" "G" -}}{{- $.context.Scratch.Set "indexclass" "bad" -}}
+{{- end -}}
+{{- end -}}
+
+{{- return
+  (dict
+    "LCP" ($.context.Scratch.Get "LCP")
+    "pageweight" ($.context.Scratch.Get "pageweight")
+    "domsize" ($.context.Scratch.Get "domsize")
+    "requests" ($.context.Scratch.Get "requests")
+    "index" ($.context.Scratch.Get "index")
+    "indexclass" ($.context.Scratch.Get "indexclass")
+    "score" ($.context.Scratch.Get "score")
+    "eau" ($.context.Scratch.Get "eau")
+    "co2" ($.context.Scratch.Get "co2")
+  )
+-}}
+{{- end -}}

@@ -5,8 +5,7 @@
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
 
-{{- $.Scratch.Set "auditfile" (index (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditfile-result") -}}
-{{- $.Scratch.Set "auditfile-name" (index (partial "render/quality-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename)) "auditfile-name") -}}
+{{- $.Scratch.Set "auditfile" (readFile (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality" ".datafilename" .Params.datafilename) $project .Params.datafilename) "auditfile-path") | transform.Unmarshal) -}}
 
 {{/* Condition about structure level */}}
 {{- if eq (len $patharray) 2 -}}
@@ -25,10 +24,8 @@
 {{- partial "elements/content.html" .Content -}}
 </div>
 {{- end -}}
-{{/* Condition about structure level */}}
-{{- if eq (len $patharray) 2 -}}
-  {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
-{{- end -}}
+{{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
+
 
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" . "project" $project "datafilename" .Params.datafilename) -}}

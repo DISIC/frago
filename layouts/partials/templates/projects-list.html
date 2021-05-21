@@ -10,15 +10,16 @@
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
 <br>
-{{/* Build a map with all conformity score for using it later in code */}}
+{{/* Build a map with all accessibility score for using it later in code */}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
   {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
   {{- $context := . -}}
-  {{- range $id, $value := (index (partialCached "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename) $project) "auditall") -}}
-    {{- $.Scratch.SetInMap $project (string $id) (partial "render/conformity" (dict "context" $context "auditfile" . )) -}}
+  {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename) $project) "auditfile-all-path") -}}
+    {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
+
 <ul class="list-unstyled">
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
 {{/* Build $pathfirst & $pathlast when projects type page existe <= to remove */}}
@@ -31,8 +32,8 @@
 {{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) (printf "%s" ($.Scratch.Get "mainpath")) (printf "%s/%s" ($.Scratch.Get "mainpath") $project)) -}}
 
 {{- $accessibilitypath := "" -}}
-{{- $accessibilitypath := (index (partialCached "render/accessibility-lastfile.html" (dict "context" . "project" $project ".datafilename" .Params.datafilename) $project) "auditpath") -}}
-{{- $accessibility     := (fileExists $accessibilitypath) -}}
+{{- $accessibilitypath := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename) $project) "auditfile-path") -}}
+{{- $accessibility     := (fileExists (printf "%s" $accessibilitypath)) -}}
 {{- $quality           := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
 {{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
   <li>
@@ -41,7 +42,7 @@
       {{- if or $accessibility $quality $lighthouse -}}
       <div class="flex flex-gap align-items-center text-center">
       {{- if $quality -}}<p class="mb-0">{{- partialCached "components/scores/quality-small" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project) $project)) $project -}}</p>{{ end }}
-      {{- if $lighthouse -}}<p class="mb-0">{{- partialCached "components/scores/performance-small" (dict "context" . "project" $project) $project -}}</p>{{ end }}
+      {{- if $lighthouse -}}<p class="mb-0">{{- partial "components/scores/performance-small" (dict "context" . "project" $project) -}}</p>{{ end }}
       {{- if $accessibility -}}{{- $scoressmall := index (last 1 (sort (index ($.Scratch.Get "allscores") $project))) 0 -}}<p class="mb-0">{{- partialCached "components/scores/accessibility-small" (dict "context" . "scores" $scoressmall) $project -}}</p>{{ end }}
       </div>
       {{- end -}}
