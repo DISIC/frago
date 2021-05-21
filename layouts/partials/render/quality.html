@@ -1,29 +1,10 @@
 
 {{- $project := .project -}}
 {{- $pathlen := len (split (path.Dir .Path) "/") -}}
+{{- $lastfile    := (readFile (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "quality")) "auditfile-path")) | transform.Unmarshal -}}
+{{ $.context.Scratch.Delete "counterquality"}}
 
-{{/* Test if files are in static or in each projets */}}
-{{- $.context.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "quality")) -}}
-
-{{- if (fileExists (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
-{{- end -}}
-{{- if and $project (not (eq $project "index")) (printf "/%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project) -}}
-  {{- $.context.Scratch.Set "dir" (readDir (printf "/%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project)) -}}
-{{- end -}}
-
-{{- with ($.context.Scratch.Get "dir") -}}
-  {{- range last 1 . -}}
-    {{- if (fileExists (printf "/%s/quality/" ($.context.Scratch.Get "mainpath"))) -}}
-      {{- $.context.Scratch.Set "lastfile" (readFile (printf "/%s/quality/%s" ($.context.Scratch.Get "mainpath") .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-    {{- if and $project (not (eq $project "index")) (printf "/%s/%s/quality/" ($.context.Scratch.Get "mainpath") $project) -}}
-      {{- $.context.Scratch.Set "lastfile" (readFile (printf "/%s/%s/quality/%s" ($.context.Scratch.Get "mainpath") $project .Name) | transform.Unmarshal) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
-{{- range ($.context.Scratch.Get "lastfile") -}}
+{{- range $lastfile -}}
     {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
     {{- $.context.Scratch.Set "countererrorschecked" 0 -}}
     {{- $.context.Scratch.Set "countererrorstypecode" 0 -}}
@@ -50,13 +31,13 @@
     {{- end -}}
 {{- end -}}
 {{- $.context.Scratch.SetInMap "counterquality" "pathlen" $pathlen -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorstotal" ($.context.Scratch.Get "countererrorstotal") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorschecked" ($.context.Scratch.Get "countererrorschecked") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypecode" ($.context.Scratch.Get "countererrorstypecode") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypevisual" ($.context.Scratch.Get "countererrorstypevisual") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypestructure" ($.context.Scratch.Get "countererrorstypestructure") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypetext" ($.context.Scratch.Get "countererrorstypetext") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorscritical" ($.context.Scratch.Get "countererrorscritical") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorsimportant" ($.context.Scratch.Get "countererrorsimportant") -}}
-{{- $.context.Scratch.SetInMap "counterquality" "countererrorsmedium" ($.context.Scratch.Get "countererrorsmedium") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstotal"          ($.context.Scratch.Get "countererrorstotal") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorschecked"        ($.context.Scratch.Get "countererrorschecked") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypecode"       ($.context.Scratch.Get "countererrorstypecode") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypevisual"     ($.context.Scratch.Get "countererrorstypevisual") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypestructure"  ($.context.Scratch.Get "countererrorstypestructure") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorstypetext"       ($.context.Scratch.Get "countererrorstypetext") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorscritical"       ($.context.Scratch.Get "countererrorscritical") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorsimportant"      ($.context.Scratch.Get "countererrorsimportant") -}}
+{{- $.context.Scratch.SetInMap "counterquality" "countererrorsmedium"         ($.context.Scratch.Get "countererrorsmedium") -}}
 {{- return ($.context.Scratch.Get "counterquality") -}}

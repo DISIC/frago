@@ -8,7 +8,7 @@
 {{- with .GetPage (printf "audits/%s/accessibility.md" $project) -}}{{ $.Scratch.Set "conditions" .Params.accessibility }}{{- end -}}
 
 {{- range $idx, $value := (index ($audits) "auditfile-all-path") -}}
-    {{- $results := (partial "render/accessibility" (dict "context" $context "auditfile" . ) . ) -}}
+    {{- $results := (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) -}}
     {{- $.Scratch.Set "scores" (dict "url" . "score" $results.scores "criteria" (dict  "critereconforme" $results.criterenonconforme "criterenonconforme" $results.criterenonconforme)) -}}
 {{- end -}}
 

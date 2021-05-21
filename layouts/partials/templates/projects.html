@@ -73,10 +73,10 @@
     {{- if $accessibility -}}
     {{- $.Scratch.Set "render" slice -}}
     {{- with ($.Scratch.Get "accessibility-all-path") -}}
-      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partial "render/accessibility" (dict "context" $context "auditfile" . )))) -}}{{- end -}}
+      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
     {{- end -}}
     <h3 class="m-0">Accessibilité {{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- $partial := (partial "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path") )) -}}
+    {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
     {{ if $partial }}
       {{- $conforme := index $partial "critereconformepercent" -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}

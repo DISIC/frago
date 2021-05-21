@@ -23,17 +23,18 @@
     {{- range $type, $path := $value -}}
     {{- $.Scratch.Delete $type }}
       {{ if eq $type "accessibility" }}
-        {{- if (index (partial "render/accessibility" (dict "context" $context "auditfile" ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path")))) "scores") -}}
+        {{ $accessibility := (index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path") }}
+        {{- if (index (partialCached "render/accessibility" (dict "context" $context "auditfile" $accessibility) $accessibility )) -}}
           {{- range $idx, $value := ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-all-path")) -}}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" ((partial "render/accessibility" (dict "context" $context "auditfile" . )).scores)) -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "type" $type (dict "url" (printf "%sindex.json" $path) "scores" ($.Scratch.Get $type)) -}}
         {{- end -}}
       {{- end -}}
       {{- if eq $type "performance" -}}
-        {{- if ((partial "render/performance" (dict "context" $context "auditfile" ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse")) "auditfile-path"))))) -}}
+        {{- if ((partial "render/performance" (dict "context" $context "auditfile" ((index (partialCached "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse") $slug) "auditfile-path"))))) -}}
           {{ range $idx, $value := (index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse")) "auditfile-all-path") }}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" (partial "render/performance" (dict "context" $context "file" (getJSON .)))) -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" (partialCached "render/performance" (dict "context" $context "file" (getJSON .)) . )) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "type" $type (dict "url" (printf "%sindex.json" $path) "scores" ($.Scratch.Get $type)) -}}
         {{- end -}}

@@ -2,7 +2,7 @@
 {{- $project := .project -}}
 {{- $type := .type -}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $.context.Scratch.Set "pathroot-lastfile" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "lighthouse")) -}}
+{{- $.context.Scratch.Set "pathroot-lastfile" (partialCached "render/check-rootpath-ressources" (dict "context" . "project" $project "type" .type) $project) -}}
 {{- $path := cond (eq $project "") (printf "/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $type) (printf "/%s/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $project $type) -}}
 {{- $ext  := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
 

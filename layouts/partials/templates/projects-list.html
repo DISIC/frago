@@ -15,7 +15,7 @@
   {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
   {{- $context := . -}}
   {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename) $project) "auditfile-all-path") -}}
-    {{- $.Scratch.SetInMap $project (string $id) (partial "render/accessibility" (dict "context" $context "auditfile" . )) -}}
+    {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
   {{- end -}}
   {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
 {{- end -}}
