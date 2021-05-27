@@ -212,7 +212,7 @@
   <p>Le fichier d’audit RGAA est manquant : {{ $.Scratch.Get "auditpath-csv" }}.</p>
 {{- end -}}
 <hr>
-{{ if not (.OutputFormats.Get "txt") }}
+{{ if not (.OutputFormats.Get "declarationpage") }}
 {{- partial "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits")) -}}
 {{- end -}}
 {{- end -}}

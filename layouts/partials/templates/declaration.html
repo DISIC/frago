@@ -2,7 +2,7 @@
 {{- $context := .context -}}
 
 {{- $.context.Scratch.Set "organisation" (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
-{{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $.Site.Params.strategy "") $.Site.Params.strategy "")) -}}
+{{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
 
 {{- $.context.Scratch.Set "auditpath-csv" (index $audits "auditfile-path") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
@@ -39,7 +39,7 @@
   <ul>
     {{ if ($.context.Scratch.Get "scores") }}<li>{{ (index ($.context.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
-    {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $.Site.BaseURL }}{{ replace ($.context.Scratch.Get "auditpath-csv") (printf "/%s/" (index ($audits) "auditmainpath")) "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
+    {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
   {{- else -}}
@@ -66,7 +66,7 @@
 
   <h2>Établissement de cette déclaration d’accessibilité</h2>
   {{ with .technologies }}
-  <p>Cette déclaration a été établie le <time datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.context.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
+  <p>Cette déclaration a été établie le <time datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.context.Scratch.Get "date").Day }} {{ index $context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
   <h3>Technologies utilisées{{ with $.context.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
   <ul>
     {{- range $id, $value := .technologies -}}
