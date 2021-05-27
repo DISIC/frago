@@ -1,6 +1,6 @@
 {{- $src := .Get "src" -}}
 {{- $datafile := .Get "datafile" -}}
-{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $datafile "type" "similary.json")) -}}
+{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $datafile "type" "similary.json")) -}}
 {{- $filepath := (printf "%s/%s/similary.json" ($.Scratch.Get "mainpath") $datafile) -}}
 {{- if fileExists $filepath -}}
 {{- if eq .Ordinal 0 -}}
@@ -15,7 +15,7 @@
     {{- $pathfile :=(printf "/static/images/%s/benchmark/" $datafile) -}}
     {{- if (fileExists $pathfile) -}}
     {{- range (readDir $pathfile) -}}
-        {{- if in (string .Name) (string $path) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.Site.BaseURL }}/images/{{ $datafile }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="{{ $.Site.BaseURL }}/images/{{ $datafile }}/benchmark/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
+        {{- if in (string .Name) (string $path) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.Site.BaseURL | default "/" }}images/{{ $datafile }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="{{ $.Site.BaseURL | default "/" }}images/{{ $datafile }}/benchmark/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
       {{- end -}}
     {{- end -}}
 {{- end -}}

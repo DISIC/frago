@@ -8,7 +8,7 @@
 {{- $.Scratch.Set "userid" slice -}}
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
-{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "usertests")) -}}
+{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "usertests")) -}}
 {{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/usertests/%s.json" ($.Scratch.Get "mainpath") $project .Params.datafilename)) -}}
 
 <div class="wrapper">
@@ -67,8 +67,8 @@
 {{- end -}}
 
 <div class="wrapper">
-<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
-<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL }}/tags/{{ . }}">{{ . }}</a>{{- end -}}{{- end -}}</small></h1>
+<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+<h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{- end -}}{{- end -}}</small></h1>
 {{/* Range questions with array of answers inside */}}
 <h2>Synthèse des résultats - <small>{{ len $userid }} personnes questionnées au total</small></h2>
 {{ range $key, $value := $.Scratch.Get "listquestions" }}

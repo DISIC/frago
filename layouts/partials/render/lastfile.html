@@ -2,10 +2,12 @@
 {{- $project := .project -}}
 {{- $type := .type -}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $.context.Scratch.Set "pathroot-lastfile" (partialCached "render/check-rootpath-ressources" (dict "context" . "project" $project "type" .type) $project .type) -}}
+{{- $.context.Scratch.Set "pathroot-lastfile" (partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type) -}}
 {{- $path := cond (not $project) (printf "/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $type) (printf "/%s/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $project $type) -}}
 {{- $ext  := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
 
+{{- $.context.Scratch.Set "auditpath-lastfile" "/false" -}}
+{{- $.context.Scratch.Delete "auditname-lastfile" -}}
 {{- $.context.Scratch.Delete "auditpath-all-lastfile" -}}
 {{- $.context.Scratch.Delete "auditname-all-lastfile" -}}
 

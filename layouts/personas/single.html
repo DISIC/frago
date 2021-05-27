@@ -3,17 +3,17 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project := index $patharray 1 -}}
 {{/* Condition about structure level */}}
-{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "personas.json")) -}}
+{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "personas.json")) -}}
 {{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) -}}
 <div class="wrapper">
-<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
-<h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL }}/tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
+<h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{/* List the data for this files with range personas files on the project */}}
 {{- range where ($.Scratch.Get "auditfile") "name" "eq" .Title -}}
   {{ $name := .name | urlize }}
   {{ if (fileExists "/static/images/personas") }}
   {{- range (readDir "/static/images/personas") -}}
-    {{ if eq $name (replace .Name ".png" "") }}<figure class="rounded"><img class="full" src="{{ $.Site.BaseURL }}/images/personas/{{ .Name }}"></figure>{{ end }}
+    {{ if eq $name (replace .Name ".png" "") }}<figure class="rounded"><img class="full" src="{{ $.Site.BaseURL | default "/" }}images/personas/{{ .Name }}"></figure>{{ end }}
   {{- end -}}
   {{- end -}}
   <h2 class="text-center mb-0">Description</h2>

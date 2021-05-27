@@ -1,5 +1,5 @@
-{{ $audits := .audits }}
-{{ $context := .context }}
+{{- $audits := .audits -}}
+{{- $context := .context -}}
 
 {{- $.context.Scratch.Set "organisation" (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
 {{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $.Site.Params.strategy "") $.Site.Params.strategy "")) -}}
@@ -7,10 +7,13 @@
 {{- $.context.Scratch.Set "auditpath-csv" (index $audits "auditfile-path") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 
+{{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
+{{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
+
 {{- with .context.Params.accessibility -}}
 <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
 <section>
-  {{- if ($.context.Scratch.Get "organisation") -}}
+  {{ if ($.context.Scratch.Get "organisation") }}
   <p>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
     progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
     loi n°2005-102 du 11 février 2005.</p>
@@ -23,7 +26,7 @@
   </ul>
   {{- end -}}
   {{- with .website -}}<p>Cette déclaration d’accessibilité s’applique à {{ . }}.</p>{{ end }}
-  {{- end -}}
+  {{ end }}
 
   <h2>État de conformité</h2>
   <p>{{ with $.context.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.context.Scratch.Get "scores") }}{{ if lt (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}non{{ else if ge (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}partiellement{{ else if eq (index ($.context.Scratch.Get "scores") "critereconformepercent") 100 }}totalement{{ end }}{{ end }} conforme
@@ -41,9 +44,9 @@
   </ul>
   {{- else -}}
   <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
-  {{- end -}}
+  {{ end }}
 
-  {{- with ($.context.Scratch.Get "scores") -}}
+  {{ with ($.context.Scratch.Get "scores") }}
   <h2>Critères non conformes</h2>
   {{/* Range map errors sort by RGAA order - on all pages */}}
   <div class="flex flex-column">
@@ -70,7 +73,7 @@
     <li>{{ . }}</li>
     {{- end -}}
   </ul>
-  {{- end -}}
+  {{ end }}
   {{- with .environment -}}
   <h3>Environnement de test</h3>
   <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
@@ -84,20 +87,19 @@
   {{- with .tools -}}
   <h3>Outils pour évaluer l’accessibilité</h3>
   <ul>
-    {{- range $id, $value := . -}}
+    {{ range $id, $value := . }}
     <li>{{ . }}</li>
     {{- end -}}
   </ul>
-  {{- end -}}
+  {{ end }}
   {{- with ($.context.Scratch.Get "pageslist") -}}
   <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
   <ol>
-    {{- range $id, $value := . -}}
-    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
-    {{- end -}}
+    {{ range $id, $value := . }}
+    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>{{- end -}}
   </ol>
   {{- end -}}
-  {{- end -}}
+  {{ end }}
 
   <h2>Retour d’information et contact</h2>
   <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
@@ -122,4 +124,6 @@
       75342 Paris CEDEX 07<br></li>
   </ul>
 </section>
+{{- else -}}
+<p>Declaration is empty</p>
 {{- end -}}

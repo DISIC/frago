@@ -28,8 +28,8 @@
 {{- if or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md") -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project := index $patharray 1 -}}
-{{- $.Scratch.Set "mainpath" (partial "render/check-rootpath-ressources" (dict "context" . "project" $project "type" "accessibility")) -}}
-{{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) (printf "%s" ($.Scratch.Get "mainpath")) (printf "%s/%s" ($.Scratch.Get "mainpath") $project)) -}}
+{{- $.Scratch.Set "rootpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "accessibility")) -}}
+{{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) (printf "%s" ($.Scratch.Get "rootpath")) (printf "%s/%s" ($.Scratch.Get "rootpath") $project)) -}}
 
 {{- $accessibilitypath := "" -}}
 {{- $accessibilitypath := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" ".datafilename" .Params.datafilename) $project) "auditfile-path") -}}
