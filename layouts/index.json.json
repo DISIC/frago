@@ -19,7 +19,7 @@
 {{- $.Scratch.Set "pages" slice -}}
 {{- range $slug, $value := ($.Scratch.Get "jsonslug") -}}
     {{- if $context.GetPage (printf "audits/%s" $slug) -}}
-    {{- $.Scratch.Add "pages" $slug -}}
+    {{- $.Scratch.Add "pages" (dict "slug" $slug) -}}
     {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
     {{- $.Scratch.Delete "type" }}
     {{- range $type, $path := $value -}}
