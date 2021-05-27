@@ -65,7 +65,7 @@
   --color-score-good: hsl(var(--base-green), 25%, calc(var(--base-light) - 5%));
   --color-score-medium: hsl(var(--base-orange), 65%, calc(var(--base-light) - 5%));
   --color-score-bad: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
-  --color-score-verybad: hsl(var(--base-red), 55%, calc(var(--base-light) - 5%));
+  --color-score-verybad: hsl(var(--base-red), 55%, calc(var(--base-light) - 20%));
 
   --color-graph-primary: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
   --color-graph-secondary: hsl(var(--base-green), 25%, calc(var(--base-light) + 20%));

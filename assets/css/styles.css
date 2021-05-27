@@ -124,9 +124,9 @@ p + pre {
   margin-top: -1.5em;
 }
 
-h2 + time {
+h2 + time, time +p {
   display: block;
-  margin: -1.5rem auto 3.5rem;
+  margin: -1.5rem auto 1.5rem;
   width: 100%;
   font-size: 90%;
   color: var(--color-grey);
@@ -435,6 +435,10 @@ footer a {
 
 .verygood {
   background: var(--color-score-verygood,#30d42a);
+}
+
+.verybad {
+  background: var(--color-score-verybad,#722);
 }
 
 /* = Scores = */
