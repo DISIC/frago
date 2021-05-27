@@ -92,11 +92,7 @@
     <a href="#nav">Navigation principale</a>
     <a href="#main">Contenu principal</a>
   </div>
-
   <header role="banner">
-  {{ range .AlternativeOutputFormats -}}
-  {{ .Rel }} - {{ .MediaType.Type }} - <a href="{{ .Permalink | safeURL }}">{{ .RelPermalink | safeURL }}</a> <br>
-  {{ end -}}
     <div class="wrapper flex align-items-center padding-baseline">
       <div class="flex align-items-center">
         <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}" rel="home" class="site-logo">
