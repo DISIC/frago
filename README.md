@@ -51,7 +51,6 @@ theme = "frago"
 
 [params]
   organisation = "Le nom complet de mon administration"
-  logo = "Mon administration <small>suivi de la conformité de démarches en ligne</small>"
 ```
 
 #### Appeler le thème Hugo (avec le système de module `Go`)
@@ -295,7 +294,6 @@ theme = "fargo"
 
 [params]
   organisation = "Le nom complet de mon administration"
-  logo = "Mon administration <small>suivi de la conformité de démarches en ligne</small>"
   [params.strategy]
     schema = "https://www.monadministration.gouv.fr/schema_pluriannuel_2020-2022.pdf" // Optionnel
     plan = "https://www.monadministration.gouv.fr/plan_annuel_2020.pdf" // Optionnel

@@ -16,14 +16,16 @@
 {{- $.Scratch.Set "auditpath-csv" (index ($.Scratch.Get "audits") "auditfile-path") -}}
 
 <div class="wrapper narrow audit">
-
+{{ if (in .Permalink "declaration") }}
+  {{- partial "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits")) -}}
+{{- else -}}
 {{- if and ($.Scratch.Get "auditpath-csv") (ne ($.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.Scratch.Set "auditfile-csv" (getCSV "," ($.Scratch.Get "auditpath-csv")) -}}
 {{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.Scratch.Get "auditpath-csv")) ($.Scratch.Get "auditpath-csv") ) -}}
 {{- $.Scratch.Set "date" (time (string (delimit (last 1 (sort (index ($.Scratch.Get "audits") "auditfile-all-name"))) ""))) -}}
 
 {{- if eq (len $patharray) 1 -}}
-<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL }}/projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p class="no-print" hidden>⬅ <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ ($.Scratch.Get "projectfolders") }}/" class="link-more link-back">Retour à la page projet</a></p>
 {{- end -}}
 <h1>{{ with .Title }}{{ . }}{{ else }}Audit Accessibilité{{ end }}</h1>
 
@@ -36,49 +38,22 @@
 {{- if and ($.Scratch.Get "auditfile-csv") ($.Scratch.Get "scores") -}}
 
 {{/* Create an array with all pages */}}
-{{- $auditmethodology := (len (intersect (index ($.Scratch.Get "auditfile-csv") 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-{{- if eq $auditmethodology 2 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères")) -}}{{- end -}}
-{{- if eq $auditmethodology 3 -}}{{- $.Scratch.Set "pageslist" ((index ($.Scratch.Get "auditfile-csv") 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}{{- end -}}
+{{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
+{{- $.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
 
 {{/* Control which tests are made for each type of audit */}}
-{{- $auditquick         := index .Site.Data.tests "25" -}}
-{{- $auditcomplementary := index .Site.Data.tests "50" -}}
-{{- $auditnecessary     := index .Site.Data.tests "81" -}}
-{{- $auditobligatory    := index .Site.Data.tests "106" -}}
-{{- $.Scratch.Set "criterecontrolquick" slice -}}
-{{- $.Scratch.Set "criterecontrolcomplementary" slice -}}
-{{- $.Scratch.Set "criterecontrolnecessary" slice -}}
-{{- $.Scratch.Set "criterecontrolobligatory" slice -}}
-{{- $.Scratch.Set "criterecontroltotal" slice -}}
-{{- $.Scratch.Set "criterecontroltotalid" slice -}}
-{{- range $id, $criterium := $auditquick -}}
+{{- range $auditname, $audit := $.Site.Data.tests -}}
+  {{ $.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
+  {{- range $id, $criterium := index $.Site.Data.tests $auditname -}}
   {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
-    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolquick" $key }}{{- end -}}
+    {{- if eq $criterium $key -}}{{ $.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
   {{- end -}}
-{{- end -}}
-{{- range $id, $criterium := $auditcomplementary -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
-    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolcomplementary" $key }}{{- end -}}
   {{- end -}}
+  {{ $.Scratch.Set (printf "criterecontrol%s" (string $auditname)) (delimit (($.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.Site.Data.tests $auditname)) ", ")}}
 {{- end -}}
-{{- range $id, $criterium := $auditnecessary -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
-    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolnecessary" $key }}{{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- range $id, $criterium := $auditobligatory -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "criteretotal") -}}
-    {{- if eq $criterium $key -}}{{ $.Scratch.Add "criterecontrolobligatory" $key }}{{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- range $id, $criterium := (index ($.Scratch.Get "scores") "criteretotal") -}}
-  {{- $.Scratch.Add "criterecontroltotalid" $id -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "critereconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonapplicable") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
-  {{- range $key, $value := (index ($.Scratch.Get "scores") "criterenonconforme") -}}{{- if eq $id $key -}}{{ $.Scratch.Add "criterecontroltotal" $key }}{{- end -}}{{- end -}}
-{{- end -}}
-<h2 class="text-center">Scores{{- with (index ($.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.Scratch.Get "criterecontrolquick" | symdiff $auditquick }} - {{ $.Scratch.Get "criterecontrolcomplementary" | symdiff $auditcomplementary }} - {{ $.Scratch.Get "criterecontrolnecessary" | symdiff $auditnecessary }} - {{ $.Scratch.Get "criterecontrolobligatory" | symdiff $auditobligatory }}</span>{{ end }}</h2>
+<h2 class="text-center">Scores{{- with (index ($.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.Scratch.Get "criterecontrol25" }} - {{ $.Scratch.Get "criterecontrol50" }} - {{ $.Scratch.Get "criterecontrol81" }} - {{ $.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>
+{{- with .OutputFormats.Get "txt" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
 <h3>Conformité globale selon les critères {{ if le (index ($.Scratch.Get "scores") "critereconformepercent") 75 }} <small>({{ sub ((div (mul (add (len (index ($.Scratch.Get "scores") "critereconforme")) (len (index ($.Scratch.Get "scores") "criterenonconforme")) ) 75) 100)) (len (index ($.Scratch.Get "scores") "critereconforme")) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
 {{/* Call accessibility partial */}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
@@ -209,7 +184,7 @@
 {{- end -}}
 {{- if eq ($.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
 {{- end -}}
-<br><hr class="divider">
+<hr class="divider">
 {{- end -}}
 
 {{- if gt (len ($.Scratch.Get "pageslist")) 0 -}}
@@ -237,5 +212,8 @@
   <p>Le fichier d’audit RGAA est manquant : {{ $.Scratch.Get "auditpath-csv" }}.</p>
 {{- end -}}
 <hr>
-{{- partial "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits") "pagelist" ($.Scratch.Get "pageslist")) -}}
+{{ if not (.OutputFormats.Get "txt") }}
+{{- partial "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits")) -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}

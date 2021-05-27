@@ -1,6 +1,6 @@
 {{- $project := .project -}}
 {{- $.context.Scratch.Delete "pagesstatus-critical" -}}
-{{- $.context.Scratch.Set "lastfile-quality" (readFile (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "quality" ".datafilename" .datafilename) $project .datafilename) "auditfile-path") | transform.Unmarshal) -}}
+{{- $.context.Scratch.Set "lastfile-quality" (readFile (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "quality" ".datafilename" .datafilename) $project .datafilename) "auditfile-path") | transform.Unmarshal) -}}
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
@@ -27,7 +27,7 @@
   {{- range $key, $value := sort . "status" "asc" -}}
     <h3 hidden>{{ if $value }}{{ $key | humanize }}{{ end }}</h3>
       <tr>
-        <td>#{{ add $key 1 }}{{ if .checked }} ✅ {{ else }} ❌ {{ end }}&nbsp;- <a href="{{ $.Site.BaseURL }}/audits/{{ $project }}/quality#{{ .name | urlize }}">{{ .name }}</a></td>
+        <td>#{{ add $key 1 }}{{ if .checked }} ✅ {{ else }} ❌ {{ end }}&nbsp;- <a href="{{ $.Site.BaseURL | default "/" }}audits/{{ $project }}/quality#{{ .name | urlize }}">{{ .name }}</a></td>
         <td class="text-center">{{ if .pagename }}{{ .pagename }}{{ end }}</td>
         <td class="text-center">{{ .type }}</td>
         <td class="critical{{ if eq .status "critique" }} bad{{ else if eq .status "important" }} medium{{ else if eq .status "moindre" }} normal{{ else }} none{{ end }}">

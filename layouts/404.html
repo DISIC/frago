@@ -9,7 +9,7 @@
   <!-- Informations -->
   {{ hugo.Generator }}
   <link rel="canonical" href="{{ .Permalink }}">
-  <link rel="manifest" href="{{ $.Site.BaseURL }}/manifest.json">
+  <link rel="manifest" href="{{ $.Site.BaseURL | default "/" }}manifest.json">
   {{- if .IsTranslated -}}
     {{- range .Translations -}}
     <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
@@ -22,9 +22,9 @@
   {{- end -}}
 
   <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ $.Site.BaseURL }}/assets/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ $.Site.BaseURL }}/assets/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ $.Site.BaseURL }}/assets/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ $.Site.BaseURL | default "/" }}assets/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ $.Site.BaseURL | default "/" }}assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ $.Site.BaseURL | default "/" }}assets/favicons/favicon-16x16.png">
   {{ with .Site.Params.tile_color }}<meta name="msapplication-TileColor" content="{{ . }}">{{ else }}<meta name="msapplication-TileColor" content="#000">{{ end }}
   {{ with .Site.Params.theme_color }}<meta name="theme-color" content="{{ . }}">{{ else }}<meta name="theme-color" content="#000">{{ end }}
 

@@ -18,7 +18,7 @@
     {{- if or .Date ($.Scratch.Get "hassection") -}}
     <p style="display:block;margin-top:-1.5em;">
       {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}
-      {{- if $.Scratch.Get "hassection" -}}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="{{ $.Site.BaseURL }}/{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{- end -}}{{- end -}}
+      {{- if $.Scratch.Get "hassection" -}}{{ if lt (len (split ($.Scratch.Get "linksingle") "/")) 4 }} pour <a href="{{ $.Site.BaseURL | default "/" }}{{ index (last 3 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}/">{{ index (last 2 (split (delimit (split .RelPermalink "/") "," "") ",")) 0 }}</a>{{- end -}}{{- end -}}
     </p>
     {{- end -}}
     {{- if .Params.summary -}}
