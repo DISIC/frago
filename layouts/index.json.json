@@ -16,8 +16,10 @@
     {{- end -}}
 {{- end -}}
 {{- $.Scratch.Set "title" "" -}}
+{{- $.Scratch.Set "pages" slice -}}
 {{- range $slug, $value := ($.Scratch.Get "jsonslug") -}}
     {{- if $context.GetPage (printf "audits/%s" $slug) -}}
+    {{- $.Scratch.Add "pages" $slug -}}
     {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
     {{- $.Scratch.Delete "type" }}
     {{- range $type, $path := $value -}}
@@ -47,4 +49,5 @@
   "name" .Site.Title
   "description" .Site.Params.organisation
   "websites" ($.Scratch.Get "slug")
+  "pages" ($.Scratch.Get "pages")
 ) | jsonify -}}
