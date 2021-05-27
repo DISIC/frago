@@ -1,5 +1,0 @@
-{{- $patharray :=  split .Path "/" -}}
-{{- $project :=  (index $patharray 1) -}}
-{{- $context := . -}}
-{{- $audits := partialCached "render/lastfile.html" (dict "context" $context "project" ($.Scratch.Get "projectfolders") "type" "accessibility" "datafilename" .Params.datafilename) ($.Scratch.Get "projectfolders") -}}
-{{- readFile (index ($audits) "auditfile-path") -}}

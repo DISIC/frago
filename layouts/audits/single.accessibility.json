@@ -1,0 +1,20 @@
+{{- $patharray :=  split .Path "/" -}}
+{{- $project :=  (index $patharray 1) -}}
+{{- $context := . -}}
+{{- $audits := partial "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .Params.datafilename) -}}
+{{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" (index ($audits) "auditfile-path")) .Path) -}}
+
+{{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
+{{- with .GetPage (printf "audits/%s/accessibility.md" $project) -}}{{ $.Scratch.Set "conditions" .Params.accessibility }}{{- end -}}
+
+{{- range $idx, $value := (index ($audits) "auditfile-all-path") -}}
+    {{- $results := (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) -}}
+    {{- $.Scratch.Set "scores" (dict "url" . "score" $results.scores "criteria" (dict  "critereconforme" $results.criterenonconforme "criterenonconforme" $results.criterenonconforme)) -}}
+{{- end -}}
+
+{{- (dict
+  "name" ($.Scratch.Get "title")
+  "slug" $project
+  "conditions" ($.Scratch.Get "conditions")
+  "scores" ($.Scratch.Get "scores")
+) | jsonify -}}
