@@ -20,7 +20,7 @@
 {{- range $slug, $value := ($.Scratch.Get "jsonslug") -}}
     {{- if $context.GetPage (printf "audits/%s" $slug) -}}
     {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
-    {{- $.Scratch.Add "pages" (dict "site" (urlize $.Site.Title) "slug" $slug) -}}
+    {{- $.Scratch.Add "pages" (dict "sitename" $.Site.Title "siteslug" (urlize $.Site.Title) "slug" $slug) -}}
     {{- $.Scratch.Delete "type" }}
     {{- range $type, $path := $value -}}
     {{- $.Scratch.Delete $type }}
