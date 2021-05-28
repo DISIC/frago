@@ -21,7 +21,7 @@
     {{- if $context.GetPage (printf "audits/%s" $slug) -}}
     {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
     {{- $.Scratch.Add "pages" (dict "sitename" $.Site.Title "siteslug" (urlize $.Site.Title) "slug" $slug) -}}
-    {{- $.Scratch.Delete "type" }}
+    {{- $.Scratch.Delete "audits" }}
     {{- range $type, $path := $value -}}
     {{- $.Scratch.Delete $type }}
       {{- if eq $type "accessibility" -}}
@@ -30,20 +30,21 @@
           {{- range $idx, $value := ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-all-path")) -}}
               {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}
-          {{- $.Scratch.SetInMap "type" $type (dict "url" (printf "%sindex.json" $path) "scores" ($.Scratch.Get $type)) -}}
+          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%sindex.json" $path) "declaration" (printf "%sdeclaration.txt" $path))  "scores" ($.Scratch.Get $type)) -}}
         {{- end -}}
       {{- end -}}
       {{- if eq $type "performance" -}}
-        {{- if ((partial "render/performance" (dict "context" $context "auditfile" ((index (partialCached "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse") $slug) "auditfile-path"))))) -}}
+        {{ $performance := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse") $slug) "auditfile-path") }}
+        {{- if (partialCached "render/performance" (dict "context" $context "auditfile" $performance) $performance) -}}
           {{ range $idx, $value := (index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "lighthouse")) "auditfile-all-path") }}
               {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" (partialCached "render/performance" (dict "context" $context "file" (getJSON .)) . )) -}}
           {{- end -}}
-          {{- $.Scratch.SetInMap "type" $type (dict "url" (printf "%sindex.json" $path) "scores" ($.Scratch.Get $type)) -}}
+          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%sindex.json" $path)) "scores" ($.Scratch.Get $type)) -}}
         {{- end -}}
       {{- end -}}
       {{- end -}}
+      {{- $.Scratch.SetInMap "slug" $slug (dict "title" ($.Scratch.Get "title") "slug" $slug "audits" ($.Scratch.Get "audits")) -}}
       {{- end -}}
-      {{- $.Scratch.SetInMap "slug" $slug (dict "title" ($.Scratch.Get "title") "slug" $slug "type" ($.Scratch.Get "type")) -}}
       {{- end -}}
 {{- (dict
   "name" .Site.Title

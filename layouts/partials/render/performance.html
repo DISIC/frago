@@ -3,7 +3,7 @@
 {{/* https://www.tunetheweb.com/blog/what-do-lighthouse-scores-look-like-across-the-web/ */}}
 {{- if and .audits.metrics.details.items .audits.diagnostics.details.items -}}
 {{- $.context.Scratch.Set "LCP"         ((index (.audits.metrics.details.items) 0).largestContentfulPaint) -}}
-{{- $.context.Scratch.Set "speed"       (.categories.performance.score) -}}
+{{- $.context.Scratch.Set "speedscore"  (.categories.performance.score) -}}
 {{- $.context.Scratch.Set "pageweight"  ((index (.audits.diagnostics.details.items) 0).totalByteWeight) -}}
 {{- $.context.Scratch.Set "domsize"     ((index .audits "dom-size").numericValue ) -}}
 {{- $.context.Scratch.Set "requests"    ((index (.audits.diagnostics.details.items) 0).numRequests) -}}
