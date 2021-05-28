@@ -53,7 +53,7 @@
 {{- end -}}
 <h2 class="text-center">Scores{{- with (index ($.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.Scratch.Get "criterecontrol25" }} - {{ $.Scratch.Get "criterecontrol50" }} - {{ $.Scratch.Get "criterecontrol81" }} - {{ $.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.Scratch.Get "date").Day }} {{ index $.Site.Data.month (printf "%d" ($.Scratch.Get "date").Month) }} {{ ($.Scratch.Get "date").Year }}</time>
-{{- with .OutputFormats.Get "txt" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
+{{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
 <h3>Conformité globale selon les critères {{ if le (index ($.Scratch.Get "scores") "critereconformepercent") 75 }} <small>({{ sub ((div (mul (add (len (index ($.Scratch.Get "scores") "critereconforme")) (len (index ($.Scratch.Get "scores") "criterenonconforme")) ) 75) 100)) (len (index ($.Scratch.Get "scores") "critereconforme")) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
 {{/* Call accessibility partial */}}
 {{- partial "components/scores/accessibility" (dict "context" . "score" (index ($.Scratch.Get "scores") "critereconformepercent")) -}}
