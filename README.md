@@ -125,8 +125,18 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
   * [Grille tests RGAA 4.0 vierge](/static/grille-tests-rgaa4.0.csv)
   * [Grille tests RGAA 4.1 vierge](/static/grille-tests-rgaa4.1.csv)
 
-Dans chacun des ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères),intermédiaire (81 critères).  
-Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
+Dans chacun des ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), intermédiaire (50 critères), complémentaire (81 critères).  
+Exemple, Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
+
+### API
+
+Pour exposer l’API, le fichier `config.toml` doit être compléter, voici un exemple de fichier pour avoir un fichier `index.json` ainsi que des déclarations pour chaque page d’audit (un fichier de contenu brut, et une page HTML liée à chaque page `accessibility.md`).
+
+```
+[outputs]
+ home    = ["HTML","JSON"]
+ page    = ["HTML","JSON","declaration","declarationpage"]
+```
 
 ## Configuration détaillée
 
@@ -297,6 +307,39 @@ theme = "fargo"
   [params.strategy]
     schema = "https://www.monadministration.gouv.fr/schema_pluriannuel_2020-2022.pdf" // Optionnel
     plan = "https://www.monadministration.gouv.fr/plan_annuel_2020.pdf" // Optionnel
+```
+
+### Personnalisation du thème
+
+Hugo permet de surcharger les fichiers présents dans le thème, la condition est de respecter la même arborescence. Ainsi pour surcharger un thème avec : 
+
+ * Sa police
+ * Son logo
+ * Ses couleurs
+ *…
+
+Il suffit de créer tout ces fichiers dans le répertoire `static`. Le thème appelle automatiquement les polices contenus dans le répertoire `static/assets/fonts` (à la place de la police Marianne).
+
+```
+static
+└── assets
+    ├── css
+    │   ├── fonts.css
+    │   └── main.css
+    ├── favicons
+    │   ├── android-chrome-192x192.png
+    │   ├── android-chrome-512x512.png
+    │   ├── apple-touch-icon.png
+    │   ├── favicon-16x16.png
+    │   ├── favicon-32x32.png
+    │   ├── favicon.ico
+    │   └── site.webmanifest
+    ├── fonts
+    │   ├── open-sans-bold.woff2
+    │   └── open-sans-regular.woff2
+    └── images
+        ├── logo.svg
+        └── logodark.svg
 ```
 
 ### Contenus
@@ -531,7 +574,7 @@ Lire [les explications](https://www.gouvernement.fr/charte/charte-graphique-les-
 
 Le thème Frago utilise cette liste de bibliothèques :
 
-  1. Frappe Charts (MIT) : <https://github.com/frappe/charts> - <https://github.com/frappe/charts>
+  1. Frappe Charts ([MIT](https://github.com/mermaid-js/mermaid/blob/develop/LICENSE)) : <https://github.com/frappe/charts> - <https://github.com/frappe/charts>
   2. Mermaid ([MIT](https://github.com/mermaid-js/mermaid/blob/develop/LICENSE)) : <https://github.com/mermaid-js/mermaid>
   3. Highlight.js ([MIT](https://github.com/highlightjs/highlight.js/blob/main/LICENSE)) : <https://github.com/highlightjs/highlight.js>
   4. simplelightbox ([MIT](https://github.com/andreknieriem/simplelightbox/blob/master/LICENSE)) : <https://github.com/andreknieriem/simplelightbox>
@@ -540,4 +583,4 @@ Le thème Frago utilise cette liste de bibliothèques :
 
 ## Auteur
 
-2020-2021, Bertrand Keller
+2020-2021, Bertrand Keller pour le ministère de l’économie, des finances et de la relance.
