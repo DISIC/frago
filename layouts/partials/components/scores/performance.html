@@ -6,7 +6,7 @@
 <div class="scores">
   <ul>
     <li class="counter text-center {{ $performance.speedindexclass }}"><span>Page chargée<br><b class="h2">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b></span></li>
-    <li class="counter text-center"><span>Poids de la page<br><b class="h2">{{ div $performance.pageweight 10000 | lang.NumFmt 0 }}kb</b></span></li>
+    <li class="counter text-center"><span>Poids de la page<br><b class="h2">{{ div $performance.pageweight 1024 | lang.NumFmt 0 }}kb</b></span></li>
     <li class="counter text-center"><span>Éléments sur la page<br><b class="h2">{{ $performance.domsize | lang.NumFmt 0 }}</b></span></li>
     <li class="counter text-center"><span>Nombre de requêtes<br><b class="h2">{{ $performance.requests }}</b></span></li>
   </ul>
