@@ -47,22 +47,23 @@
   {{ end }}
 
   {{ with ($.context.Scratch.Get "scores") }}
+  {{ $score := . }}
   <h2>Critères non conformes</h2>
   {{/* Range map errors sort by RGAA order - on all pages */}}
-  <div class="flex flex-column">
-  {{- range $key, $value := (index . "criterenonconforme") -}}
-    {{- $thematiques := index (split $key ".") 0 -}}
-    {{- $criteria := index (split $key ".") 1 -}}
-    <div style="order:{{ $thematiques }};">
-      <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
-      {{- $s := where ($.context.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
-      {{- if ge (len $s) 1 -}}
-      {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
-      <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
+  {{- range $idx := seq 13 -}}
+    {{ range $key, $value := (index $score "criterenonconforme") }}
+      {{- if eq $idx (int (index (split $key ".") 0)) -}}
+      {{- $thematiques := index (split $key ".") 0 -}}
+      {{ $criteria := index (split $key ".") 1 }}
+  <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
+  {{- $s := where ($.context.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- if ge (len $s) 1 -}}
+  {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
+  <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
       {{- end -}}
-    </div>
+    {{- end -}}
+  {{ end }}
   {{- end -}}
-  </div>
 
   <h2>Établissement de cette déclaration d’accessibilité</h2>
   {{ with .technologies }}
@@ -74,7 +75,7 @@
     {{- end -}}
   </ul>
   {{ end }}
-  {{- with .environment -}}
+  {{ with .environment }}
   <h3>Environnement de test</h3>
   <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
     par la base de référence du RGAA, avec les versions suivantes :</p>
@@ -83,8 +84,8 @@
     <li>{{ . }}</li>
     {{- end -}}
   </ul>
-  {{- end -}}
-  {{- with .tools -}}
+  {{ end }}
+  {{ with .tools }}
   <h3>Outils pour évaluer l’accessibilité</h3>
   <ul>
     {{ range $id, $value := . }}
@@ -92,13 +93,13 @@
     {{- end -}}
   </ul>
   {{ end }}
-  {{- with ($.context.Scratch.Get "pageslist") -}}
+  {{ with ($.context.Scratch.Get "pageslist") }}
   <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
   <ol>
-    {{ range $id, $value := . }}
-    <li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>{{- end -}}
+    {{ range $id, $value := . }}<li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
+    {{ end }}
   </ol>
-  {{- end -}}
+  {{ end }}
   {{ end }}
 
   <h2>Retour d’information et contact</h2>
