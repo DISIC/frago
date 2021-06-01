@@ -1,6 +1,16 @@
 {{- $audits := .audits -}}
 {{- $context := .context -}}
 
+{{- $.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.Scratch.Set "guidelineversion" "4.1" -}}
+
+{{- with .context.Params.accessibility.guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
+{{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+
 {{- $.context.Scratch.Set "organisation" (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
 {{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
 
@@ -56,7 +66,7 @@
       {{- $thematiques := index (split $key ".") 0 -}}
       {{ $criteria := index (split $key ".") 1 }}
   <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
-  {{- $s := where ($.context.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
   {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
   <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>

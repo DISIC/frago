@@ -28,9 +28,9 @@
         {{- $accessibility := (index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-path") -}}
         {{- if (partialCached "render/accessibility" (dict "context" $context "auditfile" $accessibility)) -}}
           {{- range $idx, $value := ((index (partial "render/lastfile.html" (dict "context" $context "project" $slug "type" "accessibility")) "auditfile-all-path")) -}}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" . "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace . "/content/" "") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}
-          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%sindex.json" $path) "declaration" (printf "%sdeclaration.txt" $path))  "scores" ($.Scratch.Get $type)) -}}
+          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%sindex.json" $path) "declaration" (printf "%sdeclaration.txt" $path))  "rgaa" ($.Scratch.Get $type)) -}}
         {{- end -}}
       {{- end -}}
       {{- if eq $type "performance" -}}

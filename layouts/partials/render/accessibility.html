@@ -69,7 +69,7 @@
 {{- $.context.Scratch.SetInMap $scorekey "critereconformepage"    ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconformepage")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criterenonconformepage" ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconformepage")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "criterevalue"           ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevalues"))) -}}
-{{- $.context.Scratch.SetInMap $scorekey "scores"                 (dict "criteria" (dict "total" (len (index ($.context.Scratch.Get $scorekey) "criteretotal")) "conforme" (len (index ($.context.Scratch.Get $scorekey) "critereconforme")) "nonapplicable" (len (index ($.context.Scratch.Get $scorekey) "criterenonapplicable")) "nonconforme" (len (index ($.context.Scratch.Get $scorekey) "criterenonconforme"))) "rgaa" (dict "compliance" (index ($.context.Scratch.Get $scorekey) "critereconformepercent")) ) -}}
+{{- $.context.Scratch.SetInMap $scorekey "scores"                 (dict "criteria" (dict "total" (len (index ($.context.Scratch.Get $scorekey) "criteretotal")) "conforme" (len (index ($.context.Scratch.Get $scorekey) "critereconforme")) "nonapplicable" (len (index ($.context.Scratch.Get $scorekey) "criterenonapplicable")) "nonconforme" (len (index ($.context.Scratch.Get $scorekey) "criterenonconforme"))) "compliance" (index ($.context.Scratch.Get $scorekey) "critereconformepercent") ) -}}
 {{- return ($.context.Scratch.Get $scorekey) -}}
 {{- end -}}
 {{- else -}}

@@ -5,10 +5,16 @@
 {{- $project := index $patharray 1 -}}
 {{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}
 {{- $context := . -}}
-{{- $.Scratch.Set "guideline" "rgaa4.1" -}}
-{{- with .Params.accessibility.guidelines -}}{{- $.Scratch.Set "guideline" (replace (. | urlize) "-" "") -}}{{- end -}}
-{{- $.Scratch.Set "criteriafile" (index $.Site.Data ($.Scratch.Get "guideline")).criteria.topics -}}
-{{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guideline")) -}}
+{{- $.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.Scratch.Set "guidelineversion" "4.1" -}}
+
+{{- with .Params.accessibility.guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $.Scratch.Set "guidelineversion" (replace $guideline ($.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
+{{- $.Scratch.Set "criteriafile" (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.topics -}}
+{{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion")) -}}
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
 
@@ -196,7 +202,7 @@
   {{- $criteria := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
   <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong></p>
-  {{- $s := where ($.Site.Data.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
     {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
     <em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>

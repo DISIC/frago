@@ -1,14 +1,19 @@
 {{- define "main" -}}
 {{- $patharray :=  split .Path "/" -}}
-{{ $.Scratch.Set "guideline" "" }}
+
+{{- $.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.Scratch.Set "guidelineversion" "4.1" -}}
 {{- if ge ($patharray) 2 -}}
   {{ $.Scratch.Set "guideline" (index $patharray 0) }}
+  {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
+  {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
-{{- $glossaire := printf "=\"/%s/glossaire/#" ($.Scratch.Get "guideline") -}}
-{{ $criteriafile := (index $.Site.Data ($.Scratch.Get "guideline")).criteria.topics }}
+
+{{- $glossaire := printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion") -}}
+{{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.topics -}}
 
 <div class="wrapper narrow">
-<h1>Critères {{ replace ($.Scratch.Get "guideline" | upper) "RGAA" "RGAA "}}</h1>
+<h1>Critères {{ replace ($.Scratch.Get "guidelinename" | upper) "RGAA" "RGAA "}}</h1>
 {{ partial "elements/content.html" .Content }}
 <div class="tableofcontents">
 <h2>Thématiques</h2>
@@ -19,9 +24,9 @@
 {{- end -}}
 </ol>
 </div>
-{{- $auditquick := index .Site.Data.tests "25" -}}
-{{- $auditcomplementary := index .Site.Data.tests "50" -}}
-{{- $auditnecessary := index .Site.Data.tests "81" -}}
+{{- $auditquick := index .Site.Data.rgaa.tests "25" -}}
+{{- $auditcomplementary := index .Site.Data.rgaa.tests "50" -}}
+{{- $auditnecessary := index .Site.Data.rgaa.tests "81" -}}
 <ul class="list-unstyled list-inline">
   <li><button id="auditall" class="btn btn-small mb-0">Tous les critères</button></li>&nbsp;
   <li><button id="auditquick" class="btn btn-small mb-0">25 critères</button></li>&nbsp;

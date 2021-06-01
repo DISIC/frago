@@ -108,7 +108,7 @@
       {{/* Range third level */}}
       {{- range $s := .errors -}}
         {{- $path := .name -}}
-        {{- $filename := printf "%s-%s-%s.png" ($name | urlize) ($b.name | urlize) (.name | urlize) -}}
+        {{- $filename := printf "%s-%s-%s.png" ($name | anchorize) ($b.name | anchorize) (.name | anchorize) -}}
         {{/* Create an array for the images slider with screen capture */}}
         {{- $.Scratch.Add "index" (slice $path) -}}
         <dl>
