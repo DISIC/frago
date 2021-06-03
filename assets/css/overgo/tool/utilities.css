@@ -83,6 +83,12 @@
   margin-bottom: 0;
 }
 
+/* Line-height */
+
+.lh-1 {
+  line-height: 1.25;
+}
+
 /* Color */
 
 .text-color {

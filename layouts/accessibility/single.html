@@ -5,15 +5,16 @@
 {{- $project := index $patharray 1 -}}
 {{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}
 {{- $context := . -}}
+
 {{- $.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $.Scratch.Set "guidelineversion" "4.1" -}}
-
 {{- with .Params.accessibility.guidelines -}}
   {{- $guideline := (replace (. | urlize) "-" "") -}}
   {{- $.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
   {{- $.Scratch.Set "guidelineversion" (replace $guideline ($.Scratch.Get "guidelinename") "") -}}
 {{- end -}}
 {{- $.Scratch.Set "criteriafile" (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.topics -}}
+
 {{- $.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion")) -}}
 {{- $.Scratch.Set "pageslist" "" -}}
 {{- $.Scratch.Set "scores" "" -}}
