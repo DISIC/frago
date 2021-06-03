@@ -42,9 +42,11 @@
     "type"               $type
     "path"               $path
     "ext"                $ext
-    "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
+    "project"            $project
     "datafilename"       .datafilename
     "pathroot"           ($.context.Scratch.Get "pathroot-lastfile")
+    "pathproject"        (printf "%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $project)
+    "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
     "auditfile-name"     ($.context.Scratch.Get "auditname-lastfile")
     "auditfile-path"     ($.context.Scratch.Get "auditpath-lastfile")
     "auditfile-all-name" ($.context.Scratch.Get "auditname-all-lastfile")

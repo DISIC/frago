@@ -5,7 +5,17 @@
 {{- $project :=  (index $patharray 1) -}}
 {{- $.Scratch.Set "pathimage" "" }}
 
-{{- $lastfile := (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality" ".datafilename" .Params.datafilename) $project .Params.datafilename) -}}
+{{- $.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with ($.GetPage (printf "/content/%saccessibility.md" .Dir)) -}}
+{{- with .Params.accessibility.guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $.Scratch.Set "guidelineversion" (replace $guideline ($.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
+{{ end }}
+
+{{- $lastfile := (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality" "datafilename" .Params.datafilename) $project .Params.datafilename) -}}
 {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
 {{- $.Scratch.Set "auditfile-name" (index $lastfile "auditfile-name") -}}
 
@@ -136,9 +146,12 @@
           {{- if .description -}}
             <dd>{{ .description | markdownify | safeHTML }}</dd>
           {{- end -}}
+          {{- if .path -}}
+            <dd><strong>XPath :</strong> <span>{{ .path | markdownify | safeHTML }}</span></dd>
+          {{- end -}}
           {{- if .criterion -}}
             {{- if not (eq (slicestr .criterion 0 2) "ER") -}}
-            <dd>Critère : <a href="{{ $.Site.BaseURL | default "/" }}criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du RGAA4</dd>
+            <dd>Critère : <a href="{{ $.Site.BaseURL | default "/" }}{{- $.Scratch.Get "guidelinename" }}/{{- $.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.Scratch.Get "guidelinename" }} {{ $.Scratch.Get "guidelineversion" }}.</dd>
             {{- else -}}
             <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
             {{- end -}}

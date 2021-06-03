@@ -84,7 +84,7 @@
 <hr>
 {{- end -}}
 {{/* If several pages tested */}}
-{{- if and (gt (len ($.Scratch.Get "pageslist")) 1) (eq $auditmethodology 3) -}}
+{{- if and (gt (len ($.Scratch.Get "pageslist")) 1) -}}
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
@@ -194,6 +194,20 @@
 <hr class="divider">
 {{- end -}}
 
+{{- $.Scratch.Set "criterioncounter" 0 -}}
+{{ if fileExists (printf "%s/quality" (index ($.Scratch.Get "audits") "pathproject")) }}
+  {{- range (readFile (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project .Params.datafilename) "auditfile-path") | transform.Unmarshal) -}}
+    {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.Scratch.Delete "criterions") }}
+    {{- if and .criterion (not .checked) -}}
+    {{ $.Scratch.Add "criterioncounter" 1 }}
+    {{ $.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) }}
+    {{ $.Scratch.SetInMap "criterion" (string .criterion) ($.Scratch.Get (string .criterion)) }}
+    {{- end -}}
+    {{- end -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 {{- if gt (len ($.Scratch.Get "pageslist")) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
@@ -203,11 +217,37 @@
   {{- $criteria := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">
   <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong></p>
-  {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- $s := where ($.Site.Data.rgaa.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
     {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
     <em>{{ (replaceRE "=\"#" ($.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
   {{- end -}}
+  {{ with ($.Scratch.Get "criterion") }}
+  {{ with (index . $key) }}
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Xpath</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{- range $key, $value := . -}}
+          <tr>
+          {{ range . }}
+            <td>{{ .page }}</td>
+            <td>{{ .name }}</td>
+            <td>{{ .description }}</td>
+            <td style="text-overflow:ellipsis">{{ .path }}</td>
+          {{ end }}
+          </tr>
+        {{- end -}}
+        </tbody>
+      </table>
+    {{- end -}}
+    {{- end -}}
   </div>
 {{- end -}}
 </div>

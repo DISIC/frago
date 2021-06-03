@@ -3,7 +3,6 @@
 
 {{- $.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $.Scratch.Set "guidelineversion" "4.1" -}}
-
 {{- with .context.Params.accessibility.guidelines -}}
   {{- $guideline := (replace (. | urlize) "-" "") -}}
   {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
@@ -59,17 +58,62 @@
   {{ with ($.context.Scratch.Get "scores") }}
   {{ $score := . }}
   <h2>Critères non conformes</h2>
+
+  {{- $.context.Scratch.Set "criterioncounter" 0 -}}
+
+  {{- if fileExists (printf "%s/quality" (index $audits "pathproject")) -}}
+  {{ with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audits "project") "type" "quality" "datafilename" .context.datafilename) (index $audits "project") .context.datafilename) "auditfile-path") }}
+  {{- range (readFile . | transform.Unmarshal) -}}
+    {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
+    {{- if and .criterion (not .checked) -}}
+    {{ $.context.Scratch.Add "criterioncounter" 1 }}
+    {{ $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) }}
+    {{ $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) }}
+    {{- end -}}
+    {{- end -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+  {{- end -}}
+
   {{/* Range map errors sort by RGAA order - on all pages */}}
   {{- range $idx := seq 13 -}}
     {{ range $key, $value := (index $score "criterenonconforme") }}
       {{- if eq $idx (int (index (split $key ".") 0)) -}}
       {{- $thematiques := index (split $key ".") 0 -}}
-      {{ $criteria := index (split $key ".") 1 }}
-  <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br>
-  {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int (index (split $key ".") 0)) -}}
+      {{- $criteria := index (split $key ".") 1 -}}
+  <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br/>
+  {{- $s := where ($.context.Site.Data.rgaa.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
   {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
-  <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em></p>
+  <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em>
+  </br>
+      {{- end -}}
+      {{ with ($.context.Scratch.Get "criterion") }}
+      {{ with (index . $key) }}
+          <table>
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Xpath</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{- range $key, $value := . -}}
+              <tr>
+              {{ range . }}
+                <td>{{ .page }}</td>
+                <td>{{ .name }}</td>
+                <td>{{ .description }}</td>
+                <td title="{{ .path }}">{{ substr .path 0 20 }}</td>
+              {{ end }}
+              </tr>
+            {{- end -}}
+            </tbody>
+          </table>
+      {{- end -}}
       {{- end -}}
     {{- end -}}
   {{ end }}

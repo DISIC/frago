@@ -9,7 +9,6 @@
 <section class="section text-center">
 <div class="wrapper">
 <h2 hidden>{{ with .Site.GetPage "projects" }}{{ .Title }}{{ end }}</h2>
-<br>
 {{/* Build a map with all accessibility score for using it later in code */}}
 {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
   {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
