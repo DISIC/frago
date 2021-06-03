@@ -84,7 +84,7 @@
 <hr>
 {{- end -}}
 {{/* If several pages tested */}}
-{{- if and (gt (len ($.Scratch.Get "pageslist")) 1) -}}
+{{- if and (gt (len ($.Scratch.Get "pageslist")) 0) -}}
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu */}}
@@ -106,8 +106,10 @@
 
 {{- $.Scratch.Set "counterallpages" 0 -}}
 {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
-  {{- $content := delimit (uniq (after $auditmethodology .)) "" -}}
-  {{- $condcontentlen := gt (len $content) 2 -}}
+  {{- $indication := (delimit (uniq (after $auditmethodology .)) "") -}}
+  {{- $content := (index (split $indication "|") 0) -}}
+  {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+  {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
   {{- $condcontentnc := (eq $content "nc") -}}
   {{- $condcontentc := (eq $content "c") -}}
   {{- $thematiques := index $value 0 -}}
@@ -119,11 +121,11 @@
     {{- $.Scratch.Set "counterallpages" 1 -}}
     <p class="mb-0"><strong>
       {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
-      {{ if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
-    {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+    {{- if ge (len $comment) 1 }}<p class="m-0">=> {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
       {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
@@ -155,8 +157,10 @@
   {{- $.Scratch.Set "is-page-error" 0 -}}
   {{- range $key, $value := after 1 ($.Scratch.Get "auditfile-csv") -}}
   {{- if ne (len (uniq (after $auditmethodology .))) 1 -}}
-    {{- $content := (string (index . (add $id $auditmethodology))) -}}
-    {{- $condcontentlen := gt (len $content) 2 -}}
+    {{- $indication := (string (index . (add $id $auditmethodology))) -}}
+    {{- $content := (index (split $indication "|") 0) -}}
+    {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+    {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
     {{- $condcontentnc := (eq $content "nc") -}}
     {{- $condcontentc := (eq $content "c") -}}
     {{- $thematiques := index $value 0 -}}
@@ -166,11 +170,11 @@
     {{- $.Scratch.Add "is-page-error" 1 -}}
         <p class="mb-0"><strong>
         {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq $auditmethodology 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq $auditmethodology 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-        {{- if eq (upper (delimit (findRE "!(.*)!" $content) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
-      {{- if $condcontentlen }}<p class="m-0"><strong>{{ replace (replaceRE "!(.*)!" "" $content 1) "\n" "<br>" | markdownify }}</strong></p>{{ end }}
+      {{- if $condcontentlen }}<p class="m-0">=> {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
         {{- $s := where ($.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}

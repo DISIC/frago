@@ -15,7 +15,7 @@
   <h2>{{ .section }}</h2>
   <dl>
     {{- range .dl -}}
-      <dt id="{{ .dt | urlize }}">{{ .dt }}</dt>
+      <dt id="{{ .dt | anchorize }}">{{ .dt }}</dt>
       <dd>
         {{- range .dd -}}
           {{- if reflect.IsMap . -}}
