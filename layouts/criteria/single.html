@@ -9,7 +9,7 @@
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
 
-{{- $glossaire := printf "=\"%s%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion") -}}
+{{- $glossaire := printf "=\"/%s/%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion") -}}
 {{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.topics -}}
 
 <div class="wrapper narrow">
@@ -40,7 +40,7 @@
   {{- range $key2, $value2 := .criteria -}}
     {{- $key := printf "%s.%s" (string (add $key1 1)) (string (add $key2 1)) -}}
     <div id="{{ add $key1 1 }}-{{ add $key2 1 }}" class="topic{{ if ge (len (intersect $auditquick (slice $key))) 1 }} auditquick{{ end }}{{ if ge (len (intersect $auditcomplementary (slice $key))) 1 }} auditcomplementary{{ end }}{{ if ge (len (intersect $auditnecessary (slice $key))) 1 }} auditnecessary{{ end }}">
-    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | markdownify }}</h3>
+    <h3>Critère {{ add $key1 1 }}.{{ add $key2 1 }} - {{ (replaceRE "=\"#" $glossaire (.criterium.title | markdownify) 100) | safeHTML }}</h3>
 
       {{- if or .criterium.technicalNote .criterium.particularCases -}}
       <div class="note">
@@ -48,10 +48,10 @@
       {{- range $key5, $value5 := .criterium.technicalNote -}}
         {{ if reflect.IsMap . }}
           <ul>
-            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | safeHTML }}</li>{{ end }}
           </ul>
         {{ else }}
-        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</p>
+        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | safeHTML  }}</p>
         {{ end }}
       {{- end -}}
       {{- end -}}
@@ -59,10 +59,10 @@
       {{- range $key5, $value5 := .criterium.particularCases -}}
         {{ if reflect.IsMap . }}
           <ul>
-            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{ end }}
+            {{ range .ul }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | safeHTML }}</li>{{ end }}
           </ul>
         {{ else }}
-        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</p>
+        <p>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | safeHTML  }}</p>
         {{ end }}
       {{- end -}}
       {{- end -}}
@@ -73,14 +73,14 @@
         <p id="{{ add $key1 1 }}-{{ add $key2 1 }}-{{ $key3 }}" {{ if reflect.IsSlice $value3 }}class="mb-0"{{ end }}><strong>Test {{ add $key1 1 }}.{{ add $key2 1 }}.{{ $key3 }}</strong> -
         {{/* Test if value is an array */}}
         {{- if reflect.IsSlice $value3 -}}
-        {{ (replaceRE "=\"#" $glossaire ((index $value3 0) | markdownify) 100) | markdownify }}</p>
+        {{ (replaceRE "=\"#" $glossaire ((index $value3 0) | markdownify) 100) | safeHTML }}</p>
         <ol>
         {{/* Range array and prepend "glossaire" before all links */}}
-        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | markdownify }}</li>{{- end -}}
+        {{ range $key4, $value4 := after 1 $value3 }}<li>{{ (replaceRE "=\"#" $glossaire (. | markdownify) 100) | safeHTML }}</li>{{- end -}}
         </ol>
         {{- else -}}
         {{/* Prepend "glossaire" before all links */}}
-        {{ (replaceRE "=\"#" $glossaire ($value3 | markdownify) 100) | markdownify }}</p>
+        {{ (replaceRE "=\"#" $glossaire ($value3 | markdownify) 100) | safeHTML }}</p>
         {{- end -}}
     {{- end -}}
     <hr>
