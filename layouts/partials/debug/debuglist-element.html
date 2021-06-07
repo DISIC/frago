@@ -9,7 +9,7 @@
 <ul>
 {{ end }}
 <li>
-  <span><strong>Nom</strong><a href="{{ .Permalink }}">{{ .Title }}</a></span>
+  <span><strong>Nom</strong><a href="{{ .Permalink }}">{{ with .Title }}{{ . }}{{ else }}Titre manquant{{ end }}</a></span>
   <span><strong>Url</strong> {{ .RelPermalink }}</span>
   <span><strong>Type</strong> {{ .Type }}</span>
   <span><strong>Genre</strong> {{ .Kind }}</span>
