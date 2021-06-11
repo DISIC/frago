@@ -1,9 +1,22 @@
 {{- $audits := .audits -}}
 {{- $context := .context -}}
+{{- if fileExists (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
+  {{- range readDir (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
+    {{- if eq .Name "context.yml" -}}
+      {{- $.context.Scratch.Set "context" (index (last 1 (sort (readFile (printf "content/%s/accessibility/%s" (path.Dir $context.Path) .Name) | transform.Unmarshal))) 0) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not ($.context.Scratch.Get "context") -}}
+{{ $.context.Scratch.Set "context" $context.Params.accessibility }}
+{{- if fileExists (printf "content/%s/accessibility.md" (path.Dir $context.Path)) -}}
+{{- $.context.Scratch.Set "context" (readFile (printf "content/%s/accessibility.md" (path.Dir $context.Path)) | transform.Unmarshal) -}}
+{{- end -}}
+{{- end -}}
 
-{{- $.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $.Scratch.Set "guidelineversion" "4.1" -}}
-{{- with .context.Params.accessibility.guidelines -}}
+{{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with ($.context.Scratch.Get "context").guidelines -}}
   {{- $guideline := (replace (. | urlize) "-" "") -}}
   {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
   {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
@@ -19,7 +32,7 @@
 {{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
 {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
 
-{{- with .context.Params.accessibility -}}
+{{- with ($.context.Scratch.Get "context") -}}
 <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
 <section>
   {{ if ($.context.Scratch.Get "organisation") }}
@@ -180,5 +193,5 @@
   </ul>
 </section>
 {{- else -}}
-<p>Declaration is empty</p>
+<p>Déclaration vide ; l’entête du fichier de contenu <code>accessibility.md</code> ou le fichier <code>/accessibility/context.yml</code> sont manquants.</p>
 {{- end -}}
