@@ -1,7 +1,0 @@
-{{- $patharray :=  split .Path "/" -}}
-{{- $project :=  (index $patharray 1) -}}
-{{- $context := . -}}
-{{- $audits := partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" -}}
-{{- if ne (index ($audits) "auditfile-path") "/false" -}}
-{{- readFile (index ($audits) "auditfile-path") -}}
-{{- end -}}
