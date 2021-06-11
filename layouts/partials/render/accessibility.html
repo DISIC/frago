@@ -1,5 +1,5 @@
 {{- $scorekey := sha1 (string now) -}}
-{{- if (getCSV "," .auditfile) -}}
+{{- if (ne .auditfile "/false") -}}
 {{- $auditfile := (getCSV "," .auditfile) -}}
 {{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
 {{- $.context.Scratch.Set (printf "%s%s" $scorekey "rendercriterevalues") 0 -}}

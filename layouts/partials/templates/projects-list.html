@@ -33,7 +33,7 @@
         {{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
           <li>
             <a class="card-inline card-shadow" href="{{ .Permalink }}">
-              <h2 class="h4">{{ .Title }}</h2>
+              <h3 class="h4">{{ .Title }}</h3>
               {{- if or $accessibility $quality $lighthouse -}}
               <div class="flex flex-gap align-items-center text-center lh-1">
               {{- if $quality -}}<p class="mb-0">{{- partialCached "components/scores/quality-small" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project) $project)) $project -}}</p>{{ end }}

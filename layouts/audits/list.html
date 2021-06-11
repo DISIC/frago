@@ -1,5 +1,31 @@
 {{- define "main" -}}
-    <h1 class="text-center wrapper">{{ .Title }}</h1>
-    {{- partial "templates/projects.html" . -}}
-    {{- partial "elements/content.html" .Content -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project := index $patharray 1 -}}
+{{- $context := . -}}
+{{- if and (gt (len $patharray) 1) ($project) -}}
+  {{ $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" }}
+    {{ if ne (len $alternate) 0 }}
+      {{- with $alternate -}}{{- range $key, $value := . -}}
+        {{ if eq .Format.BaseName "accessibility" }}
+          {{- partialCached "templates/accessibility.html" (dict "context" $context "project" $project) $project -}}
+        {{ else if eq .Format.BaseName "quality" }}
+          {{- partialCached "templates/quality.html" (dict "context" $context "project" $project) $project -}}
+        {{ else if eq .Format.BaseName "performance" }}
+          {{- partialCached "templates/performance.html" (dict "context" $context "project" $project) $project -}}
+        {{ else if eq .Format.BaseName "declaration" }}
+          <div class="wrapper narrow">
+            {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
+            {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) ($context.Scratch.Get "audits") -}}
+          </div>
+        {{- end -}}
+      {{- end -}}{{- end -}}
+    {{- else -}}
+    <h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
+      {{- partial "templates/projects.html" $context -}}
+    {{- end -}}
+{{- else -}}
+<h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
+{{- partialCached "templates/projects-list.html" $context $context -}}
+{{- partial "elements/content.html" .Content -}}
+{{- end -}}
 {{- end -}}

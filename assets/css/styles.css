@@ -124,7 +124,7 @@ p + pre {
   margin-top: -1.5em;
 }
 
-h2 + time, time +p {
+h2 + time, time + p, h2 + .text-center {
   display: block;
   margin: -1.5rem auto 1.5rem;
   width: 100%;

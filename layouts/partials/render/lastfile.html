@@ -1,15 +1,16 @@
 
-{{- $project := .project -}}
-{{- $type := .type -}}
+{{- $project   := .project -}}
+{{- $type      := .type -}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $.context.Scratch.Set "pathroot-lastfile" (partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type) -}}
-{{- $path := cond (not $project) (printf "/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $type) (printf "/%s/%s/%s" ($.context.Scratch.Get "pathroot-lastfile") $project $type) -}}
-{{- $ext  := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
+{{- $pathroot  := (partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type) -}}
+{{- $path      := cond (not $project) (printf "/%s/%s" $pathroot $type) (printf "/%s/%s/%s" $pathroot $project $type) -}}
+{{- $ext       := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
 
-{{- $.context.Scratch.Set "auditpath-lastfile" "/false" -}}
+{{- $.context.Scratch.Set    "auditpath-lastfile" "/false" -}}
 {{- $.context.Scratch.Delete "auditname-lastfile" -}}
 {{- $.context.Scratch.Delete "auditpath-all-lastfile" -}}
 {{- $.context.Scratch.Delete "auditname-all-lastfile" -}}
+{{- $.context.Scratch.Delete "pathdatafile" -}}
 
 {{- if .datafilename -}}
   {{- $.context.Scratch.Set "pathdatafile" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) -}}
@@ -27,10 +28,12 @@
   {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdatafile")) -}}
   {{- with ($.context.Scratch.Get "dir-lastfile") -}}
     {{- range $key, $value := . -}}
+    {{- if in (path.Ext .Name) $ext -}}
       {{- if (fileExists $path) -}}
         {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 1)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) "//" "/") -}}
         {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string (add $key 1)) (replace .Name (path.Ext .Name) "") -}}
       {{- end -}}
+    {{- end -}}
     {{- end -}}
     {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($.context.Scratch.Get "auditpath-all-lastfile"))) ""))) -}}
     {{- $.context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($.context.Scratch.Get "auditname-all-lastfile"))) ""))) -}}
