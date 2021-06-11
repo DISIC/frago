@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}{{ .Site.Params.robots }}{{ end }}">
-  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité{{ with .Site.Title }}{{ . }}{{ end }}</title>
+  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité{{ with .Site.Title }} {{ . }}{{ end }}</title>
   <script type="module">
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
@@ -93,6 +93,14 @@
     <a href="#main">Contenu principal</a>
   </div>
   <header role="banner">
+    {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
+    <div hidde>
+    {{ .Permalink }} - {{ .Kind }} - {{ .Type }}<br>
+    {{ range .OutputFormats -}}
+    {{ .Rel }} - {{ .MediaType.Type }} - <a href="{{ .Permalink | safeURL }}">{{ .RelPermalink | safeURL }}</a> - {{ .Format.BaseName }} - {{ .Format.Path }}<br>
+    {{- end -}}
+    </div>
+    {{- end -}}
     <div class="wrapper flex align-items-center padding-baseline">
       <div class="flex align-items-center">
         <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}" rel="home" class="site-logo">
