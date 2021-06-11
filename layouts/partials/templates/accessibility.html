@@ -1,0 +1,258 @@
+{{- $project := .project -}}
+{{- $context := .context -}}
+
+{{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with .context.Params.accessibility.guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
+{{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+
+{{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.context.Scratch.Get "guidelinename") ($.context.Scratch.Get "guidelineversion")) -}}
+{{- $.context.Scratch.Set "pageslist" "" -}}
+{{- $.context.Scratch.Set "scores" "" -}}
+
+{{- $.context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
+{{- $.context.Scratch.Set "auditpath-csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
+
+<div class="wrapper narrow">
+{{- if (in .context.Permalink "declaration.html") -}}
+  {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) ($.context.Scratch.Get "audits") -}}
+{{- else -}}
+{{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
+{{- $.context.Scratch.Set "auditfile-csv" (getCSV "," ($.context.Scratch.Get "auditpath-csv")) -}}
+{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
+{{- $.context.Scratch.Set "date" (time (string (delimit (last 1 (sort (index ($.context.Scratch.Get "audits") "auditfile-all-name"))) ""))) -}}
+
+<p>⬅ <a href="/audits/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
+<h1>Audit Accessibilité</h1>
+
+{{- if gt (len .context.Content) 10 -}}
+<div class="note">
+{{- partial "elements/content.html" .context.Content -}}
+</div>
+{{- end -}}
+
+{{- if and ($.context.Scratch.Get "auditfile-csv") ($.context.Scratch.Get "scores") -}}
+{{/* Create an array with all pages */}}
+{{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
+{{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
+{{/* Control which tests are made for each type of audit */}}
+{{- range $auditname, $audit := $.context.Site.Data.tests -}}
+  {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
+  {{- range $id, $criterium := index $.context.Site.Data.tests $auditname -}}
+  {{- range $key, $value := (index ($.context.Scratch.Get "scores") "criteretotal") -}}
+    {{- if eq $criterium $key -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
+  {{- end -}}
+  {{- end -}}
+  {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) (delimit (($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.tests $auditname)) ", ")}}
+{{- end -}}
+
+<h2 class="text-center">Scores{{- with (index ($.context.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
+<time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
+{{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
+<h3>Conformité globale selon les critères {{ if le (index ($.context.Scratch.Get "scores") "critereconformepercent") 75 }} <small>({{ sub ((div (mul (add (len (index ($.context.Scratch.Get "scores") "critereconforme")) (len (index ($.context.Scratch.Get "scores") "criterenonconforme")) ) 75) 100)) (len (index ($.context.Scratch.Get "scores") "critereconforme")) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
+{{/* Call accessibility partial */}}
+{{- partial "components/scores/accessibility" (dict "context" $context "score" (index ($.context.Scratch.Get "scores") "critereconformepercent")) -}}
+{{/* Call criterium partial */}}
+{{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($.context.Scratch.Get "scores")) ($.context.Scratch.Get "scores") -}}
+{{/* If several pages tested */}}
+{{- if gt (len ($.context.Scratch.Get "pageslist")) 1 -}}
+<h3 class="mb-0">Conformité détaillée de répartition</h3>
+{{- partial "components/scores/accessibility-graph" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv") "scores" ($.context.Scratch.Get "scores")) -}}
+{{- end -}}
+
+{{/* Call page parameters */}}
+{{- with .context.Params.accessibility -}}
+<h2>Contexte</h2>
+<p>
+  <strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>
+  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>
+  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>
+  <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
+</p>
+{{- end -}}
+<hr>
+{{- end -}}
+{{- if and (gt (len ($.context.Scratch.Get "pageslist")) 0) -}}
+<h2>Liste des pages auditées</h2>
+
+{{/* Create a anchors menu */}}
+<div class="tableofcontents">
+  <h3>Accéder aux pages auditées</h3>
+  <ul>
+    <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
+    {{/* Loop all pages for anchor navigation */}}
+    {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
+    <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
+    {{- end -}}
+  </ul>
+</div>
+
+<h2>Par ordre des critères du référentiel RGAA</h2>
+
+{{/* Range map errors sort by RGAA order - on all pages */}}
+<h3 id="pagesall">A - Anomalies présentes sur toutes les pages</h3>
+
+{{- $.context.Scratch.Set "counterallpages" 0 -}}
+{{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
+  {{- $indication := (delimit (uniq (after ($.context.Scratch.Get "auditmethodology") .)) "") -}}
+  {{- $content := (index (split $indication "|") 0) -}}
+  {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+  {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+  {{- $thematiques := index $value 0 -}}
+  {{- $criteria := index $value 1 -}}
+  {{- $tests := index $value 2 -}}
+  {{ if eq (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 }}
+  {{- range first 1 . -}}
+    {{- if or $condcontentlen $condcontentnc -}}
+    {{- $.context.Scratch.Set "counterallpages" 1 -}}
+    <p class="mb-0"><strong>
+      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
+    </strong></p>
+    {{- if ge (len $comment) 1 }}<p class="m-0"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+      {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+      {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+        {{- if eq $idx (string ($tests)) -}}
+        {{- if reflect.IsSlice . -}}
+        <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+        {{- if (after 1 .) -}}
+        <ol>
+          {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+        </ol>
+        {{- end -}}
+        {{- else -}}
+        <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
+
+{{/* Range map errors sort by RGAA order - on specifics pages */}}
+<h3>B - Anomalies présentes sur les pages spécifiques</h3>
+{{/* Display errors presents on specific pages */}}
+{{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
+  {{- $.context.Scratch.Set "text" 0 -}}
+  {{- $page := . -}}
+  <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">‣ Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
+  {{- $.context.Scratch.Set "is-page-error" 0 -}}
+  {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
+  {{- if ne (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 -}}
+    {{- $indication := (string (index . (add $id ($.context.Scratch.Get "auditmethodology")))) -}}
+    {{- $content := (index (split $indication "|") 0) -}}
+    {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+    {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
+    {{- $condcontentnc := (eq $content "nc") -}}
+    {{- $condcontentc := (eq $content "c") -}}
+    {{- $thematiques := index $value 0 -}}
+    {{- $criteria := index $value 1 -}}
+    {{- $tests := index $value 2 -}}
+    {{- if or $condcontentlen $condcontentnc -}}
+    {{- $.context.Scratch.Add "is-page-error" 1 -}}
+        <p class="mb-0"><strong>
+        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
+        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+      </strong></p>
+      {{- if $condcontentlen }}<p class="m-0"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+        {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+          {{- if eq $idx (string ($tests)) -}}
+          {{- if reflect.IsSlice . -}}
+          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+          {{- if (after 1 .) -}}
+          <ol>
+            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+          </ol>
+          {{- end -}}
+          {{- else -}}
+          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq ($.context.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
+{{- end -}}
+<hr class="divider">
+{{- end -}}
+
+{{- $.context.Scratch.Set "criterioncounter" 0 -}}
+{{ if fileExists (printf "%s/quality" (index ($.context.Scratch.Get "audits") "pathproject")) }}
+  {{- range (readFile (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project .Params.datafilename) "auditfile-path") | transform.Unmarshal) -}}
+    {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
+    {{- if and .criterion (not .checked) -}}
+    {{ $.context.Scratch.Add "criterioncounter" 1 }}
+    {{ $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) }}
+    {{ $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) }}
+    {{- end -}}
+    {{- end -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len ($.context.Scratch.Get "pageslist")) 0 -}}
+{{/* Range map errors sort by RGAA order - on all pages */}}
+<h3 id="pagesall">Tous les critères non conformes du site</h3>
+<div class="flex flex-column">
+{{- range $key, $value := (index ($.context.Scratch.Get "scores") "criterenonconforme") -}}
+  {{- $thematiques := index (split $key ".") 0 -}}
+  {{- $criteria := index (split $key ".") 1 -}}
+  <div style="order:{{ $thematiques }};">
+  <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong></p>
+  {{- $s := where ($.context.Site.Data.rgaa.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- if ge (len $s) 1 -}}
+    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
+    <em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
+  {{- end -}}
+  {{ with ($.context.Scratch.Get "criterion") }}
+  {{ with (index . $key) }}
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Xpath</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{- range $key, $value := . -}}
+          <tr>
+          {{ range . }}
+            <td>{{ .page }}</td>
+            <td>{{ .name }}</td>
+            <td>{{ .description }}</td>
+            <td style="text-overflow:ellipsis">{{ .path }}</td>
+          {{ end }}
+          </tr>
+        {{- end -}}
+        </tbody>
+      </table>
+    {{- end -}}
+    {{- end -}}
+  </div>
+{{- end -}}
+</div>
+{{- end -}}
+{{- else -}}
+  <p>Le fichier d’audit RGAA est manquant : {{ $.context.Scratch.Get "auditpath-csv" }}.</p>
+{{- end -}}
+{{- end -}}
+<hr>
+{{ if not (.context.OutputFormats.Get "declarationpage") }}
+{{- partial "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) -}}
+{{- end -}}

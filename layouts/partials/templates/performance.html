@@ -1,0 +1,48 @@
+{{- define "title" -}}Audit Performance {{ (index (split (path.Dir .Path) "/") 1) }}{{- end -}}
+{{/* Vars */}}
+{{- $patharray := split (path.Dir .context.Path) "/" -}}
+{{- $project :=  .project -}}
+{{- $context :=  .context -}}
+{{- $.context.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "/") -}}
+{{/* Test if files are in static or in each projets */}}
+{{- $.context.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
+{{- $.context.Scratch.Set "lastfile" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
+
+<div class="wrapper narrow">
+  <p>⬅ <a href="/audits/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
+  <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+  {{- partial "elements/content.html" .context.Content -}}
+  {{/* Range performance file */}}
+  {{- if ne ($.context.Scratch.Get "lastfile") "/false" -}}
+  <h2>Scores</h2>
+  {{- partial "components/scores/performance" (dict "context" $.context "project" ($.context.Scratch.Get "projectfolders")) -}}
+  {{- with ($.context.Scratch.Get "lastfile") -}}
+  {{/* Vars with the last file of the lighthouse directory */}}
+  <h2>Règles</h2>
+  {{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
+  {{ $lastfile := getJSON ($.context.Scratch.Get "lastfile") }}
+    {{/* Range the file */}}
+    {{- range $key, $value := sort (index $lastfile "audits") ".score" "asc" -}}
+    {{/* Display only errors - with score different of null */}}
+    {{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}
+    <details>
+      <summary><h3 class="m-0 d-inline-block">{{ if lt .score 0.5 }}<small class="counter bad">Haute</small> {{ else if eq .score 0.5 }}<small class="counter medium">Medium</small> {{ else if gt .score 0.5 }}<small class="counter good">Faible</small> {{ end }}{{ .id }}</h3></summary>
+      <p>
+        {{ i18n (printf "/%s%s" .id "description") | markdownify }}<br>
+        => <small><strong>{{ replace (replace .displayValue "Potential savings of" "Gain potentiel") "resources found" "ressources trouvées" }}</strong></small>
+      </p>
+      <ul>
+        {{- range .details.items -}}
+          {{- if and (not (eq .url "Unattributable")) .url -}}<li>{{ .url }}</li>{{- end -}}
+        {{ end }}
+      </ul>
+    </details>
+    {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- else -}}
+  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $.context.Scratch.Get "rootpath" }}/{{ $project }}/lighthouse</p>
+  {{- end -}}
+</div>
+
+
