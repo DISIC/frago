@@ -1,5 +1,5 @@
 {{- $project     := .project -}}
-{{- $lastfile    := (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse")) "auditfile-path") -}}
+{{- $lastfile    := (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 {{- $performance := partial "render/performance.html" (dict "context" .context "file" (getJSON $lastfile)) -}}
 {{- with $lastfile -}}
 {{- if $performance.LCP -}}

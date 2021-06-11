@@ -1,7 +1,7 @@
 
 {{- $project := .project -}}
 {{- $pathlen := len (split (path.Dir .Path) "/") -}}
-{{- $lastfile    := (readFile (index (partial "render/lastfile.html" (dict "context" .context "project" $project "type" "quality")) "auditfile-path")) | transform.Unmarshal -}}
+{{- $lastfile    := (readFile (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "quality") $project "quality") "auditfile-path")) | transform.Unmarshal -}}
 {{ $.context.Scratch.Delete "counterquality"}}
 
 {{- range $lastfile -}}
