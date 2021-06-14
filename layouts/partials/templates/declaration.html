@@ -9,9 +9,7 @@
 {{- end -}}
 {{- if not ($.context.Scratch.Get "context") -}}
 {{ $.context.Scratch.Set "context" $context.Params.accessibility }}
-{{- if fileExists (printf "content/%s/accessibility.md" (path.Dir $context.Path)) -}}
-{{- $.context.Scratch.Set "context" (readFile (printf "content/%s/accessibility.md" (path.Dir $context.Path)) | transform.Unmarshal) -}}
-{{- end -}}
+{{- with .context.GetPage (printf "content/%s/accessibility.md" (path.Dir $context.Path)) -}}{{ $context.Scratch.Set "context" .Params.accessibility }}{{- end -}}
 {{- end -}}
 
 {{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
