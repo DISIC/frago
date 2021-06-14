@@ -39,7 +39,7 @@
 {{- else -}}
   {{- $.context.Scratch.Set "pathimage" (printf "./static/images/quality/%s" ($.context.Scratch.Get "auditfile-name")) }}
 {{- end -}}
-{{- partial "components/scores/quality" (dict "context" $context "counter" (partial "render/quality" (dict "context" $context "project" $project))) -}}
+{{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project) $project)) -}}
 
 
 <h2 class="page-break">Erreurs à corriger</h2>

@@ -116,7 +116,7 @@
     {{- if $quality -}}
     {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "quality") $project "quality") -}}
     <h3 class="m-0">Qualité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "quality")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- partial "components/scores/quality" (dict "context" . "counter" (partial "render/quality" (dict "context" . "project" $project))) -}}
+    {{- partial "components/scores/quality" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project) $project)) -}}
     {{- end -}}
 
     {{- if $lighthouse -}}

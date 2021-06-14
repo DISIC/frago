@@ -38,7 +38,7 @@
 {{- if and ($.context.Scratch.Get "auditfile-csv") ($.context.Scratch.Get "scores") -}}
 {{/* Create an array with all pages */}}
 {{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
-{{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
+{{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) ($.context.Scratch.Get "auditfile-csv")) "pageslist") -}}
 {{/* Control which tests are made for each type of audit */}}
 {{- range $auditname, $audit := $.context.Site.Data.tests -}}
   {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
@@ -191,13 +191,13 @@
 {{- end -}}
 
 {{- $.context.Scratch.Set "criterioncounter" 0 -}}
-{{ if fileExists (printf "%s/quality" (index ($.context.Scratch.Get "audits") "pathproject")) }}
+{{- if fileExists (printf "%s/quality" (index ($.context.Scratch.Get "audits") "pathproject")) -}}
   {{- range (readFile (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project .Params.datafilename) "auditfile-path") | transform.Unmarshal) -}}
     {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
     {{- if and .criterion (not .checked) -}}
-    {{ $.context.Scratch.Add "criterioncounter" 1 }}
-    {{ $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) }}
-    {{ $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) }}
+    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
+    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) -}}
+    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
     {{- end -}}
     {{- end -}}{{- end -}}
     {{- end -}}
@@ -218,8 +218,8 @@
     {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
     <em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
   {{- end -}}
-  {{ with ($.context.Scratch.Get "criterion") }}
-  {{ with (index . $key) }}
+  {{- with ($.context.Scratch.Get "criterion") -}}
+  {{- with (index . $key) -}}
       <table>
         <thead>
           <tr>

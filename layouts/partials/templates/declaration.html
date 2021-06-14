@@ -76,12 +76,12 @@
 
   {{- if fileExists (printf "%s/quality" (index $audits "pathproject")) -}}
   {{ with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audits "project") "type" "quality" "datafilename" .context.datafilename) (index $audits "project") .context.datafilename) "auditfile-path") }}
-  {{- range (readFile . | transform.Unmarshal) -}}
+  {{ range (readFile . | transform.Unmarshal) }}
     {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
     {{- if and .criterion (not .checked) -}}
-    {{ $.context.Scratch.Add "criterioncounter" 1 }}
-    {{ $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) }}
-    {{ $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) }}
+    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
+    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) -}}
+    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
     {{- end -}}
     {{- end -}}{{- end -}}
     {{- end -}}
@@ -91,7 +91,7 @@
 
   {{/* Range map errors sort by RGAA order - on all pages */}}
   {{- range $idx := seq 13 -}}
-    {{ range $key, $value := (index $score "criterenonconforme") }}
+    {{- range $key, $value := (index $score "criterenonconforme") -}}
       {{- if eq $idx (int (index (split $key ".") 0)) -}}
       {{- $thematiques := index (split $key ".") 0 -}}
       {{- $criteria := index (split $key ".") 1 -}}
