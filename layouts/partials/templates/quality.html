@@ -26,7 +26,7 @@
 <h1>Audit Qualité <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- if gt (len .context.Content) 10 -}}
 <div class="note">
-{{- partial "elements/content.html" .Content -}}
+{{- partial "elements/content.html" .context.Content -}}
 </div>
 {{- end -}}
 {{- if ne (index $lastfile "auditfile-path") "/false" -}}
@@ -39,8 +39,9 @@
 {{- else -}}
   {{- $.context.Scratch.Set "pathimage" (printf "./static/images/quality/%s" ($.context.Scratch.Get "auditfile-name")) }}
 {{- end -}}
-{{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project) $project)) -}}
-
+{{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
+{{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
+{{- end -}}
 
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}

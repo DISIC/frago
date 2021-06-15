@@ -1,4 +1,8 @@
-{{- with .file -}}
+{{- $auditfile := .auditfile -}}
+{{- if (ne $auditfile "/false") -}}
+{{- with $auditfile -}}
+{{- $file := getJSON . -}}
+{{- with $file -}}
 {{/* https://blog.octo.com/sous-le-capot-de-la-mesure-ecoindex/ */}}
 {{/* https://www.tunetheweb.com/blog/what-do-lighthouse-scores-look-like-across-the-web/ */}}
 {{- if and .audits.metrics.details.items .audits.diagnostics.details.items -}}
@@ -50,4 +54,6 @@
     "co2" ($.context.Scratch.Get "co2")
   )
 -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}

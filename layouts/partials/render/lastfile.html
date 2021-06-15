@@ -33,6 +33,8 @@
         {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 1)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) "//" "/") -}}
         {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string (add $key 1)) (replace .Name (path.Ext .Name) "") -}}
       {{- end -}}
+    {{- else -}}
+    {{- $.context.Scratch.Set "auditname-context" (printf "%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) -}}
     {{- end -}}
     {{- end -}}
     {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($.context.Scratch.Get "auditpath-all-lastfile"))) ""))) -}}
@@ -50,6 +52,7 @@
     "pathroot"           ($.context.Scratch.Get "pathroot")
     "pathproject"        (printf "%s/%s" ($.context.Scratch.Get "pathroot") $project)
     "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
+    "auditfile-context"  ($.context.Scratch.Get "auditname-context")
     "auditfile-name"     ($.context.Scratch.Get "auditname-lastfile")
     "auditfile-path"     ($.context.Scratch.Get "auditpath-lastfile")
     "auditfile-all-name" ($.context.Scratch.Get "auditname-all-lastfile")

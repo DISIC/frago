@@ -1,6 +1,6 @@
 {{- $project := .project -}}
 {{- $lastfile    := (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
-{{- $performance := partialCached "render/performance.html" (dict "context" .context "file" (getJSON $lastfile)) $lastfile -}}
+{{- $performance := partialCached "render/performance.html" (dict "context" .context "auditfile" $lastfile) $lastfile -}}
 
 {{- if $performance.LCP -}}
   <small class="text-center"><b class="h3 d-block">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b>de&nbsp;chargement</small>
