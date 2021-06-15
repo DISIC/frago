@@ -1,8 +1,10 @@
 
-{{- $project := .project -}}
-{{- $pathlen := len (split (path.Dir .Path) "/") -}}
-{{- $lastfile    := (readFile (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "quality") $project "quality") "auditfile-path")) | transform.Unmarshal -}}
-{{ $.context.Scratch.Delete "counterquality"}}
+{{- $project   := .project -}}
+{{- $pathlen   := len (split (path.Dir .Path) "/") -}}
+{{- $auditfile := index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
+{{- if (ne $auditfile "/false") -}}
+{{- $lastfile  := readFile $auditfile | transform.Unmarshal -}}
+{{- $.context.Scratch.Delete "counterquality" -}}
 
 {{- range $lastfile -}}
     {{- $.context.Scratch.Set "countererrorstotal" 0 -}}
@@ -41,3 +43,4 @@
 {{- $.context.Scratch.SetInMap "counterquality" "countererrorsimportant"      ($.context.Scratch.Get "countererrorsimportant") -}}
 {{- $.context.Scratch.SetInMap "counterquality" "countererrorsmedium"         ($.context.Scratch.Get "countererrorsmedium") -}}
 {{- return ($.context.Scratch.Get "counterquality") -}}
+{{- end -}}
