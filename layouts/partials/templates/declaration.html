@@ -1,5 +1,6 @@
 {{- $audits := .audits -}}
 {{- $context := .context -}}
+
 {{- if fileExists (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
   {{- range readDir (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
     {{- if eq .Name "context.yml" -}}
@@ -9,7 +10,7 @@
 {{- end -}}
 {{- if not ($.context.Scratch.Get "context") -}}
 {{ $.context.Scratch.Set "context" $context.Params.accessibility }}
-{{- with .context.GetPage (printf "content/%s/accessibility.md" (path.Dir $context.Path)) -}}{{ $context.Scratch.Set "context" .Params.accessibility }}{{- end -}}
+{{- with $context.GetPage (printf "%s/accessibility.md" (path.Dir $context.Path)) -}}{{ $.context.Scratch.Set "context" .Params.accessibility }}{{- end -}}
 {{- end -}}
 
 {{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
@@ -25,8 +26,10 @@
 {{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
 
 {{- $.context.Scratch.Set "auditpath-csv" (index $audits "auditfile-path") -}}
-{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 
+{{- if (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
+{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
+{{- $.context.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditfile-all-name"))) ""))) -}}
 {{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
 {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
 
@@ -49,15 +52,15 @@
   {{ end }}
 
   <h2>État de conformité</h2>
-  <p>{{ with $.context.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.context.Scratch.Get "scores") }}{{ if lt (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}non{{ else if ge (index ($.context.Scratch.Get "scores") "critereconformepercent") 50 }}partiellement{{ else if eq (index ($.context.Scratch.Get "scores") "critereconformepercent") 100 }}totalement{{ end }}{{ end }} conforme
+  <p>{{ with $.context.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.context.Scratch.Get "scores") }}{{ if lt (index ($.context.Scratch.Get "scores") "compliance") 50 }}non{{ else if ge (index ($.context.Scratch.Get "scores") "compliance") 50 }}partiellement{{ else if eq (index ($.context.Scratch.Get "scores") "compliance") 100 }}totalement{{ end }}{{ end }} conforme
     avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des
     dérogations énumérées ci-dessous.</p>
 
   <h3>Résultats des tests</h3>
-  {{- if ($.context.Scratch.Get "scores") -}}
+  {{- if ($.context.Scratch.Get "scores").criteria -}}
   <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
   <ul>
-    {{ if ($.context.Scratch.Get "scores") }}<li>{{ (index ($.context.Scratch.Get "scores") "critereconformepercent") }}% des {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
+    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").criteria.compliance }}% des {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
     {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
@@ -65,8 +68,7 @@
   {{- else -}}
   <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
   {{ end }}
-
-  {{ with ($.context.Scratch.Get "scores") }}
+  {{ with ($.context.Scratch.Get "scores").criteria }}
   {{ $score := . }}
   <h2>Critères non conformes</h2>
 
@@ -89,7 +91,7 @@
 
   {{/* Range map errors sort by RGAA order - on all pages */}}
   {{- range $idx := seq 13 -}}
-    {{- range $key, $value := (index $score "criterenonconforme") -}}
+    {{- range $key, $value := (index $score "nonconforme") -}}
       {{- if eq $idx (int (index (split $key ".") 0)) -}}
       {{- $thematiques := index (split $key ".") 0 -}}
       {{- $criteria := index (split $key ".") 1 -}}
@@ -130,8 +132,10 @@
   {{ end }}
   {{- end -}}
 
+
   <h2>Établissement de cette déclaration d’accessibilité</h2>
-  {{ with .technologies }}
+
+  {{ with ($.context.Scratch.Get "context") }}
   <p>Cette déclaration a été établie le <time datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.context.Scratch.Get "date").Day }} {{ index $context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
   <h3>Technologies utilisées{{ with $.context.Scratch.Get "organisation" }} pour la réalisation de {{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }}</h3>
   <ul>
@@ -192,4 +196,5 @@
 </section>
 {{- else -}}
 <p>Déclaration vide ; l’entête du fichier de contenu <code>accessibility.md</code> ou le fichier <code>/accessibility/context.yml</code> sont manquants.</p>
+{{- end -}}
 {{- end -}}

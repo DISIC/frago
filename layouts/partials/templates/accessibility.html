@@ -43,7 +43,7 @@
 {{- range $auditname, $audit := $.context.Site.Data.tests -}}
   {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
   {{- range $id, $criterium := index $.context.Site.Data.tests $auditname -}}
-  {{- range $key, $value := (index ($.context.Scratch.Get "scores") "criteretotal") -}}
+  {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
     {{- if eq $criterium $key -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
   {{- end -}}
   {{- end -}}
@@ -53,15 +53,15 @@
 <h2 class="text-center">Scores{{- with (index ($.context.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
 {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
-<h3>Conformité globale selon les critères {{ if le (index ($.context.Scratch.Get "scores") "critereconformepercent") 75 }} <small>({{ sub ((div (mul (add (len (index ($.context.Scratch.Get "scores") "critereconforme")) (len (index ($.context.Scratch.Get "scores") "criterenonconforme")) ) 75) 100)) (len (index ($.context.Scratch.Get "scores") "critereconforme")) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
+<h3>Conformité globale selon les critères {{ if le (index ($.context.Scratch.Get "scores") "compliance") 75 }} <small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (len ($.context.Scratch.Get "scores").criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
 {{/* Call accessibility partial */}}
-{{- partial "components/scores/accessibility" (dict "context" $context "score" (index ($.context.Scratch.Get "scores") "critereconformepercent")) -}}
+{{- partial "components/scores/accessibility" (dict "context" $context "score" ($.context.Scratch.Get "scores").scores.compliance) -}}
 {{/* Call criterium partial */}}
-{{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($.context.Scratch.Get "scores")) ($.context.Scratch.Get "scores") -}}
+{{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($.context.Scratch.Get "scores").criteria) ($.context.Scratch.Get "scores").criteria -}}
 {{/* If several pages tested */}}
 {{- if gt (len ($.context.Scratch.Get "pageslist")) 1 -}}
 <h3 class="mb-0">Conformité détaillée de répartition</h3>
-{{- partial "components/scores/accessibility-graph" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv") "scores" ($.context.Scratch.Get "scores")) -}}
+{{- partial "components/scores/accessibility-graph" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv") "scores" ($.context.Scratch.Get "scores").criteria) -}}
 {{- end -}}
 
 {{/* Call page parameters */}}
@@ -208,7 +208,7 @@
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
 <div class="flex flex-column">
-{{- range $key, $value := (index ($.context.Scratch.Get "scores") "criterenonconforme") -}}
+{{- range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme -}}
   {{- $thematiques := index (split $key ".") 0 -}}
   {{- $criteria := index (split $key ".") 1 -}}
   <div style="order:{{ $thematiques }};">

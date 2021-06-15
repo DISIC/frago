@@ -1,4 +1,41 @@
+{{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $project :=  (index $patharray 1) -}}
+{{- $context := . -}}
+{{- $.Scratch.Delete "scores" -}}
 
-{{- (dict
-  "name" "performance"
-) | jsonify -}}
+{{- if and (gt (len $patharray) 1) ($project) -}}
+  {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
+  {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
+      {{- range $key, $path := . -}}
+          {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- (dict
+    "name" ($.Scratch.Get "title")
+    "slug" $project
+    "scores" ($.Scratch.Get "score")
+  ) | jsonify -}}
+  {{- else -}}
+  {{- $.Scratch.Delete "projectsmap" -}}
+  {{- with .Pages -}}
+  {{- range $id, $value := . -}}
+  {{- $.Scratch.Delete "score" -}}
+  {{- $.Scratch.Delete "scoresmap" -}}
+    {{ $project := (index (split (path.Dir .Path) "/") 1) }}
+    {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
+    {{- range $key, $path := . -}}
+      {{- if . -}}
+        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/performance" (dict "context" $value "project" $project "auditfile" .) $project .) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $.Scratch.SetInMap "scoresmap" (string $id) ($.Scratch.Get "score") -}}
+    {{- end -}}
+    {{ if ($.Scratch.Get "scoresmap") }}
+    {{- $.Scratch.SetInMap "projectsmap" (string $project) (dict "scores" ($.Scratch.Get "scoresmap") "name" .Title "slug" $project) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- (dict
+    "projects" ($.Scratch.Get "projectsmap")
+  ) | jsonify -}}
+  {{- end -}}
+{{- end -}}

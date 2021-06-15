@@ -1,20 +1,39 @@
-{{- $patharray :=  split .Path "/" -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project :=  (index $patharray 1) -}}
 {{- $context := . -}}
-{{- $audits := partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename -}}
-{{- $.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" (index ($audits) "auditfile-path")) .Path) -}}
+{{- $.Scratch.Delete "scores" -}}
 
-{{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
-{{- with .GetPage (printf "audits/%s/accessibility.md" $project) -}}{{ $.Scratch.Set "conditions" .Params.accessibility }}{{- end -}}
-
-{{- range $idx, $value := (index ($audits) "auditfile-all-path") -}}
-    {{- $results := (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) -}}
-    {{- $.Scratch.Set "scores" (dict "url" . "score" $results.scores "criteria" (dict  "critereconforme" $results.criterenonconforme "criterenonconforme" $results.criterenonconforme)) -}}
+{{- if and (gt (len $patharray) 1) ($project) -}}
+  {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
+  {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
+    {{- range $key, $path := . -}}
+        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- (dict
+    "name" ($.Scratch.Get "title")
+    "slug" $project
+    "scores" ($.Scratch.Get "score")
+  ) | jsonify -}}
+  {{- else -}}
+  {{ $.Scratch.Delete "projectsmap"}}
+  {{- with .Pages -}}
+  {{- range $id, $value := . -}}
+  {{- $.Scratch.Delete "score" -}}
+  {{- $.Scratch.Delete "scoresmap" -}}
+    {{ $project := (index (split (path.Dir .Path) "/") 1) }}
+    {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
+      {{- range $key, $path := . -}}
+          {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $value "project" $project "auditfile" .) $project .) -}}
+      {{- end -}}
+      {{- $.Scratch.SetInMap "scoresmap" (string $id) ($.Scratch.Get "score") -}}
+    {{- end -}}
+    {{ if ($.Scratch.Get "scoresmap") }}
+      {{- $.Scratch.SetInMap "projectsmap" (string $project) (dict "scores" ($.Scratch.Get "scoresmap") "name" .Title "slug" $project) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- (dict
+    "projects" ($.Scratch.Get "projectsmap")
+  ) | jsonify -}}
+  {{- end -}}
 {{- end -}}
-
-{{- (dict
-  "name" ($.Scratch.Get "title")
-  "slug" $project
-  "conditions" ($.Scratch.Get "conditions")
-  "scores" ($.Scratch.Get "scores")
-) | jsonify -}}

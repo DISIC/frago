@@ -71,7 +71,7 @@
     <h3 class="m-0">Accessibilité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
     {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
     {{- if $partial -}}
-      {{- $conforme := index $partial "critereconformepercent" -}}
+      {{- $conforme := $partial.scores.compliance -}}
       {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
     {{- else -}}
       <p>Le fichier d’audit ({{ ($.Scratch.Get "accessibility-path") }}) est vide.</p>
@@ -92,7 +92,7 @@
             datasets: [
               {
                 name: "Conformité",
-                values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- index . "critereconformepercent" -}}"{{- end -}}]
+                values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- .scores.compliance -}}"{{- end -}}]
               }
             ],
             yRegions: [{ label: "", start: 0, end: 100 }]

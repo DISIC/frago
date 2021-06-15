@@ -1,5 +1,5 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project := index $patharray 1 -}}
 {{- $context := . -}}
-{{- $.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" $project "accessibility") -}}
+{{- $.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") -}}
 {{- partialCached "templates/declaration.html" (dict "context" . "audits" ($.Scratch.Get "audits")) ($.Scratch.Get "audits") -}}

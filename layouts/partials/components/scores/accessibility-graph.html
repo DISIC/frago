@@ -62,7 +62,7 @@
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
-{{- if gt (len (index (index $scores "critereconformepage") "0")) 3 -}}
+{{- if gt (len (index $scores.conformepage "0")) 3 -}}
 <div id="chartpagecriteres-csv"></div>
 <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
 <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
@@ -83,11 +83,11 @@
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ sub 100 (div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage") (string $id))))) | lang.NumFmt 1 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := $scores.conformepage }}{{ if ne $id "0" }},{{ end }}{{ sub 100 (div (mul (float (len .)) 100) (add (len .) (len (index $scores.nonconformepage (string $id))))) | lang.NumFmt 1 | safeJS }}{{ end }}]
           },
           {
             name: "Conforme",
-            values: [{{ range $id, $value := index $scores "critereconformepage" }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index (index $scores "criterenonconformepage") (string $id)))) | lang.NumFmt 1 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := $scores.conformepage }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index $scores.nonconformepage (string $id)))) | lang.NumFmt 1 | safeJS }}{{ end }}]
           }
         ]
     }
