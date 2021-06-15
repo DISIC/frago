@@ -34,10 +34,9 @@
 {{- partial "elements/content.html" .context.Content -}}
 </div>
 {{- end -}}
-
-{{- if and ($.context.Scratch.Get "auditfile-csv") ($.context.Scratch.Get "scores") -}}
+{{- if and ($.context.Scratch.Get "auditfile-csv") (ne ($.context.Scratch.Get "scores").isempty 0) -}}
 {{/* Create an array with all pages */}}
-{{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
+{{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context ($.context.Scratch.Get "auditfile-csv")) "methodology") -}}
 {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) ($.context.Scratch.Get "auditfile-csv")) "pageslist") -}}
 {{/* Control which tests are made for each type of audit */}}
 {{- range $auditname, $audit := $.context.Site.Data.tests -}}
