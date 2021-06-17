@@ -199,6 +199,7 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project := index $patharray 1 -}}
 {{- $context :=  . -}}
+{{- if ne (len $patharray) 1 -}}
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
 {{- if ne (index $lastfile "auditfile-path") "/false" -}}
 {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
@@ -229,6 +230,7 @@
   });
 });
 </script>
+{{- end -}}
 {{- end -}}
 {{- end -}}
 

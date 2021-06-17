@@ -113,7 +113,7 @@
     console.log('Current Section: ', '{{ .context.Page.CurrentSection | default "NOT SET" }}')
     console.log('Page Section: ', '{{ .context.Page.Section | default "NOT SET" }}')
     console.log('Page Type: ', '{{ .context.Page.Type }}')
-    console.log('Page Dir: ', '{{ .context.Page.File.Dir | default "/" }}{{ .File }}')
+    console.log('Page Dir: ', '{{ (path.Dir .context.Page.Path) | default "/" }}{{ .File }}')
     console.log('Page WordCount: ', '{{ .context.Page.FuzzyWordCount }}')
     console.log('Page Home: ', '{{ .context.Page.IsHome }}')
     console.log('Page Node: ', '{{ .context.Page.IsNode }}')
@@ -122,8 +122,6 @@
     console.log('Page Lastmod: ', '{{ .context.Page.Lastmod}}')
     console.log('Page Date=Lastmod?: ', '{{ (eq .Page.Lastmod .Page.Date) }}')
     console.log('Page Date<>Lastmod?: ', '{{ (ne .Lastmod .Date) }}')
-    console.log('Section Parent: ', '{{ with .context.Parent }}{{ .File.Dir | default "/" }}{{ .File }}{{ end }}')
-    console.log('Google Analytics: ', '{{ .context.Site.GoogleAnalytics | default "NOT DEFINED" }}')
     {{ if .context.Page.IsPage }}console.log('Count of related pages: ', '{{ len ( .context.Site.RegularPages.Related .context) }}' ){{ end }}
     console.log('---------------------------------------------------')
 </script>
