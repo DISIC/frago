@@ -1,16 +1,16 @@
 {{- $audits := .audits -}}
 {{- $context := .context -}}
-
-{{- if fileExists (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
-  {{- range readDir (printf "content/%s/accessibility" (path.Dir $context.Path)) -}}
+{{- $path := cond (eq (len (split $context.Path "/")) 1) "audits" (path.Dir $context.Path) -}}
+{{- if fileExists (printf "content/%s/accessibility" $path) -}}
+  {{- range readDir (printf "content/%s/accessibility" $path) -}}
     {{- if eq .Name "context.yml" -}}
-      {{- $.context.Scratch.Set "context" (index (last 1 (sort (readFile (printf "content/%s/accessibility/%s" (path.Dir $context.Path) .Name) | transform.Unmarshal))) 0) -}}
+      {{- $.context.Scratch.Set "context" (index (last 1 (sort (readFile (printf "content/%s/accessibility/%s" $path .Name) | transform.Unmarshal))) 0) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- if not ($.context.Scratch.Get "context") -}}
 {{ $.context.Scratch.Set "context" $context.Params.accessibility }}
-{{- with $context.GetPage (printf "%s/accessibility.md" (path.Dir $context.Path)) -}}{{ $.context.Scratch.Set "context" .Params.accessibility }}{{- end -}}
+{{- with $context.GetPage (printf "%s/accessibility.md" $path) -}}{{ $.context.Scratch.Set "context" .Params.accessibility }}{{- end -}}
 {{- end -}}
 
 {{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
