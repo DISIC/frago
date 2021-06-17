@@ -60,7 +60,7 @@
   {{- if ($.context.Scratch.Get "scores").criteria -}}
   <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
   <ul>
-    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").criteria.compliance }}% des {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}{{ len . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
+    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% des {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}{{ . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
     {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
@@ -171,14 +171,18 @@
   {{ end }}
   {{ end }}
 
+  {{ if and .organisation .website .contact }}
   <h2>Retour d’information et contact</h2>
+  {{- if and .organisation .website -}}
   <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with .organisation }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
     sous une autre forme.</p>
+  {{- end -}}
   {{- with .contact -}}
   <ul>
     {{ if .email }}<li>Envoyer un message à <strong>{{ .email }}</strong></li>{{ end }}
     {{ if .address }}<li>Contacter <strong>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
   </ul>
+  {{- end -}}
   {{- end -}}
   <h2>Voies de recours</h2>
   <p>Cette procédure est à utiliser dans le cas suivant.</p>

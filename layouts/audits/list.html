@@ -27,10 +27,13 @@
       {{- partialCached "templates/projects-list.html" $context $context -}}
     {{- end -}}
     {{- end -}}
-{{- else -}}
-<h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
-{{- partial "templates/projects.html" . -}}
-{{- partialCached "templates/projects-list.html" $context $context -}}
-{{- partial "elements/content.html" .Content -}}
-{{- end -}}
+  {{- else -}}
+    <h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
+    {{- if or $project (eq (len (split (.RelPermalink) "/")) 2) -}}
+      {{- partial "templates/projects.html" . -}}
+    {{- else -}}
+      {{- partialCached "templates/projects-list.html" $context $context -}}
+    {{- end -}}
+    {{- partial "elements/content.html" .Content -}}
+  {{- end -}}
 {{- end -}}
