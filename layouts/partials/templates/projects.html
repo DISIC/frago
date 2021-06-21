@@ -183,7 +183,8 @@
       <h2 class="text-center">Services liés à la démarche</h2>
         {{- range $id, $value := .names -}}
           <h3 class="m-0">{{ . }}</h3>
-          {{- partialCached "components/scores/accessibility" (dict "context" $context "score" (index $map.compliance $id)) . -}}
+
+          {{ $map }}
         {{- end -}}
       {{- end -}}
       {{- end -}}
