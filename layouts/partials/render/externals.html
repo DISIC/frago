@@ -29,7 +29,7 @@
       {{- $.context.Scratch.SetInMap "name" (string (add $id 1000)) $name -}}
       {{- $type := .type -}}
       {{- if eq $type "accessibility" -}}
-        {{ range last 1 (sort (getJSON .url).scores) }}
+        {{ range last 1 (sort (getJSON .url).rgaa) }}
           {{- $.context.Scratch.SetInMap "compliance"           (string (add $id 1000)) .scores.compliance -}}
           {{- $.context.Scratch.SetInMap "criteriatotals"       (string (add $id 1000)) .scores.criteria.total -}}
           {{- $.context.Scratch.Set      "compliancetotal"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1000))) ($.context.Scratch.Get "compliancetotal")) -}}
