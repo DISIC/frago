@@ -1,0 +1,61 @@
+baseURL = "/"
+paginate = "10"
+
+languageCode = "fr-FR"
+defaultContentLanguage = "fr"
+defaultContentLanguageInSubdir = false
+enableInlineShortcodes = true
+removePathAccents = true
+
+[outputs]
+ home    = ["HTML","JSON"]
+ page    = ["HTML","JSON","declaration","declarationpage","accessibility","accessibilitypage","quality","qualitypage","performance","performancepage"]
+ section = ["HTML","JSON"]
+
+[outputFormats.declarationpage]
+  baseName = "declaration"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.declaration]
+  baseName = "declaration"
+  mediaType = "text/plain"
+  isPlainText = true
+  notAlternative = false
+[outputFormats.accessibilitypage]
+  baseName = "accessibility"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.accessibility]
+  baseName = "accessibility"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
+[outputFormats.qualitypage]
+  baseName = "quality"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.quality]
+  baseName = "quality"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
+[outputFormats.performancepage]
+  baseName = "performance"
+  mediaType = "text/html"
+  isPlainText = true
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.performance]
+  baseName = "performance"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
+
+
