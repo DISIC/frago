@@ -53,6 +53,7 @@
                   {{- $.Scratch.Set "guideline" (index (readFile . | transform.Unmarshal) $date) -}}
               {{- end -}}
               {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+              {{ warnf "%s" ($context.Scratch.Get "context") }}
               {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" ($.Scratch.Get $type)) -}}

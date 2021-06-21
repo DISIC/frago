@@ -11,8 +11,8 @@
 {{- end -}}
 {{- if not ($context.Scratch.Get "context") -}}
 {{/* In a front matter of the current page */}}
-{{- with $context.GetPage (printf "/audits/%s/_index.md" $project) -}}{{ $context.Scratch.Set "context" (dict "contacts" $context.Params.accessibility.contacts "website" $context.Params.accessibility.website "audit" ($context.Params.accessibility.audit)) }}{{- end -}}
-{{- with $context.GetPage (printf "/audits/%s/index.md" $project)  -}}{{ $context.Scratch.Set "context" (dict "contacts" $context.Params.accessibility.contacts "website" $context.Params.accessibility.website "audit" ($context.Params.accessibility.audit)) }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/%s/_index.md" $project) -}}{{ $context.Scratch.Set "context" (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/%s/index.md" $project)  -}}{{ $context.Scratch.Set "context" (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
 {{/* In a file name accessibility.md presents i the project folder  */}}
 {{- with $context.GetPage (printf "/audits/%s/accessibility.md" $project) -}}{{ $context.Scratch.Set "context" (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
 {{- end -}}
