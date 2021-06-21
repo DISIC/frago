@@ -9,13 +9,15 @@
 {{- $.context.Scratch.Set "lastfile" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 
 <div class="wrapper narrow">
-  <p>⬅ <a href="/audits/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
+  <p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}/audits/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
   <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
   {{- partial "elements/content.html" .context.Content -}}
   {{/* Range performance file */}}
   {{- if ne ($.context.Scratch.Get "lastfile") "/false" -}}
   <h2>Scores</h2>
-  {{- partial "components/scores/performance" (dict "context" $.context "project" ($.context.Scratch.Get "projectfolders")) -}}
+  {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path" -}}
+    {{- partial "components/scores/performance" (dict "context" $context "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .)) -}}
+  {{- end -}}
   {{- with ($.context.Scratch.Get "lastfile") -}}
   {{/* Vars with the last file of the lighthouse directory */}}
   <h2>Règles</h2>

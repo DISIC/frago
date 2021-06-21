@@ -6,11 +6,11 @@
 {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
 {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
-        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+        {{- $.Scratch.SetInMap "scoreperformance" (string $key) (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
     {{- end -}}
   {{- end -}}
 {{- (dict
   "name" ($.Scratch.Get "title")
   "slug" $project
-  "scores" ($.Scratch.Get "score")
+  "scores" ($.Scratch.Get "scoreperformance")
 ) | jsonify -}}

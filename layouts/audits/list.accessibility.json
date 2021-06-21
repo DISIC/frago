@@ -7,7 +7,7 @@
   {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
   {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
-        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) .) -}}
     {{- end -}}
   {{- end -}}
   {{- (dict
@@ -24,7 +24,7 @@
     {{ $project := (index (split (path.Dir .Path) "/") 1) }}
     {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
       {{- range $key, $path := . -}}
-          {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $value "project" $project "auditfile" .) $project .) -}}
+          {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $value "project" $project "auditfile" .) .) -}}
       {{- end -}}
       {{- $.Scratch.SetInMap "scoresmap" (string $id) ($.Scratch.Get "score") -}}
     {{- end -}}

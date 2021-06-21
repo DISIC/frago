@@ -25,7 +25,7 @@
     {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
       {{- if . -}}
-        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/quality" (dict "context" $value "project" $project "auditfile" .) $project .) -}}
+        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/quality" (dict "context" $value "project" $project "auditfile" .) .) -}}
       {{- end -}}
     {{- end -}}
     {{- $.Scratch.SetInMap "scoresmap" (string $id) ($.Scratch.Get "score") -}}

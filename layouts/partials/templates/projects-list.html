@@ -8,7 +8,7 @@
       {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
         {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
         {{- $context := . -}}
-        {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project) "auditfile-all-path") -}}
+        {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") "auditfile-all-path") -}}
           {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
         {{- end -}}
         {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
@@ -20,14 +20,14 @@
         {{- $path      := (split (path.Dir .Path) "/") -}}
         {{- $pathfirst := first 1 $path -}}
         {{- $pathlast  := substr (path.Base .Path) -8 -}}
-        {{- if and (or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md")) (ge (len $path) 2) -}}
+        {{- if and (or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md")) (eq (len $path) 2) -}}
         {{- $patharray := split (path.Dir .Path) "/" -}}
         {{- $project := index $patharray 1 -}}
         {{- $.Scratch.Set "rootpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "accessibility")) -}}
         {{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) (printf "%s" ($.Scratch.Get "rootpath")) (printf "%s/%s" ($.Scratch.Get "rootpath") $project)) -}}
 
         {{- $accessibilitypath := "/false" -}}
-        {{- $accessibilitypath := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project) "auditfile-path") -}}
+        {{- $accessibilitypath := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") "auditfile-path") -}}
         {{- $accessibility     := (fileExists (printf "%s" $accessibilitypath)) -}}
         {{- $quality           := (fileExists (printf "/%s/quality/" ($.Scratch.Get "projectfolders"))) -}}
         {{- $lighthouse        := (fileExists (printf "/%s/lighthouse/" ($.Scratch.Get "projectfolders"))) -}}
@@ -36,8 +36,8 @@
               <h3 class="h4">{{ .Title }}</h3>
               {{- if or $accessibility $quality $lighthouse -}}
               <div class="flex flex-gap align-items-center text-center lh-1">
-              {{- if $quality -}}{{ $auditfile := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path") }}<p class="mb-0">{{- partialCached "components/scores/quality-small" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project "auditfile" $auditfile) $project $auditfile)) $project -}}</p>{{ end }}
-              {{- if $lighthouse -}}<p class="mb-0">{{- partial "components/scores/performance-small" (dict "context" . "project" $project) -}}</p>{{ end }}
+              {{- if $quality -}}{{ $auditfile := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path") }}<p class="mb-0">{{- partialCached "components/scores/quality-small" (dict "context" . "counter" (partialCached "render/quality" (dict "context" . "project" $project "auditfile" $auditfile) $auditfile)) $project -}}</p>{{ end }}
+              {{- if $lighthouse -}}<p class="mb-0">{{- partialCached "components/scores/performance-small" (dict "context" . "project" $project) $project -}}</p>{{ end }}
               {{- if $accessibility -}}{{- $scoressmall := index (last 1 (sort (index ($.Scratch.Get "allscores") $project))) 0 -}}<p class="mb-0">{{- partialCached "components/scores/accessibility-small" (dict "context" . "scores" $scoressmall) $project -}}</p>{{ end }}
               </div>
               {{- end -}}
