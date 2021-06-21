@@ -4,7 +4,7 @@
 {{- $.Scratch.Delete "scores" -}}
 {{- if and (gt (len $patharray) 1) ($project) -}}
   {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
-  {{- partialCached "render/context.html" (dict "context" $context "project" $project) $project -}}
+  {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
   {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
         {{- $file := (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) .) -}}
