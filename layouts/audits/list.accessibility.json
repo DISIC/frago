@@ -2,18 +2,19 @@
 {{- $project :=  (index $patharray 1) -}}
 {{- $context := . -}}
 {{- $.Scratch.Delete "scores" -}}
-
 {{- if and (gt (len $patharray) 1) ($project) -}}
   {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
+  {{- partialCached "render/context.html" (dict "context" $context "project" $project) $project -}}
   {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
-        {{- $.Scratch.SetInMap "score" (string $key) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) .) -}}
+        {{- $file := (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) .) -}}
+        {{- $.Scratch.SetInMap "score" (string $key) (dict "score" $file.scores "context" ($context.Scratch.Get "context")) -}}
     {{- end -}}
   {{- end -}}
   {{- (dict
     "name" ($.Scratch.Get "title")
     "slug" $project
-    "scores" ($.Scratch.Get "score")
+    "rgaa" ($.Scratch.Get "score")
   ) | jsonify -}}
   {{- else -}}
   {{ $.Scratch.Delete "projectsmap"}}

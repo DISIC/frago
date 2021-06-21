@@ -4,34 +4,16 @@
 {{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{/* ---- */}}
-{{/* Find informations about context for A11y audit */}}
-{{- if fileExists (printf "%s/%s/accessibility" $rootpath $project) -}}
-  {{- range readDir (printf "%s/%s/accessibility" $rootpath $project) -}}
-    {{/* In a file name context presents in the audit folder */}}
-    {{- if eq .Name "context.yml" -}}
-      {{- $file := ((readFile (printf "%s/%s/accessibility/%s" $rootpath $project .Name) | transform.Unmarshal)) -}}
-      {{- $.context.Scratch.Set "context" (dict "contacts" $file.contacts "website" $file.website "audit" (index (last 1 (sort $file.audits)) 0)) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- if not ($.context.Scratch.Get "context") -}}
-{{/* In a front matter of the current page */}}
-{{- $.context.Scratch.Set "context" (dict "contacts" $context.Params.accessibility.contacts "website" $context.Params.accessibility.website "audit" ($context.Params.accessibility.audit)) -}}
-{{/* In a file name accessibility.md presents i the project folder  */}}
-{{- with $context.GetPage (printf "/content/audits/%s/accessibility.md" $project) -}}{{ $.context.Scratch.Set "context" (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
-{{- end -}}
+{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+
 {{/* Determine the version of the audit */}}
-{{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
-{{- if ($.context.Scratch.Get "context").audit -}}
-{{- with ($.context.Scratch.Get "context").audit.guidelines -}}
+{{- $context.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with ($context.Scratch.Get "context").guidelines -}}
   {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
 {{- end -}}
-{{- end -}}
-{{/* ---- */}}
 
 {{/* Load the criteria file for the good audit version */}}
 {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}

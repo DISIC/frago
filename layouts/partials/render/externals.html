@@ -1,11 +1,13 @@
 {{- $context    := .context   -}}
 {{- $project    := .project   -}}
 {{- $auditfile  := .auditfile -}}
+{{- $results    := partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" $auditfile) $auditfile -}}
 {{- $.context.Scratch.Delete "compliance" -}}
 
-{{- $.context.Scratch.SetInMap "compliance" "0" (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" $auditfile) $auditfile).scores.compliance -}}
-{{- $.context.Scratch.Set      "total"      (index ($.context.Scratch.Get "compliance") "0") -}}
-{{- $.context.Scratch.Set      "percentage" (index ($.context.Scratch.Get "compliance") "0") -}}
+{{- $.context.Scratch.SetInMap "compliance" "0"       $results.scores.compliance -}}
+{{- $.context.Scratch.Set      "criteriatotal"        $results.scores.total -}}
+{{- $.context.Scratch.Set      "compliancetotal"      (index ($.context.Scratch.Get "compliance") "0") -}}
+{{- $.context.Scratch.Set      "percentage"           (index ($.context.Scratch.Get "compliance") "0") -}}
 
 {{- with .context.Params.projects -}}
   {{- range $id, $value := . -}}
@@ -16,9 +18,10 @@
       {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $context $project "accessibility") -}}
       {{- if index $lastfile "auditfile-name" -}}
         {{- with index $lastfile "auditfile-path" -}}
-          {{- $.context.Scratch.SetInMap "compliance" (string (add $id 1)) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) $project .).scores.compliance -}}
-          {{- $.context.Scratch.Set      "total"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1))) ($.context.Scratch.Get "total")) -}}
-          {{- $.context.Scratch.Set      "percentage" (div ($.context.Scratch.Get "total") (len ($.context.Scratch.Get "compliance"))) -}}
+          {{- $.context.Scratch.SetInMap "compliance"           (string (add $id 1)) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) $project .).scores.compliance -}}
+          {{- $.context.Scratch.SetInMap "criteriatotals"        (string (add $id 1)) (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) $project .).scores.criteria.total -}}
+          {{- $.context.Scratch.Set      "compliancetotal"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1))) ($.context.Scratch.Get "compliancetotal")) -}}
+          {{- $.context.Scratch.Set      "percentage"           (div ($.context.Scratch.Get "compliancetotal") (len ($.context.Scratch.Get "compliance"))) -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -27,9 +30,10 @@
       {{- $type := .type -}}
       {{- if eq $type "accessibility" -}}
         {{ range last 1 (sort (getJSON .url).scores) }}
-          {{- $.context.Scratch.SetInMap "compliance" (string (add $id 1000)) .scores.compliance -}}
-          {{- $.context.Scratch.Set      "total"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1000))) ($.context.Scratch.Get "total")) -}}
-          {{- $.context.Scratch.Set      "percentage" (div ($.context.Scratch.Get "total") (len ($.context.Scratch.Get "compliance"))) -}}
+          {{- $.context.Scratch.SetInMap "compliance"           (string (add $id 1000)) .scores.compliance -}}
+          {{- $.context.Scratch.SetInMap "criteriatotals"        (string (add $id 1000)) .scores.criteria.total -}}
+          {{- $.context.Scratch.Set      "compliancetotal"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1000))) ($.context.Scratch.Get "compliancetotal")) -}}
+          {{- $.context.Scratch.Set      "percentage"           (div ($.context.Scratch.Get "compliancetotal") (len ($.context.Scratch.Get "compliance"))) -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -38,8 +42,9 @@
 
 {{- return
     (dict
-      "names" ($.context.Scratch.Get "name")
+      "names"      ($.context.Scratch.Get "name")
       "compliance" ($.context.Scratch.Get "compliance")
+      "total"      ($.context.Scratch.Get "criteriatotal")
       "percentage" (int ($.context.Scratch.Get "percentage"))
     )
 -}}

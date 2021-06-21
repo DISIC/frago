@@ -175,19 +175,19 @@
   {{- else -}}
   <p class="text-center">Aucun audit pour le moment.</p>
   {{- end -}}
-  {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
-    <hr>
-    <h2 class="text-center">Services liés à la démarche</h2>
+    {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
     {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
-    {{ $map := . }}
+      {{ $map := . }}
       {{- if ne (len .compliance) 1 -}}
+      <hr>
+      <h2 class="text-center">Services liés à la démarche</h2>
         {{- range $id, $value := .names -}}
           <h3 class="m-0">{{ . }}</h3>
           {{- partialCached "components/scores/accessibility" (dict "context" $context "score" (index $map.compliance $id)) . -}}
         {{- end -}}
       {{- end -}}
+      {{- end -}}
     {{- end -}}
-  {{- end -}}
   </div>
 </div>
 {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}

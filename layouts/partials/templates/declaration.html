@@ -3,32 +3,16 @@
 {{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{/* ---- */}}
-{{/* Find informations about context for A11y audit */}}
-{{- if fileExists (printf "%s/%s/accessibility" $rootpath $project) -}}
-  {{- range readDir (printf "%s/%s/accessibility" $rootpath $project) -}}
-    {{- if eq .Name "context.yml" -}}
-      {{- $file := ((readFile (printf "%s/%s/accessibility/%s" $rootpath $project .Name) | transform.Unmarshal)) -}}
-      {{- $.context.Scratch.Set "context" (dict "contacts" $file.contacts "website" $file.website "audit" (index (last 1 (sort $file.audits)) 0)) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- if not ($.context.Scratch.Get "context") -}}
-{{/* In a front matter of the current page */}}
-{{ $.context.Scratch.Set "context" (dict "contacts" $context.Params.accessibility.contacts "website" $context.Params.accessibility.website "audit" ($context.Params.accessibility.audit)) }}
-{{/* In a file name accessibility.md presents i the project folder  */}}
-{{- with $context.GetPage (printf "/content/audits/%s/accessibility.md" $project) -}}{{ $.context.Scratch.Set "context" (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
-{{- end -}}
-{{/* Determine the version of the audit */}}
-{{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
-{{- with ($.context.Scratch.Get "context").guidelines -}}
-  {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
-{{- end -}}
-{{/* ---- */}}
+{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
 
+{{/* Determine the version of the audit */}}
+{{- $context.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with ($context.Scratch.Get "context").guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
 {{/* Load the criteria file for the good audit version */}}
 {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
 
@@ -71,30 +55,40 @@
   <h3>Résultats des tests</h3>
   {{- if ($.context.Scratch.Get "scores").criteria -}}
   <p>L’audit de conformité par {{ with .condition }}{{ . }}{{ end }} révèle que :</p>
+
   <ul>
-    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% des {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}{{ . }} {{ end }}critères {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}du {{ with .guidelines }}{{ . }}{{ end }} sont respectés</li>{{ end }}
-    <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à <span class="tofill">nn%</span></li>
+    {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.context.Scratch.Get "auditpath-csv")) $context $project ($.context.Scratch.Get "auditpath-csv") -}}
+    {{- $map := . -}}
+    {{- if ne (len .compliance) 1 -}}
+    <li>{{ .percentage }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>
+    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($.context.Scratch.Get "context").website }}pour {{ . }}{{ end }}</li>{{ end }}
+
+    {{- else -}}
+    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés</li>{{ end }}
+    {{- end -}}
+    {{- end -}}
+    <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à n%</li>
     {{- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -}}
     </li>
   </ul>
   {{- else -}}
   <p>Aucun test n’a été effectué, le site est donc non conforme.</p>
   {{ end }}
-  {{ with ($.context.Scratch.Get "scores").criteria }}
-  {{ $score := . }}
+
+  {{- with ($.context.Scratch.Get "scores").criteria -}}
+  {{- $score := . -}}
   <h2>Critères non conformes</h2>
 
   {{- $.context.Scratch.Set "criterioncounter" 0 -}}
-
   {{- if fileExists (printf "%s/quality" (index $audits "pathproject")) -}}
-  {{ with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audits "project") "type" "quality" "datafilename" .context.datafilename) (index $audits "project") .context.datafilename) "auditfile-path") }}
-  {{ range (readFile . | transform.Unmarshal) }}
+  {{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audits "project") "type" "quality" "datafilename" .context.datafilename) (index $audits "project") .context.datafilename) "auditfile-path") -}}
+  {{- range (readFile . | transform.Unmarshal) -}}
     {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
-    {{- if and .criterion (not .checked) -}}
-    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
-    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) -}}
-    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
-    {{- end -}}
+      {{- if and .criterion (not .checked) -}}
+      {{- $.context.Scratch.Add "criterioncounter" 1 -}}
+      {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) -}}
+      {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
+      {{- end -}}
     {{- end -}}{{- end -}}
     {{- end -}}
   {{- end -}}
