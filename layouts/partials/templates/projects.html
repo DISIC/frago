@@ -1,175 +1,197 @@
-  {{- $project := replace (replace (index (split (path.Dir .Path) "/") 1) ".md" "") "_index" "" -}}
-  {{- $context := . -}}
 
-  <div class="wrapper narrow">
+{{- $context := . -}}
+{{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
 
-    {{- $.Scratch.Set "listmonths" slice -}}
-    {{- range $id, $value := .Params.gantt -}}
-      {{- range .time -}}
-        {{- $.Scratch.Add "listmonths" (index (split . " ") 0) -}}
-      {{- end -}}
+<div class="wrapper narrow">
+
+  {{- $.Scratch.Set "listmonths" slice -}}
+  {{- range $id, $value := .Params.gantt -}}
+    {{- range .time -}}
+      {{- $.Scratch.Add "listmonths" (index (split . " ") 0) -}}
     {{- end -}}
+  {{- end -}}
 
-    {{- with uniq ($.Scratch.Get "listmonths") -}}
-    <div class="hide">
-    {{- $months := . -}}
-    <h2 class="text-center">Planning</h2>
-    {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "gantt") }}
-    <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
-    {{- range $separator, $value := . -}}
-        <span class="d-{{ add $separator 1 }}"></span>
-        <span class="d-{{ add $separator 1 }}mid"></span>
-        {{- $.Scratch.Set "counter" (add $separator 2) -}}
-    {{- end -}}
-      <span class="d-{{ $.Scratch.Get "counter" }}"></span>
-    {{- range $separator, $value := . -}}
-        <h3 class="h-" style="grid-column: {{ add (mul $separator 2) 1 }}/span 2">{{ . }}</h3>
-        {{ $month := . }}
-        {{- range $id, $value := $.Params.gantt -}}
-          {{ if eq (index (split (index .time 0) " ") 0) $month }}
-            {{- $start := index (split (index .time 0) " ") 0 -}}
-            {{- $startpar := index (split (index .time 0) " ") 1 -}}
-            {{- $end := index (split (index .time 1) " ") 0 -}}
-            {{- $endpar := index (split (index .time 1) " ") 1 -}}
-            {{- $.Scratch.Set "startmod" 0 -}}
-            {{- $.Scratch.Set "endmod" 0 -}}
-            {{- if eq $startpar "middle" -}}{{ $.Scratch.Set "startmod" 1 }}{{- end -}}
-            {{- if eq $startpar "end" -}}{{ $.Scratch.Set "startmod" 2 }}{{- end -}}
-            {{- if eq $endpar "middle" -}}{{ $.Scratch.Set "endmod" 1 }}{{- end -}}
-            {{- if eq $endpar "end" -}}{{ $.Scratch.Set "endmod" 2 }}{{- end -}}
-            {{- range $id, $value := $months -}}{{ if eq . $start }}{{ $.Scratch.Set "positionstart" $id }}{{- end -}}{{- end -}}
-            {{- range $id, $value := $months -}}{{ if eq . $end }}{{ $.Scratch.Set "positionend" $id }}{{- end -}}{{- end -}}
-            <div class="t-{{ add $id 1}}" style="grid-column: {{ add (add (mul ($.Scratch.Get "positionstart") 2) 1) ($.Scratch.Get "startmod") }} / {{ add (add (mul ($.Scratch.Get "positionend") 2) 1) ($.Scratch.Get "endmod") }};">{{ .name }}</div>
-          {{- end -}}
+  {{- with uniq ($.Scratch.Get "listmonths") -}}
+  <div class="hide">
+  {{- $months := . -}}
+  <h2 class="text-center">Planning</h2>
+  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "gantt") }}
+  <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
+  {{- range $separator, $value := . -}}
+      <span class="d-{{ add $separator 1 }}"></span>
+      <span class="d-{{ add $separator 1 }}mid"></span>
+      {{- $.Scratch.Set "counter" (add $separator 2) -}}
+  {{- end -}}
+    <span class="d-{{ $.Scratch.Get "counter" }}"></span>
+  {{- range $separator, $value := . -}}
+      <h3 class="h-" style="grid-column: {{ add (mul $separator 2) 1 }}/span 2">{{ . }}</h3>
+      {{ $month := . }}
+      {{- range $id, $value := $.Params.gantt -}}
+        {{ if eq (index (split (index .time 0) " ") 0) $month }}
+          {{- $start := index (split (index .time 0) " ") 0 -}}
+          {{- $startpar := index (split (index .time 0) " ") 1 -}}
+          {{- $end := index (split (index .time 1) " ") 0 -}}
+          {{- $endpar := index (split (index .time 1) " ") 1 -}}
+          {{- $.Scratch.Set "startmod" 0 -}}
+          {{- $.Scratch.Set "endmod" 0 -}}
+          {{- if eq $startpar "middle" -}}{{ $.Scratch.Set "startmod" 1 }}{{- end -}}
+          {{- if eq $startpar "end" -}}{{ $.Scratch.Set "startmod" 2 }}{{- end -}}
+          {{- if eq $endpar "middle" -}}{{ $.Scratch.Set "endmod" 1 }}{{- end -}}
+          {{- if eq $endpar "end" -}}{{ $.Scratch.Set "endmod" 2 }}{{- end -}}
+          {{- range $id, $value := $months -}}{{ if eq . $start }}{{ $.Scratch.Set "positionstart" $id }}{{- end -}}{{- end -}}
+          {{- range $id, $value := $months -}}{{ if eq . $end }}{{ $.Scratch.Set "positionend" $id }}{{- end -}}{{- end -}}
+          <div class="t-{{ add $id 1}}" style="grid-column: {{ add (add (mul ($.Scratch.Get "positionstart") 2) 1) ($.Scratch.Get "startmod") }} / {{ add (add (mul ($.Scratch.Get "positionend") 2) 1) ($.Scratch.Get "endmod") }};">{{ .name }}</div>
         {{- end -}}
+      {{- end -}}
+  {{- end -}}
+  </div>
+  </div>
+  {{- end -}}
+
+  {{/* Load lasts file */}}
+  {{- $.Scratch.Set "accessibility-lastfile"  (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename) -}}
+  {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path")     -}}
+  {{- $.Scratch.Set "accessibility-all-path"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-path") -}}
+  {{- $.Scratch.Set "accessibility-all-name"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-name") -}}
+
+  {{- $accessibility := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path")  }}
+  {{- $quality       := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path") -}}
+  {{- $lighthouse    := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
+
+  {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
+    {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
+    {{- if ne (len .compliance) 1 -}}
+    <div class="scores"><ul><li class="medal text-center d-inline-block"><span><b class="h1">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
     {{- end -}}
-    </div>
-    </div>
     {{- end -}}
+    <hr>
+  {{- end -}}
 
-    {{- $.Scratch.Set "accessibility-path" false -}}
-    {{/* Test if files are in static or in each projets */}}
+  {{- if or $accessibility $quality $lighthouse -}}
+  <h2 class="text-center">{{ if (eq (len (split $project "/")) 1) }}Site principal{{ else }}Scores{{ end }}</h2>
+  {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
+  {{- if $accessibility -}}
+  {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
+  {{- $.Scratch.Set "render" slice -}}
 
-    {{/* test level of the page in file tree */}}
-    {{- $.Scratch.Set "accessibility-lastfile"  (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename) -}}
-    {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path")     -}}
-    {{- $.Scratch.Set "accessibility-all-path"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-path") -}}
-    {{- $.Scratch.Set "accessibility-all-name"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-name") -}}
+  <h3 class="m-0">Accessibilité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
+  {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
+  {{- if $partial -}}
+    {{- $conforme := $partial.scores.compliance -}}
+    {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
+  {{- else -}}
+    <p>Le fichier d’audit ({{ ($.Scratch.Get "accessibility-path") }}) est vide.</p>
+  {{- end -}}
+  {{/* Display accessibility in time */}}
+  {{- with ($.Scratch.Get "accessibility-all-path") -}}
+    {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
+  {{- end -}}
+  {{- with ($.Scratch.Get "render") -}}
+  {{- if gt (len .) 1 -}}
+  <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
+  <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
+  <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
+  <div id="chartaccessibility"></div>
+  <script>
+      const dataaccessibility = {
+          labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+          datasets: [
+            {
+              name: "Conformité",
+              values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- .scores.compliance -}}"{{- end -}}]
+            }
+          ],
+          yRegions: [{ label: "", start: 0, end: 100 }]
+      }
+      const chartaccessibility = new frappe.Chart("#chartaccessibility", {
+          title: "Taux de conformité dans le temps (en %)",
+          data: dataaccessibility,
+          type: 'bar',
+          height: 400,
+          lineOptions: {
+              regionFill: 1
+          },
+          truncateLegends: true,
+          colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
+      })
+  </script>
+  {{- end -}}
+  {{- end -}}
+  {{- end -}}
 
-    {{- $accessibility := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path")  }}
-    {{- $quality       := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path") -}}
-    {{- $lighthouse    := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
+  {{- if $quality -}}
+  {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "quality") $project "quality") -}}
+  <h3 class="m-0">Qualité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "quality")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
+  {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
+    {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
+  {{- end -}}
+  {{- end -}}
 
-    {{- if or $accessibility $quality $lighthouse -}}
-    <h2 class="text-center">Scores</h2>
-    {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
-    {{- if $accessibility -}}
-    {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
-    {{- $.Scratch.Set "render" slice -}}
-
-    <h3 class="m-0">Accessibilité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
-    {{- if $partial -}}
-      {{- $conforme := $partial.scores.compliance -}}
-      {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
-    {{- else -}}
-      <p>Le fichier d’audit ({{ ($.Scratch.Get "accessibility-path") }}) est vide.</p>
-    {{- end -}}
-    {{/* Display accessibility in time */}}
-    {{- with ($.Scratch.Get "accessibility-all-path") -}}
-      {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
-    {{- end -}}
-    {{- with ($.Scratch.Get "render") -}}
-    {{- if gt (len .) 1 -}}
-    <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
-    <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
-    <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
-    <div id="chartaccessibility"></div>
+  {{- if $lighthouse -}}
+  {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") -}}
+  <h3 class="m-0">Performance {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "performance"))   }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/performance.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
+  {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path" -}}
+    {{- partial "components/scores/performance" (dict "context" $context "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .)) -}}
+  {{- end -}}
+  {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
+  {{- if gt (len $lastfiles) 1 -}}
+  {{- range $id, $value := readDir (printf "/%s/%s/lighthouse/" ($.Scratch.Get "rootpath") $project) -}}{{- $.Scratch.Set "performancecounter" 0 -}}{{- $performancefile := getJSON (printf "/%s/%s/lighthouse/%s" ($.Scratch.Get "rootpath") $project .Name) -}}{{ range (index $performancefile "audits") }}{{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}{{ $.Scratch.Add "performancecounter" 1 }}{{ $.Scratch.SetInMap "performancecountermap" (string $id) ($.Scratch.Get "performancecounter") }}{{ end }}{{ end }}{{- end -}}
+  <div id="chartperformance"></div>
     <script>
-        const dataaccessibility = {
+        const dataperformance = {
             labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
             datasets: [
               {
-                name: "Conformité",
-                values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- .scores.compliance -}}"{{- end -}}]
+                name: "Erreurs",
+                values: [{{ range $id, $value := ($.Scratch.Get "performancecountermap") }}{{ if ne $id "0" }},{{ end }}"{{ . }}"{{- end -}}],
+                chartType: 'bar'
+              },
+              {
+                name: "Chargement",
+                values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "context" $context "auditfile" .) . }}{{ if ne $id "1" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
+                chartType: 'bar'
               }
             ],
-            yRegions: [{ label: "", start: 0, end: 100 }]
+            yRegions: [{ label: "", start: 0, end: 30 }]
         }
-        const chartaccessibility = new frappe.Chart("#chartaccessibility", {
-            title: "Taux de conformité dans le temps (en %)",
-            data: dataaccessibility,
-            type: 'bar',
-            height: 400,
-            lineOptions: {
-                regionFill: 1
-            },
+        const chartperformance = new frappe.Chart("#chartperformance", {
+            title: "Erreurs lighthouse et temps de chargement",
+            data: dataperformance,
+            type: 'axis-mixed',
+            height: 300,
             truncateLegends: true,
             colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
         })
     </script>
-    {{- end -}}
-    {{- end -}}
-    {{- end -}}
+  {{- end -}}
+  {{- end -}}
 
-    {{- if $quality -}}
-    {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "quality") $project "quality") -}}
-    <h3 class="m-0">Qualité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "quality")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport qualité">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
-      {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
-    {{- end -}}
-    {{- end -}}
+  {{/*
+  <section>
+    {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
+  </section>
+  */}}
 
-    {{- if $lighthouse -}}
-    {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") -}}
-    <h3 class="m-0">Performance {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "performance"))   }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/performance.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport performance">Accéder au rapport</a></small>{{- end -}}</h3>
-    {{- partial "components/scores/performance" (dict "context" . "project" $project) -}}
-    {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
-    {{- if gt (len $lastfiles) 1 -}}
-    {{- range $id, $value := readDir (printf "/%s/%s/lighthouse/" ($.Scratch.Get "rootpath") $project) -}}{{- $.Scratch.Set "performancecounter" 0 -}}{{- $performancefile := getJSON (printf "/%s/%s/lighthouse/%s" ($.Scratch.Get "rootpath") $project .Name) -}}{{ range (index $performancefile "audits") }}{{- if and (not (eq (string .score) "1")) (not (eq (string .score) "null")) (.score) (.details) -}}{{ $.Scratch.Add "performancecounter" 1 }}{{ $.Scratch.SetInMap "performancecountermap" (string $id) ($.Scratch.Get "performancecounter") }}{{ end }}{{ end }}{{- end -}}
-    <div id="chartperformance"></div>
-      <script>
-          const dataperformance = {
-              labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
-              datasets: [
-                {
-                  name: "Erreurs",
-                  values: [{{ range $id, $value := ($.Scratch.Get "performancecountermap") }}{{ if ne $id "0" }},{{ end }}"{{ . }}"{{- end -}}],
-                  chartType: 'bar'
-                },
-                {
-                  name: "Chargement",
-                  values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "context" $context "auditfile" .) . }}{{ if ne $id "1" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
-                  chartType: 'bar'
-                }
-              ],
-              yRegions: [{ label: "", start: 0, end: 30 }]
-          }
-          const chartperformance = new frappe.Chart("#chartperformance", {
-              title: "Erreurs lighthouse et temps de chargement",
-              data: dataperformance,
-              type: 'axis-mixed',
-              height: 300,
-              truncateLegends: true,
-              colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
-          })
-      </script>
+  {{- else -}}
+  <p class="text-center">Aucun audit pour le moment.</p>
+  {{- end -}}
+  {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
+    <hr>
+    <h2 class="text-center">Services liés à la démarche</h2>
+    {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
+    {{ $map := . }}
+      {{- if ne (len .compliance) 1 -}}
+        {{- range $id, $value := .names -}}
+          <h3 class="m-0">{{ . }}</h3>
+          {{- partialCached "components/scores/accessibility" (dict "context" $context "score" (index $map.compliance $id)) . -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
-    {{- end -}}
-
-    {{/*
-    <section>
-      {{ partial "components/quality/critical.html" (dict "context" . "project" $project) }}
-    </section>
-    */}}
-
-    {{- else -}}
-    <p class="text-center">Aucun audit pour le moment.</p>
-    {{- end -}}
-    </div>
+  {{- end -}}
   </div>
-  {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
-  {{- partial "list.html" (dict "context" . "section" "meetings") -}}
-  {{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}
+</div>
+{{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
+{{- partial "list.html" (dict "context" . "section" "meetings") -}}
+{{- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -}}
 
 {{ partial "elements/content.html" .Content }}
