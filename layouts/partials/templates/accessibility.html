@@ -85,10 +85,10 @@
 {{- with ($.context.Scratch.Get "context").audit -}}
 <h2>Contexte</h2>
 <p>
-  <strong>Version du référentiel&nbsp;: </strong>{{ .guidelines }}<br>
-  <strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit .technologies ", " }}<br>
-  <strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit .tools ", " }}<br>
-  <strong>Environnement de test&nbsp;: </strong>{{ delimit .environment ", " }}<br>
+  {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
+  {{ with .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+  {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+  {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
 </p>
 {{- end -}}
 <hr>
