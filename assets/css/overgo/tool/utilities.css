@@ -17,6 +17,10 @@
   margin-left: auto;
 }
 
+.rounded {
+  border-radius: 50%;
+}
+
 /* Position */
 
 .p-relative {

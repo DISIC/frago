@@ -14,6 +14,8 @@
 /* = Colors = */
 
 :root {
+  --background-color: var(--color-primary-dark);
+
   --base-font-name: "Marianne";
   --title-font-name: var(--base-font-name);
   --base-primary: 215;
@@ -22,7 +24,6 @@
   --text-color: hsl(0 0% var(--l-0));
   --text-color-lighter: hsl(0 0% var(--l-10));
   --title-color: var(--text-color);
-  --background-color: var(--color-primary-dark);
   --background-color-body: #fff;
   --background-color-selection: var(--color-primary-light);
 }
@@ -124,7 +125,9 @@ p + pre {
   margin-top: -1.5em;
 }
 
-h2 + time, time + p, h2 + .text-center {
+h2 + time,
+time + p,
+h2 + .text-center {
   display: block;
   margin: -1.5rem auto 1.5rem;
   width: 100%;
@@ -232,8 +235,8 @@ h3 + time {
   padding: var(--baseline) var(--baseline) calc(var(--baseline) / 2);
   font-size: var(--smaller);
   color: var(--text-color);
-  background: var(--color-primary-verylight);
   border: 1px solid var(--color-primary-light);
+  background: var(--color-primary-verylight);
 }
 
 .note p,
@@ -441,6 +444,23 @@ footer a {
   background: var(--color-score-verybad,#722);
 }
 
+.medal span {
+  font-weight: bold;
+}
+
+.medal b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.2em;
+  width: 130px;
+  height: 130px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 50%;
+  background: var(--color-primary-dark);
+}
+
 /* = Scores = */
 
 .scores {
@@ -494,8 +514,8 @@ footer a {
 
 .dot {
   display: inline-block;
-  margin-right: 3px;
   clip: rect(0 0 0 0);
+  margin-right: 3px;
   width: 20px;
   height: 20px;
   font-size: 0;
