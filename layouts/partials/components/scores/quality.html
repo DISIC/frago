@@ -4,7 +4,7 @@
     <li class="counter text-center d-inline-block"><span><b class="h2">{{ .total }}</b><br>Erreurs total</span></li>
     <li class="counter text-center d-inline-block good"><span><b class="h2">{{ .checked }}</b><br>Erreurs corrigées</span></li>
   </ul>
-  {{- if eq (.pathlen) 2 -}}
+  {{- if gt (.pathlen) 2 -}}
   {{- if or (.critical) (.important) (.medium) -}}
   <ul>
     <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ .critical }}</b><br><b class="emoticon">🚫 Critique</b></span></li>
