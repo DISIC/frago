@@ -82,7 +82,7 @@
     "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))
     "date"          ($.context.Scratch.Get (printf "%s%s" $scorekey "date"))
     "criteria"      ($.context.Scratch.Get $scorekey)
-    "scores"        (dict "criteria" (dict "total" 10 "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter")) "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonapplicablecounter")) "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonconformecounter"))) "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance"))))
+    "scores"        (dict "criteria" (dict "total" (len ($.context.Scratch.Get $scorekey).total) "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter")) "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonapplicablecounter")) "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonconformecounter"))) "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance"))))
   )
 -}}
 {{- end -}}
