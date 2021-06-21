@@ -69,7 +69,8 @@
 {{- $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul ($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter")) 100) (sub (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal"))) (($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonapplicablecounter")))))) -}}
 {{- if ($.context.Scratch.Get "criterenonconforme") -}}{{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul (($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme"))))) -}}{{- end -}}
 
-{{- $.context.Scratch.SetInMap $scorekey "total"                  ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal")) -}}
+{{- $.context.Scratch.Set "total"                                 (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal"))) 0 (len ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriteretotal")))) -}}
+
 {{- $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "rendertesttotal")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "conforme"               ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercritereconforme")) -}}
 {{- $.context.Scratch.SetInMap $scorekey "nonconforme"            ($.context.Scratch.Get (printf "%s%s" $scorekey "rendercriterenonconforme")) -}}
@@ -82,7 +83,7 @@
     "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))
     "date"          ($.context.Scratch.Get (printf "%s%s" $scorekey "date"))
     "criteria"      ($.context.Scratch.Get $scorekey)
-    "scores"        (dict "criteria" (dict "total" (len ($.context.Scratch.Get $scorekey).total) "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter")) "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonapplicablecounter")) "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonconformecounter"))) "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance"))))
+    "scores"        (dict "criteria" (dict "total" ($.context.Scratch.Get "total") "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "critereconformecounter")) "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonapplicablecounter")) "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "criterenonconformecounter"))) "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance"))))
   )
 -}}
 {{- end -}}

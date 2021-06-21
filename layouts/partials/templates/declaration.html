@@ -62,9 +62,9 @@
     {{- if ne (len .compliance) 1 -}}
     <li>{{ .percentage }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>
     {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($.context.Scratch.Get "context").website }}pour {{ . }}{{ end }}</li>{{ end }}
-
+    {{ range $id, $value :=.names }}<li>{{ index $map.compliance $id }}% des {{ index $map.total $id }} critères du RGAA sont respectés pour {{ . }}</li>{{ end }}
     {{- else -}}
-    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés</li>{{ end }}
+    {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{/* with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end */}} sont respectés</li>{{ end }}
     {{- end -}}
     {{- end -}}
     <li class="hide">(Facultatif) Le taux moyen de conformité du site s’élève à n%</li>
