@@ -37,7 +37,7 @@
 {{- $.context.Scratch.Set "auditfile-csv" (getCSV "," ($.context.Scratch.Get "auditpath-csv")) -}}
 {{/* Calculate accessibility compliance */}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
-{{- $.context.Scratch.Set "date" (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
+{{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
 
 {{ (index ($.context.Scratch.Get "audits") "auditfile-name") }}
 <p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}audits/{{ .project }}/" class="link-more link-back">Retour à la page projet</a></p>
@@ -211,64 +211,11 @@
 {{- end -}}
 {{/* END If several page tested */}}
 
-{{- $.context.Scratch.Set "criterioncounter" 0 -}}
-{{- if fileExists (printf "%s/quality" (index ($.context.Scratch.Get "audits") "pathproject")) -}}
-  {{- range (readFile (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project .Params.datafilename) "auditfile-path") | transform.Unmarshal) -}}
-    {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{ ($.context.Scratch.Delete "criterions") }}
-    {{- if and .criterion (not .checked) -}}
-    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
-    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path)) -}}
-    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
-    {{- end -}}
-    {{- end -}}{{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
 {{/* START If several page tested */}}
 {{- if gt (len ($.context.Scratch.Get "pageslist")) 0 -}}
 {{/* Range map errors sort by RGAA order - on all pages */}}
 <h3 id="pagesall">Tous les critères non conformes du site</h3>
-<div class="flex flex-column">
-{{- range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme -}}
-  {{- $thematiques := index (split $key ".") 0 -}}
-  {{- $criteria := index (split $key ".") 1 -}}
-  <div style="order:{{ $thematiques }};">
-  <p class="mb-0"><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong></p>
-  {{- $s := where ($.context.Site.Data.rgaa.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
-  {{- if ge (len $s) 1 -}}
-    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
-    <em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ($content | markdownify) 100) | markdownify }}</em></p>
-  {{- end -}}
-  {{- with ($.context.Scratch.Get "criterion") -}}
-  {{- with (index . $key) -}}
-      <table>
-        <thead>
-          <tr>
-            <th>Page</th>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Xpath</th>
-          </tr>
-        </thead>
-        <tbody>
-        {{- range $key, $value := . -}}
-          <tr>
-          {{ range . }}
-            <td>{{ .page }}</td>
-            <td>{{ .name }}</td>
-            <td>{{ .description }}</td>
-            <td style="text-overflow:ellipsis">{{ .path }}</td>
-          {{ end }}
-          </tr>
-        {{- end -}}
-        </tbody>
-      </table>
-    {{- end -}}
-    {{- end -}}
-  </div>
-{{- end -}}
-</div>
+{{ partialCached "templates/validity.html" (dict "context" $context "audit" ($.context.Scratch.Get "audits") "score" ($.context.Scratch.Get "scores").criteria) ($.context.Scratch.Get "scores").criteria }}
 {{- end -}}
 {{/* END If several page tested */}}
 {{- else -}}

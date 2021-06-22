@@ -1,0 +1,68 @@
+
+
+
+{{- $context := .context -}}
+{{- $score   := .score -}}
+{{- $audit   := .audit -}}
+
+{{- $.context.Scratch.Set "criterioncounter" 0 -}}
+{{- if fileExists (printf "%s/quality" (index $audit "pathproject")) -}}
+{{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "quality") (index $audit "project")) "auditfile-path") -}}
+{{- range (readFile . | transform.Unmarshal) -}}
+  {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{- range .errors -}}{{- $.context.Scratch.Delete "criterions" -}}{{- $.context.Scratch.Set "path" 0 -}}
+    {{- if and .criterion (not .checked) -}}
+    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
+    {{- with .path -}}{{- $.context.Scratch.Add "path" 1 -}}{{- end -}}
+    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "description" .description "path" .path "pathexist" ($.context.Scratch.Get "path"))) -}}
+    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
+    {{- end -}}
+  {{- end -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Range map errors sort by RGAA order - on all pages */}}
+{{- range $idx := seq 13 -}}
+  {{- range $key, $value := (index $score "nonconforme") -}}
+    {{- if eq $idx (int (index (split $key ".") 0)) -}}
+    {{- $thematiques := index (split $key ".") 0 -}}
+    {{- $criteria := index (split $key ".") 1 -}}
+  <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br/>
+  {{- $s := where ($.context.Site.Data.rgaa.criteria.topics) "number" "eq" (int (index (split $key ".") 0)) -}}
+  {{- if ge (len $s) 1 -}}
+  {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
+  <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em>
+  </br>
+      {{- end -}}
+      {{- with ($.context.Scratch.Get "criterion") -}}
+      {{ with (index . $key) }}
+          <table>
+            {{ range first 1 (index (sort .) 0) }}
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Titre</th>
+                <th>Description</th>
+                {{ if ne .pathexist 0 }}<th>Xpath</th>{{ end }}
+              </tr>
+            </thead>
+            {{- end -}}
+            <tbody>
+            {{- range $key, $value := . -}}
+              <tr>
+              {{ range . }}
+                <td>{{ .page }}</td>
+                <td>{{ .name }}</td>
+                <td>{{ .description }}</td>
+                {{ if ne .pathexist 0 }}<td title="{{ .path }}">{{ substr .path 0 20 }}</td>{{ end }}
+              {{ end }}
+              </tr>
+            {{- end -}}
+            </tbody>
+          </table>
+      {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{ end }}
+{{- end -}}
