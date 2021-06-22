@@ -21,7 +21,6 @@
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}
 
-
 {{/* Load the audit file */}}
 {{- $.context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
 {{- $.context.Scratch.Set "auditpath-csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
@@ -38,7 +37,6 @@
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
 {{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
 
-{{ (index ($.context.Scratch.Get "audits") "auditfile-name") }}
 <p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}audits/{{ .project }}/" class="link-more link-back">Retour à la page projet</a></p>
 <h1>Audit Accessibilité</h1>
 
@@ -69,7 +67,8 @@
 <h2 class="text-center">Scores{{- with (index ($.context.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
 {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
-<h3>Conformité globale selon les critères {{ if le (index ($.context.Scratch.Get "scores") "compliance") 75 }} <small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (len ($.context.Scratch.Get "scores").criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}</h3>
+
+<h3>Conformité globale selon les critères {{ if le (index ($.context.Scratch.Get "scores") "compliance") 75 }} {{ if ne ($.context.Scratch.Get "scores").scores.criteria.nonconforme 0 }}<small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (($.context.Scratch.Get "scores").scores.criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}{{ end }}</h3>
 {{/* Call accessibility scores partial */}}
 {{- partialCached "components/scores/accessibility" (dict "context" $context "score" ($.context.Scratch.Get "scores").scores.compliance) ($.context.Scratch.Get "scores") -}}
 {{/* Call accessibility number of criteria partial */}}

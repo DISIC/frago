@@ -61,14 +61,15 @@
   {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
     {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
     {{- if ne (len .compliance) 1 -}}
+    {{- $.Scratch.Set "subservice" true -}}
     <div class="scores"><ul><li class="medal text-center d-inline-block"><span><b class="h1">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
-    {{- end -}}
-    {{- end -}}
     <hr>
+    {{- end -}}
+    {{- end -}}
   {{- end -}}
 
   {{- if or $accessibility $quality $lighthouse -}}
-  <h2 class="text-center">{{ if (eq (len (split $project "/")) 1) }}Site principal{{ else }}Scores{{ end }}</h2>
+  <h2 class="text-center">{{ if $.Scratch.Get "subservice" }}Site principal{{ else }}Scores{{ end }}</h2>
   {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
   {{- if $accessibility -}}
   {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
