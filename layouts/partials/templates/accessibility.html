@@ -1,10 +1,9 @@
 {{- $project := .project -}}
 {{- $context := .context -}}
-
-{{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $projectcontext := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $projectcontext) $projectcontext) -}}
 
 {{/* Determine the version of the audit */}}
 {{- $context.Scratch.Set "guidelinename" "rgaa" -}}

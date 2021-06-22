@@ -23,7 +23,7 @@
   {{- $.Scratch.Delete "score" -}}
   {{- $.Scratch.Delete "scoresmap" -}}
     {{ $project := (index (split (path.Dir .Path) "/") 1) }}
-    {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+    {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" "") "") -}}
     {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
       {{- range $key, $path := . -}}
         {{- $file := (partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" .) .) -}}
