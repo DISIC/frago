@@ -28,12 +28,11 @@
     {{- range $id, $value := .audits -}}
       {{- $type := .type -}}
       {{- if eq $type "accessibility" -}}
-      {{ warnf "%s" .url }}
       {{ with (getJSON .url).rgaa }}
       {{- $.context.Scratch.SetInMap "name" (string (add $id 1000)) $name -}}
         {{ range last 1 (sort .) }}
-          {{- $.context.Scratch.SetInMap "compliance"           (string (add $id 1000)) .scores.compliance -}}
-          {{- $.context.Scratch.SetInMap "criteriatotals"       (string (add $id 1000)) .scores.criteria.total -}}
+          {{- $.context.Scratch.SetInMap "compliance"           (string (add $id 1000)) .score.compliance -}}
+          {{- $.context.Scratch.SetInMap "criteriatotals"       (string (add $id 1000)) .score.criteria.total -}}
           {{- $.context.Scratch.Set      "compliancetotal"      (add (index ($.context.Scratch.Get "compliance") (string (add $id 1000))) ($.context.Scratch.Get "compliancetotal")) -}}
           {{- $.context.Scratch.Set      "percentage"           (div ($.context.Scratch.Get "compliancetotal") (len ($.context.Scratch.Get "compliance"))) -}}
         {{- end -}}
