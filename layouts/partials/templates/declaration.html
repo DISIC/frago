@@ -3,8 +3,6 @@
 {{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
-
 {{/* Determine the version of the audit */}}
 {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
@@ -23,7 +21,10 @@
 
 {{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
-{{- $.context.Scratch.Set "date" (time (string (delimit (last 1 (sort (index $audits "auditfile-all-name"))) ""))) -}}
+{{- $date := (string (index ($.context.Scratch.Get "audits") "auditfile-name")) -}}
+{{- $.context.Scratch.Set "date" (time $date) -}}
+{{ $.context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) }}
+
 {{/* Find if the audit file is by criteria or by tests */}}
 {{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
 {{/* Create an array with all pages */}}

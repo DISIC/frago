@@ -37,8 +37,9 @@
 {{- $.context.Scratch.Set "auditfile-csv" (getCSV "," ($.context.Scratch.Get "auditpath-csv")) -}}
 {{/* Calculate accessibility compliance */}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
-{{- $.context.Scratch.Set "date" (time (string (delimit (last 1 (sort (index ($.context.Scratch.Get "audits") "auditfile-all-name"))) ""))) -}}
+{{- $.context.Scratch.Set "date" (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
 
+{{ (index ($.context.Scratch.Get "audits") "auditfile-name") }}
 <p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}audits/{{ .project }}/" class="link-more link-back">Retour à la page projet</a></p>
 <h1>Audit Accessibilité</h1>
 

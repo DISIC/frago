@@ -43,6 +43,7 @@
     {{- $.Scratch.Delete "audits" }}
     {{- range $type, $path := $value -}}
     {{- $.Scratch.Delete $type }}
+    {{- $.Scratch.Delete "context" }}
     {{- $.Scratch.Set "guideline" "" }}
       {{- if eq $type "accessibility" -}}
         {{- $accessibility := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
@@ -52,7 +53,7 @@
               {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-context" -}}
                   {{- $.Scratch.Set "guideline" (index (readFile . | transform.Unmarshal) $date) -}}
               {{- end -}}
-              {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+              {{- $context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) -}}
               {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" ($.Scratch.Get $type)) -}}
@@ -77,9 +78,9 @@
         {{- end -}}
       {{- end -}}
       {{- end -}}
-      {{- $.Scratch.SetInMap "slug" $slug (dict "title" ($.Scratch.Get "title") "slug" $slug "audits" ($.Scratch.Get "audits")) -}}
-      {{- end -}}
-      {{- end -}}
+    {{- $.Scratch.SetInMap "slug" $slug (dict "title" ($.Scratch.Get "title") "slug" $slug "audits" ($.Scratch.Get "audits")) -}}
+    {{- end -}}
+{{- end -}}
 {{- (dict
   "name" .Site.Title
   "description" .Site.Params.organisation
