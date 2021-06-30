@@ -67,21 +67,20 @@
     {{- end -}}
     {{- end -}}
   {{- end -}}
-
   {{- if or $accessibility $quality $lighthouse -}}
   <h2 class="text-center">{{ if $.Scratch.Get "subservice" }}Site principal{{ else }}Scores{{ end }}</h2>
   {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
   {{- if $accessibility -}}
   {{- $.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
   {{- $.Scratch.Set "render" slice -}}
-
-  <h3 class="m-0">Accessibilité {{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}</h3>
   {{- $partial := (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
-  {{- if $partial -}}
+  <h3 class="m-0">Accessibilité {{- if $partial.scores.compliance -}}{{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ $.Site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" title="Accéder au rapport accessibilité">Accéder au rapport</a></small>{{- end -}}{{- end -}}</h3>
+
+  {{- if $partial.scores.compliance -}}
     {{- $conforme := $partial.scores.compliance -}}
     {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
   {{- else -}}
-    <p>Le fichier d’audit ({{ ($.Scratch.Get "accessibility-path") }}) est vide.</p>
+    <p>L’audit de conformité est en cours.</p>
   {{- end -}}
   {{/* Display accessibility in time */}}
   {{- with ($.Scratch.Get "accessibility-all-path") -}}
