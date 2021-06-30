@@ -94,7 +94,7 @@
 {{- end -}}
 
 {{/* START If several page tested */}}
-{{- if and (gt (len ($.context.Scratch.Get "pageslist")) 0) -}}
+{{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
 <h2>Liste des pages auditées</h2>
 
 {{/* Create a anchors menu with audited pages */}}
@@ -109,10 +109,16 @@
   </ul>
 </div>
 
+{{- end -}}
+
 <h2>Par ordre des critères du référentiel RGAA</h2>
 
 {{/* Range map errors sort by RGAA order - on all pages */}}
-<h3 id="pagesall">A - Anomalies présentes sur toutes les pages</h3>
+{{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
+<h3 id="pagesall">Anomalies présentes sur toutes les pages</h3>
+{{- else -}}
+<h3 >Anomalies</h3>
+{{- end -}}
 
 {{- $.context.Scratch.Set "counterallpages" 0 -}}
 {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
@@ -157,8 +163,9 @@
 {{- end -}}
 {{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 
+{{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
 {{/* Range map errors sort by RGAA order - on specifics pages */}}
-<h3>B - Anomalies présentes sur les pages spécifiques</h3>
+<h3>Anomalies présentes sur les pages spécifiques</h3>
 {{/* Display errors presents on specific pages */}}
 {{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
   {{- $.context.Scratch.Set "text" 0 -}}
