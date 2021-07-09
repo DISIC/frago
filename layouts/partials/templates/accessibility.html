@@ -64,7 +64,7 @@
   {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) (delimit (($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.tests $auditname)) ", ")}}
 {{- end -}}
 
-<h2 class="text-center">Scores{{- with (index ($.context.Scratch.Get "scores") "criteretotal") -}}&nbsp;-&nbsp;{{- len . -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
+<h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
 {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
 
@@ -121,6 +121,7 @@
 {{- end -}}
 
 {{- $.context.Scratch.Set "counterallpages" 0 -}}
+{{- if ($.context.Scratch.Get "auditmethodology") -}}
 {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
   {{- $indication := (delimit (uniq (after ($.context.Scratch.Get "auditmethodology") .)) "") -}}
   {{- $content := (index (split $indication "|") 0) -}}
@@ -160,6 +161,7 @@
     {{- end -}}
   {{- end -}}
   {{- end -}}
+{{- end -}}
 {{- end -}}
 {{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 

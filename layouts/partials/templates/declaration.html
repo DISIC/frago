@@ -22,7 +22,6 @@
 {{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 {{- $date := (string (index ($.context.Scratch.Get "audits") "auditfile-name")) -}}
-{{- $.context.Scratch.Set "date" (time $date) -}}
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
 {{- $.context.Scratch.Set "context" (index . $date) -}}
 {{- end -}}
@@ -90,7 +89,7 @@
   <h2>Établissement de cette déclaration d’accessibilité</h2>
 
   {{ with ($.context.Scratch.Get "context") }}
-  <p>Cette déclaration a été établie le <time datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ ($.context.Scratch.Get "date").Day }} {{ index $context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
+  <p>Cette déclaration a été établie le <time datetime="{{ (time $date).Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ (time $date).Day }} {{ index $context.Site.Data.month (printf "%d" (time $date).Month) }} {{ (time $date).Year }}</time>.<span class="hide"> Elle a été mise à jour le JJ/MM/AAAA.</span></p>
 
   {{ with ($.context.Scratch.Get "context").audit }}
   <h3>Technologies utilisées</h3>
