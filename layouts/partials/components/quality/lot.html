@@ -32,7 +32,7 @@
     <thead><tr ;><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Bloc</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
     <tbody>
     {{- $.context.Scratch.Set "blockid" 0 -}}
-    {{- range ($.context.Scratch.Get "pageslistlot") -}}
+    {{- range $id, $value := ($.context.Scratch.Get "pageslistlot") -}}
       {{- $lot := where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "pagename" . -}}
       {{- if $lot -}}
       {{- $.context.Scratch.Set "blockname" "" -}}
