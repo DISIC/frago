@@ -1,5 +1,6 @@
 {{- $project := .project -}}
 {{- $context := .context -}}
+
 {{- $projectcontext := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
@@ -37,7 +38,7 @@
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
 {{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
 
-<p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}audits/{{ .project }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back">Retour à la page projet</a></p>
 <h1>Audit Accessibilité</h1>
 
 {{/* Display page content if exists */}}
@@ -121,7 +122,7 @@
 {{- end -}}
 
 {{- $.context.Scratch.Set "counterallpages" 0 -}}
-{{- if ($.context.Scratch.Get "auditmethodology") -}}
+{{- if and ($.context.Scratch.Get "auditmethodology") ($.context.Scratch.Get "auditfile-csv") -}}
 {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
   {{- $indication := (delimit (uniq (after ($.context.Scratch.Get "auditmethodology") .)) "") -}}
   {{- $content := (index (split $indication "|") 0) -}}
@@ -142,7 +143,7 @@
       {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
       {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
     </strong></p>
-    {{- if ge (len $comment) 1 }}<p class="m-0"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+    {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
       {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
       {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
         {{- if eq $idx (string ($tests)) -}}
@@ -193,7 +194,7 @@
         {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
         {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
       </strong></p>
-      {{- if $condcontentlen }}<p class="m-0"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+      {{- if $condcontentlen }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
         {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}

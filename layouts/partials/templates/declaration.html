@@ -18,10 +18,11 @@
 {{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
 
 {{- $.context.Scratch.Set "auditpath-csv" (index $audit "auditfile-path") -}}
-
 {{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
+
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 {{- $date := (string (index ($.context.Scratch.Get "audits") "auditfile-name")) -}}
+
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
 {{- $.context.Scratch.Set "context" (index . $date) -}}
 {{- end -}}

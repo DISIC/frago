@@ -22,7 +22,7 @@
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
 
 <div class="wrapper narrow audit">
-<p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}/audits/{{ $project }}/" class="link-more link-back">Retour à la page projet</a></p>
+<p>⬅ <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back">Retour à la page projet</a></p>
 <h1>Audit Qualité <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
 {{- if gt (len .context.Content) 10 -}}
 <div class="note">

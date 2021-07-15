@@ -4,6 +4,7 @@
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
 {{- $.context.Scratch.Set "pathroot" (partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type) -}}
 {{- $path      := replace (replace (cond (not $project) (printf "/%s/%s" ($.context.Scratch.Get "pathroot") $type) (printf "/%s/%s/%s" ($.context.Scratch.Get "pathroot") $project $type)) "///" "/") "//" "/" -}}
+{{- $path       := (replace $path "/audits/audits/" "/audits/") -}}
 {{- $ext       := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
 
 {{- $.context.Scratch.Set    "auditpath-lastfile" "/false" -}}
@@ -25,6 +26,7 @@
   {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" "999" ($.context.Scratch.Get "auditpath-lastfile") -}}
   {{- $.context.Scratch.SetInMap "auditname-all-lastfile" "999" ($.context.Scratch.Get "auditname-lastfile") -}}
 {{- end -}}
+
 {{- if (fileExists ($.context.Scratch.Get "pathdatafile")) -}}
   {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdatafile")) -}}
   {{- with ($.context.Scratch.Get "dir-lastfile") -}}
@@ -38,6 +40,7 @@
     {{- $.context.Scratch.Set "auditname-context" (printf "%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) -}}
     {{- end -}}
     {{- end -}}
+
     {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($.context.Scratch.Get "auditpath-all-lastfile"))) ""))) -}}
     {{- $.context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($.context.Scratch.Get "auditname-all-lastfile"))) ""))) -}}
   {{- end -}}
@@ -48,10 +51,10 @@
     "type"               $type
     "path"               $path
     "ext"                $ext
-    "project"            $project
+    "project"            (cond (ge (countwords $project) 1) $project "")
     "datafilename"       .datafilename
     "pathroot"           ($.context.Scratch.Get "pathroot")
-    "pathproject"        (printf "%s/%s" ($.context.Scratch.Get "pathroot") $project)
+    "pathproject"        (cond (ge (countwords $project) 1) (printf "%s/%s" ($.context.Scratch.Get "pathroot") $project) ($.context.Scratch.Get "pathroot"))
     "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
     "auditfile-context"  ($.context.Scratch.Get "auditname-context")
     "auditfile-name"     ($.context.Scratch.Get "auditname-lastfile")
