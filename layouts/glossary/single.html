@@ -15,7 +15,7 @@
   <h2>{{ .section }}</h2>
   <dl>
     {{- range .dl -}}
-      <dt id="{{ .dt | anchorize }}">{{ .dt }}</dt>
+      <dt id="{{ .dt | replaceRE "'" "-" | replaceRE "[èéêë]" "e" | replaceRE "[àáâãäå]" "a" | replaceRE "[ìíîï]" "i" | replaceRE "[òóôõö]" "o" | replaceRE "[ùúûü]" "u" | replaceRE "[æ]" "ae" | replaceRE "[/œ]" "oe" | anchorize }}">{{ .dt }}</dt>
       <dd>
         {{- range .dd -}}
           {{- if reflect.IsMap . -}}
