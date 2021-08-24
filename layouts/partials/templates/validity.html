@@ -31,7 +31,6 @@
   {{- $key := cond (lt (index (split $key ".") 1) 10) (printf "%s.0%s" (index (split $key ".") 0) (index (split $key ".") 1)) $key -}}
   {{- $.context.Scratch.SetInMap "crit" $key $value -}}
 {{- end -}}
-<hr>
 {{ range $key, $value :=  ($.context.Scratch.Get "crit") }}
   {{- $thematiques := float (index (split $key ".") 0) -}}
   {{- $criteria    := float (index (split $key ".") 1) -}}
@@ -64,7 +63,7 @@
                 <td>{{ .block }}</td>
                 <td>{{ .name }}</td>
                 <td>{{ .description | markdownify }}</td>
-                {{ if ne .pathexist 0 }}<td title="{{ .path }}">{{ substr .path 0 20 }}</td>{{ end }}
+                {{ if ne .pathexist 0 }}<td aria-label="{{ .path }}">{{ substr .path 0 20 }}</td>{{ end }}
               {{ end }}
               </tr>
             {{- end -}}

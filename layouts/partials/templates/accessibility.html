@@ -66,7 +66,7 @@
 {{- end -}}
 <h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
 <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
-{{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
+{{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}" aria-label="Accéder à la déclaration de {{ ($context.GetPage $project).Title }}">Accéder à la déclaration</a></p>{{- end -}}
 
 <h3>Conformité globale selon les critères {{ if le ($.context.Scratch.Get "scores").scores.compliance "75" }} {{ if ne ($.context.Scratch.Get "scores").scores.criteria.nonconforme 0 }}<small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (($.context.Scratch.Get "scores").scores.criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}{{ end }}</h3>
 {{/* Call accessibility scores partial */}}
@@ -100,13 +100,15 @@
 {{/* Create a anchors menu with audited pages */}}
 <div class="tableofcontents">
   <h3>Accéder aux pages auditées</h3>
-  <ul>
-    <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
-    {{/* Loop all pages for anchor navigation */}}
-    {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
-    <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
-    {{- end -}}
-  </ul>
+  <nav>
+    <ul role="list">
+      <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
+      {{/* Loop all pages for anchor navigation */}}
+      {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
+      <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
+      {{- end -}}
+    </ul>
+  <nav>
 </div>
 
 {{- end -}}
