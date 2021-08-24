@@ -21,7 +21,7 @@
         checked: true
       - name: Liens d’évitement
         element: nav
-        description: Il n'existe pas de liens d'accès rapides vers le contenu principal, le menu et le moteur de recherche.
+        description: Il n’existe pas de liens d’accès rapides vers le contenu principal, le menu et le moteur de recherche.
         criterion: '12.7'
         type: structure
         status: critique
@@ -71,6 +71,7 @@
         criterion: 10.11.2
         type: texte
         status: critique
+        checked: true
       - name: Police - Modifier
         element: body
         description: La police est Roboto. Le site <impots.gouv.fr> charge la police Open Sans. Modifier la police par défaut et appeler les bons formats (ex.woff2)
@@ -272,11 +273,6 @@
         status: critique
         checked: true
         delivery: lot 1
-      - name: Focus
-        element: button
-        description: Lors de l’ouverture d’une boîte de dialogue, le focus est appliqué au bouton « fermer » en base de la boîte.
-        type: texte
-        status: moindre
       - name: Accordéon
         element: div
         description: Le bloc de accordéon ne présente pas les attributs ARIA nécessaires à la navigation au clavier.
@@ -329,20 +325,22 @@
         criterion: ER-27
         type: visuel
         status: critique
+        checked: true
         delivery: lot 1
       - name: Dimension - hauteur
         element: div
-        description: La boîte de dialogue se positionne au milieu de la page en hauteur.
-          Si la boîte est trop haute, elle sort de l'écran des informations sont inaccessibles.
+        description: La boîte de dialogue se positionne au milieu de la page en hauteur. Si la boîte est trop haute, elle sort de l'écran des informations sont inaccessibles.
         criterion: ER-27
         type: visuel
         status: critique
+        checked: true
       - name: Dimension fermeture
         element: div
         description: La boîte de dialogue se ferme pas lors du clic en dehors de la zone de dialogue. Si la boîte dépasse de l'écran, on ne peut pas sortir car les boutons fermer sont cachés.
         criterion: ER-27
         type: visuel
         status: important
+        checked: true
         delivery: lot 1
   - name: Chargement
     url: https://www.amendes.gouv.fr/tai/
@@ -575,7 +573,7 @@
         type: texte
       - name: Titres de pages texte
         element: title
-        description: Le titre des pages des actualités ne change pas en fonction des actualités.
+        description: Le titre `<title>` des pages des actualités ne change pas en fonction des actualités.
         codebefore: "<title>Actualités | Service de télépaiement des amendes</title>"
         codeafter: "<title>Du nouveau dans l'utilisation du timbre-amende papier | Amendes.gouv.fr</title>"
         type: texte
@@ -584,6 +582,7 @@
         description: L’application de la largeur de page ne se fait pas comme sur la page d’accueil, la bandeau est limité en largeur. Sur la page d’accueil il prend toute la largeur de l'écran.
         type: visuel
         status: moindre
+        checked: true
         delivery: lot 1
     - name: Bannière
       errors:
@@ -592,6 +591,7 @@
         description: Le bandeau affiche le titre de l’actualité. Il devient illisible car la bannière n’est pas faite pour cette usage.
         type: structure
         status: important
+        checked: true
     - name: Contenu
       errors:
       - name: Liens revenir à la page d’accueil
@@ -599,6 +599,7 @@
         description: Le lien est présenté sous forme d’un bouton. Il doit avoir l'allure d‘un lien.
         type: visuel
         status: important
+        checked: true
   - name: Plan du site
     url: https://www.amendes.gouv.fr/tai/plan
     blocks:
