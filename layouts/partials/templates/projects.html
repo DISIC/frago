@@ -2,7 +2,7 @@
 {{- $context := . -}}
 {{- $project := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 
-<div class="wrapper narrow">
+<section class="wrapper narrow">
 
   {{- $.Scratch.Set "listmonths" slice -}}
   {{- range $id, $value := .Params.gantt -}}
@@ -188,7 +188,7 @@
       {{- end -}}
       {{- end -}}
     {{- end -}}
-  </div>
+  </section>
 </div>
 {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
 {{- partial "list.html" (dict "context" . "section" "meetings") -}}

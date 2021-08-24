@@ -88,13 +88,13 @@
   {{/*- template "_internal/twitter_cards.html" . -*/}}
 </head>
 <body class="hugo-{{ .Kind }}">
-  <div class="skip-links">
-    <a href="#nav">Navigation principale</a>
+  <div class="skip-links" role="navigation">
+  {{/* <a href="#nav">Navigation principale</a> */}}
     <a href="#main">Contenu principal</a>
   </div>
-  <header role="banner">
+  <header role="banner" aria-label="Bannière">
     {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
-    <div hidde>
+    <div hidden>
     {{ .Permalink }} - {{ .Kind }} - {{ .Type }}<br>
     {{ range .OutputFormats -}}
     {{ .Rel }} - {{ .MediaType.Type }} - <a href="{{ .Permalink | safeURL }}">{{ .RelPermalink | safeURL }}</a> - {{ .Format.BaseName }} - {{ .Format.Path }}<br>
@@ -111,7 +111,7 @@
           <span class="demarches-titlebar-sitename"></span>
         </a>
       </div><!--
-      <nav class="nav nav-main">
+      <nav id="nav" class="nav nav-main" aria-label="Principale">
         <ul class="list-unstyled list-inline">
           {{- $currentPage := . -}}
           {{- range where $.Site.RegularPages "Section" "projects" -}}
@@ -124,7 +124,7 @@
       </nav> -->
     </div>
   </header>
-  <main id="main" class="page main">
+  <main id="main" class="page main" aria-label="Contenu">
     {{ block "main" . }}{{- end -}}
   </main>
   {{- partialCached "footer" . -}}

@@ -1,7 +1,7 @@
 {{- define "main" -}}
 {{- if .Content -}}
-<div class="wrapper narrow">
-  <p class="no-print hide">⬅ <a href="{{ $.Site.BaseURL | default "/" }}{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
+<article class="wrapper narrow">
+  <p class="no-print hide">← <a href="{{ $.Site.BaseURL | default "/" }}{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
   <h1>{{ .Title }}</h1>
   {{ with .Params.persons }}
   <h2>Présents</h2>
@@ -16,6 +16,6 @@
   {{ partialCached "elements/content.html" .Content .Content }}
   <hr class="divider">
   {{ partial "navigations/nav-prevnext.html" . }}
-</div>
+</article>
 {{- end -}}
 {{- end -}}

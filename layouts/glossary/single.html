@@ -7,7 +7,7 @@
   {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
-<div class="wrapper narrow">
+<article class="wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- partial "elements/content.html" .Content -}}
 {{- range $key, $value := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).glossary -}}
@@ -49,5 +49,5 @@
   </dl>
   {{- end -}}
 {{- end -}}
-</div>
+</article>
 {{- end -}}

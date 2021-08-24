@@ -23,7 +23,7 @@
 {{ .Scratch.Set "Paginator" (.Paginate .Pages) }}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
-<div class="wrapper narrow">
+<article class="wrapper narrow">
   <h1>{{ .Title }}</h1>
   {{ partial "elements/content.html" .Content }}
   {{- $.Scratch.Set "linksingle" .RelPermalink -}}
@@ -42,6 +42,6 @@
   <!--pagination-->
   <br>
   {{- partial "navigations/paginator.html" . -}}
-</div>
+</article>
 {{- end -}}
 {{- end -}}

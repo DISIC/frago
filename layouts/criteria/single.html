@@ -12,7 +12,7 @@
 {{- $glossaire := printf "=\"/%s/%s/glossaire/#" ($.Scratch.Get "guidelinename") ($.Scratch.Get "guidelineversion") -}}
 {{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.topics -}}
 
-<div class="wrapper narrow">
+<article class="wrapper narrow">
 <h1>Critères {{ replace ($.Scratch.Get "guidelinename" | upper) "RGAA" "RGAA "}}</h1>
 {{ partial "elements/content.html" .Content }}
 <div class="tableofcontents">

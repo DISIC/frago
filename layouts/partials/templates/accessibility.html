@@ -26,7 +26,7 @@
 {{- $.context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
 {{- $.context.Scratch.Set "auditpath-csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
 
-<div class="wrapper narrow">
+<article class="wrapper narrow">
 {{/* Display declaration tpl when output format is set */}}
 {{- if (in .context.Permalink "declaration.html") -}}
   {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) ($.context.Scratch.Get "audits") -}}
