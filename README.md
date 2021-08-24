@@ -24,14 +24,12 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
     ├── _index.md // Page d’accueil
     └── audits
          ├── projet1
-         │     ├── _index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
-         │     ├── accessibility.md
+         │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
          │     └── accessibility
          │          ├── 2020-10-15.csv
          │          └── 2020-11-15.csv
          └── projet2
-                ├── _index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
-                ├── accessibility.md
+                ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
                 └── accessibility
                     ├── 2020-10-15.csv
                     └── 2020-11-15.csv
@@ -130,7 +128,27 @@ Exemple, Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
 
 ### API
 
-Pour exposer l’API, le fichier `config.toml` doit être compléter, voici un exemple de fichier pour avoir un fichier `index.json` ainsi que des déclarations pour chaque page d’audit (un fichier de contenu brut, et une page HTML liée à chaque page `accessibility.md`).
+La configuration de l’API est contenu dans le fichier `config.toml` du thème. Il existe une configuration par défaut qui peut-être surchargée en fonction de la structure de fichier. Pour la structure simplifié, il n’y a rien à ajouter.
+
+L‘idée est d’éviter de créer des pages uniquement pour avoir une URL disponible lors du build du site (seuls défauts, une export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
+
+Cette API permet d’obtenir des fichiers `json` de type :
+
+ * https://monurl.com/index.json
+ * https://monurl.com/audits/monprojet/index.json
+ * https://monurl.com/audits/monprojet/accessibility.json
+ * https://monurl.com/audits/monprojet/quality.json
+ * https://monurl.com/audits/monprojet/performance.json
+
+Mais aussi des affichages de pages de type :
+
+ * https://monurl.com/audits/monprojet/accessibility.html
+ * https://monurl.com/audits/monprojet/quality.html
+ * https://monurl.com/audits/monprojet/performance.html
+ * https://monurl.com/audits/monprojet/declaration.html
+ * https://monurl.com/audits/monprojet/declaration.txt
+
+**Exemple de configuration de l’API (Voir la Documentation goHugo sur les Output Format).**
 
 ```
 [outputs]
@@ -155,10 +173,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
     ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
     ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
     │     ├── projet1
-    │     │      ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
-    │     │      ├── accessibility.md
-    │     │      ├── quality.md
-    │     │      ├── performance.md
+    │     │      ├── index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
     │     │      ├── accessibility
     │     │      │   ├── 2020-10-15.csv
     │     │      │   └── 2020-11-15.csv
@@ -170,10 +185,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
     │     │          └── 2020-11-15.csv
     │     │
     │     └── projet2
-    │          ├── _index.md
-    │          ├── accessibility.md
-    │          ├── quality.md
-    │          ├── performance.md
+    │          ├── index.md
     │          ├── accessibility
     │          │   ├── 2020-10-15.csv
     │          │   └── 2020-11-15.csv
@@ -186,10 +198,8 @@ Les différents types de contenus servent à la publication d’audits, l’anal
     ┋
     ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
     ┋
-    └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
-          ├── accessibility.md
-          ├── quality.md
-          ├── performance.md
+    └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…)
+          ├── index.md
           ├── accessibility
           │   ├── 2020-10-15.csv
           │   └── 2020-11-15.csv
@@ -203,7 +213,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 
 ##### Architecture complète (⚠️ Ancienne présente une architecture alternative, elle doit évoluer pour correspondre à tous les types de contenus)
 
-> Attention dans ce cas de figure: ⚠️  Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
+> Attention dans ce cas de figure: ⚠️ Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
 > Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
 
 ```
@@ -213,15 +223,9 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 │   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
 │   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
 │   │    ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   │    │     ├── _index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
-│   │    │     ├── accessibility.md
-│   │    │     ├── quality.md
-│   │    │     └── performance.md
+│   │    │     └── index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
 │   │    └── projet2 // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   │          ├── _index.md
-│   │          ├── accessibility.md
-│   │          ├── quality.md
-│   │          └── performance.md
+│   │          └── index.md
 │   ├── meetings
 │   │    ├── _index.md // liste les réunions
 │   │    └── 2020-10-22-reunion1.md // On indique la date dans le nom de fichier pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
@@ -236,10 +240,8 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ┋   ┋
 ┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
 ┋   ┋
-│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
-│         ├── accessibility.md
-│         ├── quality.md
-│         └── performance.md
+│   └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
+│         └── index.md
 └── static
     ├── projet1
     │    ├── accessibility
