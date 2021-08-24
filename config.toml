@@ -1,7 +1,7 @@
 baseURL = "/"
 paginate = "10"
 
-title = "Oberservatoire Accessibilité"
+title = "Observatoire Accessibilité"
 
 languageCode = "fr-FR"
 defaultContentLanguage = "fr"
