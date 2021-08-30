@@ -102,6 +102,14 @@
       }
     }
   }).observe({type: 'layout-shift', buffered: true});
+
+  webVitals.getLCP(lcp => {
+    const latestEntry = lcp.entries[lcp.entries.length - 1];
+    if (latestEntry?.element?.getAttribute('loading') == 'lazy') {
+      console.warn('Warning: LCP element was lazy loaded', latestEntry);
+    }
+  });
+
 </script>
 <script>
     console.group('-------- Hugo Debug: Theme -------')
