@@ -38,7 +38,7 @@
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
 {{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
 
-<p>← <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>
+{{- if $project -}}<p>← <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
 <h1>Audit Accessibilité</h1>
 
 {{/* Display page content if exists */}}
