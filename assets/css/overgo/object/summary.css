@@ -1,0 +1,49 @@
+/*
+/// Details & Summary
+*/
+
+details {
+  overflow: hidden;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+details:last-of-type {
+  border-bottom: none;
+}
+details summary {
+  display: block;
+  margin-bottom: 0;
+  padding: 20px;
+  font-weight: 600;
+  user-select: none;
+  transition: all 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition-property: margin, background;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+details summary ~ * {
+  padding-left: 30px;
+}
+
+details summary ~ ul {
+  padding-left: 60px;
+}
+
+details summary:last-of-type {
+  border-bottom: none;
+}
+details summary::marker {
+  display: none;
+}
+
+details summary:hover {
+  cursor: pointer;
+  background: var(--background-color-selection,#f6f8fb);
+}
+
+details[open] summary {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

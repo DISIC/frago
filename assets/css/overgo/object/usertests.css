@@ -1,0 +1,26 @@
+/*
+/// Usertests
+*/
+
+.usertests {
+  padding: 0.5em;
+  line-height: 1.2;
+  border: 2px solid var(--color-grey-light);
+  background: var(--color-grey-verylight);
+}
+
+.usertests h3 {
+  margin-bottom: 0.5em;
+}
+
+.usertests .flex div {
+  padding: 0.5em;
+
+  --base-light: 35%;
+}
+
+.usertests-vis div {
+  line-height: 1;
+  min-height: 4em;
+  font-size: var(--smaller);
+}

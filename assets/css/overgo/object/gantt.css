@@ -1,0 +1,152 @@
+/*
+/// Gantt
+*/
+
+.gantt h3 {
+  grid-row: 1;
+  margin: 0;
+  padding: calc(var(--baseline) / 2) 0;
+  text-align: center;
+  color: var(--text-color);
+  background: var(--background-color-body);
+}
+
+.gantt div {
+  margin: auto;
+  padding: 10px 10px;
+  max-width: 90%;
+  font-size: 12px;
+  text-align: center;
+  color: white;
+  border-radius: 20px;
+}
+
+@media only screen and (min-width: 960px) {
+  .gantt {
+    display: grid;
+    grid-template-columns: [sept-start] 1fr [sept-middle] 1fr
+    [sept-end oct-start] 1fr [oct-middle] 1fr
+    [oct-end nov-start] 1fr [nov-middle] 1fr
+    [nov-end dec-start] 1fr [dec-middle] 1fr
+    [dec-end];
+    grid-gap: 10px 0;
+    margin: 0 auto;
+    padding-top: 40px;
+    width: 100%;
+    max-width: 1150px;
+  }
+
+  .gantt div {
+    margin: 0;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  /* Gantt */
+  .gantt span {
+    grid-row: 1 / span 10;
+    border-left: 1px solid var(--text-color);
+  }
+
+  .gantt h3 {
+    border-left: 1px solid var(--text-color);
+  }
+
+  [class$=mid] {
+    grid-row: 1 / span 9;
+  }
+
+  h3.h-sept {
+    grid-column: 1 / span 2;
+  }
+  h3.h-oct {
+    grid-column: 3 / span 2;
+  }
+  h3.h-nov {
+    grid-column: 5 / span 2;
+  }
+  h3.h-dec {
+    grid-column: 7 / span 2;
+  }
+
+  span.d-1 {
+    grid-column: 1;
+  }
+  span.d-1mid {
+    grid-column: 2;
+    border-color: var(--text-color);
+    border-left-style: dashed;
+  }
+  span.d-2 {
+    grid-column: 3;
+  }
+  span.d-2mid {
+    grid-column: 4;
+    border-color: var(--text-color);
+    border-left-style: dashed;
+  }
+  span.d-3 {
+    grid-column: 5;
+  }
+  span.d-3mid {
+    grid-column: 6;
+    border-color: var(--text-color);
+    border-left-style: dashed;
+  }
+  span.d-4 {
+    grid-column: 7;
+  }
+  span.d-4mid {
+    grid-column: 8;
+    border-color: var(--text-color);
+    border-left-style: dashed;
+  }
+  span.d-5 {
+    grid-column: 9;
+  }
+  span.d-5mid {
+    grid-column: 10;
+    border-color: var(--text-color);
+    border-left-style: dashed;
+  }
+  span.d-6 {
+    grid-column: 11;
+  }
+}
+/* specific task styles */
+.t-1 {
+  grid-row: 2;
+  background: #b03532;
+}
+.t-2 {
+  grid-row: 3;
+  background: #33a8a5;
+}
+.t-3 {
+  grid-row: 4;
+  background: #30997a;
+}
+.t-4 {
+  grid-row: 5;
+  background: #6a478f;
+}
+.t-5 {
+  grid-row: 6;
+  background: #da6f2b;
+}
+.t-6 {
+  grid-row: 7;
+  background: #3d8bb1;
+}
+.t-7 {
+  grid-row: 8;
+  background: #e03f3f;
+}
+.t-8 {
+  grid-row: 9;
+  background: #59a627;
+}
+.t-9 {
+  grid-row: 10;
+  background: #4464a1;
+}

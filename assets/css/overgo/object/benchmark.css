@@ -1,0 +1,43 @@
+/*
+/// Benchmark
+*/
+
+.benchmark {
+  margin: calc(var(--baseline) * 2) auto 0;
+}
+
+.benchmark:empty {
+  display: none;
+}
+
+.benchmark > * {
+  position: relative;
+  flex-direction: column;
+  padding-bottom: 2em;
+  border: 1px solid var(--color-grey);
+  background: #fff;
+}
+
+.benchmark-name {
+  position: absolute;
+  bottom: 0;
+  display: grid;
+  align-content: center;
+  padding: 0 0.5em;
+  width: 100%;
+  line-height: 1;
+  min-height: 3em;
+  font-size: var(--smaller);
+  color: #fff;
+  background: rgba(0,0,0,0.8);
+}
+
+.benchmark figure {
+  padding: var(--baseline);
+  text-align: center;
+  background: #fff;
+}
+
+.benchmark img {
+  margin: auto;
+}
