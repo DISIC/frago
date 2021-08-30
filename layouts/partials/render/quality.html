@@ -1,4 +1,5 @@
 
+{{/* Determine values from quality files */}}
 {{- $pathlen   := len (split (path.Dir .context.Path) "/") -}}
 {{- $auditfile := .auditfile -}}
 {{- if (ne $auditfile "/false") -}}

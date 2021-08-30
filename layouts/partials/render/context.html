@@ -1,3 +1,4 @@
+{{/* Determine value of the audits context depends of his location */}}
 {{- $context    := .context -}}
 {{- $project    := .project -}}
 {{- $rootpath   := (partialCached "render/rootpath" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") -}}

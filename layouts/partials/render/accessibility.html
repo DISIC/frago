@@ -1,3 +1,4 @@
+{{/* Determine values from accessibility files */}}
 {{- $scorekey := sha1 (string now) -}}
 {{- if (ne .auditfile "/false") -}}
 {{- $auditfile        := (getCSV "," .auditfile) -}}
