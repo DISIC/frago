@@ -1,17 +1,21 @@
+{{/* Return value for loading externals projects */}}
 {{- $context    := .context   -}}
 {{- $project    := .project   -}}
 {{- $auditfile  := .auditfile -}}
 {{- $results    := partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" $auditfile) $auditfile -}}
 {{- $.context.Scratch.Delete "compliance" -}}
 
+{{/* declare all the variables */}}
 {{- $.context.Scratch.SetInMap "compliance" "0"       $results.scores.compliance -}}
 {{- $.context.Scratch.Set      "criteriatotal"        $results.scores.total -}}
 {{- $.context.Scratch.Set      "compliancetotal"      (index ($.context.Scratch.Get "compliance") "0") -}}
 {{- $.context.Scratch.Set      "percentage"           (index ($.context.Scratch.Get "compliance") "0") -}}
 
+{{/* Id externals projects or subprojects are called */}}
 {{- with .context.Params.projects -}}
   {{- range $id, $value := . -}}
     {{- $name := .name -}}
+    {{/* If subproject */}}
     {{- with .folder -}}
       {{- $.context.Scratch.SetInMap "name" (string (add $id 1)) $name -}}
       {{- $project := replace (printf "%s/%s" (path.Dir $context.Path) .) "audits" "" -}}

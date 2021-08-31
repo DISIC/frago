@@ -1,3 +1,4 @@
+{{/* Return the type of audit file :: if with "Thématiques" "Critères" or "Thématiques" "Critères" "Tests" */}}
 {{- $auditfile := .auditfile -}}
 {{- with $auditfile -}}
 {{- $.context.Scratch.Set "methodology"          (len (intersect (index . 0) (slice "Thématiques" "Critères" "Tests"))) -}}

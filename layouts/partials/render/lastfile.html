@@ -15,12 +15,14 @@
 {{- $.context.Scratch.Delete "auditname-context" -}}
 {{- $.context.Scratch.Delete "pathdatafile" -}}
 
+{{/* If a single data file is called in the front matter or not :: could be remove */}}
 {{- if .datafilename -}}
   {{- $.context.Scratch.Set "pathdatafile" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) -}}
 {{- else -}}
   {{- $.context.Scratch.Set "pathdatafile" ((replace ($path) (printf "%s/" .type) (printf "%s" .type))) -}}
 {{- end -}}
 
+{{/* List all the files in the folder */}}
 {{- if (fileExists (printf "%s.%s" ($.context.Scratch.Get "pathdatafile") $ext)) -}}
   {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s.%s" ($.context.Scratch.Get "pathdatafile") $ext) -}}
   {{- $.context.Scratch.Set "auditname-lastfile" (now.Format "2006-01-02") -}}
@@ -28,6 +30,7 @@
   {{- $.context.Scratch.SetInMap "auditname-all-lastfile" "999" ($.context.Scratch.Get "auditname-lastfile") -}}
 {{- end -}}
 
+{{/* List all the files in the folder */}}
 {{- if (fileExists ($.context.Scratch.Get "pathdatafile")) -}}
   {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdatafile")) -}}
   {{- with ($.context.Scratch.Get "dir-lastfile") -}}
