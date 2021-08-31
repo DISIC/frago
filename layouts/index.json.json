@@ -50,9 +50,6 @@
         {{- if (partialCached "render/accessibility" (dict "context" $context "auditfile" $accessibility) $accessibility) -}}
           {{- range $idx, $value := ((index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path")) -}}
               {{- $date := index (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) "date" -}}
-              {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-context" -}}
-                  {{- $.Scratch.Set "guideline" (index (readFile . | transform.Unmarshal) $date) -}}
-              {{- end -}}
               {{- $context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) -}}
               {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
           {{- end -}}

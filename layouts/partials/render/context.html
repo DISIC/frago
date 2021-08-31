@@ -6,37 +6,47 @@
 {{- $path       := (replace $path "/audits/audits/" "/audits/") -}}
 {{- $context.Scratch.Set "date" "" -}}
 
+{{/* If context.yml exist in audit path */}}
 {{- if fileExists $path -}}
   {{- range $id, $value := readDir $path -}}
     {{- if eq .Name "context.yml" -}}
-      {{- $file := ((readFile (printf "%s/%s/accessibility/%s" $rootpath $project .Name) | transform.Unmarshal)) -}}
-      {{- range $date, $value := $file.audits -}}
-      {{- $context.Scratch.SetInMap "context" $date (dict "contacts" $file.contacts "website" $file.website "audit" (index $file.audits $date)) -}}
+      {{- $file := readFile (printf "%s/%s/accessibility/%s" $rootpath $project .Name) -}}
+      {{/* If file empty */}}
+      {{- if $file -}}
+        {{- $filecontent := $file | transform.Unmarshal -}}
+        {{/* Range file content */}}
+        {{- range $date, $value := $filecontent.audits -}}
+          {{- $context.Scratch.SetInMap "context" $date (dict "contacts" $filecontent.contacts "website" $filecontent.website "audit" (index $filecontent.audits $date) "path" $path) -}}
+        {{- end -}}
+      {{- else -}}
+        {{- warnf "Context file %s is empty" (printf "%s/%s/accessibility/%s" $rootpath $project .Name) -}}
       {{- end -}}
     {{- else -}}
     {{- $context.Scratch.Set "date" (replace .Name (path.Ext .Name) "") -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
+{{/* If context.yml doesn’t exist in audit path try to find it in another location */}}
 {{- if not ($context.Scratch.Get "context") -}}
 {{/* In a front matter of the current page */}}
-{{- with $context.GetPage (printf "/audits/%s/_index.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
-{{- with $context.GetPage (printf "/audits/%s/index.md" $project)  -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
-{{- with $context.GetPage (printf "/audits/index.md" $project)  -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/%s/_index.md" $project)        -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/_index.md" $project))        }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/%s/index.md" $project)         -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/index.md" $project))         }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/index.md" $project)            -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/index.md" $project))            }}{{- end -}}
 {{/* In a file name accessibility.md presents i the project folder  */}}
-{{- with $context.GetPage (printf "/audits/%s/accessibility.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
-{{- with $context.GetPage (printf "/audits/accessibility.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit)) }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/%s/accessibility.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/accessibility.md" $project)) }}{{- end -}}
+{{- with $context.GetPage (printf "/audits/accessibility.md" $project)    -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "date") (dict "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/accessibility.md" $project))    }}{{- end -}}
 {{- end -}}
 {{ if not ($.context.Scratch.Get "context") }}
+{{- warnf "Context is not declared for the project %s see the documentation" $project -}}
 {{- else -}}
 {{ if not (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).contacts }}
-{{- warnf "%s %s"  "Contacts informations are missing or misformed in" $project -}}
+{{- warnf "%s %s"  "Contacts informations are missing or misformed in" (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).path -}}
 {{ end }}
 {{ if not (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).website }}
-{{- warnf "%s %s"  "Website informations are missing or misformed in" $project -}}
+{{- warnf "%s %s"  "Website informations are missing or misformed in" (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).path -}}
 {{ end }}
 {{ if not (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).audit }}
-{{- warnf "%s %s"  "Audit informations are missing or misformed in" $project -}}
+{{- warnf "%s %s"  "Audit informations are missing or misformed in" (index ($.context.Scratch.Get "context") ($context.Scratch.Get "date")).path -}}
 {{ end }}
 {{ end }}
 {{- return ($.context.Scratch.Get "context") -}}

@@ -6,19 +6,6 @@
 
 {{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $projectcontext) $projectcontext) -}}
 
-{{/* Determine the version of the audit */}}
-{{- $context.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $context.Scratch.Set "guidelineversion" "4.1" -}}
-{{- with ($context.Scratch.Get "context").guidelines -}}
-  {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
-{{- end -}}
-
-{{/* Load the criteria file for the good audit version */}}
-{{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
-{{/* Load the glossary file for the good audit version */}}
-{{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.context.Scratch.Get "guidelinename") ($.context.Scratch.Get "guidelineversion")) -}}
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}
 
@@ -37,6 +24,19 @@
 {{/* Calculate accessibility compliance */}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
 {{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
+
+{{/* Determine the version of the audit form the context declaration */}}
+{{- $context.Scratch.Set "guidelinename" "rgaa" -}}
+{{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- with (index ($context.Scratch.Get "context") ((index ($.context.Scratch.Get "audits") "auditfile-name"))).audit.guidelines -}}
+  {{- $guideline := (replace (. | urlize) "-" "") -}}
+  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+{{- end -}}
+{{/* Load the criteria file for the good audit version */}}
+{{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+{{/* Load the glossary file for the good audit version */}}
+{{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.context.Scratch.Get "guidelinename") ($.context.Scratch.Get "guidelineversion")) -}}
 
 {{- if $project -}}<p>← <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
 <h1>Audit Accessibilité</h1>
@@ -81,7 +81,8 @@
 {{- end -}}
 
 {{/* Display audit context */}}
-{{- with (index ($.context.Scratch.Get "context") (($.context.Scratch.Get "date").Format "2006-01-02")).audit -}}
+{{- with ($.context.Scratch.Get "context") -}}
+{{- with (index . (($.context.Scratch.Get "date").Format "2006-01-02")).audit -}}
 <h2>Contexte</h2>
 <p>
   {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
@@ -89,6 +90,9 @@
   {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
   {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
 </p>
+{{- end -}}
+{{- else -}}
+{{- warnf "Context is missing in %s" $project -}}
 {{- end -}}
 <hr>
 {{- end -}}
