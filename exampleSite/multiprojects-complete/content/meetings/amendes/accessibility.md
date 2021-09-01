@@ -7,11 +7,12 @@ phases:
   - Phase 1
 accessibility:
   website: "amendes.gouv.fr"
-  guidelines: "RGAA 4.0"
-  condition: "Auto-évaluation"
-  technologies: ["HTML", "CSS", "JS", "PDF"]
-  tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
-  environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
+  audit:
+    guidelines: "RGAA 4.0"
+    condition: "Auto-évaluation"
+    technologies: ["HTML", "CSS", "JS", "PDF"]
+    tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+    environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
   contact:
     email: stap-amendes@dgfip.finances.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12

@@ -9,10 +9,12 @@ tags:
 phases:
   - Phase 3
 accessibility:
-  guidelines: "RGAA 4.0"
-  technologies: ["HTML", "CSS"]
-  tools: ["Wave", "AXE", "MOZ DevTools","Usability Hike"]
-  environment: ["MacOS", "Chrome", "ChromeVox"]
+  audit:
+    guidelines: "RGAA 4.0"
+    condition: "Auto-évaluation"
+    technologies: ["HTML", "CSS", "JS", "PDF"]
+    tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+    environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
 ---
 
 

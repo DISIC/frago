@@ -368,21 +368,46 @@ L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs a
 
 Éditer : `static/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audits/nomdelademarche/accessibility.md`.
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audits/nomdelademarche/index.md` ou de `content/audits/nomdelademarche/accessibility.md`.
 
 ```yaml
 ---
 type: accessibility // appel le gabarit accessibility :: static/nomdelademarche/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
 accessibility:
   website: "amendes.gouv.fr"
-  guidelines: "RGAA 4.0"
-  condition: "Auto-évaluation" // ou audit externe avec le nom de la structure qui a procédé à l’audit
-  technologies: ["HTML", "CSS", "JS"]
-  tools: ["Wave", "AXE", "MOZ DevTools"]
-  environment: ["MacOS", "Chrome", "ChromeVox"]
+  audit:
+    guidelines: "RGAA 4.0"
+    condition: "Auto-évaluation"
+    technologies: ["HTML", "CSS", "JS", "PDF"]
+    tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+    environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
   contact:
     email: stap-amendes@dgfip.finances.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12
+---
+```
+
+Si on veut une déclaration de contexte propre à des audits en particulier c'est-à-dire par date, il est possible de créer une fichier `content/audits/nomdelademarche/accessibility/context.yml`.
+
+```yaml
+---
+website: "amendes.gouv.fr"
+contacts:
+    email: stap-amendes@dgfip.finances.gouv.fr
+    address : 139 rue de Bercy, 75572 Paris, Cedex 12
+audits:
+    2021-03-05: // bien respecter la date de chaque fichier csv d‘audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
+      guidelines: "RGAA 4.1"
+      condition: "Auto-évaluation"
+      technologies: ["HTML", "CSS", "JS", "PDF"]
+      tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+      environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
+    2020-10-12:
+      guidelines: "RGAA 4.0"
+      condition: "Auto-évaluation"
+      technologies: ["HTML", "CSS", "JS", "PDF"]
+      tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+      environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
 ---
 ```
 
