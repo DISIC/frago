@@ -171,9 +171,9 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 ├── config.toml
 └── content
     ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
-    ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
+    ├── audits // Type de contenu audits, les projets doivent être dans un répertoire avec le nom audits
     │     ├── projet1
-    │     │      ├── index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
+    │     │      ├── index.md // ⚠️  Page intermédiaire qui liste les sous rapports (accessibilité, performance…)
     │     │      ├── accessibility
     │     │      │   ├── 2020-10-15.csv
     │     │      │   └── 2020-11-15.csv
