@@ -29,13 +29,13 @@
 {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
 {{- with (index ($context.Scratch.Get "context") ((index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
-{{- .audit -}}
-{{- .audit.guidelines -}}
-  {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
-{{- end -}}
-{{- end -}}
+  {{- with .audit -}}
+    {{- with .audit.guidelines -}}
+      {{- $guideline := (replace (. | urlize) "-" "") -}}
+      {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+      {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 {{/* Load the criteria file for the good audit version */}}
 {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
