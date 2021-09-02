@@ -65,7 +65,7 @@
 
   {{/* START Test if audit file exists */}}
   {{- if and ($.context.Scratch.Get "auditfile-csv") (ne ($.context.Scratch.Get "scores").isempty 0) -}}
-sss
+
     {{/* Find if the audit file is by criteria or by tests */}}
     {{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context ($.context.Scratch.Get "auditfile-csv")) "methodology") -}}
     {{/* Create an array with all pages */}}
