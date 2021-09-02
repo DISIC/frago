@@ -10,9 +10,9 @@
 
 {{- $.context.Scratch.Set    "auditpath-lastfile" "/false" -}}
 {{- $.context.Scratch.Delete "auditname-lastfile" -}}
+{{- $.context.Scratch.Delete "auditname-context" -}}
 {{- $.context.Scratch.Delete "auditpath-all-lastfile" -}}
 {{- $.context.Scratch.Delete "auditname-all-lastfile" -}}
-{{- $.context.Scratch.Delete "auditname-context" -}}
 {{- $.context.Scratch.Delete "pathdatafile" -}}
 
 {{/* If a single data file is called in the front matter or not :: could be remove */}}
@@ -40,13 +40,15 @@
         {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 1)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) "//" "/") -}}
         {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string (add $key 1)) (replace .Name (path.Ext .Name) "") -}}
       {{- end -}}
+      {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($.context.Scratch.Get "auditpath-all-lastfile"))) ""))) -}}
+    {{- $.context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($.context.Scratch.Get "auditname-all-lastfile"))) ""))) -}}
     {{- else -}}
     {{- $.context.Scratch.Set "auditname-context" (printf "%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) -}}
     {{- end -}}
-    {{- end -}}
 
-    {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($.context.Scratch.Get "auditpath-all-lastfile"))) ""))) -}}
-    {{- $.context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($.context.Scratch.Get "auditname-all-lastfile"))) ""))) -}}
+    {{- end -}}
+    {{- else -}}
+{{- warnf "%s is empty" ($.context.Scratch.Get "pathdatafile") -}}
   {{- end -}}
 {{- end -}}
 
