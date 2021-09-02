@@ -82,6 +82,7 @@
   {{- else -}}
     <p>L’audit de conformité est en cours.</p>
   {{- end -}}
+  {{ ($.Scratch.Get "accessibility-all-name") }}
   {{/* Display accessibility in time */}}
   {{- with ($.Scratch.Get "accessibility-all-path") -}}
     {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
@@ -148,7 +149,7 @@
               },
               {
                 name: "Chargement",
-                values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "context" $context "auditfile" .) . }}{{ if ne $id "1" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
+                values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "context" $context "auditfile" .) . }}{{ if ne $id "0" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
                 chartType: 'bar'
               }
             ],

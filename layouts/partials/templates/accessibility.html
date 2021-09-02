@@ -27,9 +27,10 @@
 
   {{/* START Test if the csv file has a good name : YYYY-MM-DD.csv */}}
   {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (index ($.context.Scratch.Get "audits") "auditfile-name")))) -}}
-  {{- $.context.Scratch.Set "date"   (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
+    {{- $.context.Scratch.Set "date" (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
   {{- else -}}
-  {{- warnf "The file %s.csv has a bad name, it should be a date YYYY-MM-DD" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
+    {{- $.context.Scratch.Set "date" now -}}
+    {{- warnf "The file %s has a bad name, it should be a date YYYY-MM-DD.csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
   {{- end -}}
   {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
 
