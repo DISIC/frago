@@ -24,7 +24,7 @@
   {{- $.context.Scratch.Set "linksingle" .RelPermalink -}}
 {{- end -}}
 </ul>
-<a href="{{ $.Site.BaseURL | default "/" }}{{ .section }}/{{ if gt (len (split ($.context.Scratch.Get "linksingle") "/")) 4 }}{{ index (last 1 (split (delimit (split .context.Permalink "/") "," "") ",")) 0 }}/{{ end }}" class="btn secondary">Voir toutes les {{ with .context.Site.GetPage .section }}{{ lower .Title }}{{ end }}</a>
+<a href="{{ site.BaseURL | default "/" }}{{ .section }}/{{ if gt (len (split ($.context.Scratch.Get "linksingle") "/")) 4 }}{{ index (last 1 (split (delimit (split .context.Permalink "/") "," "") ",")) 0 }}/{{ end }}" class="btn secondary">Voir toutes les {{ with .context.Site.GetPage .section }}{{ lower .Title }}{{ end }}</a>
 </div>
 </section>
 {{- end -}}
