@@ -48,6 +48,8 @@
       {{- end -}}
     {{- end -}}
   {{- end -}}
+  {{- else -}}
+  {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
   {{- end -}}
   {{- end -}}
   {{/* END Determine the version of the audit form the context declaration */}}

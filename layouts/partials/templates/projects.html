@@ -82,7 +82,7 @@
   {{- else -}}
     <p>L’audit de conformité est en cours.</p>
   {{- end -}}
-  {{ ($.Scratch.Get "accessibility-all-name") }}
+
   {{/* Display accessibility in time */}}
   {{- with ($.Scratch.Get "accessibility-all-path") -}}
     {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
