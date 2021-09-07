@@ -1,16 +1,31 @@
-{{- $audit := .audits -}}
-{{- $context := .context -}}
-{{- $project := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $audit    := .audits -}}
+{{- $context  := .context -}}
+{{- $project  := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{/* Determine the version of the audit */}}
-{{- $context.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $context.Scratch.Set "guidelineversion" "4.1" -}}
-{{- with ($context.Scratch.Get "context").guidelines -}}
-  {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
-{{- end -}}
+{{/* START Determine the version of the audit form the context declaration */}}
+  {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
+  {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+  {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+  {{- with ($context.Scratch.Get "context") -}}
+  {{- with (index ($.context.Scratch.Get "audits") "auditfile-name") -}}
+  {{- with (index ($context.Scratch.Get "context") .) -}}
+    {{- with .audit -}}
+      {{- with .audit.guidelines -}}
+        {{- $guideline := (replace (. | urlize) "-" "") -}}
+        {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+        {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- else -}}
+    {{- if ne $context.Path "audits/_index.md" -}}
+      {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
+    {{- end -}}
+  {{- end -}}
+  {{- end -}}
+{{/* END Determine the version of the audit form the context declaration */}}
+
 {{/* Load the criteria file for the good audit version */}}
 {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
 

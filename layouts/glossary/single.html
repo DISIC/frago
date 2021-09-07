@@ -1,9 +1,9 @@
 {{- define "main" -}}
-{{- $patharray :=  split .Path "/" -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $.Scratch.Set "guidelineversion" "4.1" -}}
 {{- if ge ($patharray) 2 -}}
-  {{ $.Scratch.Set "guideline" (index $patharray 0) }}
+  {{- $.Scratch.Set "guideline" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}

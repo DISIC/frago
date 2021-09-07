@@ -4,8 +4,6 @@
 {{- $projectcontext := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{- $.context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $projectcontext) $projectcontext) -}}
-
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}
 
@@ -37,6 +35,7 @@
   {{/* START Determine the version of the audit form the context declaration */}}
   {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
   {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+  {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $projectcontext) $projectcontext) -}}
   {{- with ($context.Scratch.Get "context") -}}
   {{- with (index ($.context.Scratch.Get "audits") "auditfile-name") -}}
   {{- with (index ($context.Scratch.Get "context") .) -}}
@@ -49,7 +48,9 @@
     {{- end -}}
   {{- end -}}
   {{- else -}}
-  {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
+    {{- if ne $context.Path "audits/_index.md" -}}
+      {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
+    {{- end -}}
   {{- end -}}
   {{- end -}}
   {{/* END Determine the version of the audit form the context declaration */}}
