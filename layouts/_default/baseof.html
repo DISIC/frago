@@ -101,12 +101,13 @@
     {{- end -}}
     </div>
     {{- end -}}
+    {{- $baseURL := $.Site.BaseURL | default "/" -}}
     <div class="wrapper flex align-items-center padding-baseline">
       <div class="flex align-items-center">
-        <a href="/" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}" rel="home" class="site-logo">
+        <a href="{{ $baseURL }}" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}" rel="home" class="site-logo">
           <picture>
-            <source srcset="{{ $.Site.BaseURL | default "/" | default "/" }}assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
-            <img src="{{ $.Site.BaseURL | default "/" }}assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}">
+            <source srcset="{{ $baseURL | default "/" | default "/" }}assets/images/logodark.svg" media="(prefers-color-scheme: dark)">
+            <img src="{{ $baseURL }}assets/images/logo.svg" width="150" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}">
           </picture>
           <span class="demarches-titlebar-sitename"></span>
         </a>
