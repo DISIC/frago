@@ -39,7 +39,7 @@
     {{- $slug      := cond (eq (len (split (index ($.Scratch.Get "jsonslug") $slug).accessibility "/")) 3) (urlize $.Site.Title) $slug -}}
     {{- if $context.GetPage $path -}}
     {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
-    {{- $.Scratch.Add "pages" (dict "sitename" $.Site.Title "siteslug" (urlize $.Site.Title) "slug" $slug) -}}
+    {{- $.Scratch.Add "pages" (dict "sitename" $.Site.Title "siteslug" ($.Site.Title | replaceRE "'" "-" | replaceRE "[èéêë]" "e" | replaceRE "[àáâãäå]" "a" | replaceRE "[ìíîï]" "i" | replaceRE "[òóôõö]" "o" | replaceRE "[ùúûü]" "u" | replaceRE "[æ]" "ae" | replaceRE "[/œ]" "oe" | anchorize) "slug" $slug) -}}
     {{- $.Scratch.Delete "audits" }}
     {{- range $type, $path := $value -}}
     {{- $.Scratch.Delete $type }}
