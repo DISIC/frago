@@ -5,13 +5,13 @@
   {{- range (readDir "/static/images/personas") -}}
     {{- if eq $name (replace .Name ".png" "") -}}
     <figure class="rounded">
-      <img src="{{ $.Site.BaseURL | default "/" }}images/personas/{{ .Name }}">
+      <img src="{{ site.BaseURL | default "/" }}images/personas/{{ .Name }}">
     </figure>
     {{- end -}}
   {{- end -}}
   {{- end -}}
   {{- $personaspath := printf "/personas/%s/%s" .project $name -}}
-  <h3 class="text-center">{{ with .pages.GetPage $personaspath }}<a href="{{ $.Site.BaseURL | default "/" }}{{ $personaspath }}">{{ end }}{{ .context.name }}{{ with .pages.GetPage $personaspath }}</a>{{ end }}<br><small>{{ .context.job }}</small></h3>
+  <h3 class="text-center">{{ with .pages.GetPage $personaspath }}<a href="{{ site.BaseURL | default "/" }}{{ $personaspath }}">{{ end }}{{ .context.name }}{{ with .pages.GetPage $personaspath }}</a>{{ end }}<br><small>{{ .context.job }}</small></h3>
   </div>
   <div>
     <p>

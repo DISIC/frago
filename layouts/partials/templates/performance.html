@@ -9,7 +9,7 @@
 {{- $.context.Scratch.Set "lastfile" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 
 <article class="wrapper narrow">
-  {{- if $project -}}<p>← <a href="{{ $.Site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
+  {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
   <h1>{{ with .Title }}{{ . }}{{ else }}Audit Performance{{ end }} <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
   {{- partial "elements/content.html" .context.Content -}}
   {{/* Range performance file */}}
