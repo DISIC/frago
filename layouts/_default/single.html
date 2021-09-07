@@ -7,8 +7,10 @@
   <h2>Présents</h2>
   <ul>
   {{- range . -}}
-    {{- range $id, $p := where $.Site.Data.directory "name" . -}}
+    {{- with $.Site.Data.directory -}}
+    {{- range $id, $p := where . "name" . -}}
       {{ if . }}<li><a href="{{ $.Site.BaseURL | default "/" }}directory#{{ .name | urlize }}">{{ .name }}{{ if . }}</a>{{ end }}{{ if .ministry }} - {{ .ministry }}{{ end }}{{ if not (eq .job "") }} - {{ .job }}{{ end }}</li>{{ end }}
+    {{- end -}}
     {{- end -}}
   {{- end -}}
   </ul>
