@@ -24,12 +24,12 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
     ├── _index.md // Page d’accueil
     └── audits
          ├── projet1
-         │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
+         │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
          │     └── accessibility
          │          ├── 2020-10-15.csv
          │          └── 2020-11-15.csv
          └── projet2
-                ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter une entête
+                ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
                 └── accessibility
                     ├── 2020-10-15.csv
                     └── 2020-11-15.csv
@@ -83,7 +83,7 @@ hugo --buildFuture --gc --minify
 ```
 
   * `--buildFuture` permet de publier des éléments avec une date future dans la partie [phase](#phases) (optionnel).
-  * `--gc` permet de remettre à jour le répertoire de génération du code (au cas ou du code d’une précédente génération serait encore présent).
+  * `--gc` permet de remettre à jour le répertoire de génération du code (au cas où du code d’une précédente génération serait encore présent).
   * `--minify` permet de compresser le code `HTML` en ligne.
 
 ##### Héberger avec Github
@@ -102,7 +102,7 @@ Github utilise son système interne Gitlab CI. Un exemple de fichier de configur
 
 #### Accessibilité
 
-Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests,… puis le titre de chaque page).
+Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests… puis le titre de chaque page).
 
 Le titre d’une page peut être suivi de l’URL de la page ; titre et URL séparés par le caractère `|`.
 
@@ -123,14 +123,14 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
   * [Grille tests RGAA 4.0 vierge](/static/grille-tests-rgaa4.0.csv)
   * [Grille tests RGAA 4.1 vierge](/static/grille-tests-rgaa4.1.csv)
 
-Dans chacun des ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), intermédiaire (50 critères), complémentaire (81 critères).  
+Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), intermédiaire (50 critères), complémentaire (81 critères).  
 Exemple, Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
 
 ### API
 
-La configuration de l’API est contenu dans le fichier `config.toml` du thème. Il existe une configuration par défaut qui peut-être surchargée en fonction de la structure de fichier. Pour la structure simplifié, il n’y a rien à ajouter.
+La configuration de l’API est contenue dans le fichier `config.toml` du thème. Il existe une configuration par défaut qui peut-être surchargée en fonction de la structure de fichier. Pour la structure simplifiée, il n’y a rien à ajouter.
 
-L‘idée est d’éviter de créer des pages uniquement pour avoir une URL disponible lors du build du site (seuls défauts, une export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
+L’idée est d’éviter de créer des pages uniquement pour avoir une URL disponible lors du build du site (seuls défauts, un export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
 
 Cette API permet d’obtenir des fichiers `json` de type :
 
@@ -220,7 +220,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
 .
 ├── config.toml
 ├── content
-│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
+│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l’entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
 │   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
 │   │    ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
 │   │    │     └── index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
@@ -284,7 +284,7 @@ Les différents types de contenus servent à la publication d’audits, l’anal
          │    │    ├── pages.fivepointpayments.com-navigation-step.png
          │    │    └── finepayment.saskatchewan.ca-navigation-step.png
          │    └── quality
-         │         └── 2020-10-16 // Les titre formant les noms d‘images doivent correspondre à des termes existant dans le fichier `.yml`
+         │         └── 2020-10-16 // Les titres formant les noms d’images doivent correspondre à des termes existant dans le fichier `.yml`
          │             ├── titrepage-[before ou after].png
          │             ├── titrepage-titrebloc-titreerreur-[before ou after].png
          │             ├── accueil-before.png
@@ -320,7 +320,7 @@ Hugo permet de surcharger les fichiers présents dans le thème, la condition es
  * Ses couleurs
  *…
 
-Il suffit de créer tout ces fichiers dans le répertoire `static`. Le thème appelle automatiquement les polices contenus dans le répertoire `static/assets/fonts` (à la place de la police Marianne).
+Il suffit de créer tous ces fichiers dans le répertoire `static`. Le thème appelle automatiquement les polices contenues dans le répertoire `static/assets/fonts` (à la place de la police Marianne).
 
 ```
 static
@@ -348,13 +348,13 @@ static
 
 #### Accueil
 
-La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, et que la type de la page d'accueil est `type: "projects"`, alors la page affiche la page de résumé du projet.
+La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, et que le type de la page d’accueil est `type: "projects"`, alors la page affiche la page de résumé du projet.
 
 ![Accueil](/images/accueil.png)
 
 #### Projets
 
-La page de projets doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans dans `content/meetings` et `content/actions`).
+La page de projets doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans `content/meetings` et `content/actions`).
 
 ![Projets](/images/projets.png)
 
@@ -387,7 +387,7 @@ accessibility:
 ---
 ```
 
-Si on veut une déclaration de contexte propre à des audits en particulier c'est-à-dire par date, il est possible de créer une fichier `content/audits/nomdelademarche/accessibility/context.yml`.
+Si on veut une déclaration de contexte propre à des audits en particulier c’est-à-dire par date, il est possible de créer un fichier `content/audits/nomdelademarche/accessibility/context.yml`.
 
 ```yaml
 ---
@@ -396,7 +396,7 @@ contacts:
     email: stap-amendes@dgfip.finances.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12
 audits:
-    2021-03-05: // bien respecter la date de chaque fichier csv d‘audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
+    2021-03-05: // bien respecter la date de chaque fichier csv d’audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
       guidelines: "RGAA 4.1"
       condition: "Auto-évaluation"
       technologies: ["HTML", "CSS", "JS", "PDF"]
@@ -434,11 +434,11 @@ Lister les personnes contactées pendant la durée du défi de mise en conformit
 
 Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *usertests*, il existe une mise en forme pour l’analyse rapide de ces résultats.
 
-Fonctionne à partir d'une JSON, mais pourrait marcher avec du CSV directement (Ici, penser à convertir le CSV en JSON).
+Fonctionne à partir d’un JSON, mais pourrait marcher avec du CSV directement (Ici, penser à convertir le CSV en JSON).
 
 Éditer : `static/nomdelademarche/usertests/nometude.json` (à faire évoluer)
 
-Ajouter à l'entête du fichier de contenu :
+Ajouter à l’entête du fichier de contenu :
 
 ```yaml
 ---
@@ -451,7 +451,7 @@ datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/no
 
 #### Performance
 
-L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n'existe pas encore de gabarits d'analyse graphique dans le temps.
+L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n’existe pas encore de gabarits d’analyse graphique dans le temps.
 
 
 Éditer : `static/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
@@ -462,7 +462,7 @@ L’audit de performance apporte une complémentarité à l’audit d’accessib
 
 Définir des personas et les afficher sur une même page pour les partager à l’équipe projet. On peut sélectionner les profils retenus pour les tests.
 
-> Hugo nécessite de créer les pages correspondantes pour chaque personas ; si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
+> Hugo nécessite de créer les pages correspondantes pour chaque persona ; si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
 
 Éditer : `static/nomdelademarche/personas.json`
 
@@ -470,7 +470,7 @@ Définir des personas et les afficher sur une même page pour les partager à l�
 
 #### Parcours
 
-Ajouter un parcours type par personas pour fournir une base visuelle à l’équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
+Ajouter un parcours type par persona pour fournir une base visuelle à l’équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
 
 Éditer : `static/nomdelademarche/personas.json`
 
@@ -570,7 +570,7 @@ Afficher les parcours sur la page de son choix en fonction du projet de son choi
 {{< parcours project="amendes" >}} {{< /parcours >}}
 ```
 
-## Utiliser ce module comme thème d'un projet
+## Utiliser ce module comme thème d’un projet
 
 Site officiel :
 https://gohugo.io/hugo-modules/use-modules/#use-a-module-for-a-theme
@@ -590,13 +590,13 @@ par exemple :
 3. C’est installé ?
   - En mode dev, lancer `hugo server`. Mais préférer : `HUGO_ENV=production hugo server --buildFuture`, pour le mode production.
   - Mettre à jour le thème, lancer: `hugo mod get -u github.com/disic/frago/` ou juste `hugo mod get -u`.
-  - L’appel de thème n'est pas possible avec Netlify, il est nécessaire d’indiquer cette commande dans l’interface `git submodule add https://github.com/disic/frago.git/ themes/frago -f && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics`
+  - L’appel de thème n’est pas possible avec Netlify, il est nécessaire d’indiquer cette commande dans l’interface `git submodule add https://github.com/disic/frago.git/ themes/frago -f && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics`
 
 ## Licence
 
 Le code source de ce dépôt est publié sous licence [MIT](https://opensource.org/licenses/mit-license.php).
 
-La marque d'État est à usage exclusif des acteurs de la sphère étatique. En particulier, la typographie Marianne© est protégée par le droit d'auteur.  
+La marque d’État est à usage exclusif des acteurs de la sphère étatique. En particulier, la typographie Marianne© est protégée par le droit d’auteur.  
 Lire [les explications](https://www.gouvernement.fr/charte/charte-graphique-les-fondamentaux/la-typographie) sur le site de la marque d’État.
 
 Le thème Frago utilise cette liste de bibliothèques :
