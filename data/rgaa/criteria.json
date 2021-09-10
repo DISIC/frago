@@ -81,13 +81,13 @@
       "criteria": [{
           "criterium": {
             "number": 1,
-            "title": "Pour certaines pages web, l’[information](#information-donnee-par-la-couleur) est donné uniquement par la couleur."
+            "title": "Pour certaines pages web, l’[information](#information-donnee-par-la-couleur) est donnée uniquement par la couleur."
           }
         },
         {
           "criterium": {
             "number": 2,
-            "title": "Pour certaines pages web, le [contraste](#contraste) entre la couleur du texte et la couleur de son arrière-plan n'est pas suffisamment élevé."
+            "title": "Pour certaines pages web, le [contraste](#contraste) entre la couleur du texte et la couleur de son arrière-plan n’est pas suffisamment élevé."
           }
         },
         {
@@ -116,7 +116,7 @@
         {
           "criterium": {
             "number": 3,
-            "title": "Certains [médias temporels](#media-temporel-type-son-video-et-synchronise) synchronisés pré-enregistrés n‘ont pas de [sous-titres synchronisés](#sous-titres-synchronises-objet-multimedia)."
+            "title": "Certains [médias temporels](#media-temporel-type-son-video-et-synchronise) synchronisés pré-enregistrés n’ont pas de [sous-titres synchronisés](#sous-titres-synchronises-objet-multimedia)."
           }
         },
         {
@@ -146,13 +146,13 @@
         {
           "criterium": {
             "number": 8,
-            "title": "Certains [médias non temporel](#media-non-temporel) n’ont pas d’alternative."
+            "title": "Certains [médias non temporels](#media-non-temporel) n’ont pas d’alternative."
           }
         },
         {
           "criterium": {
             "number": 9,
-            "title": "Certains [médias non temporel](#media-non-temporel) ayant une alternative, ont une alternative non pertinente."
+            "title": "Certains [médias non temporels](#media-non-temporel) ayant une alternative, ont une alternative non pertinente."
           }
         },
         {
@@ -170,7 +170,7 @@
         {
           "criterium": {
             "number": 12,
-            "title": "Certains [médias non temporel](#media-non-temporel) ne sont pas [contrôlables par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
+            "title": "Certains [médias non temporels](#media-non-temporel) ne sont pas [contrôlables par le clavier et tout dispositif de pointage](#accessible-et-activable-par-le-clavier-et-tout-dispositif-de-pointage)."
           }
         },
         {
@@ -217,7 +217,7 @@
         {
           "criterium": {
             "number": 6,
-            "title": "Pour certains [tableaux de données](#tableau-de-donnees), certains [en-tête de colonnes](#en-tete-de-colonne-ou-de-ligne) et certains [en-tête de lignes](#en-tete-de-colonne-ou-de-ligne) ne sont pas correctement déclarés."
+            "title": "Pour certains [tableaux de données](#tableau-de-donnees), certains [en-têtes de colonnes](#en-tete-de-colonne-ou-de-ligne) et certains [en-têtes de lignes](#en-tete-de-colonne-ou-de-ligne) ne sont pas correctement déclarés."
           }
         },
         {
@@ -369,7 +369,7 @@
         {
           "criterium": {
             "number": 3,
-            "title": "Pour certaines pages web, certains [liste](#listes) n’est pas correctement structurée."
+            "title": "Pour certaines pages web, certaines [listes](#listes) ne sont pas correctement structurées."
           }
         },
         {
@@ -404,7 +404,7 @@
         {
           "criterium": {
             "number": 4,
-            "title": "Pour certaines pages web, le texte n'est pas lisible lorsque la [taille des caractères](#taille-des-caracteres) est augmentée jusqu’à 200%, au moins."
+            "title": "Pour certaines pages web, le texte n’est pas lisible lorsque la [taille des caractères](#taille-des-caracteres) est augmentée jusqu’à 200%, au moins."
           }
         },
         {
@@ -416,7 +416,7 @@
         {
           "criterium": {
             "number": 6,
-            "title": "Pour certaines pages web, certains [liens dont la nature n’est pas évidentes](#lien-dont-la-nature-n-est-pas-evidente) ne sont pas visibles par rapport au texte environnant."
+            "title": "Pour certaines pages web, certains [liens dont la nature n’est pas évidente](#lien-dont-la-nature-n-est-pas-evidente) ne sont pas visibles par rapport au texte environnant."
           }
         },
         {
@@ -511,7 +511,7 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certains formulaires, certaines [légendes](#legende) associées à un regroupement de champs de même nature ne sont pas pertinente."
+            "title": "Pour certains formulaires, certaines [légendes](#legende) associées à un regroupement de champs de même nature ne sont pas pertinentes."
           }
         },
         {
@@ -541,7 +541,7 @@
         {
           "criterium": {
             "number": 12,
-            "title": "Pour certains formulaires qui modifient ou suppriment des données, ou qui transmettent des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données ne vérifie pas une des conditions de : modification, annulation, vérification…"
+            "title": "Pour certains formulaires qui modifient ou suppriment des données, ou qui transmettent des réponses à un test ou à un examen, ou dont la validation a des conséquences financières ou juridiques, la saisie des données ne vérifie pas une des conditions de : modification, annulation, vérification…"
           }
         },
         {
@@ -570,13 +570,13 @@
         {
           "criterium": {
             "number": 3,
-            "title": "La [page « plan du site »](#page-plan-du-site) n’est pas pertinente."
+            "title": "La [page « plan du site »](#page-plan-du-site) n’est pas pertinente."
           }
         },
         {
           "criterium": {
             "number": 4,
-            "title": "Pour certains [ensembles de pages](#ensemble-de-pages), la [page « plan du site »](#page-plan-du-site) ne sont pas atteignables de manière identique."
+            "title": "Pour certains [ensembles de pages](#ensemble-de-pages), la [page « plan du site »](#page-plan-du-site) n’est pas atteignable de manière identique."
           }
         },
         {
@@ -594,7 +594,7 @@
         {
           "criterium": {
             "number": 7,
-            "title": "Pour certaines pages web, un [lien d’évitement ou d’accès rapide](#liens-d-evitement-ou-d-acces-rapide) à la [zone de contenu principal](#zone-de-contenu-principal) n'est pas présent."
+            "title": "Pour certaines pages web, un [lien d’évitement ou d’accès rapide](#liens-d-evitement-ou-d-acces-rapide) à la [zone de contenu principal](#zone-de-contenu-principal) n’est pas présent."
           }
         },
         {
@@ -677,7 +677,7 @@
         {
           "criterium": {
             "number": 9,
-            "title": "Pour certaines pages web, le contenu proposé n'est pas consultable quelle que soit l’orientation de l’écran (portait ou paysage)."
+            "title": "Pour certaines pages web, le contenu proposé n’est pas consultable quelle que soit l’orientation de l’écran (portait ou paysage)."
           }
         },
         {
