@@ -34,7 +34,6 @@
 {{- with $context.GetPage (printf "/audits/%s/index.md" $project)         -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/index.md" $project))         }}{{- end -}}
 {{- with $context.GetPage "/audits/_index.md"                             -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/_index.md" $project))           }}{{- end -}}
 {{- with $context.GetPage "/audits/index.md"                              -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/index.md" $project))            }}{{- end -}}
-{{/* In a file name accessibility.md presents i the project folder  */}}
 {{- with $context.GetPage (printf "/audits/%s/accessibility.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/accessibility.md" $project)) }}{{- end -}}
 {{- with $context.GetPage "/audits/accessibility.md"                      -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/accessibility.md")    }}{{- end -}}
 {{- end -}}
@@ -52,6 +51,7 @@
     {{- warnf "%s %s"  "Audit informations are missing or misformed in" (index ($.context.Scratch.Get "context") ($context.Scratch.Get "datecontext")).path -}}
     {{- end -}}
   {{- else -}}
+    {{/* Should debug "audits/_index.md" path for list.xxxx.json output */}}
     {{- if ne $context.Path "audits/_index.md" -}}
       {{- warnf "Context is not declared for %s see the documentation - it can be done in files content/audits/%s or content/audits/%s/accessibility/context.yml" (cond (not ($context.Scratch.Get "projectname")) (printf "this project") (printf "the project %s" $project)) $context.Path $project -}}
     {{- end -}}

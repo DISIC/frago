@@ -1,19 +1,19 @@
 {{- define "main" -}}
-{{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project := index $patharray 1 -}}
-{{- $context := . -}}
-{{- $project := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $patharray  := split (path.Dir .Path) "/" -}}
+{{- $context    := . -}}
+{{- $project    := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project    := cond (eq (len (split $context.Path "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- if or (and (gt (len $patharray) 1) ($project)) (eq (len (split (.RelPermalink) "/")) 2) (eq (len $patharray) 1) -}}
-  {{ $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" }}
+  {{- $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
     {{ if ne (len $alternate) 0 }}
       {{- with $alternate -}}{{- range $key, $value := . -}}
-        {{ if eq .Format.BaseName "accessibility" }}
+        {{- if eq .Format.BaseName "accessibility" -}}
           {{- partialCached "templates/accessibility.html" (dict "context" $context "project" $project) $project -}}
-        {{ else if eq .Format.BaseName "quality" }}
+        {{- else if eq .Format.BaseName "quality" -}}
           {{- partialCached "templates/quality.html" (dict "context" $context "project" $project) $project -}}
-        {{ else if eq .Format.BaseName "performance" }}
+        {{- else if eq .Format.BaseName "performance" -}}
           {{- partialCached "templates/performance.html" (dict "context" $context "project" $project) $project -}}
-        {{ else if eq .Format.BaseName "declaration" }}
+        {{- else if eq .Format.BaseName "declaration" -}}
           <article class="wrapper narrow">
             {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
             {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) ($context.Scratch.Get "audits") -}}

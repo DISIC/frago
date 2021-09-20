@@ -8,7 +8,7 @@
   {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
   {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
   {{- with ($context.Scratch.Get "context") -}}
-  {{- with (index ($.context.Scratch.Get "audits") "auditfile-name") -}}
+  {{- with (index $audit "auditfile-name") -}}
   {{- with (index ($context.Scratch.Get "context") .) -}}
     {{- with .audit -}}
       {{- with .audit.guidelines -}}
@@ -36,8 +36,7 @@
 {{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
 
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
-{{- $date := (string (index ($.context.Scratch.Get "audits") "auditfile-name")) -}}
-
+{{- $date := (string (index $audit "auditfile-name")) -}}
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
 {{- $.context.Scratch.Set "context" (index . $date) -}}
 {{- end -}}
