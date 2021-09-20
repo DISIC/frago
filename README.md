@@ -388,6 +388,7 @@ accessibility:
 ```
 
 Si on veut une déclaration de contexte propre à des audits en particulier c’est-à-dire par date, il est possible de créer un fichier `content/audits/nomdelademarche/accessibility/context.yml`.
+⚠️ Pas besoin de déclarer 2 fois le contexte d’audit. C’est soit dans `content/audits/nomdelademarche/index.md`, `content/audits/nomdelademarche/accessibility.md` ou dans `content/audits/nomdelademarche/accessibility/context.yml`.
 
 ```yaml
 ---
@@ -396,7 +397,7 @@ contacts:
     email: stap-amendes@dgfip.finances.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12
 audits:
-    2021-03-05: // bien respecter la date de chaque fichier csv d’audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
+    2021-03-05: // ⚠️ bien respecter la date de chaque fichier csv d’audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
       guidelines: "RGAA 4.1"
       condition: "Auto-évaluation"
       technologies: ["HTML", "CSS", "JS", "PDF"]
