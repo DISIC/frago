@@ -1,6 +1,6 @@
 
 {{- $context := . -}}
-{{- $project := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 
 {{- if ne $project "audits" -}}
 <section class="wrapper narrow">

@@ -1,7 +1,7 @@
 {{- define "main" -}}
 {{- $patharray  := split (path.Dir .Path) "/" -}}
 {{- $context    := . -}}
-{{- $project    := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project    := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}
     {{- with $alternate -}}{{- range $key, $value := . -}}

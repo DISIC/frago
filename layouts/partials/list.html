@@ -4,7 +4,7 @@
 {{/* Set the audit file */}}
 {{- if eq (len $patharray) 2 -}}
 {{- range $id, $value := $section -}}
-  {{- if in .Path $project -}}{{- $.context.Scratch.SetInMap "element" (string $id) . -}}{{- end -}}
+  {{- if in (path.Dir .Path) $project -}}{{- $.context.Scratch.SetInMap "element" (string $id) . -}}{{- end -}}
 {{- end -}}
 {{- else -}}
 {{- $.context.Scratch.Set "element" ($section) -}}

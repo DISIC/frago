@@ -1,7 +1,7 @@
 {{- $project := .project -}}
 {{- $context := .context -}}
 
-{{- $projectcontext := cond (eq (len (split $context.Path "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $projectcontext := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $projectcontext "type" "accessibility") $projectcontext "accessibility") -}}
 
 {{- $.context.Scratch.Set "pageslist" "" -}}
@@ -48,7 +48,7 @@
     {{- end -}}
   {{- end -}}
   {{- else -}}
-    {{- if ne $context.Path "audits/_index.md" -}}
+    {{- if ne (path.Dir $context.Path) "audits/_index.md" -}}
       {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
     {{- end -}}
   {{- end -}}
