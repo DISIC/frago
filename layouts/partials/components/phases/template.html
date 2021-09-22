@@ -19,7 +19,6 @@
 {{- else -}}
   {{- range $key, $taxonomy := .context.Site.Taxonomies.phases -}}
     {{- if $taxonomy.Pages -}}
-    {{ $taxonomy.Pages }}
     {{- $.context.Scratch.Set "isphases" true -}}
     {{- end -}}
   {{- end -}}
