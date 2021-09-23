@@ -1,8 +1,8 @@
 {{- define "title" -}}Audit Performance {{ (index (split (path.Dir .Path) "/") 1) }}{{- end -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $project :=  .project -}}
 {{- $context :=  .context -}}
+{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $.context.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "/") -}}
 {{/* Test if files are in static or in each projets */}}
 {{- $.context.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}

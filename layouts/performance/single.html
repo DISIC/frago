@@ -1,7 +1,6 @@
 {{- define "title" -}}Audit Performance {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
-{{- $project := index (split (path.Dir .Path) "/") 1 -}}
 {{- $context := . -}}
-{{- partial "templates/performance.html" (dict "context" $context "project" $project) -}}
+{{- partial "templates/performance.html" (dict "context" $context) -}}
 {{- end -}}

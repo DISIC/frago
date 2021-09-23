@@ -2,8 +2,8 @@
 
 {{/* Var */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project := .project -}}
 {{- $context := .context -}}
+{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $.context.Scratch.Set "context"  . -}}
 {{- $.context.Scratch.Set "pathimage" "" }}
 
@@ -212,7 +212,7 @@
 <script type="text/javascript" src="{{ $js.Permalink }}"></script>
 {{- range ($.Scratch.Get "auditfile") -}}
   {{- range $idpage, $p := .pages -}}
-  {{- $name := .name -}}
+  {{- $name := .name -}}``
   <script>
     var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
     {{- range $idblock,$b := .blocks -}}
