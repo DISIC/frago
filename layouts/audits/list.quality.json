@@ -1,6 +1,6 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project :=  (index $patharray 1) -}}
 {{- $context := . -}}
+{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $.Scratch.Delete "scores" -}}
 
 {{- if and (gt (len $patharray) 1) ($project) -}}

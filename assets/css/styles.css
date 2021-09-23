@@ -18,7 +18,7 @@
 
   --base-font-name: "Marianne";
   --title-font-name: var(--base-font-name);
-  --base-primary: 215;
+  --base-primary: 240;
   --base-secondary: calc(var(--base-primary) + 125);
   --link-color: var(--color-primary);
   --text-color: hsl(0 0% var(--l-0));

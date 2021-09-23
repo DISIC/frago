@@ -5,9 +5,19 @@
 blockquote {
   margin-bottom: var(--baseline);
   padding: calc(var(--baseline) / 2) var(--baseline) calc(var(--baseline) / 4);
-  font-size: var(--bigger);
+  font-size: calc(1rem * var(--ms1));
   border-left: 5px solid var(--color-primary);
   background-color: #fff;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: var(--text-color);
+  content: open-quote;
+  font-size: 2rem;
+  line-height: 0.1rem;
+  margin-right: 0.25rem;
+  vertical-align: -0.4rem;
 }
 
 blockquote,
@@ -23,3 +33,5 @@ q {
 q:lang(de) {
   quotes: "„" "“";
 }
+
+

@@ -13,36 +13,34 @@ input[type="submit"],.btn {
   box-sizing: border-box;
   margin: var(--baseline) 0;
   padding: calc(var(--baseline) / 2) var(--baseline);
-  font-weight: bold;
-  font-size: var(--bigger);
+  font-size: inherit;
   cursor: pointer;
   transition: background 0.45s;
   text-decoration: none;
   letter-spacing: .03125em;
-  text-transform: uppercase;
   color: #fff;
   border: none;
-  border-radius: 100px;
+  border-radius: 0;
   transition: all ease 0.15s;
   cursor: pointer;
   background: var(--background-effect, hsl(var(--btn-bg--state,var(--btn-bg,var(--btn-bg--type,var(--btn-bg--default)))), var(--base-sat), var(--base-light)));
-  box-shadow: var(--enable-shadows,0 1px 1px rgba(0,0,0,0.08),0 2px 2px rgba(0,0,0,0.12),0 4px 4px rgba(0,0,0,0.16),0 8px 8px rgba(0,0,0,0.20));
+  /* box-shadow: var(--enable-shadows,0 1px 1px rgba(0,0,0,0.08),0 2px 2px rgba(0,0,0,0.12),0 4px 4px rgba(0,0,0,0.16),0 8px 8px rgba(0,0,0,0.20)); */
 }
 
 input[type="submit"]:not(:disabled):hover,
 .btn:not(:disabled):hover {
   --base-light: 30%;
   text-decoration: none;
-  box-shadow: var(--enable-shadows,0 8px 8px rgba(0,0,0,0.04),0 10px 10px rgba(0,0,0,0.08));
+  /* box-shadow: var(--enable-shadows,0 8px 8px rgba(0,0,0,0.04),0 10px 10px rgba(0,0,0,0.08)); */
   text-decoration: none;
-  transform: translateY(-5px);
+  transform: translateY(0);
 }
 
 input[type="submit"]:not(:disabled):active,
 .btn:not(:disabled):active {
   --base-light: 20%;
-  transform: translate(0, -4px);
-  box-shadow: var(--enable-shadows, inset 1px 1px 1px rgba(0, 0, 0, 0.11), inset 1px 1px 2px rgba(0, 0, 0, 0.11), inset 1px 1px 4px rgba(0, 0, 0, 0.31));
+  transform: translate(0);
+  /* box-shadow: var(--enable-shadows, inset 1px 1px 1px rgba(0, 0, 0, 0.11), inset 1px 1px 2px rgba(0, 0, 0, 0.11), inset 1px 1px 4px rgba(0, 0, 0, 0.31)); */
 }
 
 input[type="submit"]:disabled,
