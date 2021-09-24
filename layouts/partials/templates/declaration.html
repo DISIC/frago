@@ -3,7 +3,7 @@
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
-{{/* START Determine the version of the audit form the context declaration */}}
+{{/* START Determine the version of the audit from the context declaration */}}
   {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
   {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
   {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
@@ -19,8 +19,8 @@
     {{- end -}}
   {{- end -}}
   {{- else -}}
-    {{- if ne (path.Dir $context.Path) "audits/_index.md" -}}
-      {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
+    {{- if ne ($context.Path) "audits/_index.md" -}}
+      {{- warnf "Il n'y a pas d’audit correspond au chemin de fichier %s" $context.Path -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}

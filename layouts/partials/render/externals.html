@@ -1,6 +1,6 @@
 {{/* Return value for loading externals projects */}}
-{{- $context    := .context -}}
-{{- $project    := .project -}}
+{{- $context    := .context   -}}
+{{- $project    := .project   -}}
 {{- $auditfile  := .auditfile -}}
 {{- $results    := partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" $auditfile) $auditfile -}}
 {{- $.context.Scratch.Delete "compliance" -}}
@@ -18,7 +18,7 @@
     {{/* If subproject */}}
     {{- with .folder -}}
       {{- $.context.Scratch.SetInMap "name" (string (add $id 1)) $name -}}
-      {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
+      {{- $project := replace (printf "%s/%s" (path.Dir $context.Path) .) "audits" "" -}}
       {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $context $project "accessibility") -}}
       {{- if index $lastfile "auditfile-name" -}}
         {{- with index $lastfile "auditfile-path" -}}

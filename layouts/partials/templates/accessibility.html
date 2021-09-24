@@ -31,7 +31,7 @@
   {{- end -}}
   {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
 
-  {{/* START Determine the version of the audit form the context declaration */}}
+  {{/* START Determine the version of the audit from the context declaration */}}
   {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
   {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
   {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}

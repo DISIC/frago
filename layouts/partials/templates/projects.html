@@ -1,6 +1,6 @@
 
 {{- $context := . -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
+{{- $project :=  (partial "render/projectpath" $context $context) -}}
 
 {{- if ne $project "audits" -}}
 <section class="wrapper narrow">
@@ -60,11 +60,11 @@
 
     {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
       {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
-      {{- if ne (len .compliance) 1 -}}
-      {{- $.Scratch.Set "subservice" true -}}
-      <div class="scores"><ul><li class="medal text-center d-inline-block"><span><b class="h2">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
-      <hr>
-      {{- end -}}
+        {{- if ne (len .compliance) 1 -}}
+          {{- $.Scratch.Set "subservice" true -}}
+          <div class="scores"><ul><li class="medal text-center d-inline-block"><span><b class="h2">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
+          <hr>
+        {{- end -}}
       {{- end -}}
     {{- end -}}
     {{/* START - If accessibility and quality and lighthouse */}}
