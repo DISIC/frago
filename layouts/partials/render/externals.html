@@ -18,7 +18,7 @@
     {{/* If subproject */}}
     {{- with .folder -}}
       {{- $.context.Scratch.SetInMap "name" (string (add $id 1)) $name -}}
-      {{- $project := cond (eq (len (split (path.Dir $.context.Path) "/")) 1) "" (replace (path.Dir $.context.Path) "audits/" "") -}}
+      {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
       {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $context $project "accessibility") -}}
       {{- if index $lastfile "auditfile-name" -}}
         {{- with index $lastfile "auditfile-path" -}}

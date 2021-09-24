@@ -1,0 +1,1 @@
+{{- return (cond (eq (len (split (path.Dir .Path) "/")) 1) "" (replace (path.Dir .Path) (printf "%s/" .Section) "")) -}}

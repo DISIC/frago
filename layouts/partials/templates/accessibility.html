@@ -1,6 +1,6 @@
 
 {{- $context := .context -}}
-{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
 {{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
 {{- $.context.Scratch.Set "pageslist" "" -}}

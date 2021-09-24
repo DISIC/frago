@@ -1,10 +1,9 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $context   := . -}}
-{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project   :=  (partialCached "render/projectpath" . .) -}}
 {{/* Condition about structure level */}}
-{{- $.Scratch.Set "mainpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
+{{- $.Scratch.Set "mainpath"  (partialCached "render/rootpath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 {{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) -}}
 <div class="wrapper">
 <p class="no-print" hidden>← <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>

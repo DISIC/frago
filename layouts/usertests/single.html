@@ -2,7 +2,7 @@
 {{/* Variables */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context   := . -}}
-{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
 {{- $.Scratch.Get "project" }}
 {{- $.Scratch.Get "patharray" }}
 {{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}

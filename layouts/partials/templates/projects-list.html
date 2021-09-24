@@ -23,7 +23,7 @@
         {{- if and (or (intersect $pathfirst (slice "projects")) (eq $pathlast "index.md")) (eq (len $path) 2) -}}
         {{- $patharray := split (path.Dir .Path) "/" -}}
         {{- $context   := . -}}
-{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
         {{- $.Scratch.Set "rootpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "accessibility")) -}}
         {{- $.Scratch.Set "projectfolders" (cond (eq ($patharray) 2) (printf "%s" ($.Scratch.Get "rootpath")) (printf "%s/%s" ($.Scratch.Get "rootpath") $project)) -}}
 

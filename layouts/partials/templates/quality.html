@@ -3,7 +3,7 @@
 {{/* Var */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := .context -}}
-{{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project :=  (partialCached "render/projectpath" .context .context) -}}
 {{- $.context.Scratch.Set "context"  . -}}
 {{- $.context.Scratch.Set "pathimage" "" }}
 
@@ -196,7 +196,7 @@
 {{- define "script" -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context   := . -}}
-{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project   :=  (partialCached "render/projectpath" . .) -}}
 {{- if ne (len $patharray) 1 -}}
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
 {{- if ne (index $lastfile "auditfile-path") "/false" -}}

@@ -1,8 +1,7 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $context   := . -}}
-{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $project   :=  (partialCached "render/projectpath" . .) -}}
 {{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "personas.json")) -}}
 {{- if $project -}}
 <div class="wrapper">
