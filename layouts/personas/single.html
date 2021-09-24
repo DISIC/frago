@@ -1,7 +1,8 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project := index $patharray 1 -}}
+{{- $context   := . -}}
+{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{/* Condition about structure level */}}
 {{- $.Scratch.Set "mainpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 {{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) -}}

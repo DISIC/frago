@@ -21,7 +21,7 @@
   {{- range $id, $value := . -}}
     {{- $.Scratch.Delete "score" -}}
     {{- $.Scratch.Delete "scoresmap" -}}
-    {{ $project := (index (split (path.Dir .Path) "/") 1) }}
+    {{- $project := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
     {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
     {{- range $key, $path := . -}}
       {{- if . -}}

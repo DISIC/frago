@@ -12,7 +12,7 @@
   --base-font:               var(--base-font-name,-apple-system), var(--system-font);
   --title-font:              var(--title-font-name,-apple-system), var(--system-font);
 
-  --ratio:                   1.36;
+  --ratio:                   1.2;
   --base:                    1;
   --base-em:                 calc(var(--base) * 1em);
   --base-rem:                calc(var(--base) * 1rem);
@@ -73,7 +73,7 @@ h6
 label,
 legend {
   color: currentColor;
-  margin-top: 0;
+  margin-top: var(--baseline);
   margin-bottom: var(--baseline);
   font-family: var(--title-font);
 }

@@ -195,8 +195,8 @@
 
 {{- define "script" -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project := index $patharray 1 -}}
-{{- $context :=  . -}}
+{{- $context   := . -}}
+{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- if ne (len $patharray) 1 -}}
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
 {{- if ne (index $lastfile "auditfile-path") "/false" -}}

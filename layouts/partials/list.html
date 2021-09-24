@@ -1,6 +1,7 @@
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $project := index $patharray 1 -}}
-{{- $section := where .context.Site.RegularPages "Section" .section -}}
+{{- $context   := .context   -}}
+{{- $project   := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
+{{- $section   := where .context.Site.RegularPages "Section" .section -}}
 {{/* Set the audit file */}}
 {{- if eq (len $patharray) 2 -}}
 {{- range $id, $value := $section -}}
