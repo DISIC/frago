@@ -97,7 +97,7 @@
         <div id="chartaccessibility"></div>
         <script>
             const dataaccessibility = {
-                labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+                labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
                 datasets: [
                   {
                     name: "Conformité",
@@ -148,7 +148,7 @@
         <div id="chartperformance"></div>
           <script>
               const dataperformance = {
-                  labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "1" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+                  labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
                   datasets: [
                     {
                       name: "Erreurs",
