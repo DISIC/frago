@@ -32,11 +32,7 @@
 {{- $.context.Scratch.Set "auditfile-name" (index $lastfile "auditfile-name") -}}
 
 {{/* Condition about structure level */}}
-{{- if eq (len $patharray) 2 -}}
-  {{- $.context.Scratch.Set "pathimage" (printf "./static/images/%s/quality/%s" $project ($.context.Scratch.Get "auditfile-name")) }}
-{{- else -}}
-  {{- $.context.Scratch.Set "pathimage" (printf "./static/images/quality/%s" ($.context.Scratch.Get "auditfile-name")) }}
-{{- end -}}
+{{- $.context.Scratch.Set "pathimage" (replace (printf "./static/images/%s/quality/%s" $project ($.context.Scratch.Get "auditfile-name")) "//" "/")}}
 {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
 {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
 {{- end -}}
@@ -102,12 +98,26 @@
         {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if eq (replace (.Name) ".png" "") ((replace $name ".png" "-after.png")  | urlize) -}}{{ $.context.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
         {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
           {{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}
-          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div></div>
+          <div class="flex flex-column">
+            <figure class="flex flex-max" id="{{ .Name }}">
+              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified">
+                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center">
+              </a>
+            </figure>
+            <div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div>
+          </div>
           {{- end -}}
         {{- end -}}
         {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
           {{- if eq (.Name) ((printf "%s-after.png" $name)  | urlize) -}}
-          <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $name }}</div></div>
+          <div class="flex flex-column">
+            <figure class="flex flex-max" id="{{ .Name }}">
+              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified">
+                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center">
+              </a>
+            </figure>
+            <div class="benchmark-name">Après - {{ $name }}</div>
+          </div>
           {{- end -}}
         {{- end -}}
       </div>
@@ -172,18 +182,18 @@
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}{{ $.context.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string $filename) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
           </div>
         {{- end -}}
       {{- end -}}{{/* Range second level */}}
-      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}images/{{- if eq (len $patharray) 2 -}}{{ $project }}/{{ end }}quality/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
   {{- end -}}{{/* Range first level */}}
   <hr>
 {{- end -}}{{/* Range the quality file */}}
@@ -194,41 +204,41 @@
 {{- end -}}
 
 {{- define "script" -}}
-{{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $context   := . -}}
-{{- $project   :=  (partialCached "render/projectpath" . .) -}}
-{{- if ne (len $patharray) 1 -}}
-{{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
-{{- if ne (index $lastfile "auditfile-path") "/false" -}}
-{{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
-{{ partial "utils/css.html" (dict "context" $context "filefolder" "overgo/object" "filename" "benchmark") }}
-{{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
-{{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
-{{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
-{{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
-{{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/qualityBundle.css" -}}
-{{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/qualityBundle.js" -}}
-<link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
-<script type="text/javascript" src="{{ $js.Permalink }}"></script>
-{{- range ($.Scratch.Get "auditfile") -}}
-  {{- range $idpage, $p := .pages -}}
-  {{- $name := .name -}}``
-  <script>
-    var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
-    {{- range $idblock,$b := .blocks -}}
-    var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
+  {{- $patharray := split (path.Dir .Path) "/" -}}
+  {{- $context   := . -}}
+  {{- $project   :=  (partialCached "render/projectpath" . .) -}}
+  {{- if and (ne (len $patharray) 1) (in . "quality.md") -}}
+    {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
+    {{- if ne (index $lastfile "auditfile-path") "/false" -}}
+      {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
+      {{ partial "utils/css.html" (dict "context" $context "filefolder" "overgo/object" "filename" "benchmark") }}
+      {{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
+      {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
+      {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
+      {{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
+      {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/qualityBundle.css" -}}
+      {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/qualityBundle.js" -}}
+      <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
+      <script type="text/javascript" src="{{ $js.Permalink }}"></script>
+      {{- range ($.Scratch.Get "auditfile") -}}
+        {{- range $idpage, $p := .pages -}}
+        {{- $name := .name -}}
+        <script>
+          var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
+          {{- range $idblock,$b := .blocks -}}
+          var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
+          {{- end -}}
+        </script>
+        {{- end -}}
+      {{- end -}}
+      <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      });
+      </script>
     {{- end -}}
-  </script>
   {{- end -}}
-{{- end -}}
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('pre code').forEach((block) => {
-    hljs.highlightBlock(block);
-  });
-});
-</script>
-{{- end -}}
-{{- end -}}
 {{- end -}}
 
