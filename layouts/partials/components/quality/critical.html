@@ -22,7 +22,7 @@
 {{- with $.context.Scratch.Get "pagesstatus-critical" -}}
 <h3>Erreurs par criticité</h3>
 <table class="text-left">
-  <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
+  <thead><tr><th>Intitulé</th><th class="text-center w-100">Page</th><th class="text-center w-100">Type</th><th class="text-center w-120">Criticité</th></tr></thead>
   <tbody>
   {{- range $key, $value := sort . "status" "asc" -}}
     <h3 hidden>{{ if $value }}{{ $key | humanize }}{{ end }}</h3>
