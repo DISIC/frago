@@ -152,9 +152,9 @@
       {{- end -}}
     {{- end -}}
     {{/* START - If several quality files */}}
-      {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
-      {{- if and $lastfiles (gt (len $lastfiles) 1) -}}
-        {{- range $id, $value := $lastfiles -}}
+      {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
+      {{- if (gt (len .) 1) -}}
+        {{- range $id, $value := . -}}
           {{- ($.Scratch.SetInMap "renderquality" (string $id) (partialCached "render/quality" (dict "context" $context "auditfile" . ) . )) -}}
         {{- end -}}
         <div id="chartquality"></div>
@@ -179,6 +179,7 @@
                   colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
               })
           </script>
+      {{- end -}}
       {{- end -}}
       {{/* END - If several quality files */}}
     {{/* END - If Quality */}}
