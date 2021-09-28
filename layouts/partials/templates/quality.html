@@ -100,8 +100,8 @@
           {{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}
           <div class="flex flex-column">
             <figure class="flex flex-max" id="{{ .Name }}">
-              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified">
-                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center">
+              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
+                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
               </a>
             </figure>
             <div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div>
@@ -112,8 +112,8 @@
           {{- if eq (.Name) ((printf "%s-after.png" $name)  | urlize) -}}
           <div class="flex flex-column">
             <figure class="flex flex-max" id="{{ .Name }}">
-              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified">
-                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center">
+              <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
+                <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
               </a>
             </figure>
             <div class="benchmark-name">Après - {{ $name }}</div>
@@ -182,18 +182,18 @@
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}{{ $.context.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string $filename) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
             {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
               {{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}
-              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
+              <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
               {{- end -}}
             {{- end -}}
           </div>
         {{- end -}}
       {{- end -}}{{/* Range second level */}}
-      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+      <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
   {{- end -}}{{/* Range first level */}}
   <hr>
 {{- end -}}{{/* Range the quality file */}}
