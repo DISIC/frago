@@ -153,7 +153,7 @@
     {{- end -}}
     {{/* START - If several quality files */}}
       {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
-      {{- if gt (len $lastfiles) 1 -}}
+      {{- if and $lastfiles (gt (len $lastfiles) 1) -}}
         {{- range $id, $value := $lastfiles -}}
           {{- ($.Scratch.SetInMap "renderquality" (string $id) (partialCached "render/quality" (dict "context" $context "auditfile" . ) . )) -}}
         {{- end -}}
