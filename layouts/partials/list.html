@@ -1,6 +1,6 @@
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
 {{- $context   := .context   -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
+{{- $project   := (partialCached "render/projectpath" $context $context) -}}
 {{- $section   := where .context.Site.RegularPages "Section" .section -}}
 {{/* Set the audit file */}}
 {{- if eq (len $patharray) 2 -}}

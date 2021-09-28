@@ -18,7 +18,7 @@
   {{- end -}}
   <h2 class="text-center mb-0">Description</h2>
   <div class="text-center">
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" role="list">
       <li><strong>{{ .age }} ans</strong></li>
       <li><strong>{{ .reason }}</strong></li>
     </ul>
@@ -27,7 +27,7 @@
   <div class="grid grid-separator">
   <div>
     <h4 class="mb-0">Motivations</h4>
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" role="list">
       {{- range .motivations -}}
         <li>. {{ . }}</li>
       {{- end -}}
@@ -35,7 +35,7 @@
   </div>
   <div>
     <h4 class="mb-0">Frustrations</h4>
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" role="list">
       {{- range .frustrations -}}
         <li>. {{ . }}</li>
       {{- end -}}

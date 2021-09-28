@@ -1,6 +1,5 @@
 {{- define "title" -}}Audit Accessibilité {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
 {{- define "main" -}}
-{{/* Vars */}}
 {{- $context := . -}}
 {{- partial "templates/accessibility.html" (dict "context" $context) -}}
 {{- end -}}

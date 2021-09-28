@@ -2,7 +2,7 @@
 <section>
   <h2 class="text-center">{{ .Params.steps.title }}</h2>
   <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="nav">
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" role="list">
       {{- range $i, $p := .Params.steps.elements -}}
       <li>
         <a href="#id_{{ $i }}" class="js-tablist__link"><span>{{ add $i 1 }}</span> <strong>{{ .title }}</strong></a>

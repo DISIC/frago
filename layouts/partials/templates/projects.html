@@ -94,7 +94,26 @@
         <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
         <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
         <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
-        <div id="chartaccessibility"></div>
+        <div id="chartaccessibility">
+          <table>
+            <caption>Taux de conformité dans le temps</caption>
+            <thead>
+              <tr>
+                <th>Date d’audit</th>
+                <th>Taux de conformité</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{- range $id, $value := . -}}
+              <tr>
+                {{- $date := index ($.Scratch.Get "accessibility-all-name") (string $id) -}}
+                <th>{{ (time $date).Day }} {{ index $.Site.Data.month (printf "%d" (time $date).Month) }} {{ (time $date).Year }}</th>
+                <td>{{- .scores.compliance -}} %</td>
+              </tr>
+              {{- end -}}
+            </tbody>
+          </table>
+        </div>
         <script>
             const dataaccessibility = {
                 labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
