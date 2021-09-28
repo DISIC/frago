@@ -207,7 +207,11 @@
   {{- $patharray := split (path.Dir .Path) "/" -}}
   {{- $context   := . -}}
   {{- $project   :=  (partialCached "render/projectpath" . .) -}}
-  {{- if and (ne (len $patharray) 1) (in . "quality.md") -}}
+  {{- $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
+  {{- if ne (len $alternate) 0 -}}
+  {{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputquality" (eq .Format.BaseName "quality") }}{{- end -}}{{- end -}}
+  {{- end -}}
+  {{- if and (ne (len $patharray) 1) (or (in . "quality.md") ($.Scratch.Get "outputquality")) -}}
     {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
     {{- if ne (index $lastfile "auditfile-path") "/false" -}}
       {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
