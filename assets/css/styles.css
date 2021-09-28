@@ -111,7 +111,7 @@ section {
 }
 
 .section-dark {
-  color: var(--background-color-body);
+  color: var(--background-color-body, #fff);
   background-color: var(--color-primary);
 }
 
@@ -459,7 +459,7 @@ footer a {
   width: 3em;
   height: 3em;
   font-weight: bold;
-  color: #fff;
+  color: var(--background-color-body, #fff);
   border-radius: 50%;
   background: var(--color-primary-dark);
 }

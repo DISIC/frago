@@ -35,6 +35,7 @@
 
 {{- return
   (dict
+    "date"          (replace (path.Base $auditfile) (path.Ext $auditfile) "")
     "pathlen"       ($pathlen)
     "total"         ($.context.Scratch.Get "countererrorstotal")
     "checked"       ($.context.Scratch.Get "countererrorschecked")

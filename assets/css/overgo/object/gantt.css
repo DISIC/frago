@@ -8,7 +8,7 @@
   padding: calc(var(--baseline) / 2) 0;
   text-align: center;
   color: var(--text-color);
-  background: var(--background-color-body);
+  background: var(--background-color-body, #fff);
 }
 
 .gantt div {

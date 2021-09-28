@@ -54,11 +54,11 @@
   --background-color-grey-dark: hsl(0 0% var(--l-90));
   --background-color-grey-verydark: hsl(0 0% var(--l-85));
 
-  --color-score: hsl(var(--base-blue), 65%, calc(var(--base-light) - 15%));
-  --color-score-verygood: hsl(var(--base-green), 45%, calc(var(--base-light) - 5%));
-  --color-score-good: hsl(var(--base-green), 25%, calc(var(--base-light) - 5%));
-  --color-score-medium: hsl(var(--base-orange), 65%, calc(var(--base-light) - 5%));
-  --color-score-bad: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
+  --color-score: hsl(var(--base-blue), 65%, calc(var(--base-light) - 20%));
+  --color-score-verygood: hsl(var(--base-green), 45%, calc(var(--base-light) - 10%));
+  --color-score-good: hsl(var(--base-green), 25%, calc(var(--base-light) - 10%));
+  --color-score-medium: hsl(var(--base-orange), 65%, calc(var(--base-light) - 10%));
+  --color-score-bad: hsl(var(--base-red), 45%, calc(var(--base-light) - 10%));
   --color-score-verybad: hsl(var(--base-red), 55%, calc(var(--base-light) - 20%));
 
   --color-graph-primary: hsl(var(--base-red), 45%, calc(var(--base-light) - 5%));
@@ -84,7 +84,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --shader: -26.5%;
-    --base-light: 65%;
+    --base-light: 70%;
     --l-0: 100%;
     --l-10: 90%;
     --l-20: 80%;

@@ -29,7 +29,15 @@
   {{- $delivery := . -}}
   <table class="text-left">
     <caption>{{ if . }}{{ . | humanize }}{{ end }}</caption>
-    <thead><tr><th>Intitulé</th><th class="text-center" style="width: 100px;">Page</th><th class="text-center" style="width: 100px;">Bloc</th><th class="text-center" style="width: 100px;">Type</th><th class="text-center" style="width: 120px;">Criticité</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Intitulé</th>
+        <th class="text-center w-100">Page</th>
+        <th class="text-center w-100">Bloc</th>
+        <th class="text-center w-100">Type</th>
+        <th class="text-center w-120">Criticité</th>
+      </tr>
+    </thead>
     <tbody>
     {{- $.context.Scratch.Set "blockid" 0 -}}
     {{- range $id, $value := ($.context.Scratch.Get "pageslistlot") -}}
@@ -38,7 +46,7 @@
       {{- $.context.Scratch.Set "blockname" "" -}}
       {{- range $id, $value := sort $lot "blockname" "asc" -}}
         {{ if ne ($.context.Scratch.Get "blockname") .blockname }}{{- $.context.Scratch.Add "blockid" 1 -}}{{ end }}
-        <tr style="border-left: 1px solid hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%); background: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143 }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),97%);">
+        <tr style="border-left: 2px solid hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%); background: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143 }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),97%);">
           <td><a href="{{/* /audits/{{ $project }}/quality */}}#{{ .name | urlize }}">{{ .name | markdownify }}</a>{{ if .checked }} ✅{{ end }}<br>{{ .description | markdownify }}</td>
           <td class="text-center">{{ if .pagename }}{{ .pagename | markdownify }}{{ end }}</td>
           <td class="text-center" style="color: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%);">{{ if .blockname }}<strong>{{ .blockname | replaceRE "-.*" "$1" }}</strong>{{ end }}</td>
@@ -50,7 +58,7 @@
         </tr>
         {{- $.context.Scratch.Set "blockname" .blockname -}}
       {{- end -}}
-    {{ end }}
+    {{- end -}}
 
   {{- end -}}
   </tbody>

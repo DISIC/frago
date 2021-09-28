@@ -151,6 +151,36 @@
         {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
       {{- end -}}
     {{- end -}}
+    {{/* START - If several quality files */}}
+      {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
+      {{- if gt (len $lastfiles) 1 -}}
+        {{- range $id, $value := $lastfiles -}}
+          {{- ($.Scratch.SetInMap "renderquality" (string $id) (partialCached "render/quality" (dict "context" $context "auditfile" . ) . )) -}}
+        {{- end -}}
+        <div id="chartperformance"></div>
+          <script>
+              const dataperformance = {
+                  labels: [{{- range $id, $value := ($.Scratch.Get "renderquality") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value.date).Day }} {{ index $.Site.Data.month (printf "%d" (time $value.date).Month) }} {{ (time $value.date).Year }}"{{- end -}}],
+                  datasets: [
+                    {
+                      name: "Erreurs",
+                      values: [{{ range $id, $value := ($.Scratch.Get "renderquality") }}{{ if ne $id "0" }},{{ end }}"{{ .total }}"{{- end -}}],
+                      chartType: 'bar'
+                    }
+                  ],
+                  yRegions: [{ label: "", start: 0, end: 30 }]
+              }
+              const chartperformance = new frappe.Chart("#chartperformance", {
+                  title: "Erreurs lighthouse et temps de chargement",
+                  data: dataperformance,
+                  type: 'axis-mixed',
+                  height: 300,
+                  truncateLegends: true,
+                  colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
+              })
+          </script>
+      {{- end -}}
+      {{/* END - If several quality files */}}
     {{/* END - If Quality */}}
 
     {{/* START - If Lighthouse */}}
