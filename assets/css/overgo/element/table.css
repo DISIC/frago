@@ -9,7 +9,7 @@ table {
   color: var(--color-grey-dark);
   border: 1px solid var(--color-grey-dark);
   border-collapse: collapse;
-  border-left: 6px solid #000;
+  border-left: 1px solid #000;
   background-color: #fff;
 }
 
@@ -33,6 +33,11 @@ table th {
   background-color: var(--link-color);
 }
 
+table tbody th {
+  color: var(--color-grey-dark);
+  background-color: var(--color-primary-verylight);
+}
+
 table tr {
   border-bottom: 1px solid var(--color-grey-dark);
 }
@@ -47,5 +52,5 @@ table td {
 }
 
 table td {
-  border-left: 1px solid;
+  border-left: 1px solid #000;
 }

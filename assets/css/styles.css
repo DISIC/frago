@@ -24,7 +24,6 @@
   --text-color: hsl(0 0% var(--l-0));
   --text-color-lighter: hsl(0 0% var(--l-10));
   --title-color: var(--text-color);
-  --background-color-body: #fff;
   --background-color-selection: var(--color-primary-light);
 }
 
@@ -331,6 +330,10 @@ h3 + time {
 
 .card h3 a:hover {
   text-decoration: underline;
+}
+
+.card-shadow {
+  box-shadow: var(--enable-shadows, inset 0 -0.25rem 0 0 var(--color-primary));
 }
 
 .grid > ul {

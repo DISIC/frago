@@ -37,7 +37,7 @@
   --baseline:                1.5rem;
 
   --min-font-size: 14;
-  --max-font-size: 18;
+  --max-font-size: 16;
   --fluid-size: var(--min-font-size) * 1px + (var(--max-font-size) - var(--min-font-size)) * ((100vw - 420px) / (1200 - 420));
 }
 

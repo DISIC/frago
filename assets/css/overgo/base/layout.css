@@ -3,7 +3,7 @@
 */
 
 :root {
-  --layout-max-width: 75rem;
+  --layout-max-width: 78rem;
 }
 
 /* Page & Wrapper
@@ -141,7 +141,8 @@
 }
 
 .padding-baseline {
-  padding: calc(var(--baseline) / 2) 0;
+  padding-top: var(--baseline);
+  padding-bottom: var(--baseline);
 }
 
 /* Alignement

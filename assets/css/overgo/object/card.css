@@ -26,6 +26,7 @@
   padding: 0 var(--baseline);
   text-decoration: none;
   color: var(--text-color);
+  background: var(--background-color-grey);
 }
 
 .card-inline > * {
@@ -50,7 +51,11 @@
 }
 
 .card-inline:hover {
-  background: rgba(0,0,0,0.1);
+  background: var(--background-color-grey-dark);
+}
+
+.card-inline:active {
+  background: var(--background-color-grey-verydark);
 }
 
 .card-animate:focus-within,
