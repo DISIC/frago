@@ -15,10 +15,12 @@
   {{- $.context.Scratch.Delete $scorekey -}}
   {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconformepage") "0" slice -}}
   {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconformepage") "0" slice -}}
+  {{/* Range csv file per lines/criteria */}}
   {{- range $key1, $value1 := after 1 $auditfile -}}
       {{- $.context.Scratch.Set (printf "%s%s" $scorekey "valuecriterepages") slice -}}
       {{- $critere := printf "%s.%s" (index . 0) (index . 1) -}}
       {{- if ne $critere ($.context.Scratch.Get (printf "%s%s" $scorekey "critere")) -}}{{- $.context.Scratch.Set (printf "%s%s" $scorekey "countercritere") 0 -}}{{- $.context.Scratch.Set (printf "%s%s" $scorekey "valuecriterepage") slice -}}{{- end -}}
+      {{/* Range lines */}}
       {{- range $id, $value2 := after $auditmethodology . -}}
         {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 -}}{{- end -}}
         {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") (eq . "na") (eq . "?") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "rendertesttotal") 1 -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "countercritere") 1 -}}{{- end -}}
@@ -26,6 +28,7 @@
         {{- if . -}}
           {{- $.context.Scratch.Add (printf "%s%s" $scorekey "valuecriterepage") . -}}
           {{- $.context.Scratch.Add (printf "%s%s" $scorekey "valuecriterepages") . -}}
+          {{/* Build array per pages */}}
           {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevaluesuniq")) (string $critere) (uniq ($.context.Scratch.Get (printf "%s%s" $scorekey "valuecriterepage"))) -}}
           {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevalues")) (string $critere) (($.context.Scratch.Get (printf "%s%s" $scorekey "valuecriterepages"))) -}}
         {{- end -}}
@@ -40,20 +43,26 @@
   {{- end -}}
   {{- if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))  -}}
   {{- $auditfile := after 1 .auditfile }}
+  {{/* Range array with test result par pages */}}
   {{- range $id, $value := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "rendercriterevaluesuniq"))) -}}
     {{- if ne (len $value) 0 -}}
     {{- if eq (len $value) 1 -}}
+      {{/* Set each test case if the array as uniq values */}}
       {{- if eq (index (split (index $value 0) "|") 0) "?"  -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
       {{- if eq (index (split (index $value 0) "|") 0) "na" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
       {{- if eq (index (split (index $value 0) "|") 0) "c"  -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
       {{- if eq (index (split (index $value 0) "|") 0) "nc" -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
     {{- else -}}
-      {{ $symdiff := $value | symdiff (slice "na" "c") }}
+    {{/* Set each test case if the array as multiple value values as "na" or "nt" (or "25" "50" "81") */}}
+      {{ $symdiffna := $value | symdiff (slice "na" "c") }}
+      {{ $symdiffnt := $value | symdiff (slice "nt" "c") }}
       {{- if ((and (eq (len (intersect $value (slice "na"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonapplicable") (string $id) . -}}{{- end -}}
       {{- if ((and (eq (len (intersect $value (slice "c"))) 1)  (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
       {{- if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
-      {{- if eq (len $symdiff) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}
-      {{- if ge (len $symdiff) 1 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
+      {{- if eq (len $symdiffna) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}
+      {{- if ge (len $symdiffna) 1 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
+      {{- if eq (len $symdiffnt) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}
+      {{- if ge (len $symdiffnt) 1 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
     {{- end -}}
     {{- end -}}
   {{- end -}}
