@@ -47,9 +47,9 @@
             {{ range first 1 (index (sort .) 0) }}
             <thead>
               <tr>
-                <th>Page</th>
-                <th>Bloc</th>
-                <th>Titre</th>
+                <th class="w-100">Page</th>
+                <th class="w-100">Bloc</th>
+                <th class="w-120">Titre</th>
                 <th>Description</th>
                 {{ if ne .pathexist 0 }}<th>Xpath</th>{{ end }}
               </tr>
