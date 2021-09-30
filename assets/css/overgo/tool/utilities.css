@@ -87,6 +87,10 @@
   margin-bottom: 0;
 }
 
+.mr-1 {
+  margin-right: calc(var(--baseline) / 2);
+}
+
 /* Width */
 
 .w-100 {

@@ -1,8 +1,7 @@
 ---
-title: Critères
-type: criteria
+title: Critères RGAA
 menu:
   footer:
-    title: "Critères"
+    name: "Critères RGAA"
     weight: 1
 ---

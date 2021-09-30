@@ -1,8 +1,8 @@
 ---
-title: Glossaire
+title: Glossaire RGAA
 type: glossary
 menu:
   footer:
-    title: "Glossaire"
+    name: "Glossaire RGAA"
     weight: 1
 ---

@@ -1,4 +1,3 @@
 ---
-title: Critères
-type: criteria
+title: Critères RGAA
 ---
