@@ -1,43 +1,51 @@
-{{/* List the last file in the audits folder */}}
+{{/* List the last file in the specific audits folder :: depends on .type */}}
 {{- $context   := .context -}}
 {{- $project   := .project -}}
 {{- $type      := .type -}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type -}}
+{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility" -}}
 {{- $path      := partial "render/filepath" (dict "context" $context "project" $project "type" .type) $project .type -}}
-{{- $ext       := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
+{{- $ext       := cond (eq "accessibility" .type) "csv" (cond (eq "quality" .type) "yml" "json") -}}
 
 {{- $.context.Scratch.Set    "auditpath-lastfile" "/false" -}}
-{{- $.context.Scratch.Delete "auditname-lastfile" -}}
-{{- $.context.Scratch.Delete "auditname-context" -}}
-{{- $.context.Scratch.Delete "auditpath-all-lastfile" -}}
-{{- $.context.Scratch.Delete "auditname-all-lastfile" -}}
-{{- $.context.Scratch.Delete "pathdatafile" -}}
+{{- $.context.Scratch.Delete "auditname-lastfile"          -}}
+{{- $.context.Scratch.Delete "auditname-context"           -}}
+{{- $.context.Scratch.Delete "auditpath-all-lastfile"      -}}
+{{- $.context.Scratch.Delete "auditname-all-lastfile"      -}}
+{{- $.context.Scratch.Delete "pathdata"                -}}
 
 {{/* If a single data file is called in the front matter or not :: could be remove */}}
 {{- if .datafilename -}}
-  {{- $.context.Scratch.Set "pathdatafile" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) -}}
+  {{- $.context.Scratch.Set "pathdata" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) -}}
 {{- else -}}
-  {{- $.context.Scratch.Set "pathdatafile" ((replace ($path) (printf "%s/" .type) (printf "%s" .type))) -}}
+  {{- $.context.Scratch.Set "pathdata" ((replace ($path) (printf "%s/" .type) (printf "%s" .type))) -}}
 {{- end -}}
 
+{{- if (eq "accessibility" .type) -}}
+  {{- $pathrgaa := partialCached "render/filepath" (dict "context" $context "project" $project "type" "rgaa") $project "rgaa" -}}
+  {{- $.context.Scratch.Set "pathdata" (cond (eq "accessibility" .type) (cond (fileExists $pathrgaa) $pathrgaa ($.context.Scratch.Get "pathdata")) ($.context.Scratch.Get "pathdata")) -}}
+{{- end -}}
+{{- $condfile   := cond (fileExists (printf "%s.%s" ($.context.Scratch.Get "pathdata") $ext)) true false -}}
+{{- $condfolder := cond (fileExists ($.context.Scratch.Get "pathdata")) true false -}}
+
+
 {{/* List all the files in the folder */}}
-{{- if (fileExists (printf "%s.%s" ($.context.Scratch.Get "pathdatafile") $ext)) -}}
-  {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s.%s" ($.context.Scratch.Get "pathdatafile") $ext) -}}
+{{- if $condfile -}}
+  {{- $.context.Scratch.Set "auditpath-lastfile" (printf "%s.%s" ($.context.Scratch.Get "pathdata") $ext) -}}
   {{- $.context.Scratch.Set "auditname-lastfile" (now.Format "2006-01-02") -}}
   {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" "999" ($.context.Scratch.Get "auditpath-lastfile") -}}
   {{- $.context.Scratch.SetInMap "auditname-all-lastfile" "999" ($.context.Scratch.Get "auditname-lastfile") -}}
 {{- end -}}
 
 {{/* List all the files in the folder */}}
-{{- if (fileExists ($.context.Scratch.Get "pathdatafile")) -}}
-  {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdatafile")) -}}
+{{- if $condfolder -}}
+  {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdata")) -}}
   {{- with ($.context.Scratch.Get "dir-lastfile") -}}
     {{- range $key, $value := . -}}
     {{- if in (path.Ext .Name) $ext -}}
-      {{- if (fileExists $path) -}}
+      {{- if (fileExists ($.context.Scratch.Get "pathdata")) -}}
         {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (replace .Name (path.Ext .Name) "")))) -}}
-          {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 0)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) "//" "/") -}}
+          {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 0)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdata") .Name) "//" "/") -}}
           {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string (add $key 0)) (replace .Name (path.Ext .Name) "") -}}
         {{- else -}}
           {{- warnf "The file %s/%s has a bad name, it should be a date YYYY-MM-DD.csv" $path .Name -}}
@@ -50,12 +58,11 @@
         {{- $.context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($.context.Scratch.Get "auditname-all-lastfile"))) ""))) -}}
       {{- end -}}
     {{- else -}}
-    {{- $.context.Scratch.Set "auditname-context" (printf "%s/%s" ($.context.Scratch.Get "pathdatafile") .Name) -}}
+    {{- $.context.Scratch.Set "auditname-context" (printf "%s/%s" ($.context.Scratch.Get "pathdata") .Name) -}}
     {{- end -}}
-
     {{- end -}}
-    {{- else -}}
-{{- warnf "%s is empty" ($.context.Scratch.Get "pathdatafile") -}}
+  {{- else -}}
+    {{- warnf "%s is empty" ($.context.Scratch.Get "pathdata") -}}
   {{- end -}}
 {{- end -}}
 
@@ -68,7 +75,7 @@
     "datafilename"       .datafilename
     "rootpath"           $rootpath
     "pathproject"        (cond (ge (countwords $project) 1) (printf "%s/%s" $rootpath $project) $rootpath)
-    "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
+    "pathdata"           ($.context.Scratch.Get "pathdata")
     "auditfile-context"  ($.context.Scratch.Get "auditname-context")
     "auditfile-name"     ($.context.Scratch.Get "auditname-lastfile")
     "auditfile-path"     ($.context.Scratch.Get "auditpath-lastfile")

@@ -2,5 +2,4 @@
 {{- $pathcontentmulti   := (printf "content/audits/%s/%s/" .project .type) -}}
 {{- $pathcontentsingle  := (printf "content/audits/%s/" .type)             -}}
 {{- $pathstatic         := (printf "static/%s/%s/" .project .type)         -}}
-{{ warnf $pathstatic }}
 {{- return replace (replace (replace (cond (fileExists $pathcontentmulti) $pathcontentmulti (cond (fileExists $pathcontentsingle) $pathcontentsingle $pathstatic)) "///" "/") "//" "/") "/audits/audits/" "/audits/" -}}
