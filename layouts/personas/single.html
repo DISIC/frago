@@ -3,8 +3,8 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $project   :=  (partialCached "render/projectpath" . .) -}}
 {{/* Condition about structure level */}}
-{{- $.Scratch.Set "mainpath"  (partialCached "render/rootpath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
-{{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) -}}
+{{- $filepath      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
+{{- $.Scratch.Set "auditfile" (getJSON $filepath) -}}
 <div class="wrapper">
 <p class="no-print" hidden>← <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 <h1 class="text-center">{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>

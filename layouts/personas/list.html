@@ -1,8 +1,9 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project   :=  (partialCached "render/projectpath" . .) -}}
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "personas.json")) -}}
+{{- $project   := (partial "render/projectpath" . .) -}}
+{{- $path      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
+
 {{- if $project -}}
 <div class="wrapper">
   <h1>{{ .Title }}</h1>
@@ -12,7 +13,7 @@
   {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
   {{- range .RegularPages -}}
     {{/* Range the personas file in the project and find/list the pages on `content/personas/` directory */}}
-    {{- range where (getJSON (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") $project)) "name" "eq" .Title -}}
+    {{- range where (getJSON $path) "name" "eq" .Title -}}
       {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project) }}
     {{- end -}}
   {{- end -}}

@@ -1,11 +1,10 @@
 {{- define "title" -}}Audit Performance {{ (index (split (path.Dir .Path) "/") 1) }}{{- end -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $context :=  .context -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $.context.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "/") -}}
+{{- $context   := .context -}}
+{{- $project   := partialCached "render/projectpath" $context $context -}}
+{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse" -}}
 {{/* Test if files are in static or in each projets */}}
-{{- $.context.Scratch.Set "rootpath" (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 {{- $.context.Scratch.Set "lastfile" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 
 <article class="wrapper narrow">
@@ -43,7 +42,7 @@
     {{- end -}}
   {{- end -}}
   {{- else -}}
-  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $.context.Scratch.Get "rootpath" }}/{{ $project }}/lighthouse</p>
+  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $rootpath }}/{{ $project }}/lighthouse</p>
   {{- end -}}
 </article>
 

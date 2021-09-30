@@ -1,2 +1,2 @@
-{{/* return the rootpah of the audits files */}}
+{{/* return the rootpath of the audits files */}}
 {{- return (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" (cond (fileExists (printf "content/audits/%s/" .type)) "content/audits" "static")) -}}

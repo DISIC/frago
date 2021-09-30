@@ -2,15 +2,12 @@
 {{/* Variables */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context   := . -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $.Scratch.Get "project" }}
-{{- $.Scratch.Get "patharray" }}
-{{- $.Scratch.Set "projectfolders" (cond (eq (len $patharray) 2) $project "") -}}
+{{- $project   :=  (partialCached "render/projectpath" $context $context) -}}
+{{- $path      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "usertests") $project "usertests") -}}
+{{- $.Scratch.Set "auditfile" (getJSON $path) -}}
 {{- $.Scratch.Set "userid" slice -}}
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "usertests")) -}}
-{{- $.Scratch.Set "auditfile" (getJSON (printf "%s/%s/usertests/%s.json" ($.Scratch.Get "mainpath") $project .Params.datafilename)) -}}
 
 <div class="wrapper">
 {{/* Find all task id */}}

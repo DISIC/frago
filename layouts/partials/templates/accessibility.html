@@ -1,7 +1,6 @@
 
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}

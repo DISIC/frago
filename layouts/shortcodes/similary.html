@@ -1,8 +1,8 @@
 {{- $.Scratch.Set "countries" slice -}}
 {{- $project := .Get "project" -}}
 {{- if $project -}}
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "similary.json")) -}}
-{{- $.Scratch.Set "auditpath" (printf "/%s/%s/similary.json" ($.Scratch.Get "mainpath") $project) -}}
+{{- $path      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "similary.json") $project "similary.json") -}}
+{{- $.Scratch.Set "auditpath" $path -}}
 {{- end -}}
 {{- range sort (index (getJSON ($.Scratch.Get "auditpath"))) "country" "asc" -}}
     {{- $.Scratch.Add "countries" (slice .country) -}}

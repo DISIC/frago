@@ -3,9 +3,8 @@
 {{- $project   := .project -}}
 {{- $type      := .type -}}
 {{- $patharray := split (path.Dir .context.Path) "/" -}}
-{{- $.context.Scratch.Set "pathroot" (partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type) -}}
-{{- $path      := replace (replace (cond (not $project) (printf "/%s/%s" ($.context.Scratch.Get "pathroot") $type) (printf "/%s/%s/%s" ($.context.Scratch.Get "pathroot") $project $type)) "///" "/") "//" "/" -}}
-{{- $path       := (replace $path "/audits/audits/" "/audits/") -}}
+{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" .type) $project .type -}}
+{{- $path      := partial "render/filepath" (dict "context" $context "project" $project "type" .type) $project .type -}}
 {{- $ext       := cond (eq .type "accessibility") "csv" (cond (eq .type "quality") "yml" "json") -}}
 
 {{- $.context.Scratch.Set    "auditpath-lastfile" "/false" -}}
@@ -67,8 +66,8 @@
     "ext"                $ext
     "project"            (cond (ge (countwords $project) 1) $project "")
     "datafilename"       .datafilename
-    "pathroot"           ($.context.Scratch.Get "pathroot")
-    "pathproject"        (cond (ge (countwords $project) 1) (printf "%s/%s" ($.context.Scratch.Get "pathroot") $project) ($.context.Scratch.Get "pathroot"))
+    "rootpath"           $rootpath
+    "pathproject"        (cond (ge (countwords $project) 1) (printf "%s/%s" $rootpath $project) $rootpath)
     "pathdatafile"       ($.context.Scratch.Get "pathdatafile")
     "auditfile-context"  ($.context.Scratch.Get "auditname-context")
     "auditfile-name"     ($.context.Scratch.Get "auditname-lastfile")

@@ -1,8 +1,7 @@
 {{- $src := .Get "src" -}}
-{{- $datafile := .Get "datafile" -}}
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $datafile "type" "similary.json")) -}}
-{{- $filepath := (printf "%s/%s/similary.json" ($.Scratch.Get "mainpath") $datafile) -}}
-{{- if fileExists $filepath -}}
+{{- $project := .Get "datafile" -}}
+{{- $filepath := (partialCached "render/filepath" (dict "context" . "project" $project "type" "similary.json") $project "similary.json") -}}
+{{- if fileExists $filepath -}}ss
 {{- if eq .Ordinal 0 -}}
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "benchmark") }}
 <link rel="preload" href="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}" as="script">
@@ -12,10 +11,10 @@
 <div class="benchmark grid grid-4 lightbox-{{ .Ordinal }}">
 {{ range sort (getJSON $filepath) "country" "asc" }}
     {{- $path := printf "%s%s" (index (split ((urls.Parse .url) ) "/") 2) $src -}}
-    {{- $pathfile :=(printf "/static/images/%s/benchmark/" $datafile) -}}
+    {{- $pathfile :=(printf "/static/images/%s/benchmark/" $project) -}}
     {{- if (fileExists $pathfile) -}}
     {{- range (readDir $pathfile) -}}
-        {{- if in (string .Name) (string $path) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.Site.BaseURL | default "/" }}images/{{ $datafile }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="{{ $.Site.BaseURL | default "/" }}images/{{ $datafile }}/benchmark/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
+        {{- if in (string .Name) (string $path) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.Site.BaseURL | default "/" }}images/{{ $project }}/benchmark/{{ .Name }}" class="grid" cfmodified="modified"><img src="{{ $.Site.BaseURL | default "/" }}images/{{ $project }}/benchmark/{{ .Name }}" alt="" class="align-items-center"></a></figure></div>{{ end }}
       {{- end -}}
     {{- end -}}
 {{- end -}}

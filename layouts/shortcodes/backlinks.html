@@ -1,5 +1,4 @@
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" (.Get "project") "type" "backlinks.json")) -}}
-{{- $filepath := (printf "%s/%s/backlinks.json" ($.Scratch.Get "mainpath") (.Get "project")) -}}
+{{- $filepath := (partialCached "render/filepath" (dict "context" . "project" (.Get "project") "type" "backlinks.json") (.Get "project") "backlinks.json") -}}
 {{- if fileExists $filepath -}}
 {{- range sort (getJSON $filepath) -}}
   <div class="flex flex-wrap" style="justify-content: space-between; margin-bottom: 1rem;">

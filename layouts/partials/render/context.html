@@ -1,9 +1,7 @@
 {{/* Determine value of the audits context depends of his location */}}
 {{- $context    := .context -}}
 {{- $project    := .project -}}
-{{- $rootpath   := (partialCached "render/rootpath" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") -}}
-{{- $path       := replace (replace (cond (not $project) (printf "/%s/%s" $rootpath "accessibility") (printf "/%s/%s/%s" $rootpath $project "accessibility")) "///" "/") "//" "/" -}}
-{{- $path       := replace $path "/audits/audits/" "/audits/" -}}
+{{- $path       := (partialCached "render/filepath" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") -}}
 {{- $context.Scratch.Set "datecontext" "" -}}
 {{- $context.Scratch.Set "projectname" (delimit (last 1 (split $project "/")) "") -}}
 
@@ -11,7 +9,7 @@
 {{- if fileExists $path -}}
   {{- range $id, $value := readDir $path -}}
     {{- if eq .Name "context.yml" -}}
-      {{- $file := readFile (printf "%s/%s/accessibility/%s" $rootpath $project .Name) -}}
+      {{- $file := readFile (printf "%s/%s" $path .Name) -}}
       {{/* If file empty */}}
       {{- if $file -}}
         {{- $filecontent := $file | transform.Unmarshal -}}
@@ -20,7 +18,7 @@
           {{- $context.Scratch.SetInMap "context" $date (dict "declared" true "contacts" $filecontent.contacts "website" $filecontent.website "audit" (index $filecontent.audits $date) "path" $path) -}}
         {{- end -}}
       {{- else -}}
-        {{- warnf "Context file %s is empty" (printf "%s/%s/accessibility/%s" $rootpath $project .Name) -}}
+        {{- warnf "Context file %s is empty" $path -}}
       {{- end -}}
     {{- else -}}
     {{- $context.Scratch.Set "datecontext" (replace .Name (path.Ext .Name) "") -}}

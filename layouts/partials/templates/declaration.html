@@ -1,7 +1,6 @@
 {{- $audit    := .audits -}}
 {{- $context  := .context -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $rootpath := (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") -}}
 
 {{/* START Determine the version of the audit from the context declaration */}}
   {{- $context.Scratch.Set "guidelinename" "rgaa" -}}

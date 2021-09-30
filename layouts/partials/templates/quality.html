@@ -4,6 +4,7 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" .context .context) -}}
+{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" "quality") $project "quality" -}}
 {{- $.context.Scratch.Set "context"  . -}}
 {{- $.context.Scratch.Set "pathimage" "" }}
 
@@ -162,10 +163,10 @@
             <dd><strong>XPath :</strong> <span>{{ .path | markdownify | safeHTML }}</span></dd>
           {{- end -}}
           {{- if .criterion -}}
-            {{- if not (eq (slicestr .criterion 0 2) "ER") -}}
+            {{- if not (eq (slicestr .criterion 0 2) "Pi") -}}
             <dd>Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.</dd>
             {{- else -}}
-            <dd>Critère : <a href="https://pidila.gitlab.io/amoa/evaluation-rapide.html">{{ .criterion | safeHTML }}</a> de l’évaluation rapide PIDILA</dd>
+            <dd>Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}/pidila/1.0/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> de la chekclist Pidila</dd>
             {{- end -}}
           {{- end -}}
         </dl>
@@ -200,7 +201,7 @@
 </article>
 {{- end -}}
 {{- else -}}
-  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $.context.Scratch.Get "rootpath" }}/{{ $project }}/quality</p>
+  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $rootpath }}/{{ $project }}/quality</p>
 {{- end -}}
 
 {{- define "script" -}}

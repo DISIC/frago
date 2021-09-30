@@ -2,8 +2,7 @@
 {{ if eq .Ordinal 0 }}
 {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
 {{- end -}}
-{{- $.Scratch.Set "mainpath" (partial "render/rootpath" (dict "context" . "project" $project "type" "personas.json")) -}}
-{{- $filepath := (printf "%s/%s/personas.json" ($.Scratch.Get "mainpath") (.Get "project")) -}}
+{{- $filepath      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 {{- if fileExists $filepath -}}
 <div class="flex grid">
 {{- range (getJSON (printf "static/%s/personas.json" $project)) -}}
