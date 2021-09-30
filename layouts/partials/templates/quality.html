@@ -4,7 +4,6 @@
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" .context .context) -}}
-{{- $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" "quality") $project "quality" -}}
 {{- $.context.Scratch.Set "context"  . -}}
 {{- $.context.Scratch.Set "pathimage" "" }}
 
@@ -201,7 +200,7 @@
 </article>
 {{- end -}}
 {{- else -}}
-  <p>Aucun fichier de test n’est présent dans le répertoire : {{ $rootpath }}/{{ $project }}/quality</p>
+  <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ $project }}/quality</p>
 {{- end -}}
 
 {{- define "script" -}}
