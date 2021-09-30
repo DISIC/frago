@@ -2,7 +2,7 @@
 {{- $context := . -}}
 {{- $project :=  (partial "render/projectpath" $context $context) -}}
 
-{{- if ne $project "audits" -}}
+{{- if and (ne $project "audits") (ne .Path "audits") -}}
 <section class="wrapper narrow">
     {{- $.Scratch.Set "listmonths" slice -}}
     {{- range $id, $value := .Params.gantt -}}
@@ -58,6 +58,7 @@
     {{- $quality       := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path") -}}
     {{- $lighthouse    := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 
+    {{/* START - Display medium compliance */}}
     {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
       {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
         {{- if ne (len .compliance) 1 -}}
@@ -67,6 +68,8 @@
         {{- end -}}
       {{- end -}}
     {{- end -}}
+    {{/* END - Display medium compliance */}}
+
     {{/* START - If accessibility and quality and lighthouse */}}
     {{- if or $accessibility $quality $lighthouse -}}
     <h2 class="text-center">{{ if $.Scratch.Get "subservice" }}Site principal{{ else }}Scores{{ end }}</h2>
@@ -75,7 +78,7 @@
     {{/* START - If accessibility */}}
     {{- if $accessibility -}}
       {{- $.Scratch.Set "render" slice -}}
-      {{- $.Scratch.Set "audit" (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path") ) -}}
+      {{- $.Scratch.Set "audit" (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path")) -}}
       <h3 class="m-0">Accessibilité {{- if ($.Scratch.Get "audit").scores.compliance -}}{{ with (first 1 (where (where .OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | urlize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>{{- end -}}{{- end -}}</h3>
       {{- if ($.Scratch.Get "audit").scores.compliance -}}
         {{- $conforme := ($.Scratch.Get "audit").scores.compliance -}}
