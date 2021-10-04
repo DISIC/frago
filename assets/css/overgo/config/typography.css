@@ -79,8 +79,7 @@ legend {
 }
 
 h6,
-.h6,
-.smaller {
+.h6 {
   font-size: var(--smaller);
 }
 h5,
@@ -88,8 +87,7 @@ h5,
   font-size: var(--normal);
 }
 h4,
-.h4,
-.bigger {
+.h4 {
   font-size: var(--bigger);
 }
 h3,
