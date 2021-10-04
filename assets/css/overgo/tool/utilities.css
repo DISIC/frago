@@ -73,6 +73,16 @@
   text-align: right;
 }
 
+/* Font */
+
+.smaller {
+  font-size: var(--smaller);
+}
+
+.bigger {
+  font-size: var(--bigger);
+}
+
 /* Margin */
 
 .m-0 {
@@ -83,8 +93,16 @@
   margin-top: 0;
 }
 
+.mt-1 {
+  margin-top: calc(var(--baseline) / 2);
+}
+
 .mb-0 {
   margin-bottom: 0;
+}
+
+.mb-1 {
+  margin-bottom: calc(var(--baseline) / 2);
 }
 
 .mr-1 {
