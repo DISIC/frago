@@ -53,7 +53,7 @@
     {{- range $idblock, $b := .blocks -}}
       {{- if .errors -}}
         {{- range $s:= .errors -}}
-          {{- if not (or (in .criterion "Pi") (in .criterion "OP")) -}}
+          {{- if not (or (in .criterion "Pi") (in .criterion "OP") (in .criterion "ER")) -}}
             {{- with .criterion -}}
             {{- $.context.Scratch.Add (printf "criterion-%s" .) 1 -}}
             {{- $.context.Scratch.SetInMap "criterianumber" (string .) ($.context.Scratch.Get (printf "criterion-%s" .)) -}}
@@ -159,7 +159,7 @@
         {{/* Create an array for the images slider with screen capture */}}
         {{- $.context.Scratch.Add "index" (slice $path) -}}
         <dl>
-          {{- if not (or (in .criterion "Pi") (in .criterion "OP")) -}}
+          {{- if not (or (in .criterion "Pi") (in .criterion "OP") (in .criterion "ER")) -}}
           <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
             {{- $.context.Scratch.Set "fileexist" false -}}
             {{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}
@@ -220,6 +220,7 @@
             </dd>
           {{- else if (in .criterion "OP") -}}
             <p>Not ready</p>
+          {{- else -}}
           {{- end -}}
         </dl>
         {{ if or .codebefore .codeafter }}
