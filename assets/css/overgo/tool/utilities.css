@@ -83,6 +83,10 @@
   font-size: var(--bigger);
 }
 
+.small-caps {
+  font-variant: small-caps;
+}
+
 /* Margin */
 
 .m-0 {

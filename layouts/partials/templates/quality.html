@@ -102,7 +102,7 @@
   {{- range $idpage, $s := .pages -}}
     {{- $name := .name -}}
     {{/* Range second level */}}
-    <h3 id="{{ .name | urlize }}">{{ $name }} <small>- <span class="counter">{{ index ($.context.Scratch.Get "countererrorspagelist") (string $idpage) }}</span> erreurs recensées sur cette page</small></h3>
+    <h3 id="{{ .name | urlize }}"><span class="small-caps">{{ $name }}</span> <small>- <span class="counter">{{ index ($.context.Scratch.Get "countererrorspagelist") (string $idpage) }}</span> erreurs recensées sur cette page</small></h3>
     {{- range $idblock, $b := .blocks -}}
       {{- $.context.Scratch.Set "countererrorsblock" 0 -}}
       {{/* Range third level and count errors */}}
@@ -249,7 +249,7 @@
       {{- end -}}{{/* Range second level */}}
       <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}-1*/}} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
   {{- end -}}{{/* Range first level */}}
-  <hr>
+  <hr class="divider-strong">
 {{- end -}}{{/* Range the quality file */}}
 </article>
 {{- end -}}

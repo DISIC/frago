@@ -147,6 +147,13 @@ hr {
   background: none;
 }
 
+.divider-strong {
+  margin: calc(var(--baseline) * 2) 0;
+  width: 100%;
+  border: none;
+  border-top: 3px dashed var(--color-primary-dark);
+}
+
 .divider,
 .divider:before {
   border-radius: 50% 50% 50% 50%/50% 50% 50% 50%;
@@ -154,7 +161,7 @@ hr {
 
 .divider {
   overflow: hidden;
-  margin: 0 auto var(--baseline);
+  margin: 0 auto calc(var(--baseline) * 2);
   max-width: 80%;
   height: 4em;
   border: none;
@@ -169,7 +176,7 @@ hr {
   margin: 0 auto;
   width: 80%;
   height: 2em;
-  box-shadow: var(--enable-shadows, 0 -3px 44px hsla(var(--base-primary), var(--base-sat), var(--base-light), 0.38));
+  box-shadow: var(--enable-shadows, 50px -10px 40px hsla(var(--base-primary), var(--base-sat), var(--base-light), 1));
 }
 
 /* TYPOGRAPHY

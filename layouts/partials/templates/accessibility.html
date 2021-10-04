@@ -147,7 +147,7 @@
 
   {{/* Range map errors sort by RGAA order - on all pages */}}
   {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
-  <h3 id="pagesall">Anomalies présentes sur toutes les pages</h3>
+  <h3 id="pagesall" class="small-caps">Anomalies présentes sur toutes les pages</h3>
   {{- else -}}
   <h3 >Anomalies</h3>
   {{- end -}}
@@ -176,7 +176,8 @@
       </strong></p>
       {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
         {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+        <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+        {{/*- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
           {{- if reflect.IsSlice . -}}
           <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
@@ -189,7 +190,7 @@
           <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
-      {{- end -}}
+      {{- end -*/}}
       {{- end -}}
     {{- end -}}
     {{- end -}}
@@ -197,9 +198,11 @@
   {{- end -}}
   {{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 
+  <hr class="divider">
+
   {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
   {{/* Range map errors sort by RGAA order - on specifics pages */}}
-  <h3>Anomalies présentes sur les pages spécifiques</h3>
+  <h3 class="small-caps">Anomalies présentes sur les pages spécifiques</h3>
   {{/* Display errors presents on specific pages */}}
   {{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
     {{- $.context.Scratch.Set "text" 0 -}}
@@ -227,7 +230,8 @@
         </strong></p>
         {{- if $condcontentlen }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
           {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-          {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+          {{/*- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
             {{- if eq $idx (string ($tests)) -}}
             {{- if reflect.IsSlice . -}}
             <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
@@ -240,13 +244,14 @@
             <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
             {{- end -}}
           {{- end -}}
-        {{- end -}}
+        {{- end -*/}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
   {{- if eq ($.context.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
-
+  {{- if ne (add (int $id) 1) (len ($.context.Scratch.Get "pageslist")) -}}<hr class="divider-strong">{{- end -}}
 {{- end -}}
+
 <hr class="divider">
 {{- end -}}
 {{/* END If several page tested */}}
@@ -266,7 +271,7 @@
 
 {{- end -}}
 {{/* END Test if audit file exists */}}
-<hr>
+<hr class="divider">
 {{/* Display declaration in accessibility page if no output format setted */}}
 {{ if not (.context.OutputFormats.Get "declarationpage") }}
 {{- partial "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) -}}
