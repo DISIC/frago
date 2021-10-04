@@ -56,7 +56,7 @@
   {{/* Load the criteria file for the good audit version */}}
   {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
   {{/* Load the glossary file for the good audit version */}}
-  {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($.context.Scratch.Get "guidelinename") ($.context.Scratch.Get "guidelineversion")) -}}
+  {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
 
   {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
   <h1>Audit Accessibilité</h1>
@@ -132,7 +132,7 @@
     <h3>Accéder aux pages auditées</h3>
     <nav>
       <ul role="list">
-        <li><a href="#pagesall">Erreurs sur toutes les pages</a></li>
+        <li><a href="#pagesall">Anomalies sur toutes les pages</a></li>
         {{/* Loop all pages for anchor navigation */}}
         {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
         <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
