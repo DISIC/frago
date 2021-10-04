@@ -5,7 +5,8 @@
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" .context .context) -}}
 {{- $.context.Scratch.Set "context"  . -}}
-{{- $.context.Scratch.Set "pathimage" "" }}
+{{- $.context.Scratch.Set "pathimage" "" -}}
+{{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
 
 {{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
@@ -18,6 +19,10 @@
 {{ end }}
 
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
+{{- $.context.Scratch.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
+{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
+
+
 
 <article class="wrapper narrow audit">
 {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
@@ -40,6 +45,26 @@
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
 {{- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
+
+{{ $percent := (div 100 (add (float ($.context.Scratch.Get "scores").scores.criteria.conforme) (float ($.context.Scratch.Get "scores").scores.criteria.nonconforme))) | lang.NumFmt 10 }}
+
+{{- range ($.context.Scratch.Get "auditfile") -}}
+  {{- range $idpage, $s := .pages -}}
+    {{- range $idblock, $b := .blocks -}}
+      {{- if .errors -}}
+        {{- range $s:= .errors -}}
+          {{- if not (or (in .criterion "Pi") (in .criterion "OP")) -}}
+            {{- with .criterion -}}
+            {{- $.context.Scratch.Add (printf "criterion-%s" .) 1 -}}
+            {{- $.context.Scratch.SetInMap "criterianumber" (string .) ($.context.Scratch.Get (printf "criterion-%s" .)) -}}
+            {{- $.context.Scratch.SetInMap "criteriavalue" (string .) (math.Round (div (float $percent) (float ($.context.Scratch.Get (printf "criterion-%s" .))))) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
 {{/* Create a anchors menu */}}
 <div class="tableofcontents page-break">
@@ -134,6 +159,7 @@
         {{/* Create an array for the images slider with screen capture */}}
         {{- $.context.Scratch.Add "index" (slice $path) -}}
         <dl>
+          {{- if not (or (in .criterion "Pi") (in .criterion "OP")) -}}
           <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
             {{- $.context.Scratch.Set "fileexist" false -}}
             {{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}
@@ -162,11 +188,38 @@
             <dd><strong>XPath :</strong> <span>{{ .path | markdownify | safeHTML }}</span></dd>
           {{- end -}}
           {{- if .criterion -}}
-            {{- if not (eq (slicestr .criterion 0 2) "Pi") -}}
-            <dd>Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.</dd>
-            {{- else -}}
-            <dd>Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}/pidila/1.0/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> de la chekclist Pidila</dd>
+            {{- $criteriafile := index (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+            {{- $thematiques  := index (split .criterion ".") 0 -}}
+            {{- $criteria     := index (split .criterion ".") 1 -}}
+            {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
+            {{- $s := where $criteriafile "number" "eq" (int ($thematiques)) -}}
+            <dd class="details mt-1 mb-1">
+              <p class="summary">
+                {{ (replaceRE "=\"#" $glossaire ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML  }}<br>
+                Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
+                {{/* Pourcentage potentiel de correction du RGAA : {{ index ($.context.Scratch.Get "criteriavalue") (string .criterion) */}}
+              </p>
+            </dd>
+          {{- end -}}
+          {{- else if (in .criterion "Pi") -}}
+            {{- $criterionpi := (index (where (index $.context.Site.Data.pidila "1.0").criteria.criterias "id" (replace .criterion "." "-")) 0) -}}
+            <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
+            {{ with (index (where ($.context.Site.Data.pidila).criteria "id" .criterion) 0).description }}<dd>{{ . }}</dd>{{- end -}}
+            {{- if .description -}}
+              <dd>{{ .description | markdownify | safeHTML }}</dd>
             {{- end -}}
+            <dd>
+              <details class="details-arrow mt-1 mb-1">
+                <summary>
+                  {{ $criterionpi.title }}<br>
+                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}/pidila/1.0/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> de la checklist Pidila
+                </summary>
+                {{- $findref := (findRE "<h3>Références</h3>.*" (replace ($criterionpi.rawHTMLContent) "\n" "")) -}}
+                {{- replace (replace ($criterionpi.rawHTMLContent) "\n" "") (delimit $findref "") "" | safeHTML -}}
+              </details>
+            </dd>
+          {{- else if (in .criterion "OP") -}}
+            <p>Not ready</p>
           {{- end -}}
         </dl>
         {{ if or .codebefore .codeafter }}
