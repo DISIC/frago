@@ -77,17 +77,26 @@
     {{/* Create an array with all pages */}}
     {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) ($.context.Scratch.Get "auditfile-csv")) "pageslist") -}}
     {{/* Control which tests are made for each type of audit :: this is an help for knowing witch tests are missing */}}
-    {{- range $auditname, $audit := $.context.Site.Data.tests -}}
+    {{- range $auditname, $audit := $context.Site.Data.rgaa.tests -}}
       {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
-      {{- range $id, $criterium := index $.context.Site.Data.tests $auditname -}}
+      {{- range $id, $criterium := index $.context.Site.Data.rgaa.tests $auditname -}}
         {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
-          {{- if eq $criterium $key -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
+          {{- if eq $criterium $value -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $value }}{{- end -}}
         {{- end -}}
       {{- end -}}
-      {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) (delimit (($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.tests $auditname)) ", ")}}
+      {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) ((($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.rgaa.tests $auditname))) -}}
     {{- end -}}
 
-    <h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères<span class="hide">&nbsp;{{ $.context.Scratch.Get "criterecontrol25" }} - {{ $.context.Scratch.Get "criterecontrol50" }} - {{ $.context.Scratch.Get "criterecontrol81" }} - {{ $.context.Scratch.Get "criterecontrol106"  }}</span>{{ end }}</h2>
+    <script>
+      console.group("Critères non testés: ");
+      console.log("Critères 25","{{ $.context.Scratch.Get "criterecontrol25" }}")
+      console.log("Critères 50","{{ $.context.Scratch.Get "criterecontrol50" }}")
+      console.log("Critères 81","{{ $.context.Scratch.Get "criterecontrol81" }}")
+      console.log("Critères 106","{{ $.context.Scratch.Get "criterecontrol106" }}")
+      console.groupEnd();
+    </script>
+
+    <h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères{{ end }}</h2>
     <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
     {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}" aria-label="Accéder à la déclaration de {{ ($context.GetPage $project).Title }}">Accéder à la déclaration</a></p>{{- end -}}
 
@@ -176,21 +185,24 @@
       </strong></p>
       {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
         {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-        <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
-        {{/*- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
-          {{- if eq $idx (string ($tests)) -}}
-          {{- if reflect.IsSlice . -}}
-          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
-          {{- if (after 1 .) -}}
-          <ol>
-            {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
-          </ol>
+        {{- if eq ($.context.Scratch.Get "auditmethodology") 2 -}}
+          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+        {{ else if eq ($.context.Scratch.Get "auditmethodology") 3 }}
+          {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+            {{- if eq $idx (string ($tests)) -}}
+              {{- if reflect.IsSlice . -}}
+                <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+              {{- if (after 1 .) -}}
+                <ol>
+                  {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+                </ol>
+              {{- end -}}
+            {{- else -}}
+              <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+            {{- end -}}
           {{- end -}}
-          {{- else -}}
-          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
           {{- end -}}
         {{- end -}}
-      {{- end -*/}}
       {{- end -}}
     {{- end -}}
     {{- end -}}
@@ -224,27 +236,30 @@
       {{- $.context.Scratch.Add "is-page-error" 1 -}}
           <p class="mb-0"><strong>
           {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge d-none good">Facile</span>{{- end -}}
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge d-none medium">Modéré</span>{{- end -}}
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge d-none bad">Difficile</span>{{- end -}}
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
         </strong></p>
         {{- if $condcontentlen }}<p class="m-0 smaller"><b>Commentaire(s)</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
           {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
-          {{/*- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
-            {{- if eq $idx (string ($tests)) -}}
-            {{- if reflect.IsSlice . -}}
-            <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
-            {{- if (after 1 .) -}}
-            <ol>
-              {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
-            </ol>
+          {{- if eq ($.context.Scratch.Get "auditmethodology") 2 -}}
+            <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+          {{ else if eq ($.context.Scratch.Get "auditmethodology") 3 }}
+            {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+              {{- if eq $idx (string ($tests)) -}}
+                {{- if reflect.IsSlice . -}}
+                  <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+                {{- if (after 1 .) -}}
+                  <ol>
+                    {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+                  </ol>
+                {{- end -}}
+              {{- else -}}
+                <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+              {{- end -}}
             {{- end -}}
-            {{- else -}}
-            <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
             {{- end -}}
           {{- end -}}
-        {{- end -*/}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
