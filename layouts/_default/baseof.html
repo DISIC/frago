@@ -77,9 +77,9 @@
   <link rel="preload" href="/assets/fonts/{{ .Name }}" as="font" crossorigin=anonymous>
   {{- end -}}
   {{- else -}}
-  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Regular.woff2" as="font" crossorigin=anonymous>
-  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Light.woff2" as="font" crossorigin=anonymous>
-  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Bold.woff2" as="font" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Regular.woff2" as="font" media="(prefers-reduced-data: no-preference)" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Light.woff2" as="font" media="(prefers-reduced-data: no-preference)" crossorigin=anonymous>
+  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/fonts/Marianne-Bold.woff2" as="font" media="(prefers-reduced-data: no-preference)" crossorigin=anonymous>
   {{- end -}}
   <!-- RSS -->
   {{- with .OutputFormats.Get "RSS" -}}
