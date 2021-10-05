@@ -23,9 +23,9 @@
       {{/* Range lines */}}
       {{- range $id, $value2 := after $auditmethodology . -}}
         {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 -}}{{- end -}}
-        {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") (eq . "na") (eq . "?") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "rendertesttotal") 1 -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "countercritere") 1 -}}{{- end -}}
+        {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") (eq (index (split . "|") 0) "na") (eq . "?") -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "rendertesttotal") 1 -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "countercritere") 1 -}}{{- end -}}
         {{- if ne ($.context.Scratch.Get (printf "%s%s" $scorekey "countercritere")) 0 -}}{{- $.context.Scratch.Add (printf "%s%s" $scorekey "rendercriteretotal") (string $critere) -}}{{- end -}}
-        {{- if and . (ne . "nt") -}}
+        {{- if and . (ne (index (split . "|") 0) "nt") -}}
           {{- $.context.Scratch.Add (printf "%s%s" $scorekey "valuecriterepage") . -}}
           {{- $.context.Scratch.Add (printf "%s%s" $scorekey "valuecriterepages") . -}}
           {{/* Build array per pages */}}
