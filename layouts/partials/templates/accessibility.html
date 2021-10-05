@@ -219,7 +219,7 @@
   {{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
     {{- $.context.Scratch.Set "text" 0 -}}
     {{- $page := . -}}
-    <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">‣ Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
+    <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}"><span aria-hidden="true">■ </span>Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
     {{- $.context.Scratch.Set "is-page-error" 0 -}}
     {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
     {{- if ne (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 -}}

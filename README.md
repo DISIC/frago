@@ -27,12 +27,14 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
          │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
          │     └── accessibility
          │          ├── 2020-10-15.csv
-         │          └── 2020-11-15.csv
+         │          ├── 2020-11-15.csv
+         │          └── context.yml // Déclarer le contexte ce chaque audit
          └── projet2
                 ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
                 └── accessibility
                     ├── 2020-10-15.csv
-                    └── 2020-11-15.csv
+                    ├── 2020-10-15.csv
+                    └── context.yml // Déclarer le contexte ce chaque audit
 ```
 
 ### Configuration
@@ -42,7 +44,7 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 ```toml
 [module]
   [[module.imports]]
-    path = "github.com/disic/frago"
+    path = "github.com/disic/frago" // si vous voulez utiliser `hugo mod`, sinon juste télécharger le thème et le placer dans `themes/frago`
 
 title = "Mon administration"
 theme = "frago"
@@ -123,14 +125,14 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
   * [Grille tests RGAA 4.0 vierge](/static/grille-tests-rgaa4.0.csv)
   * [Grille tests RGAA 4.1 vierge](/static/grille-tests-rgaa4.1.csv)
 
-Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), intermédiaire (50 critères), complémentaire (81 critères).  
-Exemple, Pour un audit rapide, ne traiter que les cases avec le numéro **25**.
+Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères), intermédiaire (81 critères).  
+Exemple, pour un audit rapide, ne traiter que les cellules avec le numéro **25**.
 
 ### API
 
 La configuration de l’API est contenue dans le fichier `config.toml` du thème. Il existe une configuration par défaut qui peut-être surchargée en fonction de la structure de fichier. Pour la structure simplifiée, il n’y a rien à ajouter.
 
-L’idée est d’éviter de créer des pages uniquement pour avoir une URL disponible lors du build du site (seuls défauts, un export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
+L’idée est d’éviter de créer des pages uniquement pour avoir une URL (pour accessibility.html, quality.html et performance.html) lors du build du site (seul défaut, un export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
 
 Cette API permet d’obtenir des fichiers `json` de type :
 
@@ -173,28 +175,30 @@ Les différents types de contenus servent à la publication d’audits, l’anal
     ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
     ├── audits // Type de contenu audits, les projets doivent être dans un répertoire avec le nom audits
     │     ├── projet1
-    │     │      ├── index.md // ⚠️  Page intermédiaire qui liste les sous rapports (accessibilité, performance…)
-    │     │      ├── accessibility
-    │     │      │   ├── 2020-10-15.csv
-    │     │      │   └── 2020-11-15.csv
-    │     │      ├── lighthouse
-    │     │      │   ├── 2020-10-15.csv
-    │     │      │   └── 2020-11-15.csv
-    │     │      └── quality
-    │     │          ├── 2020-10-15.csv
-    │     │          └── 2020-11-15.csv
+    │     │    ├── index.md // ⚠️  Page intermédiaire qui liste les sous rapports (accessibilité, performance…)
+    │     │    ├── accessibility
+    │     │    │   ├── 2020-10-15.csv
+    │     │    │   ├── 2020-11-15.csv
+    │     │    │   └── context.yml // Déclarer le contexte ce chaque audit
+    │     │    ├── lighthouse
+    │     │    │   ├── 2020-10-15.json
+    │     │    │   └── 2020-11-15.json
+    │     │    └── quality
+    │     │        ├── 2020-10-15.yml
+    │     │        └── 2020-11-15.yml
     │     │
     │     └── projet2
     │          ├── index.md
     │          ├── accessibility
     │          │   ├── 2020-10-15.csv
-    │          │   └── 2020-11-15.csv
+    │          │   ├── 2020-11-15.csv
+    │          │   └── context.yml // Déclarer le contexte ce chaque audit
     │          ├── lighthouse
-    │          │   ├── 2020-10-15.csv
-    │          │   └── 2020-11-15.csv
+    │          │   ├── 2020-10-15.json
+    │          │   └── 2020-11-15.json
     │          └── quality
-    │              ├── 2020-10-15.csv
-    │              └── 2020-11-15.csv
+    │              ├── 2020-10-15.yml
+    │              └── 2020-11-15.yml
     ┋
     ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
     ┋
@@ -203,12 +207,13 @@ Les différents types de contenus servent à la publication d’audits, l’anal
           ├── accessibility
           │   ├── 2020-10-15.csv
           │   └── 2020-11-15.csv
+          │   └── context.yml // Déclarer le contexte ce chaque audit
           ├── lighthouse
-          │   ├── 2020-10-15.csv
-          │   └── 2020-11-15.csv
+          │   ├── 2020-10-15.json
+          │   └── 2020-11-15.json
           └── quality
-              ├── 2020-10-15.csv
-              └── 2020-11-15.csv
+              ├── 2020-10-15.yml
+              └── 2020-11-15.yml
 ```
 
 ##### Architecture complète (⚠️ Ancienne présente une architecture alternative, elle doit évoluer pour correspondre à tous les types de contenus)
@@ -419,7 +424,6 @@ audits:
 ```yaml
 ---
 type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdelademarche/quality/YYYY-MM-JJ.yml
-datafilename: YYYY-MM-JJ // appel le fichier avec la date correspondante
 ---
 ```
 
@@ -611,4 +615,5 @@ Le thème Frago utilise cette liste de bibliothèques :
 
 ## Auteur
 
-2020-2021, Bertrand Keller pour le ministère de l’économie, des finances et de la relance.
+2019-2020, Bertrand Keller pour la direction interministérielle du numérique.
+2020-2021, Bertrand Keller pour le ministère de l’économie, des Finances et de la Relance.

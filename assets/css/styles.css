@@ -148,10 +148,10 @@ hr {
 }
 
 .divider-strong {
-  margin: calc(var(--baseline) * 2) 0;
+  margin: calc(var(--baseline) * 1.5) 0;
   width: 100%;
   border: none;
-  border-top: 3px dashed var(--color-primary-dark);
+  border-top: 2px dashed var(--color-primary-dark);
 }
 
 .divider,
@@ -161,7 +161,7 @@ hr {
 
 .divider {
   overflow: hidden;
-  margin: 0 auto calc(var(--baseline) * 2);
+  margin: calc(var(--baseline) * 2) auto;
   max-width: 80%;
   height: 4em;
   border: none;
