@@ -4,7 +4,7 @@
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
-{{- range ($.context.Scratch.Get "lastfile-critical") -}}
+{{- range ($.context.Scratch.Get "lastfile-quality") -}}
 {{- range $idpage, $s := .pages -}}
   {{- $page := dict "pagename" .name -}}
   {{- range $idblock, $s := .blocks -}}

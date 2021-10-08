@@ -44,7 +44,7 @@
 
 <h2 class="page-break">Erreurs à corriger</h2>
 {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
-{{- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
+{{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
 {{ $percent := (div 100 (add (float ($.context.Scratch.Get "scores").scores.criteria.conforme) (float ($.context.Scratch.Get "scores").scores.criteria.nonconforme))) | lang.NumFmt 10 }}
 
