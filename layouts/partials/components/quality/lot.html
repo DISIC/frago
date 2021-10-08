@@ -35,7 +35,7 @@
         <th class="text-center w-100">Page</th>
         <th class="text-center w-100">Bloc</th>
         <th class="text-center w-100">Type</th>
-        <th class="text-center w-120">Criticité</th>
+        <th class="text-center w-120">Critère</th>
       </tr>
     </thead>
     <tbody>
@@ -51,10 +51,28 @@
           <td class="text-center">{{ if .pagename }}{{ .pagename | markdownify }}{{ end }}</td>
           <td class="text-center" style="color: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%);">{{ if .blockname }}<strong>{{ .blockname | replaceRE "-.*" "$1" }}</strong>{{ end }}</td>
           <td class="text-center">{{ .type }}</td>
+          <td class="text-center">
+            <strong>
+            {{- with .criterion -}}
+              {{- if not (or (in . "Pi") (in . "OP") (in . "ER")) -}}
+                {{ . }}<br>
+                du RGAA
+              {{- else if (in . "Pi") -}}
+                de Pidila
+              {{- else if (in . "OP") -}}
+                de Opquast
+              {{- end -}}
+            {{- else -}}
+              Aucun
+            {{- end -}}
+            </strong>
+          </td>
+          {{/*
           <td class="critical{{ if eq .status "critique" }} bad{{ else if eq .status "important" }} medium{{ else if eq .status "moindre" }} normal{{ else }} none{{ end }}">
             <span class="emoticon">{{ if eq .status "critique" }}🚫 {{ else if eq .status "important" }}❗️ {{ else if eq .status "moindre" }}➰ {{ else }}❓ {{ end }}</span>
             <strong class="text-color-light">{{ .status }}{{ if not .status }}Aucune{{ end }}</strong>
           </td>
+          */}}
         </tr>
         {{- $.context.Scratch.Set "blockname" .blockname -}}
       {{- end -}}
