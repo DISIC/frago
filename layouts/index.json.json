@@ -51,9 +51,10 @@
           {{- range $idx, $value := ((index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path")) -}}
               {{- $date := index (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) "date" -}}
               {{- $context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) -}}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores)) -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores) "date" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).date)) -}}
           {{- end -}}
-          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" ($.Scratch.Get $type)) -}}
+          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" (sort ($.Scratch.Get $type) "date" "desc")) -}}
+          {{ warnf "%s" ($.Scratch.Get $type) }}
         {{- end -}}
       {{- end -}}
       {{- if eq $type "quality" -}}
