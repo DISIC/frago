@@ -21,7 +21,6 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 .
 ├── config.toml
 └── content
-    ├── _index.md // Page d’accueil
     └── audits
          ├── projet1
          │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête

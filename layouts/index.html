@@ -1,6 +1,7 @@
 {{- define "main" -}}
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
-  {{- if eq .Type "audits" -}}
+  {{- if (fileExists "content/audits") -}}{{ .Scratch.Set "isSimple" slice }}{{- range (readDir "content/audits") -}}{{ $.Scratch.Add "isSimple" .Name }}{{- end -}}{{- end -}}
+  {{- if ne (len (intersect (.Scratch.Get "isSimple") (slice "accessibility" "rgaa"))) 0 -}}
   {{- partial "templates/projects.html" . -}}
   {{- else -}}
   {{- partialCached "templates/projects-list.html" . . -}}
