@@ -1,10 +1,21 @@
 ---
+title: Accueil
+outputs:
+  - html
+  - declaration
+  - schema
+  - declarationpage
 cascade:
 - _target:
-    path: /
+    path: /audits/**
   outputs:
     - html
     - declaration
-    - schema
     - declarationpage
+    - accessibility
+    - quality
+    - performance
+    - accessibilitypage
+    - qualitypage
+    - performancepage
 ---

@@ -1,0 +1,5 @@
+{{- $context := . -}}
+{{- $project :=  (partial "render/projectpath" $context $context) -}}
+
+<h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Tableau de bord{{ end }}</h1>
+{{- partialCached "templates/projects-list.html" $context $context -}}

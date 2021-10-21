@@ -1,0 +1,7 @@
+{{ $.Scratch.Set "isSimple" slice }}
+{{ if (fileExists "content/audits") }}
+  {{ range (readDir "content/audits") }}
+  {{ $.Scratch.Add "isSimple" .Name }}
+  {{ end }}
+{{ end }}
+{{ return (ne (len (intersect ($.Scratch.Get "isSimple") (slice "accessibility" "rgaa"))) 0) }}

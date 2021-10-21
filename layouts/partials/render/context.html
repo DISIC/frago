@@ -32,12 +32,12 @@
 {{/* In a front matter of the current page */}}
 {{- with $context.GetPage (printf "/audits/%s/_index.md" $project)        -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/_index.md" $project))        }}{{- end -}}
 {{- with $context.GetPage (printf "/audits/%s/index.md" $project)         -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/index.md" $project))         }}{{- end -}}
-{{- with $context.GetPage "/audits/_index.md"                             -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/_index.md" $project))           }}{{- end -}}
-{{- with $context.GetPage "/audits/index.md"                              -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/index.md" $project))            }}{{- end -}}
 {{- with $context.GetPage (printf "/audits/%s/accessibility.md" $project) -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/accessibility.md" $project)) }}{{- end -}}
+{{- if (partial "render/issimpleproject.html" .context) -}}
 {{- with $context.GetPage "/audits/accessibility.md"                      -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/accessibility.md")    }}{{- end -}}
 {{- with $context.GetPage "/audits/_index.md"                             -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/_index.md")           }}{{- end -}}
 {{- with $context.GetPage "/audits/index.md"                              -}}{{ $context.Scratch.SetInMap "context" ($context.Scratch.Get "datecontext") (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/index.md")            }}{{- end -}}
+{{- end -}}
 {{- end -}}
 {{ if not ($.context.Scratch.Get "context") }}
 {{- warnf "Context is not declared for the project %s see the documentation" $context.Path -}}
@@ -54,7 +54,7 @@
     {{- end -}}
   {{- else -}}
     {{/* Should debug "audits/_index.md" path for list.xxxx.json output */}}
-    {{- if ne (path.Dir $context.Path) "audits/_index.md" -}}
+    {{- if and (ne (path.Dir $context.Path) "audits/_index.md") (partial "render/issimpleproject.html" .) -}}
       {{- warnf "Context is not declared for %s see the documentation - it can be done in files content/audits/%s or content/audits/%s/accessibility/context.yml" (cond (not ($context.Scratch.Get "projectname")) (printf "this project") (printf "the project %s" $project)) $context.Path $project -}}
     {{- end -}}
   {{- end -}}

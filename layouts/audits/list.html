@@ -20,19 +20,17 @@
         {{- end -}}
       {{- end -}}{{- end -}}
     {{- else -}}
-    <h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
-    {{- if or $project (eq (len (split (.RelPermalink) "/")) 2) -}}
-      {{- partial "templates/projects.html" . -}}
-    {{- else -}}
-      {{- partialCached "templates/projects-list.html" $context $context -}}
-    {{- end -}}
+      {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
+        {{- partial "templates/projects.html" . -}}
+      {{- else -}}
+        {{- partialCached "templates/dashboard.html" $context $context -}}
+      {{- end -}}
     {{- end -}}
   {{- else -}}
-    <h1 class="text-center wrapper">{{ with .Title }}{{ . }}{{ else }}Liste des sites{{ end }}</h1>
-    {{- if or $project (eq (len (split (.RelPermalink) "/")) 2) -}}
+    {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
       {{- partial "templates/projects.html" . -}}
     {{- else -}}
-      {{- partialCached "templates/projects-list.html" $context $context -}}
+      {{- partialCached "templates/dashboard.html" $context $context -}}
     {{- end -}}
     {{- partial "elements/content.html" .Content -}}
   {{- end -}}

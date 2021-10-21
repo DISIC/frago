@@ -10,10 +10,16 @@ enableInlineShortcodes = true
 removePathAccents = true
 
 [outputs]
- home    = ["HTML","JSON"]
- page    = ["HTML","JSON","declaration","declarationpage","accessibility","accessibilitypage","quality","qualitypage","performance","performancepage"]
- section = ["HTML","JSON"]
+  home    = ["HTML","JSON","schema"]
+  page    = ["HTML","JSON","declaration","declarationpage","accessibility","accessibilitypage","quality","qualitypage","performance","performancepage"]
+  section = ["HTML","JSON"]
 
+[outputFormats.schema]
+  baseName = "schema"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
 [outputFormats.declarationpage]
   baseName = "declaration"
   mediaType = "text/html"

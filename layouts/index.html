@@ -1,12 +1,24 @@
 {{- define "main" -}}
-  <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
-  {{- if (fileExists "content/audits") -}}{{ .Scratch.Set "isSimple" slice }}{{- range (readDir "content/audits") -}}{{ $.Scratch.Add "isSimple" .Name }}{{- end -}}{{- end -}}
-  {{- if ne (len (intersect (.Scratch.Get "isSimple") (slice "accessibility" "rgaa"))) 0 -}}
-  {{- partial "templates/projects.html" . -}}
+  {{- $alternate  := where (where .OutputFormats "RelPermalink" "eq" .URL) "Rel" "eq" "alternate" -}}
+  {{- if ne (len $alternate) 0 -}}
+    {{- with $alternate -}}{{- range $key, $value := . -}}
+      <article class="wrapper narrow">
+      {{- if eq .Format.BaseName "schema" -}}
+        <h1>Schéma Pluriannuel</h1>
+        {{- partial "templates/schema.html" . | markdownify -}}
+      {{- end -}}
+    </article>
+    {{- end -}}
+    {{- end -}}
   {{- else -}}
-  {{- partialCached "templates/projects-list.html" . . -}}
+  <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
+    {{- if (partial "render/issimpleproject.html" .) -}}
+      {{- partial "templates/projects.html" . -}}
+    {{- else -}}
+      {{- partialCached "templates/projects-list.html" . . -}}
+    {{- end -}}
+    {{- partial "elements/content.html" .Content -}}
   {{- end -}}
-  {{- partial "elements/content.html" .Content -}}
 {{- end -}}
 {{- define "script" -}}
 {{- end -}}
