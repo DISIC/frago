@@ -59,7 +59,16 @@
       {{- if ((and (eq (len (intersect $value (slice "c"))) 1)  (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}{{- end -}}
       {{- if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
       {{- if eq (len $symdiffna) 0 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}  {{- end -}}
-      {{- if ge (len $symdiffna) 1 -}}{{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}{{- end -}}
+      {{- if ge (len $symdiffna) 1 -}}
+      {{ $.context.Scratch.Set "value" slice }}
+      {{ range $value }}{{ $.context.Scratch.Add "value" (index (split . "|") 0) }}{{- end -}}
+      {{ warnf "%s" (uniq ($.context.Scratch.Get "value")) }}
+        {{ if eq (index (uniq ($.context.Scratch.Get "value")) 0) "c" }}
+        {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}
+        {{ else }}
+        {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercriterenonconforme") (string $id) . -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
     {{- end -}}
   {{- end -}}
