@@ -1,4 +1,3 @@
-
 {{- $context := . -}}
 {{- $project :=  (partial "render/projectpath" $context $context) -}}
 {{- $OutputFormats := cond (fileExists "content/audits/_index.md") ($context.GetPage "/audits/_index.md").OutputFormats (cond (fileExists "content/audits/index.md")  ($context.GetPage "/audits/index.md").OutputFormats .OutputFormats) -}}

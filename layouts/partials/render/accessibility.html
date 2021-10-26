@@ -62,7 +62,6 @@
       {{- if ge (len $symdiffna) 1 -}}
       {{ $.context.Scratch.Set "value" slice }}
       {{ range $value }}{{ $.context.Scratch.Add "value" (index (split . "|") 0) }}{{- end -}}
-      {{ warnf "%s" (uniq ($.context.Scratch.Get "value")) }}
         {{ if eq (index (uniq ($.context.Scratch.Get "value")) 0) "c" }}
         {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "rendercritereconforme") (string $id) . -}}
         {{ else }}
