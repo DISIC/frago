@@ -2,6 +2,7 @@
 title: Accueil
 outputs:
   - html
+  - json
   - declaration
   - schema
   - declarationpage
@@ -10,6 +11,7 @@ cascade:
     path: /audits/**
   outputs:
     - html
+    - json
     - declaration
     - declarationpage
     - accessibility
