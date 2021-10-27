@@ -130,10 +130,10 @@
           {{ range $value }}
             {{ $.context.Scratch.Add "value" (index (split . "|") 0) }}
           {{- end -}}
-          {{ if eq (index (uniq ($.context.Scratch.Get "value")) 0) "c" }}
-            {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
-          {{ else }}
+          {{ if in ($.context.Scratch.Get "value") "nc" }}
             {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . -}}
+          {{ else }}
+            {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
           {{- end -}}
         {{- end -}}
 
