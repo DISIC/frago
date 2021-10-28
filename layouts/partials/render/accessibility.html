@@ -1,8 +1,7 @@
 {{/* Get values from accessibility files */}}
-
-{{- $res := "" -}}
 {{- $scorekey := sha1 (string now) -}}
 
+{{/* START - (ne .auditfile "/false") */}}
 {{- if (ne .auditfile "/false") -}}
   {{- $auditfile        := (getCSV "," .auditfile) -}}
   {{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
@@ -12,8 +11,8 @@
   {{- $.context.Scratch.Set (printf "%s%s" $scorekey "render-is-empty") 0 -}}
   {{- $.context.Scratch.Set (printf "%s%s" $scorekey "totalTest") 0 -}}
   {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit")  0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critCount")       slice -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critere")         "" -}}
+  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critCount") slice -}}
+  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critere") "" -}}
 
   {{- $.context.Scratch.Delete $scorekey -}}
   {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageC") "0" slice -}}
@@ -63,6 +62,7 @@
     {{- end -}}
     {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critere") $crit -}}
   {{- end -}}
+
   {{- range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) -}}
       {{- range $idx, $value := . -}}
         {{- if eq (index (split $value "|") 0) "c" -}}
@@ -79,6 +79,7 @@
         {{- end -}}
       {{- end -}}
   {{- end -}}
+
   {{- if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
     {{- $auditfile := after 1 .auditfile }}
 
@@ -200,24 +201,22 @@
   {{- $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) -}}
   {{- $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) -}}
   {{/*- $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) -*/}}
-
-  {{- $res = (dict
-      "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))
-      "date"          ($.context.Scratch.Get (printf "%s%s" $scorekey "date"))
-      "criteria"      ($.context.Scratch.Get $scorekey)
-      "scores"        (dict "criteria"
-                        (dict "total" ($.context.Scratch.Get "total")
-                              "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))
-                              "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNA"))
-                              "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNC"))
-                        )
-                        "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance")))
-                      )
-    ) -}}
-
-  {{- /* warnf "%v" ($res | jsonify (dict "indent" "  ")) */ -}}
-
-  {{- return $res -}}
-
   {{- end -}}
+
+  {{- return (dict
+    "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))
+    "date"          ($.context.Scratch.Get (printf "%s%s" $scorekey "date"))
+    "criteria"      ($.context.Scratch.Get $scorekey)
+    "scores"        (dict "criteria"
+                      (dict "total" ($.context.Scratch.Get "total")
+                            "conforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))
+                            "nonapplicable" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNA"))
+                            "nonconforme" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNC"))
+                      )
+                      "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance")))
+                    )
+  ) -}}
+  {{- /* warnf "%v" ($res | jsonify (dict "indent" "  ")) */ -}}
 {{- end -}}
+{{/* END - (ne .auditfile "/false") */}}
+

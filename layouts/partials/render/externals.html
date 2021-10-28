@@ -5,6 +5,8 @@
 {{- $results    := partialCached "render/accessibility" (dict "context" $context "project" $project "auditfile" $auditfile) $auditfile -}}
 {{- $.context.Scratch.Delete "compliance" -}}
 
+
+
 {{/* declare all the variables */}}
 {{- $.context.Scratch.SetInMap "compliance" "0"       $results.scores.compliance -}}
 {{- $.context.Scratch.Set      "criteriatotal"        $results.scores.total -}}
