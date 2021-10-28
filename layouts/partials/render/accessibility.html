@@ -107,8 +107,7 @@
       {{- else -}}
         {{/* Set each test case if the array as multiple value values as "na" or "nt" (or "25" "50" "81") */}}
 
-        {{ $symdiffna := $value | symdiff (slice "na" "c") }}
-
+        {{/* START - Should be removed */}}
         {{- if ((and (eq (len (intersect $value (slice "na"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}
           {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . -}}
         {{- end -}}
@@ -120,20 +119,40 @@
         {{- if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}
           {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . -}}
         {{- end -}}
+        {{/* END - Should be removed */}}
+
+        {{ $symdiffna := $value | symdiff (slice "na" "c") }}
 
         {{- if eq (len $symdiffna) 0 -}}
           {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
         {{- end -}}
 
         {{- if ge (len $symdiffna) 1 -}}
-          {{ $.context.Scratch.Set "value" slice }}
+
+          {{/* Keep only the first value in each cell */}}
+          {{ $.context.Scratch.Set "rendercritererest" slice }}
           {{ range $value }}
-            {{ $.context.Scratch.Add "value" (index (split . "|") 0) }}
+            {{ $.context.Scratch.Add "rendercritererest" (index (split . "|") 0) }}
           {{- end -}}
-          {{ if in ($.context.Scratch.Get "value") "nc" }}
-            {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . -}}
+
+          {{/* Remove all neutral value */}}
+          {{ $rendercritererest := uniq ($.context.Scratch.Get "rendercritererest") }}
+          {{ $rendercritererest := cond (eq (len ((intersect $rendercritererest (slice "25")))) 1) ($rendercritererest | symdiff (slice "25")) $rendercritererest }}
+          {{ $rendercritererest := cond (eq (len ((intersect $rendercritererest (slice "50")))) 1) ($rendercritererest | symdiff (slice "50")) $rendercritererest }}
+          {{ $rendercritererest := cond (eq (len ((intersect $rendercritererest (slice "81")))) 1) ($rendercritererest | symdiff (slice "81")) $rendercritererest }}
+          {{ $rendercritererest := cond (eq (len ((intersect $rendercritererest (slice "?")))) 1) ($rendercritererest | symdiff (slice "?")) $rendercritererest }}
+          {{ $rendercritererest := cond (gt (len $rendercritererest) 1) (cond (eq (len ((intersect $rendercritererest (slice "na")))) 1) ($rendercritererest | symdiff (slice "na")) $rendercritererest) $rendercritererest }}
+          {{ $rendercritererest := cond (gt (len $rendercritererest) 1) (cond (eq (len ((intersect $rendercritererest (slice "nt")))) 1) ($rendercritererest | symdiff (slice "nt")) $rendercritererest) $rendercritererest }}
+
+          {{/* Fill Maps */}}
+          {{ if and (eq (len $rendercritererest) 1) (eq (index $rendercritererest 0) "c") }}
+            {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . }}
+          {{ else if and (eq (len $rendercritererest) 1) (eq (index $rendercritererest 0) "na") }}
+            {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
+          {{ else if in ($.context.Scratch.Get "value") "nc" }}
+            {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
           {{ else }}
-            {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
+            {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
           {{- end -}}
         {{- end -}}
 
