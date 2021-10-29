@@ -2,7 +2,7 @@
 <small class="text-center d-block p-relative">
   {{- if (ne .isempty 0) -}}
   <b class="h3 d-block">{{- .scores.compliance -}}%</b>de&nbsp;conformité
-    {{ if lt (.criteria.total) 82 }}<span class="p-absolute p-top p-right badge bad d-inline-block">{{ (.criteria.total) }}</span>{{ end }}
+    {{ if lt (.criteria.total) 82 }}<span class="p-absolute p-top p-right badge bad d-inline-block">{{ (.scores.criteria.total) }}</span>{{ end }}
   {{- else -}}
   <b class="h3 d-block">Conformité</b>En&nbsp;cours
   {{- end -}}
