@@ -8,7 +8,7 @@ outputs:
   - declarationpage
 cascade:
 - _target:
-    path: /audits/**
+    path: /audits/**/index.md
   outputs:
     - html
     - json
