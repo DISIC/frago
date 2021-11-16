@@ -66,13 +66,13 @@ Modifier le contenu du fichier `go.mod` (Ajouter https://) :
 ##### Créer le fichier `go.sum`  (commande dans le terminal)
 
 ```bash
-hugo mod get -u https://github.com/disic/frago
+hugo mod get -u https://github.com/DISIC/frago
 ```
 
 #### Appeler le thème Hugo (avec un submodule)
 
 ```bash
-git submodule add https://github.com/disic/frago.git/ themes/frago && git submodule update --init --recursive
+git submodule add https://github.com/DISIC/frago.git/ themes/frago && git submodule update --init --recursive
 ```
 
 #### Génération du site (mise en ligne)
