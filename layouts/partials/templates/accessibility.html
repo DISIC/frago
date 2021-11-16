@@ -291,8 +291,10 @@
   {{- end -}}
   {{/* END If several page tested */}}
   {{- else -}}
-    <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($.context.Scratch.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>
-    {{- warnf "Fichier d’audit manquant dans %s" ($.context.Scratch.Get "audits").pathdatafile -}}
+    {{- if (ne (printf "%s/%s" (path.Dir $.context.Path) (path.Base $.context.Path)) "audits/_index.md") -}}
+      <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($.context.Scratch.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>
+      {{- warnf "Fichier d’audit manquant dans %s" ($.context.Scratch.Get "audits").pathdatafile -}}
+    {{- end -}}
   {{- end -}}
   {{/* END If several page tested */}}
 
