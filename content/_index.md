@@ -3,9 +3,7 @@ title: Accueil
 outputs:
   - html
   - json
-  - declaration
   - schema
-  - declarationpage
 cascade:
 - _target:
     path: /audits/**/index.md
