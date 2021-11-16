@@ -79,7 +79,19 @@
     {{- if $accessibility -}}
       {{- $.Scratch.Set "render" slice -}}
       {{- $.Scratch.Set "audit" (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path")) -}}
-      <h3 class="m-0">Accessibilité {{- if ($.Scratch.Get "audit").scores.compliance -}}{{ with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}<small>- <a href="{{ (index . 0).Permalink }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | urlize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>{{- end -}}{{- end -}}</h3>
+      <h3 class="m-0">Accessibilité
+        {{- if ($.Scratch.Get "audit").scores.compliance -}}
+
+          {{- $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | urlize)) -}}
+          {{- if (fileExists $pageauditpath) -}}
+            <small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>
+          {{- else -}}
+            {{- with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "accessibility")) }}
+              <small>- <a href="{{ (index . 0).Permalink }}" aria-label="Accéder au rapport d’accessibilité">Accéder au rapport</a></small>
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      </h3>
       {{- if ($.Scratch.Get "audit").scores.compliance -}}
         {{- $conforme := ($.Scratch.Get "audit").scores.compliance -}}
         {{- partial "components/scores/accessibility" (dict "context" . "score" $conforme) -}}
