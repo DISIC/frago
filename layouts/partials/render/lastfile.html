@@ -40,13 +40,15 @@
 {{/* List all the files in the folder */}}
 {{- if $condfolder -}}
   {{- $.context.Scratch.Set "dir-lastfile" (readDir ($.context.Scratch.Get "pathdata")) -}}
+  {{- $i := 0 -}}
   {{- with ($.context.Scratch.Get "dir-lastfile") -}}
     {{- range $key, $value := . -}}
     {{- if in (path.Ext .Name) $ext -}}
       {{- if (fileExists ($.context.Scratch.Get "pathdata")) -}}
         {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (replace .Name (path.Ext .Name) "")))) -}}
-          {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string (add $key 0)) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdata") .Name) "//" "/") -}}
-          {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string (add $key 0)) (replace .Name (path.Ext .Name) "") -}}
+          {{- $.context.Scratch.SetInMap "auditpath-all-lastfile" (string $i) (replace (printf "/%s/%s" ($.context.Scratch.Get "pathdata") .Name) "//" "/") -}}
+          {{- $.context.Scratch.SetInMap "auditname-all-lastfile" (string $i) (replace .Name (path.Ext .Name) "") -}}
+          {{- $i = add $i 1 -}}
         {{- else -}}
           {{- warnf "The file %s/%s has a bad name, it should be a date YYYY-MM-DD.csv" $path .Name -}}
         {{- end -}}
