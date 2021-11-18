@@ -61,12 +61,12 @@ hugo mod init github.com/disic/frago
 ```
 
 Modifier le contenu du fichier `go.mod` (Ajouter https://) :  
-`module github.com/DISIC/frago => module https://github.com/DISIC/frago`
+`module github.com/disic/frago => module https://github.com/disic/frago`
 
 ##### Créer le fichier `go.sum`  (commande dans le terminal)
 
 ```bash
-hugo mod get -u https://github.com/DISIC/frago
+hugo mod get
 ```
 
 #### Appeler le thème Hugo (avec un submodule)
