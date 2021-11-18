@@ -19,7 +19,7 @@
   {{- with ($.context.Scratch.Get "lastfile") -}}
   {{/* Vars with the last file of the lighthouse directory */}}
   <h2>Règles</h2>
-  {{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
+  {{- partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") -}}
   {{ $lastfile := getJSON ($.context.Scratch.Get "lastfile") }}
     {{/* Range the file */}}
     {{- range $key, $value := sort (index $lastfile "audits") ".score" "asc" -}}

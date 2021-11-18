@@ -22,7 +22,7 @@
     <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
     {{- end -}}
   {{- end -}}
-  {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") -}}
+  {{- if and (not .Site.IsServer) (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
   <meta name="robots" content="noindex, nofollow">
   {{ else }}
   <meta name="robots" content="noindex, nofollow">
@@ -46,7 +46,7 @@
   {{- $.Scratch.Add "css" (slice $styles) -}}
   {{- $style := ($.Scratch.Get "css") | resources.Concat "styles.css" -}}
   {{/* Optimise (purge, concat) if production */}}
-  {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")  -}}
+  {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
   <!-- CSS styles -->

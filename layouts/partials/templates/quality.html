@@ -166,11 +166,11 @@
               {{ range (readDir ($.context.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $.context.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
             {{- end -}}
             <small class="no-print">
-              {{- if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") -}}
+              {{- if and (not .Site.IsServer) (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
                 {{- if $.context.Scratch.Get "fileexist" -}}
                 &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
                 {{- end -}}
-              {{ else }}
+              {{- else -}}
                 &nbsp;-&nbsp;
                 {{- if $.context.Scratch.Get "fileexist" -}}
                 <a href="#{{ $filename }}">/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ $filename }}</a>

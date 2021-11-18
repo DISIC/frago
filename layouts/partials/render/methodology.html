@@ -1,12 +1,12 @@
 {{/* Return the type of audit file :: if with "Thématiques" "Critères" or "Thématiques" "Critères" "Tests" */}}
-{{- $auditfile := .auditfile -}}
-{{- with $auditfile -}}
-{{- $.context.Scratch.Set "methodology"          (len (intersect (index . 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-{{- $.context.Scratch.Set "methodologypageslist" (cond (eq ($.context.Scratch.Get "methodology") 2) ((index . 0) | symdiff (slice "Thématiques" "Critères")) ((index . 0) | symdiff (slice "Thématiques" "Critères" "Tests"))) -}}
-{{- return
+{{ $auditfile := .auditfile }}
+{{ with $auditfile }}
+{{ $.context.Scratch.Set "methodology"          (len (intersect (index . 0) (slice "Thématiques" "Critères" "Tests"))) }}
+{{ $.context.Scratch.Set "methodologypageslist" (cond (eq ($.context.Scratch.Get "methodology") 2) ((index . 0) | symdiff (slice "Thématiques" "Critères")) ((index . 0) | symdiff (slice "Thématiques" "Critères" "Tests"))) }}
+{{ return
   (dict
     "methodology" ($.context.Scratch.Get "methodology")
     "pageslist" ($.context.Scratch.Get "methodologypageslist")
   )
--}}
-{{- end -}}
+}}
+{{ end }}

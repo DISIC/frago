@@ -1,140 +1,140 @@
 {{/* Get values from accessibility files */}}
-{{- $scorekey := sha1 (string now) -}}
+{{ $scorekey := sha1 (string now) }}
 
 {{/* START - (ne .auditfile "/false") */}}
-{{- if (ne .auditfile "/false") -}}
-  {{- $auditfile        := (getCSV "," .auditfile) -}}
-  {{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-  {{  $.context.Scratch.Set (printf "%s%s" $scorekey "date")           (replace (path.Base .auditfile) (path.Ext .auditfile) "") }}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critValues")      0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critValuesUniq")  0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "render-is-empty") 0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "totalTest") 0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit")  0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critCount") slice -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critere") "" -}}
+{{ if (ne .auditfile "/false") }}
+  {{ $auditfile        := (getCSV "," .auditfile) }}
+  {{ $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "date")           (replace (path.Base .auditfile) (path.Ext .auditfile) "") }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critValues")      0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critValuesUniq")  0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "render-is-empty") 0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "totalTest")       0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit")           0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critCount")       slice }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere")         "" }}
 
-  {{- $.context.Scratch.Delete $scorekey -}}
-  {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageC") "0" slice -}}
-  {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageNC") "0" slice -}}
+  {{ $.context.Scratch.Delete $scorekey }}
+  {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageC") "0"  slice }}
+  {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageNC") "0" slice }}
 
   {{/* Range csv file per lines/criteria */}}
-  {{- range $key1, $value1 := after 1 $auditfile -}}
-    {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValues") slice -}}
-    {{- $crit := printf "%s.%s" (index . 0) (index . 1) -}}
+  {{ range $key1, $value1 := after 1 $auditfile }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValues") slice }}
+    {{ $crit := printf "%s.%s" (index . 0) (index . 1) }}
 
-    {{- if ne $crit ($.context.Scratch.Get (printf "%s%s" $scorekey "critere")) -}}
-      {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit") 0 -}}
-      {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValue") slice -}}
-    {{- end -}}
+    {{ if ne $crit ($.context.Scratch.Get (printf "%s%s" $scorekey "critere")) }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit") 0 }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValue") slice }}
+    {{ end }}
 
     {{/* Range lines */}}
-    {{- range $id, $value2 := after $auditmethodology . -}}
-      {{- if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 -}}
-      {{- end -}}
-      {{- if or
+    {{ range $id, $value2 := after $auditmethodology . }}
+      {{ if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 }}
+      {{ end }}
+      {{ if or
         (eq (index (split . "|") 0) "c")
         (eq (index (split . "|") 0) "nc")
         (eq (index (split . "|") 0) "na")
-        (eq . "?") -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "totalTest") 1 -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "iCrit") 1 -}}
-      {{- end -}}
-      {{- if ne ($.context.Scratch.Get (printf "%s%s" $scorekey "iCrit")) 0 -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "critCount") (string $crit) -}}
-      {{- end -}}
-      {{- if and . (ne (index (split . "|") 0) "nt") -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "critPageValue") . -}}
-        {{- $.context.Scratch.Add (printf "%s%s" $scorekey "critPageValues") . -}}
+        (eq . "?") }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "totalTest") 1 }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "iCrit") 1 }}
+      {{ end }}
+      {{ if ne ($.context.Scratch.Get (printf "%s%s" $scorekey "iCrit")) 0 }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "critCount") (string $crit) }}
+      {{ end }}
+      {{ if and . (ne (index (split . "|") 0) "nt") }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "critPageValue") . }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "critPageValues") . }}
         {{/* Build array per pages */}}
-        {{- $.context.Scratch.SetInMap
+        {{ $.context.Scratch.SetInMap
           (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValuesUniq"))
           (string $crit)
           (uniq ($.context.Scratch.Get (printf "%s%s" $scorekey "critPageValue")))
-        -}}
-        {{- $.context.Scratch.SetInMap
+        }}
+        {{ $.context.Scratch.SetInMap
           (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))
           (string $crit)
           (($.context.Scratch.Get (printf "%s%s" $scorekey "critPageValues")))
-        -}}
-      {{- end -}}
-    {{- end -}}
-    {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critere") $crit -}}
-  {{- end -}}
+        }}
+      {{ end }}
+    {{ end }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere") $crit }}
+  {{ end }}
 
-  {{- range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) -}}
-      {{- range $idx, $value := . -}}
-        {{- if eq (index (split $value "|") 0) "c" -}}
+  {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) }}
+      {{ range $idx, $value := . }}
+        {{ if eq (index (split $value "|") 0) "c" }}
           {{ $.context.Scratch.SetInMap (printf "%s%s%s" $scorekey $idx "iPageC") (string $key) $value }}
-          {{- $.context.Scratch.SetInMap
+          {{ $.context.Scratch.SetInMap
             (printf "%s%s" $scorekey "pageC")
             (string $idx)
             ($.context.Scratch.Get (printf "%s%s%s" $scorekey $idx "iPageC"))
-          -}}
-        {{- end -}}
-        {{- if eq (index (split $value "|") 0) "nc" -}}
+          }}
+        {{ end }}
+        {{ if eq (index (split $value "|") 0) "nc" }}
           {{ $.context.Scratch.SetInMap (printf "%s%s%s" $scorekey $idx "iPageNC") (string $key) $value }}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageNC") (string $idx) ($.context.Scratch.Get (printf "%s%s%s" $scorekey $idx "iPageNC")) -}}
-        {{- end -}}
-      {{- end -}}
-  {{- end -}}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageNC") (string $idx) ($.context.Scratch.Get (printf "%s%s%s" $scorekey $idx "iPageNC")) }}
+        {{ end }}
+      {{ end }}
+  {{ end }}
 
-  {{- if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) -}}
-    {{- $auditfile := after 1 .auditfile }}
+  {{ if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) }}
+    {{ $auditfile := after 1 .auditfile }}
 
     {{/* Range array with test result par pages */}}
-    {{- range $id, $value := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValuesUniq"))) -}}
-      {{- if ne (len $value) 0 -}}
-      {{- if eq (len $value) 1 -}}
+    {{ range $id, $value := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValuesUniq"))) }}
+      {{ if ne (len $value) 0 }}
+      {{ if eq (len $value) 1 }}
         {{/* Set each test case if the array as uniq values */}}
 
-        {{- if eq (index (split (index $value 0) "|") 0) "?" -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . -}}
-        {{- end -}}
+        {{ if eq (index (split (index $value 0) "|") 0) "?" }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
+        {{ end }}
 
-        {{- if eq (index (split (index $value 0) "|") 0) "na" -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . -}}
-        {{- end -}}
+        {{ if eq (index (split (index $value 0) "|") 0) "na" }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
+        {{ end }}
 
-        {{- if eq (index (split (index $value 0) "|") 0) "c"  -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
-        {{- end -}}
+        {{ if eq (index (split (index $value 0) "|") 0) "c"  }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . }}
+        {{ end }}
 
-        {{- if eq (index (split (index $value 0) "|") 0) "nc" -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . -}}
-        {{- end -}}
+        {{ if eq (index (split (index $value 0) "|") 0) "nc" }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
+        {{ end }}
 
-      {{- else -}}
+      {{ else }}
         {{/* Set each test case if the array as multiple value values as "na" or "nt" (or "25" "50" "81") */}}
 
         {{/* START - Should be removed */}}
-        {{- if ((and (eq (len (intersect $value (slice "na"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . -}}
-        {{- end -}}
+        {{ if ((and (eq (len (intersect $value (slice "na"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
+        {{ end }}
 
-        {{- if ((and (eq (len (intersect $value (slice "c"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
-        {{- end -}}
+        {{ if ((and (eq (len (intersect $value (slice "c"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . }}
+        {{ end }}
 
-        {{- if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . -}}
-        {{- end -}}
+        {{ if ((and (eq (len (intersect $value (slice "nc"))) 1) (eq (len (intersect $value (slice "25" "50" "81"))) 1))) }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
+        {{ end }}
         {{/* END - Should be removed */}}
 
         {{ $symdiffna := $value | symdiff (slice "na" "c") }}
 
-        {{- if eq (len $symdiffna) 0 -}}
-          {{- $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . -}}
-        {{- end -}}
+        {{ if eq (len $symdiffna) 0 }}
+          {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . }}
+        {{ end }}
 
-        {{- if ge (len $symdiffna) 1 -}}
+        {{ if ge (len $symdiffna) 1 }}
 
           {{/* Keep only the first value in each cell */}}
           {{ $.context.Scratch.Set "rendercritererest" slice }}
           {{ range $value }}
             {{ $.context.Scratch.Add "rendercritererest" (index (split . "|") 0) }}
-          {{- end -}}
+          {{ end }}
 
           {{/* Remove all neutral value */}}
           {{ $rendercritererest := uniq ($.context.Scratch.Get "rendercritererest") }}
@@ -154,34 +154,34 @@
             {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
           {{ else }}
             {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
-          {{- end -}}
-        {{- end -}}
+          {{ end }}
+        {{ end }}
 
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
+      {{ end }}
+    {{ end }}
+  {{ end }}
 
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "critCount") (uniq ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount"))) -}}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critCount") (uniq ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount"))) }}
 
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") 0 }}
 
-  {{- with ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) -}}
-    {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") (len .) -}}
-  {{- end -}}
+  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") (len .) }}
+  {{ end }}
 
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") 0 }}
 
-  {{- with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) -}}
-    {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") (len .) -}}
-  {{- end -}}
+  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") (len .) }}
+  {{ end }}
 
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") 0 }}
 
-  {{- with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) -}}
-    {{- $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") (len .) -}}
-  {{- end -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") 0 -}}
-  {{- $.context.Scratch.Set (printf "%s%s" $scorekey "compliance")
+  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") (len .) }}
+  {{ end }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") 0 }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance")
       (
         (div (mul ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC")) 100)
           (sub
@@ -189,21 +189,21 @@
             (($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNA")))
           )
         )
-      ) -}}
-  {{- if ($.context.Scratch.Get "critNC") -}}{{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul (($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))))) -}}{{- end -}}
+      ) }}
+  {{ if ($.context.Scratch.Get "critNC") }}{{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul (($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))))) }}{{ end }}
 
-  {{- $.context.Scratch.Set "total"                                 (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount"))) 0 (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount")))) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "totalTest")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "total"                  ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "conforme"               ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "nonconforme"            ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "nonapplicable"          ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) -}}
-  {{- $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) -}}
-  {{/*- $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) -*/}}
-  {{- end -}}
+  {{ $.context.Scratch.Set "total"                                 (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount"))) 0 (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount")))) }}
+  {{ $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "totalTest")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "total"                  ($.context.Scratch.Get (printf "%s%s" $scorekey "critCount")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "conforme"               ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "nonconforme"            ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "nonapplicable"          ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) }}
+  {{/* $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) */}}
+  {{ end }}
 
-  {{- return (dict
+  {{ return (dict
     "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))
     "date"          ($.context.Scratch.Get (printf "%s%s" $scorekey "date"))
     "criteria"      ($.context.Scratch.Get $scorekey)
@@ -215,8 +215,8 @@
                       )
                       "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance")))
                     )
-  ) -}}
-  {{- /* warnf "%v" ($res | jsonify (dict "indent" "  ")) */ -}}
-{{- end -}}
+  ) }}
+  {{/* warnf "%v" ($res | jsonify (dict "indent" "  ")) */}}
+{{ end }}
 {{/* END - (ne .auditfile "/false") */}}
 

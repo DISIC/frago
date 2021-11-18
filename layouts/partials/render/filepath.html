@@ -1,5 +1,6 @@
 {{/* return the filepath of the audits files */}}
-{{- $pathcontentmulti   := (printf "content/audits/%s/%s/" .project .type) -}}
-{{- $pathcontentsingle  := (printf "content/audits/%s/" .type)             -}}
-{{- $pathstatic         := (printf "static/%s/%s/" .project .type)         -}}
-{{- return replace (replace (replace (cond (fileExists $pathcontentmulti) $pathcontentmulti (cond (fileExists $pathcontentsingle) $pathcontentsingle $pathstatic)) "///" "/") "//" "/") "/audits/audits/" "/audits/" -}}
+{{ $pathcontentmulti   := (printf "content/audits/%s/%s/" .project .type) }}
+{{ $pathcontentsingle  := (printf "content/audits/%s/" .type)             }}
+{{ $pathstatic         := (printf "static/%s/%s/" .project .type)         }}
+
+{{ return replace (replace (replace (cond (fileExists $pathcontentmulti) $pathcontentmulti (cond (fileExists $pathcontentsingle) $pathcontentsingle $pathstatic)) "///" "/") "//" "/") "/audits/audits/" "/audits/" }}
