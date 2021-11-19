@@ -1,7 +1,7 @@
 
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $projectPageURL := print "/audits/" $project "/_index.md" -}}
+{{- $projectPageURL := (print ($.Site.BaseURL | default "/") "audits/" $project "/_index.md") -}}
 {{- $projectPage := (site.GetPage $projectPageURL) -}}
 {{- $projectTitle := $projectPage.Title -}}
 
