@@ -33,14 +33,16 @@
 {{/* If context.yml doesn’t exist in audit path try to find context information it in another location */}}
 {{ if not ($context.Scratch.Get "context") }}
   {{/* In a front matter of the current page */}}
-  {{ with $context.GetPage (printf "/audits/%s/_index.md" $project)        }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/_index.md" $project))        }}{{ end }}
-  {{ with $context.GetPage (printf "/audits/%s/index.md" $project)         }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/index.md" $project))         }}{{ end }}
-  {{ with $context.GetPage (printf "/audits/%s/accessibility.md" $project) }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/accessibility.md" $project)) }}{{ end }}
+  {{- $baseURL := $.Site.BaseURL | default "/" -}}
+  {{- $projectURL := (print $baseURL "audits/" $project) -}}
+  {{ with $context.GetPage (print $projectURL "/_index.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/_index.md" $project))        }}{{ end }}
+  {{ with $context.GetPage (print $projectURL "/index.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/index.md" $project))         }}{{ end }}
+  {{ with $context.GetPage (print $projectURL "/accessibility.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" (printf "/audits/%s/accessibility.md" $project)) }}{{ end }}
   {{/* If content has only one project */}}
   {{ if (partial "render/issimpleproject.html" .context) }}
-    {{ with $context.GetPage "/audits/accessibility.md"                    }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/accessibility.md")    }}{{ end }}
-    {{ with $context.GetPage "/audits/_index.md"                           }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/_index.md")           }}{{ end }}
-    {{ with $context.GetPage "/audits/index.md"                            }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/index.md")            }}{{ end }}
+    {{ with $context.GetPage (print $baseURL "audits/accessibility.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/accessibility.md")    }}{{ end }}
+    {{ with $context.GetPage (print $baseURL "audits/_index.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/_index.md")           }}{{ end }}
+    {{ with $context.GetPage (print $baseURL "audits/index.md") }}{{ $context.Scratch.SetInMap "context" $datecontext (dict "declared" .Params.accessibility "contacts" .Params.accessibility.contacts "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" "/audits/index.md")            }}{{ end }}
   {{ end }}
 {{ end }}
 

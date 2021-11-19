@@ -61,11 +61,7 @@
   {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
 
   {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-  {{- if (ne $context.Title "") -}}
-  <h1>{{- $context.Title -}}</h1>
-  {{- else -}}
-  <h1 aria-label="Audit Accessibilité: {{- $projectTitle -}}">Audit Accessibilité<br><span class="smaller">{{- $projectTitle -}}</span></h1>
-  {{- end -}}
+  <h1>Audit Accessibilité<br><span class="smaller">{{- $projectTitle -}}</span></h1>
   {{/* START Display page content if exists */}}
   {{- if gt (len .context.Content) 10 -}}
   <div class="note">
