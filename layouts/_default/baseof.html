@@ -8,7 +8,7 @@
   {{ with $.Param "robots" }}
   <meta name="robots" content="{{ . }}">
   {{ end }}
-  <title>{{ block "title" . }}{{ .Title }}{{ end }} | mise en conformité de l’accessibilité{{ with .Site.Title }} {{ . }}{{ end }}</title>
+  <title>{{ block "title" . }}{{ end }} | mise en conformité de l’accessibilité{{ with .Site.Title }} {{ . }}{{ end }}</title>
   <script type="module">
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
