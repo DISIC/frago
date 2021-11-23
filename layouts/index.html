@@ -1,3 +1,4 @@
+{{- define "title" -}}{{- .Title -}}{{- end -}}
 {{- define "main" -}}
   {{- $alternate  := where (where .OutputFormats "RelPermalink" "eq" .URL) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}

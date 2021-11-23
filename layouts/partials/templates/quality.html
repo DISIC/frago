@@ -1,11 +1,12 @@
-{{- define "title" -}}Audit Qualité {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
-
 {{/* Var */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := .context -}}
 {{- $project :=  (partialCached "render/projectpath" .context .context) -}}
+{{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
+{{- $projectTitle := ($context.GetPage $projectPath).Title -}}
 {{- $.context.Scratch.Set "context"  . -}}
 {{- $.context.Scratch.Set "pathimage" "" -}}
+
 {{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
 
 {{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
@@ -16,17 +17,15 @@
   {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
   {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
 {{- end -}}
-{{ end }}
+{{- end -}}
 
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
 {{- $.context.Scratch.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
 
-
-
 <article class="wrapper narrow audit">
 {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-<h1>Audit Qualité <small hidden>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.context.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{ end }}{{ end }}</small></h1>
+<h1>Audit Qualité {{ with $projectTitle }}<small> pour {{ . }}</small>{{ end }}</h1>
 {{- if gt (len .context.Content) 10 -}}
 <div class="note">
 {{- partial "elements/content.html" .context.Content -}}

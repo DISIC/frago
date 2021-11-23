@@ -1,23 +1,51 @@
+{{- define "title" -}}
+  {{- $project      := partialCached "render/projectpath" . . -}}
+  {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
+  {{- $projectTitle := (.GetPage $projectPath).Title -}}
+
+  {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
+  {{- if ne (len $alternate) 0 -}}
+    {{- with $alternate -}}
+      {{- range $key, $value := . -}}
+        {{- if eq .Format.BaseName "accessibility" -}}
+          Audit Accessibilité
+        {{- else if eq .Format.BaseName "quality" -}}
+          Audit Qualité
+        {{- else if eq .Format.BaseName "performance" -}}
+          Audit Performancee
+        {{- else if eq .Format.BaseName "declaration" -}}
+          Déclaration
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+        Synthèse
+  {{- end -}}
+  {{ with $projectTitle }} pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+{{- end -}}
+
 {{- define "main" -}}
 {{- $patharray  := split (path.Dir .Path) "/" -}}
 {{- $context    := . -}}
 {{- $project    := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "" (replace (path.Dir $context.Path) "audits/" "") -}}
 {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}
-    {{- with $alternate -}}{{- range $key, $value := . -}}
-      {{- if eq .Format.BaseName "accessibility" -}}
-        {{- partialCached "templates/accessibility.html" (dict "context" $context "project" $project) $project -}}
-      {{- else if eq .Format.BaseName "quality" -}}
-        {{- partialCached "templates/quality.html" (dict "context" $context "project" $project) $project -}}
-      {{- else if eq .Format.BaseName "performance" -}}
-        {{- partialCached "templates/performance.html" (dict "context" $context "project" $project) $project -}}
-      {{- else if eq .Format.BaseName "declaration" -}}
-        <article class="wrapper narrow">
-          {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
-          {{- partial "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) -}}
-        </article>
+    {{- with $alternate -}}
+      {{- range $key, $value := . -}}
+        {{- if eq .Format.BaseName "accessibility" -}}
+          {{- partialCached "templates/accessibility.html" (dict "context" $context "project" $project) $project -}}
+        {{- else if eq .Format.BaseName "quality" -}}
+          {{- partialCached "templates/quality.html" (dict "context" $context "project" $project) $project -}}
+        {{- else if eq .Format.BaseName "performance" -}}
+          {{- partialCached "templates/performance.html" (dict "context" $context "project" $project) $project -}}
+        {{- else if eq .Format.BaseName "declaration" -}}
+          <article class="wrapper narrow">
+            {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
+            {{- partial "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) -}}
+          </article>
+        {{- end -}}
       {{- end -}}
-    {{- end -}}{{- end -}}
+    {{- end -}}
   {{- else -}}
     <h1 class="text-center wrapper">{{ .Title }}</h1>
     {{- partial "templates/projects.html" $context -}}

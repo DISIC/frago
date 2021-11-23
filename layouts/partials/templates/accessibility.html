@@ -1,9 +1,7 @@
-
-{{- $context := .context -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
-{{- $projectPage := ($context.GetPage "./") -}}
-{{- $projectTitle := $projectPage.Title -}}
-
+{{- $context      := .context -}}
+{{- $project      := partialCached "render/projectpath" $context $context -}}
+{{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
+{{- $projectTitle := ($context.GetPage $projectPath).Title -}}
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}
 
@@ -61,7 +59,7 @@
   {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
 
   {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-  <h1>Audit Accessibilité<br><span class="smaller">{{- $projectTitle -}}</span></h1>
+  <h1>Audit Accessibilité{{ with $projectTitle }}<small> pour {{ . }}</small>{{ end }}</h1>
   {{/* START Display page content if exists */}}
   {{- if gt (len .context.Content) 10 -}}
   <div class="note">

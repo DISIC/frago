@@ -1,4 +1,4 @@
-{{- define "title" -}}Audit Performance {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
+{{- define "title" -}}{{- $projectTitle := (.GetPage "./").Title -}}Audit Performance {{ with $projectTitle }}pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}{{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $context := . -}}

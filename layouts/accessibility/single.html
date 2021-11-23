@@ -1,5 +1,18 @@
-{{- define "title" -}}Audit Accessibilité {{ (index (split (path.Dir .Path) "/") 0) }}{{- end -}}
+{{- define "title" -}}
+  {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
+  {{- if ne (len $alternate) 0 -}}
+    {{- with $alternate -}}
+      {{- range $key, $value := . -}}
+        {{- if eq .Format.BaseName "declaration" -}}Déclaration{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    Audit Accessibilité
+  {{- end -}}
+  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+{{- end -}}
+
 {{- define "main" -}}
-{{- $context := . -}}
-{{- partial "templates/accessibility.html" (dict "context" $context) -}}
+  {{- $context := . -}}
+  {{- partial "templates/accessibility.html" (dict "context" $context) -}}
 {{- end -}}
