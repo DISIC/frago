@@ -326,7 +326,6 @@ h3 + time {
   padding: var(--baseline);
   color: #666;
   border-radius: 30px;
-  background-color: #fff;
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
 }
 

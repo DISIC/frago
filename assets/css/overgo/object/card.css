@@ -15,6 +15,7 @@
   padding: var(--baseline);
   min-height: 5em;
   font-weight: bold;
+  background: var(--background-color-grey);
 }
 
 .card-inline {
@@ -26,7 +27,6 @@
   padding: 0 var(--baseline);
   text-decoration: none;
   color: var(--text-color);
-  background: var(--background-color-grey);
 }
 
 .card-inline > * {
