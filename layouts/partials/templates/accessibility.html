@@ -183,8 +183,12 @@
         {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
       </strong></p>
       {{- $txt := "" -}}
-      {{- if $condcontentc -}}
-        {{- $txt = "Conforme! Note" -}}
+      {{- if not $condcontentnc -}}
+        {{- if $condcontentc -}}
+          {{- $txt = "Conforme! Note" -}}
+        {{- else -}}
+          {{- $txt = "Non applicable" -}}
+        {{- end -}}
       {{- else -}}
         {{- $txt = "Commentaire(s)" -}}
       {{- end -}}
