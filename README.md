@@ -2,8 +2,6 @@
 
 > FRAGO : French governmental Reports for Accessibility compliance with goHugo
 
-![Logo de Frago](/images/frago.png)
-
 <p align="center">
   <img width="243" height="272" src="/images/frago.png">
 </p>
