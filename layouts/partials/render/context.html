@@ -1,11 +1,11 @@
 {{/* Determine value of the audits context depends of his location */}}
 {{ $context      := .context }}
 {{ $project      := .project }}
-{{ $path         := (partialCached "render/filepath" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") }}
+{{ $path         := partialCached "render/filepath" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility" }}
 {{ $pathrgaa     := partialCached "render/filepath" (dict "context" $context "project" $project "type" "rgaa") $project "rgaa" }}
-{{ $path         := (cond (fileExists $pathrgaa) $pathrgaa $path) }}
+{{ $path         := cond (fileExists $pathrgaa) $pathrgaa $path }}
 {{ $context.Scratch.Set "datecontext" "" }}
-{{ $projectname  := (delimit (last 1 (split $project "/")) "") }}
+{{ $projectname  := delimit (last 1 (split $project "/")) "" }}
 
 {{/* If context.yml exists in audit folder */}}
 {{ if fileExists $path }}
