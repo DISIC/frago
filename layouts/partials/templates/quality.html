@@ -45,8 +45,12 @@
 {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
 {{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
-{{ $percent := (div 100 (add (float ($.context.Scratch.Get "scores").scores.criteria.conforme) (float ($.context.Scratch.Get "scores").scores.criteria.nonconforme))) | lang.NumFmt 10 }}
-
+{{- $cScores := ($.context.Scratch.Get "scores").scores.criteria.conforme -}}
+{{- $ncScores := ($.context.Scratch.Get "scores").scores.criteria.nonconforme -}}
+{{- $percent := 0 }}
+{{- if $cScores -}}
+  {{- $percent = (div 100 (add (float $cScores) (float $ncScores))) | lang.NumFmt 10 -}}
+{{- end -}}
 {{- range ($.context.Scratch.Get "auditfile") -}}
   {{- range $idpage, $s := .pages -}}
     {{- range $idblock, $b := .blocks -}}
