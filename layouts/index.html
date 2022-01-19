@@ -1,6 +1,6 @@
 {{- define "title" -}}{{- .Title -}}{{- end -}}
 {{- define "main" -}}
-  {{- $alternate  := where (where .OutputFormats "RelPermalink" "eq" .URL) "Rel" "eq" "alternate" -}}
+  {{- $alternate  := where (where .OutputFormats "RelPermalink" "eq" .RelPermalink) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}
     {{- with $alternate -}}{{- range $key, $value := . -}}
       <article class="wrapper narrow">
