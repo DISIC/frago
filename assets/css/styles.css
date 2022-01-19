@@ -325,13 +325,14 @@ h3 + time {
 .card {
   padding: var(--baseline);
   color: #666;
+  color: var(--background-color);
   border-radius: 30px;
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
 }
 
 .card h3 a {
   text-decoration: none;
-  color: #000;
+  color: var(--text-color);
 }
 
 .card h3 a:hover {
