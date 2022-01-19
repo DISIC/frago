@@ -1,3 +1,5 @@
-<small class="text-center"><b class="h3 d-block">{{ .counter.total }}</b>erreurs</small>
+{{- with .counter.total -}}
+<small class="text-center"><b class="h3 d-block">{{ . }}</b>erreurs</small>
+{{- end -}}
 
 
