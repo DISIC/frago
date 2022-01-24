@@ -1,10 +1,7 @@
 {
-  "name": "domeo",
+  "name": "Frago",
   "version": "1.0.0",
-  "description": "Simple site",
-  "keywords": [
-    "Corporate site"
-  ],
+  "description": "Tool for a French governemental Reports for Accessibility compliance with goHugo",
   "license": "MIT",
   "author": "bertrand.keller@gmail.com",
   "scripts": {},
