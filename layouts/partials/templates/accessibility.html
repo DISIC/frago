@@ -88,11 +88,17 @@
     {{- end -}}
 
     <script>
+      console.group("Critères par type: ");
+      console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}")
+      console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}")
+      console.log("Critères NA [{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}")
+      console.log("Critères NT [{{ len ($.context.Scratch.Get "scores").criteria.nonteste }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste }}{{ $key }}, {{ end }}")
+      console.groupEnd();
       console.group("Critères non testés: ");
-      console.log("Critères 25","{{ $.context.Scratch.Get "criterecontrol25"   }}")
-      console.log("Critères 50","{{ $.context.Scratch.Get "criterecontrol50"   }}")
-      console.log("Critères 81","{{ $.context.Scratch.Get "criterecontrol81"   }}")
-      console.log("Critères 106","{{ $.context.Scratch.Get "criterecontrol106" }}")
+      console.log("Critères 25 :", "{{ delimit ($.context.Scratch.Get "criterecontrol25") ", "   }}")
+      console.log("Critères 50 :", "{{ delimit ($.context.Scratch.Get "criterecontrol50") ", "   }}")
+      console.log("Critères 81 :", "{{ delimit ($.context.Scratch.Get "criterecontrol81") ", "   }}")
+      console.log("Critères 106 :","{{ delimit ($.context.Scratch.Get "criterecontrol106") ", "  }}")
       console.groupEnd();
     </script>
 
