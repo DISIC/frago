@@ -21,7 +21,7 @@
   {{- else -}}
         Synthèse
   {{- end -}}
-  {{ with $projectTitle }} pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
 {{- define "main" -}}

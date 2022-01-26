@@ -1,0 +1,7 @@
+{{ $matchurl     := "([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])" }}
+{{ $matchhttp    := "(http|ftp|https)://" }}
+
+{{ $urlprefix := cond (gt (len (findRE $matchhttp .)) 0) "" "//" }}
+{{ $result    := cond (gt (len (findRE $matchurl .)) 0) (printf "<a href='%s%s'>%s</a>" $urlprefix . . | safeHTML) . }}
+
+{{ return $result }}

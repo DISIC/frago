@@ -1,5 +1,5 @@
 
-{{- define "title" -}}{{- $projectTitle := (.GetPage "./").Title -}}Audit Qualité {{ with $projectTitle }}pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}{{- end -}}
+{{- define "title" -}}{{- $projectTitle := (.GetPage "./").Title -}}Audit Qualité {{ with $projectTitle }}pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}{{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $context := . -}}

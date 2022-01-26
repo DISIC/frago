@@ -7,12 +7,12 @@
       {{- end -}}
     {{- end -}}
   {{- else -}}
-    Audit Accessibilité
+    Audit Accessibilités
   {{- end -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
-{{- define "main" -}}
+{{- define "main" -}}sss
   {{- $context := . -}}
-  {{- partial "templates/accessibility.html" (dict "context" $context) -}}
+  {{- partial "templates/accessibility.html" (dict "context" $context) -}}sss
 {{- end -}}
