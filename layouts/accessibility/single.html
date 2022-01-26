@@ -12,7 +12,7 @@
   {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
-{{- define "main" -}}sss
+{{- define "main" -}}
   {{- $context := . -}}
   {{- partial "templates/accessibility.html" (dict "context" $context) -}}sss
 {{- end -}}
