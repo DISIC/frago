@@ -7,7 +7,7 @@
       {{- end -}}
     {{- end -}}
   {{- else -}}
-    Audit Accessibilités
+    Audit Accessibilité
   {{- end -}}
   {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
