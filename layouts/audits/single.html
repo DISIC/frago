@@ -12,7 +12,7 @@
         {{- else if eq .Format.BaseName "quality" -}}
           Audit Qualité
         {{- else if eq .Format.BaseName "performance" -}}
-          Audit Performancee
+          Audit Performance
         {{- else if eq .Format.BaseName "declaration" -}}
           Déclaration
         {{- end -}}
@@ -21,7 +21,7 @@
   {{- else -}}
         Synthèse
   {{- end -}}
-  {{ with $projectTitle }} pour {{ . }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
 {{- define "main" -}}

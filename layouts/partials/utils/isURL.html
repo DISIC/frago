@@ -1,0 +1,17 @@
+{{ $context      := .context }}
+{{ $projectTitle := .projectTitle }}
+{{ $project      := partialCached "render/projectpath" $context $context }}
+
+{{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
+  {{ $context.Scratch.Set "website" (index (last 1 (sort .)) 0).website }}
+{{- end -}}
+
+{{ $matchurl     := "([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])" }}
+{{ $matchhttp    := "(http|ftp|https)://" }}
+
+{{ $urlprefix1 := cond (gt (len (findRE $matchhttp $projectTitle)) 0) "" "//" }}
+{{ $urlprefix2 := cond (gt (len (findRE $matchhttp ($context.Scratch.Get "website"))) 0) "" "//" }}
+{{ $result     := cond (gt (len (findRE $matchurl $projectTitle)) 0)                    (printf "<a href='%s%s'>%s</a>" $urlprefix1 $projectTitle $projectTitle | safeHTML) $projectTitle }}
+{{ $result     := cond (gt (len (findRE $matchurl ($context.Scratch.Get "website"))) 0) (printf "<a href='%s%s'>%s</a>" $urlprefix2 ($context.Scratch.Get "website") $projectTitle | safeHTML) $projectTitle }}
+
+{{ return $result }}
