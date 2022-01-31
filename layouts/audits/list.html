@@ -1,4 +1,5 @@
 {{- define "title" -}}
+  {{- $context := . -}}
   {{- $project      := partialCached "render/projectpath" . . -}}
   {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
   {{- $projectTitle := (.GetPage $projectPath).Title -}}
@@ -21,7 +22,7 @@
   {{- else -}}
         Synthèse
   {{- end -}}
-  {{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
 {{- define "main" -}}

@@ -1,4 +1,5 @@
 {{- define "title" -}}
+  {{- $context := . -}}
   {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}
     {{- with $alternate -}}
@@ -9,10 +10,10 @@
   {{- else -}}
     Audit Accessibilité
   {{- end -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" $projectTitle $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
 {{- define "main" -}}
   {{- $context := . -}}
-  {{- partial "templates/accessibility.html" (dict "context" $context) -}}sss
+  {{- partial "templates/accessibility.html" (dict "context" $context) -}}
 {{- end -}}
