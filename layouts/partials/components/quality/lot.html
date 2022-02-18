@@ -39,7 +39,6 @@
         <th>Intitulé</th>
         <th class="text-center w-100">Page</th>
         <th class="text-center w-100">Bloc</th>
-        <th class="text-center w-100">Type</th>
         <th class="text-center w-120">Critère</th>
       </tr>
     </thead>
@@ -55,7 +54,6 @@
           <td><a href="{{/* /audits/{{ $project }}/quality */}}#{{ .name | urlize }}">{{ .name | markdownify }}</a>{{ if .checked }} ✅{{ end }}<br>{{ .description | markdownify }}</td>
           <td class="text-center">{{ if .pagename }}{{ .pagename | markdownify }}{{ end }}</td>
           <td class="text-center" style="color: hsl(calc(220 + {{ mul ($.context.Scratch.Get "blockid") 143  }}), calc(90% + {{ mul ($.context.Scratch.Get "blockid") 1 }}%),40%);">{{ if .blockname }}<strong>{{ .blockname | replaceRE "-.*" "$1" }}</strong>{{ end }}</td>
-          <td class="text-center">{{ .type }}</td>
           <td class="text-center">
             <strong>
             {{- with .criterion -}}

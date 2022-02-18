@@ -76,15 +76,22 @@
   <ul>
     {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.context.Scratch.Get "auditpath-csv")) $context $project ($.context.Scratch.Get "auditpath-csv") -}}
     {{- $map := . -}}
+    {{ $map }}
     {{- if ne (len .compliance) 1 -}}
       {{/* Cumulated scores */}}
       <li>{{ .percentage }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>
-      {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($.context.Scratch.Get "context").website }}pour {{ . }}{{ end }}.</li>{{ end }}
+      {{- if ($.context.Scratch.Get "scores").criteria -}}
+        <li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($.context.Scratch.Get "context").website }}pour {{ . }}{{ end }} (le taux moyen est de {{ ($.context.Scratch.Get "scores").scores.complianceaverage }}%).</li>
+      {{- end -}}
         {{/* Specific score for sub services */}}
-        {{ range $id, $value :=.names }}<li>{{ index $map.compliance $id }}% des {{ index $map.total $id }} critères du {{ with (index $map.context $id).audit }}{{ .guidelines }}{{ end }} sont respectés pour {{ . }}</li>{{ end }}
+      {{- range $id, $value := .names }}
+        <li>
+          {{ index $map.compliance $id }}% des {{ index $map.total $id }} critères du {{ with (index $map.context $id).audit }}{{ .guidelines }}{{ end }} sont respectés pour {{ . }} (le taux moyen est de {{ index $map.complianceaverage $id }}%).
+        </li>
+      {{- end }}
       {{- else -}}
         {{/* If any sub services */}}
-        {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères testés{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{/* with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end */}} sont respectés.</li>{{ end }}
+        {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères testés{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{/* with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end */}} sont respectés (le taux moyen est de {{ ($.context.Scratch.Get "scores").scores.complianceaverage }}%).</li>{{ end }}
       {{- end -}}
     {{- end -}}
     {{/*- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -*/}}
