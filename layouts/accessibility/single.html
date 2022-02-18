@@ -10,7 +10,7 @@
   {{- else -}}
     Audit Accessibilité
   {{- end -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 
 {{- define "main" -}}
