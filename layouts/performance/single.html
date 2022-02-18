@@ -1,6 +1,6 @@
 {{- define "title" -}}
   {{- $context      := . -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}Audit Performance {{ with $projectTitle }}pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}Audit Performance {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
