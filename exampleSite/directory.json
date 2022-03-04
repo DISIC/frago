@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Bertrand Keller",
+    "email": "bertrand.keller@modernisation.gouv.fr",
+    "job": "Développeur accessibilité",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Lucile Foraison",
+    "email": "lucile.foraison@modernisation.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  },
+  {
+    "name": "Kheira Belkacem",
+    "email": "kheira.belkacem@modernisation.gouv.fr",
+    "job": "Designer",
+    "ministry": "Ministère de la transformation",
+    "direction": "DINUM"
+  }
+]
