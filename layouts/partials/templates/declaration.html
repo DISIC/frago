@@ -76,7 +76,6 @@
   <ul>
     {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.context.Scratch.Get "auditpath-csv")) $context $project ($.context.Scratch.Get "auditpath-csv") -}}
     {{- $map := . -}}
-    {{ $map }}
     {{- if ne (len .compliance) 1 -}}
       {{/* Cumulated scores */}}
       <li>{{ .percentage }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>

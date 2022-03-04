@@ -95,8 +95,8 @@
 
       <script>
         console.group("Critères par type: ");
-        console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}")
-        console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}")
+        console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme }}{{ $key }}, {{ end }}")
+        console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme }}{{ $key }}, {{ end }}")
         console.log("Critères NA [{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}")
         console.log("Critères NT [{{ len ($.context.Scratch.Get "scores").criteria.nonteste }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste }}{{ $key }}, {{ end }}")
         console.groupEnd();
