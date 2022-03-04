@@ -1,245 +1,183 @@
 {{- $context      := .context -}}
-{{- $project      := partialCached "render/projectpath" $context $context -}}
+{{- $project      := partial "render/projectpath" $context $context -}}
 {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
 {{- $projectTitle := ($context.GetPage $projectPath).Title -}}
 {{- $.context.Scratch.Set "pageslist" "" -}}
 {{- $.context.Scratch.Set "scores" "" -}}
 
-{{/* Load the audit file */}}
-{{- $.context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
-{{- $.context.Scratch.Set "auditpath-csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
 
-<article class="wrapper narrow">
-{{/* Display declaration tpl when output format is set */}}
-{{- if (in .context.Permalink "declaration.html") -}}
-  {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) ($.context.Scratch.Get "audits") -}}
+{{ if in "/audits/_index.md" $context.Path }}
+  <section class="wrapper">
+  {{- partial "templates/projects-monitoring.html" $context $context -}}
+  </section>
+
 {{- else -}}
-{{/* START Test if audit file exists */}}
-{{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
-
-  {{- $.context.Scratch.Set "auditfile-csv" (getCSV "," ($.context.Scratch.Get "auditpath-csv")) -}}
-  {{/* Calculate accessibility compliance */}}
-  {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
-
-  {{/* START Test if the csv file has a good name : YYYY-MM-DD.csv */}}
-  {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (index ($.context.Scratch.Get "audits") "auditfile-name")))) -}}
-    {{- $.context.Scratch.Set "date" (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
+  <article class="wrapper narrow">
+  {{/* Load the audit file */}}
+  {{- $.context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
+  {{- $.context.Scratch.Set "auditpath-csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
+  {{/* Display declaration tpl when output format is set */}}
+  {{- if (in .context.Permalink "declaration.html") -}}
+    {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) ($.context.Scratch.Get "audits") -}}
   {{- else -}}
-    {{- $.context.Scratch.Set "date" now -}}
-    {{- warnf "The file %s has a bad name, it should be a date YYYY-MM-DD.csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
-  {{- end -}}
-  {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
-
-  {{/* START Determine the version of the audit from the context declaration */}}
-  {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
-  {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
-  {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
-  {{- with ($context.Scratch.Get "context") -}}
-  {{- with (index ($.context.Scratch.Get "audits") "auditfile-name") -}}
-  {{- with (index ($context.Scratch.Get "context") .) -}}
-    {{- with .audit -}}
-      {{- with .audit.guidelines -}}
-        {{- $guideline := (replace (. | urlize) "-" "") -}}
-        {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-        {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- else -}}
-    {{- if ne (path.Dir $context.Path) "audits/_index.md" -}}
-      {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
-    {{- end -}}
-  {{- end -}}
-  {{- end -}}
-  {{/* END Determine the version of the audit form the context declaration */}}
-
-  {{/* Load the criteria file for the good audit version */}}
-  {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
-  {{/* Load the glossary file for the good audit version */}}
-  {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
-
-  {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-  <h1>Audit Accessibilité{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
-
-  {{/* START Display page content if exists */}}
-  {{- if gt (len .context.Content) 10 -}}
-  <div class="note">
-  {{- partial "elements/content.html" .context.Content -}}
-  </div>
-  {{- end -}}
-  {{/* END Display page content if exists */}}
-
   {{/* START Test if audit file exists */}}
-  {{- if and ($.context.Scratch.Get "auditfile-csv") (ne ($.context.Scratch.Get "scores").isempty 0) -}}
+  {{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
 
-    {{/* Find if the audit file is by criteria or by tests */}}
-    {{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context ($.context.Scratch.Get "auditfile-csv")) "methodology") -}}
-    {{/* Create an array with all pages */}}
-    {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) ($.context.Scratch.Get "auditfile-csv")) "pageslist") -}}
-    {{/* Control which tests are made for each type of audit :: this is an help for knowing witch tests are missing */}}
-    {{- range $auditname, $audit := $context.Site.Data.rgaa.tests -}}
-      {{ $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice }}
-      {{- range $id, $criterium := index $.context.Site.Data.rgaa.tests $auditname -}}
-        {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
-          {{- if eq $criterium $value -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $value }}{{- end -}}
+    {{- $.context.Scratch.Set "auditfile-csv" (getCSV "," ($.context.Scratch.Get "auditpath-csv")) -}}
+    {{/* Calculate accessibility compliance */}}
+    {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
+
+    {{/* START Test if the csv file has a good name : YYYY-MM-DD.csv */}}
+    {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (index ($.context.Scratch.Get "audits") "auditfile-name")))) -}}
+      {{- $.context.Scratch.Set "date" (time (string (index ($.context.Scratch.Get "audits") "auditfile-name"))) -}}
+    {{- else -}}
+      {{- $.context.Scratch.Set "date" now -}}
+      {{- warnf "The file %s has a bad name, it should be a date YYYY-MM-DD.csv" (index ($.context.Scratch.Get "audits") "auditfile-path") -}}
+    {{- end -}}
+    {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
+
+    {{/* START Determine the version of the audit from the context declaration */}}
+    {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
+    {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
+    {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+    {{- with ($context.Scratch.Get "context") -}}
+    {{- with (index ($.context.Scratch.Get "audits") "auditfile-name") -}}
+    {{- with (index ($context.Scratch.Get "context") .) -}}
+      {{- with .audit -}}
+        {{- with .audit.guidelines -}}
+          {{- $guideline := (replace (. | urlize) "-" "") -}}
+          {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+          {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
         {{- end -}}
       {{- end -}}
-      {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) ((($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.rgaa.tests $auditname))) -}}
-    {{- end -}}
-
-    <script>
-      console.group("Critères par type: ");
-      console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}")
-      console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}")
-      console.log("Critères NA [{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}")
-      console.log("Critères NT [{{ len ($.context.Scratch.Get "scores").criteria.nonteste }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste }}{{ $key }}, {{ end }}")
-      console.groupEnd();
-      console.group("Critères non testés: ");
-      console.log("Critères 25 :", "{{ delimit ($.context.Scratch.Get "criterecontrol25") ", "   }}")
-      console.log("Critères 50 :", "{{ delimit ($.context.Scratch.Get "criterecontrol50") ", "   }}")
-      console.log("Critères 81 :", "{{ delimit ($.context.Scratch.Get "criterecontrol81") ", "   }}")
-      console.log("Critères 106 :","{{ delimit ($.context.Scratch.Get "criterecontrol106") ", "  }}")
-      console.groupEnd();
-    </script>
-
-    <h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères{{ end }}</h2>
-    <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
-    {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}" aria-label="Accéder à la déclaration de {{ ($context.GetPage $project).Title }}">Accéder à la déclaration</a></p>{{- end -}}
-
-    <h3>Conformité globale selon les critères {{ if le ($.context.Scratch.Get "scores").scores.compliance "75" }} {{ if and (ne ($.context.Scratch.Get "scores").scores.criteria.nonconforme 0) (ne ($.context.Scratch.Get "scores").scores.criteria.conforme 0) }}<small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (($.context.Scratch.Get "scores").scores.criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}{{ end }}</h3>
-    {{/* Call accessibility scores partial */}}
-    {{- partialCached "components/scores/accessibility" (dict "context" $context "score" ($.context.Scratch.Get "scores").scores.compliance) ($.context.Scratch.Get "scores") -}}
-    {{/* Call accessibility number of criteria partial */}}
-    {{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($.context.Scratch.Get "scores").criteria) ($.context.Scratch.Get "scores").criteria -}}
-
-    {{/* START If several pages tested */}}
-    {{- if gt (len ($.context.Scratch.Get "pageslist")) 1 -}}
-      <h3 class="mb-0">Conformité détaillée de répartition</h3>
-      {{/* Call accessibility graph */}}
-      {{- partial "components/scores/accessibility-graph" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv") "scores" ($.context.Scratch.Get "scores").criteria) -}}
-    {{- end -}}
-    {{/* END If several pages tested */}}
-
-    {{/* START Display audit context */}}
-    {{- with ($.context.Scratch.Get "context") -}}
-    {{- with (index . (($.context.Scratch.Get "date").Format "2006-01-02")).audit -}}
-      <h2>Contexte</h2>
-      <p>
-        {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
-        {{ with .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-        {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-        {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-      </p>
     {{- end -}}
     {{- else -}}
-    {{- warnf "Context is missing in %s" $project -}}
+      {{- if ne (path.Dir $context.Path) "audits/_index.md" -}}
+        {{- warnf "(index ($.context.Scratch.Get 'audits') 'auditfile-name') est vide" -}}
+      {{- end -}}
     {{- end -}}
-    {{/* END Display audit context */}}
+    {{- end -}}
+    {{/* END Determine the version of the audit form the context declaration */}}
 
-  <hr>
-  {{- end -}}
+    {{/* Load the criteria file for the good audit version */}}
+    {{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+    {{/* Load the glossary file for the good audit version */}}
+    {{- $.context.Scratch.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
 
-  {{/* START If several page tested */}}
-  {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
-  <h2>Liste des pages auditées</h2>
-  {{/* Create a anchors menu with audited pages */}}
-  <div class="tableofcontents">
-    <h3>Accéder aux pages auditées</h3>
-    <nav>
-      <ul role="list">
-        <li><a href="#pagesall">Anomalies sur toutes les pages</a></li>
-        {{/* Loop all pages for anchor navigation */}}
-        {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
-        <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
+    {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
+    <h1>Audit Accessibilité{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
+
+    {{/* START Display page content if exists */}}
+    {{- if gt (len .context.Content) 10 -}}
+    <div class="note">
+    {{- partial "elements/content.html" .context.Content -}}
+    </div>
+    {{- end -}}
+    {{/* END Display page content if exists */}}
+
+    {{/* START Test if audit file exists */}}
+    {{- if and ($.context.Scratch.Get "auditfile-csv") (ne ($.context.Scratch.Get "scores").isempty 0) -}}
+
+      {{/* Find if the audit file is by criteria or by tests */}}
+      {{- $.context.Scratch.Set "auditmethodology" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) $context ($.context.Scratch.Get "auditfile-csv")) "methodology") -}}
+      {{/* Create an array with all pages */}}
+      {{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv")) ($.context.Scratch.Get "auditfile-csv")) "pageslist") -}}
+      {{/* Control which tests are made for each type of audit :: this is an help for knowing witch tests are missing */}}
+      {{- range $auditname, $audit := $context.Site.Data.rgaa.tests -}}
+        {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice -}}
+        {{- range $id, $criterium := index $.context.Site.Data.rgaa.tests $auditname -}}
+          {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
+            {{- if eq $criterium $value -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $value }}{{- end -}}
+          {{- end -}}
         {{- end -}}
-      </ul>
-    <nav>
-  </div>
-  {{- end -}}
-  {{/* END If several page tested */}}
+        {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) ((($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.rgaa.tests $auditname))) -}}
+      {{- end -}}
 
-  <h2>Par ordre des critères du référentiel RGAA</h2>
+      <script>
+        console.group("Critères par type: ");
+        console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}")
+        console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}")
+        console.log("Critères NA [{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}")
+        console.log("Critères NT [{{ len ($.context.Scratch.Get "scores").criteria.nonteste }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste }}{{ $key }}, {{ end }}")
+        console.groupEnd();
+        console.group("Critères non testés: ");
+        console.log("Critères 25 :", "{{ delimit ($.context.Scratch.Get "criterecontrol25") ", " }}")
+        console.log("Critères 50 :", "{{ delimit ($.context.Scratch.Get "criterecontrol50") ", " }}")
+        console.log("Critères 81 :", "{{ delimit ($.context.Scratch.Get "criterecontrol81") ", " }}")
+        console.log("Critères 106 :","{{ delimit ($.context.Scratch.Get "criterecontrol106") ", " }}")
+        console.groupEnd();
+      </script>
 
-  {{/* Range map errors sort by RGAA order - on all pages */}}
-  {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
-  <h3 id="pagesall" class="small-caps">Anomalies présentes sur toutes les pages</h3>
-  {{- else -}}
-  <h3 >Anomalies</h3>
-  {{- end -}}
+      <h2 class="text-center">Scores{{- with ($.context.Scratch.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères{{ end }}</h2>
+      <time class="text-center" datetime="{{ ($.context.Scratch.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($.context.Scratch.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($.context.Scratch.Get "date").Month) }} {{ ($.context.Scratch.Get "date").Year }}</time>
+      {{- with $.context.OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}" aria-label="Accéder à la déclaration de {{ ($context.GetPage $project).Title }}">Accéder à la déclaration</a></p>{{- end -}}
 
-  {{- $.context.Scratch.Set "counterallpages" 0 -}}
-  {{- if and ($.context.Scratch.Get "auditmethodology") ($.context.Scratch.Get "auditfile-csv") -}}
-  {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
-    {{- $indication := (delimit (uniq (after ($.context.Scratch.Get "auditmethodology") .)) "") -}}
-    {{- $content := (index (split $indication "|") 0) -}}
-    {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
-    {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
-    {{- $condcontentnc := (eq $content "nc") -}}
-    {{- $condcontentc := (eq $content "c") -}}
-    {{- $thematiques := index $value 0 -}}
-    {{- $criteria := index $value 1 -}}
-    {{- $tests := index $value 2 -}}
-    {{ if eq (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 }}
-    {{- range first 1 . -}}
-      {{- if or $condcontentlen $condcontentnc -}}
-      {{- $.context.Scratch.Set "counterallpages" 1 -}}
-      <p class="mb-0"><strong>
-        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-        {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
-        {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
-        {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
-      </strong></p>
-      {{- $txt := "" -}}
-      {{- if not $condcontentnc -}}
-        {{- if $condcontentc -}}
-          {{- $txt = "Conforme! Note" -}}
-        {{- else -}}
-          {{- $txt = "Non applicable" -}}
-        {{- end -}}
+      <h3>Conformité globale selon les critères {{ if le ($.context.Scratch.Get "scores").scores.compliance "75" }} {{ if and (ne ($.context.Scratch.Get "scores").scores.criteria.nonconforme 0) (ne ($.context.Scratch.Get "scores").scores.criteria.conforme 0) }}<small>({{ sub ((div (mul (add (len ($.context.Scratch.Get "scores").criteria.conforme) (($.context.Scratch.Get "scores").scores.criteria.nonconforme) ) 75) 100)) (len ($.context.Scratch.Get "scores").criteria.conforme) }}</b> critères pour atteindre 75%)</small>{{ end }}{{ end }}</h3>
+      {{/* Call accessibility scores partial */}}
+      {{- partialCached "components/scores/accessibility" (dict "context" $context "score" ($.context.Scratch.Get "scores").scores.compliance) ($.context.Scratch.Get "scores") -}}
+      {{/* Call accessibility number of criteria partial */}}
+      {{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($.context.Scratch.Get "scores").criteria) ($.context.Scratch.Get "scores").criteria -}}
+
+      {{/* START If several pages tested */}}
+      {{- if gt (len ($.context.Scratch.Get "pageslist")) 1 -}}
+        <h3 class="mb-0">Conformité détaillée de répartition</h3>
+        {{/* Call accessibility graph */}}
+        {{- partial "components/scores/accessibility-graph" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditfile-csv") "scores" ($.context.Scratch.Get "scores").criteria) -}}
+      {{- end -}}
+      {{/* END If several pages tested */}}
+
+      {{/* START Display audit context */}}
+      {{- with ($.context.Scratch.Get "context") -}}
+      {{- with (index . (($.context.Scratch.Get "date").Format "2006-01-02")).audit -}}
+        <h2>Contexte</h2>
+        <p>
+          {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
+          {{ with .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+          {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+          {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+        </p>
+      {{- end -}}
       {{- else -}}
-        {{- $txt = "Commentaire(s)" -}}
+      {{- warnf "Context is missing in %s" $project -}}
       {{- end -}}
-      {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>{{- $txt -}}</b>&nbsp;: {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
-        {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-        {{- if eq ($.context.Scratch.Get "auditmethodology") 2 -}}
-          <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
-        {{ else if eq ($.context.Scratch.Get "auditmethodology") 3 }}
-          {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
-            {{- if eq $idx (string ($tests)) -}}
-              {{- if reflect.IsSlice . -}}
-                <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
-              {{- if (after 1 .) -}}
-                <ol>
-                  {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
-                </ol>
-              {{- end -}}
-            {{- else -}}
-              <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
-            {{- end -}}
-          {{- end -}}
-          {{- end -}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- end -}}
-  {{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
+      {{/* END Display audit context */}}
 
-  <hr class="divider">
+    <hr>
 
-  {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
-  {{/* Range map errors sort by RGAA order - on specifics pages */}}
-  <h3 class="small-caps">Anomalies présentes sur les pages spécifiques</h3>
-  {{/* Display errors presents on specific pages */}}
-  {{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
-    {{- $.context.Scratch.Set "text" 0 -}}
-    {{- $page := . -}}
-    <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}"><span aria-hidden="true">■ </span>Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
-    {{- $.context.Scratch.Set "is-page-error" 0 -}}
+    {{- end -}}
+
+    {{/* START If several page tested */}}
+    {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
+    <h2>Liste des pages auditées</h2>
+    {{/* Create a anchors menu with audited pages */}}
+    <div class="tableofcontents">
+      <h3>Accéder aux pages auditées</h3>
+      <nav>
+        <ul role="list">
+          <li><a href="#pagesall">Anomalies sur toutes les pages</a></li>
+          {{/* Loop all pages for anchor navigation */}}
+          {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
+          <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
+          {{- end -}}
+        </ul>
+      <nav>
+    </div>
+    {{- end -}}
+    {{/* END If several page tested */}}
+
+    <h2>Par ordre des critères du référentiel RGAA</h2>
+
+    {{/* Range map errors sort by RGAA order - on all pages */}}
+    {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
+    <h3 id="pagesall" class="small-caps">Anomalies présentes sur toutes les pages</h3>
+    {{- else -}}
+    <h3 >Anomalies</h3>
+    {{- end -}}
+
+    {{- $.context.Scratch.Set "counterallpages" 0 -}}
+    {{- if and ($.context.Scratch.Get "auditmethodology") ($.context.Scratch.Get "auditfile-csv") -}}
     {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
-    {{- if ne (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 -}}
-      {{- $indication := (string (index . (add $id ($.context.Scratch.Get "auditmethodology")))) -}}
+      {{- $indication := (delimit (uniq (after ($.context.Scratch.Get "auditmethodology") .)) "") -}}
       {{- $content := (index (split $indication "|") 0) -}}
       {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
       {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
@@ -248,21 +186,27 @@
       {{- $thematiques := index $value 0 -}}
       {{- $criteria := index $value 1 -}}
       {{- $tests := index $value 2 -}}
-      {{- if or $condcontentlen $condcontentnc -}}
-      {{- $.context.Scratch.Add "is-page-error" 1 -}}
+      {{ if eq (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 }}
+      {{- range first 1 . -}}
+        {{- if or $condcontentlen $condcontentnc -}}
+        {{- $.context.Scratch.Set "counterallpages" 1 -}}
         <p class="mb-0"><strong>
-        {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
-        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
-        {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
+          {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
         </strong></p>
-      {{- $txt := "" -}}
-      {{- if $condcontentc -}}
-        {{- $txt = "Conforme, mais attention" -}}
-      {{- else -}}
-        {{- $txt = "Commentaire(s)" -}}
-      {{- end -}}
-        {{- if $condcontentlen }}<p class="m-0 smaller"><b>{{- $txt -}}</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+        {{- $txt := "" -}}
+        {{- if not $condcontentnc -}}
+          {{- if $condcontentc -}}
+            {{- $txt = "Conforme! Note" -}}
+          {{- else -}}
+            {{- $txt = "Non applicable" -}}
+          {{- end -}}
+        {{- else -}}
+          {{- $txt = "Commentaire(s)" -}}
+        {{- end -}}
+        {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>{{- $txt -}}</b>&nbsp;: {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
           {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
           {{- if eq ($.context.Scratch.Get "auditmethodology") 2 -}}
             <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
@@ -282,16 +226,81 @@
             {{- end -}}
             {{- end -}}
           {{- end -}}
+        {{- end -}}
+      {{- end -}}
       {{- end -}}
     {{- end -}}
-  {{- end -}}
-  {{- if eq ($.context.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
-  {{- if ne (add (int $id) 1) (len ($.context.Scratch.Get "pageslist")) -}}<hr class="divider-strong">{{- end -}}
-{{- end -}}
+    {{- end -}}
+    {{ if not ($.context.Scratch.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 
-<hr class="divider">
-{{- end -}}
-{{/* END If several page tested */}}
+    <hr class="divider">
+
+    {{- if and (gt (len ($.context.Scratch.Get "pageslist")) 1) -}}
+    {{/* Range map errors sort by RGAA order - on specifics pages */}}
+    <h3 class="small-caps">Anomalies présentes sur les pages spécifiques</h3>
+    {{/* Display errors presents on specific pages */}}
+    {{- range $id, $value := ($.context.Scratch.Get "pageslist") -}}
+      {{- $.context.Scratch.Set "text" 0 -}}
+      {{- $page := . -}}
+      <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}" class="bullet">Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
+      {{- $.context.Scratch.Set "is-page-error" 0 -}}
+      {{- range $key, $value := after 1 ($.context.Scratch.Get "auditfile-csv") -}}
+      {{- if ne (len (uniq (after ($.context.Scratch.Get "auditmethodology") .))) 1 -}}
+        {{- $indication := (string (index . (add $id ($.context.Scratch.Get "auditmethodology")))) -}}
+        {{- $content := (index (split $indication "|") 0) -}}
+        {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+        {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
+        {{- $condcontentnc := (eq $content "nc") -}}
+        {{- $condcontentc := (eq $content "c") -}}
+        {{- $thematiques := index $value 0 -}}
+        {{- $criteria := index $value 1 -}}
+        {{- $tests := index $value 2 -}}
+        {{- if or $condcontentlen $condcontentnc -}}
+        {{- $.context.Scratch.Add "is-page-error" 1 -}}
+          <p class="mb-0"><strong>
+          {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($.context.Scratch.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
+          </strong></p>
+        {{- $txt := "" -}}
+        {{- if $condcontentc -}}
+          {{- $txt = "Conforme, mais attention" -}}
+        {{- else -}}
+          {{- $txt = "Commentaire(s)" -}}
+        {{- end -}}
+          {{- if $condcontentlen }}<p class="m-0 smaller"><b>{{- $txt -}}</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+            {{- $s := where ($.context.Scratch.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+            {{- if eq ($.context.Scratch.Get "auditmethodology") 2 -}}
+              <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+            {{ else if eq ($.context.Scratch.Get "auditmethodology") 3 }}
+              {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+                {{- if eq $idx (string ($tests)) -}}
+                  {{- if reflect.IsSlice . -}}
+                    <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+                  {{- if (after 1 .) -}}
+                    <ol>
+                      {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+                    </ol>
+                  {{- end -}}
+                {{- else -}}
+                  <p><em>{{ (replaceRE "=\"#" ($.context.Scratch.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+                {{- end -}}
+              {{- end -}}
+              {{- end -}}
+            {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if eq ($.context.Scratch.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
+    {{- if ne (add (int $id) 1) (len ($.context.Scratch.Get "pageslist")) -}}<hr class="divider-strong">{{- end -}}
+
+  {{- end -}}
+
+  <hr class="divider">
+
+  {{- end -}}
+  {{/* END If several page tested */}}
 
   {{/* START If several page tested */}}
   {{- if gt (len ($.context.Scratch.Get "pageslist")) 0 -}}
@@ -300,7 +309,11 @@
   {{ partialCached "templates/validity.html" (dict "context" $context "audit" ($.context.Scratch.Get "audits") "score" ($.context.Scratch.Get "scores").criteria) ($.context.Scratch.Get "scores").criteria }}
   {{- end -}}
   {{/* END If several page tested */}}
+
+  </article>
   {{- else -}}
+    {{ $project }}
+    <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}accessibility</p>
     {{- if (ne (printf "%s/%s" (path.Dir $.context.Path) (path.Base $.context.Path)) "audits/_index.md") -}}
       <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($.context.Scratch.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>
       {{- warnf "Fichier d’audit manquant dans %s" ($.context.Scratch.Get "audits").pathdatafile -}}
@@ -310,8 +323,10 @@
 
 {{- end -}}
 {{/* END Test if audit file exists */}}
-<hr class="divider">
+{{- end -}}
 {{/* Display declaration in accessibility page if no output format setted */}}
 {{ if not (.context.OutputFormats.Get "declarationpage") }}
+<hr class="divider">
 {{- partial "templates/declaration.html" (dict "context" $context "audits" ($.context.Scratch.Get "audits")) -}}
 {{- end -}}
+
