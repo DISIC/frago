@@ -7,7 +7,7 @@
 <p align="center">
   <img width="243" height="272" src="/images/frago.png">
 </p>
-
+rm -rf $(find public | grep -e "accessibility" -e "quality.*" -e "performance.*" -e "lighthouse"  -e "declaration.*" -e "audits")
 ## Présentation
 
 Le thème Frago a pour objectif d’aider à la génération de synthèses pour l’amélioration des démarches en ligne du gouvernement français..
@@ -68,7 +68,7 @@ git submodule add https://github.com/DISIC/frago.git/ themes/frago && git submod
 ```toml
 [module]
   [[module.imports]]
-    path = "github.com/disic/frago" // si vous voulez utiliser `hugo mod`, sinon juste télécharger le thème et le placer dans `themes/frago`
+    path = "github.com/disic/frago"
 
 title = "Mon administration"
 theme = "frago"
@@ -148,7 +148,7 @@ Note : Le titre d’une page peut être suivi de l’URL de la page ; titre et U
 
 ```toml
 title = "Mon administration"
-theme = "fargo"
+theme = "frago"
 
 [params]
   organisation = "Le nom complet de mon administration"

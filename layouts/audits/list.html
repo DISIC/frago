@@ -59,6 +59,8 @@
     {{- else -}}
       {{- partialCached "templates/dashboard.html" $context $context -}}
     {{- end -}}
-    {{- partial "elements/content.html" .Content -}}
+    <section class="wrapper narrow">
+    {{ partial "elements/content.html" .Content }}
+    </section>
   {{- end -}}
 {{- end -}}

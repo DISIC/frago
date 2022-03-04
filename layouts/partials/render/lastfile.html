@@ -31,6 +31,7 @@
 {{ $condfile   := cond (fileExists (printf "%s.%s" ($context.Scratch.Get "pathdata") $ext)) true false }}
 {{ $condfolder := cond (fileExists ($context.Scratch.Get "pathdata")) true false }}
 
+
 {{/* If the file accessibility.csv exists at the root of the project */}}
 {{ if $condfile }}
   {{ $context.Scratch.Set "auditpath-lastfile" (printf "%s.%s" ($context.Scratch.Get "pathdata") $ext) }}

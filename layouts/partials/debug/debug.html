@@ -103,12 +103,12 @@
     }
   }).observe({type: 'layout-shift', buffered: true});
 
-  webVitals.getLCP(lcp => {
-    const latestEntry = lcp.entries[lcp.entries.length - 1];
-    if (latestEntry?.element?.getAttribute('loading') == 'lazy') {
-      console.warn('Warning: LCP element was lazy loaded', latestEntry);
-    }
-  });
+  // webVitals.getLCP(lcp => {
+  //   const latestEntry = lcp.entries[lcp.entries.length - 1];
+  //   if (latestEntry?.element?.getAttribute('loading') == 'lazy') {
+  //     console.warn('Warning: LCP element was lazy loaded', latestEntry);
+  //   }
+  // });
 
 </script>
 <script>
@@ -127,6 +127,7 @@
     console.log('Page Node: ', '{{ .context.Page.IsNode }}')
     console.log('Page Page: ', '{{ .context.Page.IsPage }}')
     console.log('Page Date: ', '{{ .context.Page.Date }}')
+    console.log('Page Lang: ', '{{ .context.Page.Lang }}')
     console.log('Page Lastmod: ', '{{ .context.Page.Lastmod}}')
     console.log('Page Date=Lastmod?: ', '{{ (eq .Page.Lastmod .Page.Date) }}')
     console.log('Page Date<>Lastmod?: ', '{{ (ne .Lastmod .Date) }}')

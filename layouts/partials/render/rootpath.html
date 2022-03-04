@@ -1,2 +1,6 @@
 {{/* return the rootpath of the audits files */}}
-{{ return (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" (cond (fileExists (printf "content/audits/%s/" .type)) "content/audits" "static")) }}
+{{ $rootpath := (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" (cond (fileExists (printf "content/audits/%s/" .type)) "content/audits" "static")) }}
+{{/* if and (not (eq (getenv "HUGO_ENV") "production")) .project }}
+{{ warnf "RootPath for project %s is: %s" .project $rootpath  }}
+{{ end */}}
+{{ return $rootpath }}

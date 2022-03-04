@@ -188,6 +188,14 @@
   border: 0;
 }
 
+/* Title */
+
+h4.bullet::before {
+  content:"■ ";
+  margin-right: calc(var(--baseline) / 4);
+}
+
+
 /* Scores Colors */
 
 .good {

@@ -98,7 +98,9 @@
   <header role="banner" aria-label="Bannière">
     {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
     <div hidden>
-    {{ .Permalink }} - {{ .Kind }} - {{ .Type }}<br>
+    {{ .Params | jsonify }}<hr>
+    {{ .Site.Title }} - {{ .Site.Params }}<hr>
+    {{ .Permalink }} - {{ .Kind }} - {{ .Type }}<hr>
     {{ range .OutputFormats -}}
     {{ .Rel }} - {{ .MediaType.Type }} - <a href="{{ .Permalink | safeURL }}">{{ .RelPermalink | safeURL }}</a> - {{ .Format.BaseName }} - {{ .Format.Path }}<br>
     {{- end -}}
