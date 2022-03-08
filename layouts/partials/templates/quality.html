@@ -169,7 +169,7 @@
               {{ range (readDir ($.context.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $.context.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
             {{- end -}}
             <small class="no-print">
-              {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
+              {{- if and (not .Site.IsServer) (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
                 {{- if $.context.Scratch.Get "fileexist" -}}
                 &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
                 {{- end -}}
@@ -190,19 +190,22 @@
           {{- if .path -}}
             <dd><strong>XPath :</strong> <span>{{ .path | markdownify | safeHTML }}</span></dd>
           {{- end -}}
+          {/* Loop over criteria */}
           {{- if .criterion -}}
-            {{- $criteriafile := index (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
-            {{- $thematiques  := index (split .criterion ".") 0 -}}
-            {{- $criteria     := index (split .criterion ".") 1 -}}
-            {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
-            {{- $s := where $criteriafile "number" "eq" (int ($thematiques)) -}}
-            <dd class="details mt-1 mb-1">
-              <p class="summary">
-                {{ (replaceRE "=\"#" $glossaire ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML  }}<br>
-                Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
-                {{/* Pourcentage potentiel de correction du RGAA : {{ index ($.context.Scratch.Get "criteriavalue") (string .criterion) */}}
-              </p>
-            </dd>
+            {{ range (split (replace .criterion " " "") ",") }}
+              {{- $criteriafile := index (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+              {{- $thematiques  := index (split . ".") 0 -}}
+              {{- $criteria     := index (split . ".") 1 -}}
+              {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
+              {{- $s            := where $criteriafile "number" "eq" (int ($thematiques)) -}}
+              <dd class="details mt-1 mb-1">
+                <p class="summary">
+                  {{ (replaceRE "=\"#" $glossaire ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML  }}<br>
+                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace . "." "-" }}">{{ . | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
+                  {{/* Pourcentage potentiel de correction du RGAA : {{ index ($.context.Scratch.Get "criteriavalue") (string .criterion) */}}
+                </p>
+              </dd>
+            {{- end -}}
           {{- end -}}
           {{- else if (in .criterion "Pi") -}}
             {{- $criterionpi := (index (where (index $.context.Site.Data.pidila "1.0").criteria.criterias "id" (replace .criterion "." "-")) 0) -}}

@@ -12,10 +12,15 @@
 {{- range (readFile . | transform.Unmarshal) -}}
   {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{ $block := .name }}{{- range .errors -}}{{- $.context.Scratch.Delete "criterions" -}}{{- $.context.Scratch.Set "path" 0 -}}
     {{- if and .criterion (not .checked) -}}
-    {{- $.context.Scratch.Add "criterioncounter" 1 -}}
-    {{- with .path -}}{{- $.context.Scratch.Add "path" 1 -}}{{- end -}}
-    {{- $.context.Scratch.SetInMap (string .criterion) $name (slice (dict "page" $name "name" .name "block" $block "description" .description "path" .path "pathexist" ($.context.Scratch.Get "path"))) -}}
-    {{- $.context.Scratch.SetInMap "criterion" (string .criterion) ($.context.Scratch.Get (string .criterion)) -}}
+      {{- $name        := .name -}}
+      {{- $description := .description -}}
+      {{- $path        := .path -}}
+      {{ range (split (replace .criterion " " "") ",") }}
+        {{- $.context.Scratch.Add "criterioncounter" 1 -}}
+        {{- with $path -}}{{- $.context.Scratch.Add "path" 1 -}}{{- end -}}
+        {{- $.context.Scratch.SetInMap (string .) $name (slice (dict "page" $name "name" $name "block" $block "description" $description "path" $path "pathexist" ($.context.Scratch.Get "path"))) -}}
+        {{- $.context.Scratch.SetInMap "criterion" (string .) ($.context.Scratch.Get (string .)) -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}{{- end -}}{{- end -}}
 {{- end -}}

@@ -204,7 +204,10 @@
         {{- partial "components/scores/performance" (dict "context" $context "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .)) -}}
       {{- end -}}
       {{/* START - If several Lighthouse files */}}
-      {{- $lastfiles := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
+      {{- $lasfileobj := (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") -}}
+      {{- $lastfiles  := index $lasfileobj "auditfile-all-path" -}}
+      {{- $lasfiledate := index $lasfileobj "auditfile-all-name" -}}
+
       {{- if gt (len $lastfiles) 1 -}}
         {{/* START - Build map with the count of each total performance errors */}}
         {{- range $id, $value := $lastfiles -}}
@@ -220,7 +223,7 @@
         <div id="chartperformance"></div>
           <script>
               const dataperformance = {
-                  labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
+                  labels: [{{- range $id, $value := $lasfiledate -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
                   datasets: [
                     {
                       name: "Erreurs",

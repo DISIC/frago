@@ -37,7 +37,9 @@
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 {{- $date := (string (index $audit "auditfile-name")) -}}
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
-{{- $.context.Scratch.Set "context" (index . $date) -}}
+{{- $contextlast := cond (not (index . $date)) (index (last 1 (sort .)) 0) (index . $date) -}}
+{{- $.context.Scratch.Set "context" $contextlast -}}
+{{- if (not (index . $date)) -}}{{ warnf "project/accessibility/context.yml is not well filed, maybe the last value for last audit is missing" }}{{- end -}}
 {{- end -}}
 {{/* Find if the audit file is by criteria or by tests */}}
 {{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
@@ -95,7 +97,6 @@
   {{- with ($.context.Scratch.Get "scores").criteria -}}
   {{- $score := . -}}
   <h2>Critères non conformes</h2>
-
 
   {{ partialCached "templates/validity.html" (dict "context" $context "audit" $audit "score" $score) $score }}
 
