@@ -31,6 +31,11 @@ enableGitInfo = true
   notAlternative = false
   permalinkable = true
   isHTML = true
+[outputFormats.accessibilitycsv]
+  baseName = "accessibility"
+  mediaType = "text/csv"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.accessibility]
   baseName = "accessibility"
   mediaType = "application/json"
@@ -42,6 +47,11 @@ enableGitInfo = true
   notAlternative = false
   permalinkable = true
   isHTML = true
+[outputFormats.qualitycsv]
+  baseName = "quality"
+  mediaType = "text/csv"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.quality]
   baseName = "quality"
   mediaType = "application/json"
@@ -54,6 +64,11 @@ enableGitInfo = true
   notAlternative = false
   permalinkable = true
   isHTML = true
+[outputFormats.performancecsv]
+  baseName = "performance"
+  mediaType = "text/csv"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.performance]
   baseName = "performance"
   mediaType = "application/json"
