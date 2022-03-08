@@ -3,7 +3,6 @@ title: Accueil
 outputs:
   - html
   - json
-  - schema
 cascade:
 - _target:
     path: /audits/**/index.md

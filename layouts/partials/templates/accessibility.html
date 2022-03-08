@@ -157,7 +157,12 @@
           <li><a href="#pagesall">Anomalies sur toutes les pages</a></li>
           {{/* Loop all pages for anchor navigation */}}
           {{- range $id, $value := $.context.Scratch.Get "pageslist" -}}
-          <li><a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a></li>
+          <li>
+            <a href="#{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}">{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</a>
+            {{- if ge (len (split . "|")) 2 -}}
+            - <small>(<a href="{{ (index (split . "|") 1) | urlize }}" aria-label="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) }}{{ else }}{{ . }}{{ end }}">Lien vers la page auditée</a>)</small>
+            {{- end -}}
+          </li>
           {{- end -}}
         </ul>
       <nav>

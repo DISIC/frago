@@ -13,12 +13,7 @@ removePathAccents = true
 [outputformats]
   _merge = 'deep'
 
-[outputFormats.schema]
-  baseName = "schema"
-  mediaType = "text/html"
-  notAlternative = false
-  permalinkable = true
-  isHTML = true
+
 [outputFormats.declarationpage]
   baseName = "declaration"
   mediaType = "text/html"
