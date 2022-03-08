@@ -5,20 +5,24 @@
 {{- $.context.Scratch.Set "pageslistgraph" slice -}}
 {{- $topics := slice "Images" "Cadres" "Couleurs" "Multimedia" "Tableaux" "Liens" "Scripts" "Éléments obligatoires" "Structuration de l’information" "Présentation de l'information" "Formulaires" "Navigation" "Consultation" -}}
 {{- $auditmethodology := (len (intersect (index $auditfile 0) (slice "Thématiques" "Critères" "Tests"))) -}}
-{{ if eq $auditmethodology 2 }}
+
+{{/* Fill a slice with a list of audited pages */}}
+{{- if eq $auditmethodology 2 -}}
   {{- $.context.Scratch.Set "pageslistgraph" ((index $auditfile 0) | symdiff (slice "Thématiques" "Critères")) -}}
-{{ end }}
-{{ if eq $auditmethodology 3 }}
+{{- end -}}
+{{- if eq $auditmethodology 3 -}}
   {{- $.context.Scratch.Set "pageslistgraph" ((index $auditfile 0) | symdiff (slice "Thématiques" "Critères" "Tests")) -}}
-{{ end }}
+{{- end -}}
+
 {{/* By topics */}}
 {{- range $key, $value := $topics -}}
-{{- $.context.Scratch.Set "criterecounterconformetopic" 0 -}}
-{{- $.context.Scratch.Set "counterconformetopic" 0 -}}
-{{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
-
+  {{- $.context.Scratch.Set "criterecounterconformetopic" 0 -}}
+  {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
+  {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
+  {{/* Range lines */}}
   {{- range $id, $value := after 1 $auditfile -}}
   {{- if eq (index . 0) (string (add $key 1)) -}}
+    {{/* Range columns */}}
     {{- range after $auditmethodology . -}}
       {{- $.context.Scratch.SetInMap "conforme" (string $key) ($.context.Scratch.Get "counterconformetopic") -}}
       {{- $.context.Scratch.SetInMap "nonconforme" (string $key) ($.context.Scratch.Get "counternonconformetopic") -}}
@@ -29,30 +33,16 @@
   {{- end -}}
 {{- end -}}
 
-{{/* By pages */}}
-{{- range $key, $value := $.context.Scratch.Get "pageslistgraph" -}}
-{{- $.context.Scratch.Set "counterconformepage" 0 -}}
-{{- $.context.Scratch.Set "counternonconformepage" 0 -}}
-  {{- range after 1 $auditfile -}}
-    {{- range $id, $value := after $auditmethodology . -}}
-    {{- if eq $id $key -}}
-      {{- $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") -}}
-      {{- $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") -}}
-      {{- if eq . "c" -}}{{ $.context.Scratch.Add "counterconformepage" 1 -}}{{ $.context.Scratch.SetInMap "conformepage" (string $key) ($.context.Scratch.Get "counterconformepage") }}{{- end -}}
-      {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{ $.context.Scratch.Add "counternonconformepage" 1 -}}{{ $.context.Scratch.SetInMap "nonconformepage" (string $key) ($.context.Scratch.Get "counternonconformepage") }}{{- end -}}
-    {{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
 {{- $counterconformesum := 0 -}}
 {{- $counternonapplicablesum := 0 -}}
 {{- $counternonconformesum := 0 -}}
+{{/* Range lines */}}
 {{- range $id, $value := after 1 $auditfile -}}
   {{- $.context.Scratch.Set "counterconformetopic" 0 -}}
   {{- $.context.Scratch.Set "counternonapplicable" 0 -}}
   {{- $.context.Scratch.Set "counternonconformetopic" 0 -}}
-  {{ range $id, $value := after $auditmethodology $value }}
+  {{/* Range columns */}}
+  {{- range $id, $value := after $auditmethodology $value -}}
     {{- if eq . "c" -}}{{- $.context.Scratch.Add "counterconformetopic" 1 -}}{{- end -}}
     {{- if eq . "na" -}}{{- $.context.Scratch.Add "counternonapplicable" 1 -}}{{- end -}}
     {{- if and (ne . "na") (ne . "c") (ne . "?") (ne . "") (ne . "25") (ne . "50") (ne . "81") -}}{{- $.context.Scratch.Add "counternonconformetopic" 1 -}}{{- end -}}
@@ -118,5 +108,4 @@
         ...options
     })
 </script>
-
 {{- end -}}

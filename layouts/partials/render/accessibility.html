@@ -27,7 +27,7 @@
       {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValue") slice }}
     {{ end }}
 
-    {{/* Range lines of the csv file */}}
+    {{/* Range columns of the csv file */}}
     {{ range $id, $value2 := after $auditmethodology . }}
       {{ if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") }}
         {{ $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 }}
@@ -59,7 +59,7 @@
     {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere") $crit }}
   {{ end }}
 
-  {{/* START */}}
+  {{/* START :: value criteria for each page */}}
   {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) }}
       {{ range $idx, $value := . }}
         {{ if eq (index (split $value "|") 0) "c" }}
@@ -77,6 +77,17 @@
       {{ end }}
   {{ end }}
   {{/* END */}}
+
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "Average") 0 }}
+  {{ $lengthPageC := len ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+  {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+      {{ $lengthC  := (len $array) }}
+      {{ $lengthNC := (len (index ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) $key)) }}
+      {{ $value    := float (sub 100 (div (mul (float $lengthNC) 100) (add $lengthC $lengthNC)) | lang.NumFmt 1)}}
+      {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageAverage") (string $key) $value }}
+      {{ $.context.Scratch.Add (printf "%s%s" $scorekey "Average") (div $value $lengthPageC) }}
+  {{ end }}
+
 
   {{ if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) }}
     {{ $auditfile := after 1 .auditfile }}
@@ -207,6 +218,7 @@
   {{ $.context.Scratch.SetInMap $scorekey "nonteste"               (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) }}
   {{ $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
   {{ $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) }}
+  {{ $.context.Scratch.SetInMap $scorekey "pageaverage"            ($.context.Scratch.Get (printf "%s%s" $scorekey "pageAverage")) }}
   {{/* $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) */}}
   {{ end }}
 
@@ -222,6 +234,7 @@
                             "nonteste" ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritNT"))
                       )
                       "compliance" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "compliance")))
+                      "complianceaverage" (int ($.context.Scratch.Get (printf "%s%s" $scorekey "Average")))
                     )
   ) }}
   {{/* warnf "%v" ($res | jsonify (dict "indent" "  ")) */}}
