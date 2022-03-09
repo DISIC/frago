@@ -1,3 +1,0 @@
----
-title: Vincent Oc
----

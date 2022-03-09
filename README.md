@@ -8,9 +8,7 @@
 
 ## Présentation
 
-Le thème Frago a pour objectif d’aider à la génération de synthèses pour la documentation du suivi d’amélioration des démarches en ligne du gouvernement français.
-
-Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le cadre d’un défi de mise en conformité, l’équipe peut être amenée à travailler sur des sujets connexes, des interfaces intermédiaires/liées sur lesquelles il est nécessaire de fournir un audit en particulier… de plus le projet peut aider à suivre aussi plusieurs défis en parallèle.
+Le thème Frago a pour objectif d’aider à la génération de synthèses pour l’amélioration des démarches en ligne du gouvernement français..
 
 > Attention, goHugo est très sensible à l’architecture des contenus. Si les contenus sont absents ou présentent des erreurs le site peut planter. Si l’architecture du thème change, de même, il n’est plus possible d’utiliser les dernières versions du thème (sans modifier l’architecture de contenu).
 
@@ -24,22 +22,42 @@ Le thème a été conçu pour être multi-projets. Pourquoi ? Parce que dans le 
 └── content
     └── audits
          ├── projet1
-         │     ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
+         │     ├── index.md // Ajouter un entête avec le titre de la démarche
          │     └── accessibility
          │          ├── 2020-10-15.csv
          │          ├── 2020-11-15.csv
-         │          └── context.yml // Déclarer le contexte ce chaque audit
+         │          └── context.yml // Déclarer le contexte de chaque audit
          └── projet2
-                ├── index.md // Pour lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports :: ajouter un entête
+                ├── index.md // Ajouter un entête avec le titre de la démarche
                 └── accessibility
                     ├── 2020-10-15.csv
                     ├── 2020-10-15.csv
-                    └── context.yml // Déclarer le contexte ce chaque audit
+                    └── context.yml // Déclarer le contexte de chaque audit
 ```
 
 ### Configuration
 
 #### Ajouter le fichier : `config.toml`
+
+Télécharger le thème sur votre dépôt dans `themes`. Il ne sera pas synchronisé avec le dépôt GitHub, il faudra le mettre à jour à la main.
+
+```toml
+title = "Mon administration"
+theme = "frago"
+
+[params]
+  organisation = "Le nom complet de mon administration"
+```
+
+#### Appeler le thème Hugo pour synchronisation et mise à jour automatiques (avec un submodule)
+
+```bash
+git submodule add https://github.com/DISIC/frago.git/ themes/frago && git submodule update --init --recursive
+```
+
+#### Appeler le thème Hugo pour synchronisation et mise à jour automatiques (avec le système de module `Go`)
+
+⚠️ - Le langage Go doit être installé sur le système
 
 ```toml
 [module]
@@ -52,8 +70,6 @@ theme = "frago"
 [params]
   organisation = "Le nom complet de mon administration"
 ```
-
-#### Appeler le thème Hugo (avec le système de module `Go`)
 
 ##### Créer le fichier `go.mod` (commande dans le terminal)
 
@@ -70,35 +86,25 @@ Modifier le contenu du fichier `go.mod` (Ajouter https://) :
 hugo mod get
 ```
 
-#### Appeler le thème Hugo (avec un submodule)
+#### Génération du site (mise en ligne)
+
+Ligne de commande lancer le server en local sur votre machine
 
 ```bash
-git submodule add https://github.com/DISIC/frago.git/ themes/frago && git submodule update --init --recursive
+hugo serve
 ```
-
-#### Génération du site (mise en ligne)
 
 Ligne de commande pour construire les pages du site.
 
 ```bash
-hugo --buildFuture --gc --minify
+HUGO_ENV="production" hugo --buildFuture --gc --minify --cleanDestinationDir
 ```
 
-  * `--buildFuture` permet de publier des éléments avec une date future dans la partie [phase](#phases) (optionnel).
-  * `--gc` permet de remettre à jour le répertoire de génération du code (au cas où du code d’une précédente génération serait encore présent).
-  * `--minify` permet de compresser le code `HTML` en ligne.
-
-##### Héberger avec Github
-
-Consulter la page [Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) pour plus d‘informations.
-
-Github utilise son système interne GitHub Action. Un exemple de fichier de configuration est disponible : [gh-pages.yml](exampleSite/.github/workflows/gh-pages.yml).
-
-##### Héberger avec Gitlab
-
-Consulter la page [Host on Gitlab](https://gohugo.io/hosting-and-deployment/hosting-on-gitlab/) pour plus d‘informations
-
-Github utilise son système interne Gitlab CI. Un exemple de fichier de configuration est disponible : [.gitlab-ci.yml](exampleSite/.gitlab-ci.yml).
+  * `HUGO_ENV="production"` lance l'environnement de production (sans les outils de dev, peut être lancé avec le mode serve).
+  * `--buildFuture` Publier des éléments avec une date future. Ex: [phase](#phases) (optionnel) ou plan d’actions.
+  * `--gc` met à jour le cache de goHugo.
+  * `--cleanDestinationDir` nettoie le répertoire de génération du code (au cas où du code d’une précédente génération serait encore présent).
+  * `--minify` permet ¨de compresser le code `HTML` en ligne.
 
 ### Audits
 
@@ -121,185 +127,14 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
 
 **Liste des fichiers exemples à télécharger**
 
-  * [Grille critères RGAA 4 vierge](/static/grille-criteres-rgaa.csv)
-  * [Grille tests RGAA 4.0 vierge](/static/grille-tests-rgaa4.0.csv)
-  * [Grille tests RGAA 4.1 vierge](/static/grille-tests-rgaa4.1.csv)
+  * [Grille critères RGAA 4 vierge](/exampleSite/exampleFiles/grille-criteres-rgaa.csv)
+  * [Grille tests RGAA 4.0 vierge](/exampleSite/exampleFiles/grille-tests-rgaa4.0.csv)
+  * [Grille tests RGAA 4.1 vierge](/exampleSite/exampleFiles/grille-tests-rgaa4.1.csv)
 
 Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères), intermédiaire (81 critères).  
 Exemple, pour un audit rapide, ne traiter que les cellules avec le numéro **25**.
 
-### API
-
-La configuration de l’API est contenue dans le fichier `config.toml` du thème. Il existe une configuration par défaut qui peut-être surchargée en fonction de la structure de fichier. Pour la structure simplifiée, il n’y a rien à ajouter.
-
-L’idée est d’éviter de créer des pages uniquement pour avoir une URL (pour accessibility.html, quality.html et performance.html) lors du build du site (seul défaut, un export de page peut-être vide si l’audit correspondant n’existe pas ; et on perd les `pretty` url pour les exports `HTML`).
-
-Cette API permet d’obtenir des fichiers `json` de type :
-
- * https://monurl.com/index.json
- * https://monurl.com/audits/monprojet/index.json
- * https://monurl.com/audits/monprojet/accessibility.json
- * https://monurl.com/audits/monprojet/quality.json
- * https://monurl.com/audits/monprojet/performance.json
-
-Mais aussi des affichages de pages de type :
-
- * https://monurl.com/audits/monprojet/accessibility.html
- * https://monurl.com/audits/monprojet/quality.html
- * https://monurl.com/audits/monprojet/performance.html
- * https://monurl.com/audits/monprojet/declaration.html
- * https://monurl.com/audits/monprojet/declaration.txt
-
-**Exemple de configuration de l’API (Voir la Documentation goHugo sur les Output Format).**
-
-```
-[outputs]
- home    = ["HTML","JSON"]
- page    = ["HTML","JSON","declaration","declarationpage"]
-```
-
 ## Configuration détaillée
-
-### Architecture de contenu
-
-Les différents types de contenus servent à la publication d’audits, l’analyse de résultats ou la présentation de la démarche UX. L’objectif est de synthétiser de l’information technique pour des personnes éloignées du développement de sites web.
-
-#### Arborescence
-
-##### Architecture simplifiée
-
-```
-.
-├── config.toml
-└── content
-    ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l'entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
-    ├── audits // Type de contenu audits, les projets doivent être dans un répertoire avec le nom audits
-    │     ├── projet1
-    │     │    ├── index.md // ⚠️  Page intermédiaire qui liste les sous rapports (accessibilité, performance…)
-    │     │    ├── accessibility
-    │     │    │   ├── 2020-10-15.csv
-    │     │    │   ├── 2020-11-15.csv
-    │     │    │   └── context.yml // Déclarer le contexte ce chaque audit
-    │     │    ├── lighthouse
-    │     │    │   ├── 2020-10-15.json
-    │     │    │   └── 2020-11-15.json
-    │     │    └── quality
-    │     │        ├── 2020-10-15.yml
-    │     │        └── 2020-11-15.yml
-    │     │
-    │     └── projet2
-    │          ├── index.md
-    │          ├── accessibility
-    │          │   ├── 2020-10-15.csv
-    │          │   ├── 2020-11-15.csv
-    │          │   └── context.yml // Déclarer le contexte ce chaque audit
-    │          ├── lighthouse
-    │          │   ├── 2020-10-15.json
-    │          │   └── 2020-11-15.json
-    │          └── quality
-    │              ├── 2020-10-15.yml
-    │              └── 2020-11-15.yml
-    ┋
-    ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
-    ┋
-    └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…)
-          ├── index.md
-          ├── accessibility
-          │   ├── 2020-10-15.csv
-          │   └── 2020-11-15.csv
-          │   └── context.yml // Déclarer le contexte ce chaque audit
-          ├── lighthouse
-          │   ├── 2020-10-15.json
-          │   └── 2020-11-15.json
-          └── quality
-              ├── 2020-10-15.yml
-              └── 2020-11-15.yml
-```
-
-##### Architecture complète (⚠️ Ancienne présente une architecture alternative, elle doit évoluer pour correspondre à tous les types de contenus)
-
-> Attention dans ce cas de figure: ⚠️ Le nom des pages projets `content/projects/projets1.md`, des répertoires projets `static/projet1/` et des répertoires des pages d’audits `content/audits/projets1/accessibility.md` doivent bien comporter la même clef ou slug, ici : `projet1`. ⚠️   
-> Un script devrait permettre de créer ces fichiers automatiquement à partir du moment un répertoire dans `static` est créé, mais il n’existe pas encore. La création doit se faire manuellement.
-
-```
-.
-├── config.toml
-├── content
-│   ├── _index.md // page d’accueil du site :: ⚠️ Ajouter `type: projects` dans l’entête du fichier en cas de mono projet => va afficher directement la page de synthèse de tous les audits
-│   ├── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) pour chaque projet
-│   │    ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   │    │     └── index.md // ⚠️  pour avoir lister les pages sur l’accueil et avoir la page intermédiaire qui liste tous les rapports
-│   │    └── projet2 // Doit reprendre le nom du répertoire donné au projet dans `static`
-│   │          └── index.md
-│   ├── meetings
-│   │    ├── _index.md // liste les réunions
-│   │    └── 2020-10-22-reunion1.md // On indique la date dans le nom de fichier pour ranger les fichiers visuellement, il faut la répéter dans l’entête YML du fichier pour afficher les réunions sur la page dans un ordre par date.
-│   ├── personas // ⚠️ Ne fonctionne pas en mono projet
-│   │    ├── _index.md // Liste tous les personas
-│   │    ├── simon.md
-│   │    ├── annie.md
-│   │    └── projet1
-│   │         ├── _index.md // liste tous les personas
-│   │         ├── simon.md
-│   │         └── annie.md
-┋   ┋
-┋   ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
-┋   ┋
-│   └── audits // Les pages pour afficher les audits (accessibilité, qualité, performance…) 
-│         └── index.md
-└── static
-    ├── projet1
-    │    ├── accessibility
-    │    │    ├── 2020-10-15.csv
-    │    │    └── 2020-11-15.csv
-    │    ├── lighthouse
-    │    │    ├── 2020-10-15.json
-    │    │    └── 2020-11-15.json
-    │    ├── quality
-    │    │    ├── 2020-10-15.yml
-    │    │    └── 2020-11-15.yml
-    │    ├── usertests
-    │    │    ├── test1.json
-    │    │    └── test2.json
-    │    ├── backlinks.json
-    │    ├── personas.json
-    │    └── similary.json
-    ├── projet2
-    │    └── accessibility
-    │         ├── 2020-10-15.csv
-    │         └── 2020-11-15.csv
-    ┋
-    ┋ ⚠️ Autre choix d’arborescence avec un seul projet ⚠️
-    ┋
-    ├── accessibility
-    │    ├── 2020-10-15.csv
-    │    └── 2020-11-15.csv
-    ├── quality // Ne fonctionne pas complètement en mono projet
-    │    ├── 2020-10-15.yml
-    │    └── 2020-11-15.yml
-    ├── usertests // Ne fonctionne pas en mono projet
-    │    ├── test1.json
-    │    └── test2.json
-    ├── directory.json // Annuaire de contacts
-    └── images
-         ├── projet1 // Doit reprendre le nom du répertoire donné au projet dans `static`
-         │    ├── benchmark
-         │    │    ├── titresiteweb-titreelementacomparer.png // nommage précis disponible sur la page rapport générée par Hugo
-         │    │    ├── ojdcourtsepay.tylerhost.net-navigation-step.png
-         │    │    ├── pages.fivepointpayments.com-navigation-step.png
-         │    │    └── finepayment.saskatchewan.ca-navigation-step.png
-         │    └── quality
-         │         └── 2020-10-16 // Les titres formant les noms d’images doivent correspondre à des termes existant dans le fichier `.yml`
-         │             ├── titrepage-[before ou after].png
-         │             ├── titrepage-titrebloc-titreerreur-[before ou after].png
-         │             ├── accueil-before.png
-         │             ├── accueil-after.png
-         │             ├── accueil-banniere-titres-before.png
-         │             └── accueil-banniere-titres-after.png
-         ├── projet2
-         └── personas
-
-```
 
 #### Configuration
 
@@ -316,38 +151,6 @@ theme = "fargo"
     plan = "https://www.monadministration.gouv.fr/plan_annuel_2020.pdf" // Optionnel
 ```
 
-### Personnalisation du thème
-
-Hugo permet de surcharger les fichiers présents dans le thème, la condition est de respecter la même arborescence. Ainsi pour surcharger un thème avec : 
-
- * Sa police
- * Son logo
- * Ses couleurs
- *…
-
-Il suffit de créer tous ces fichiers dans le répertoire `static`. Le thème appelle automatiquement les polices contenues dans le répertoire `static/assets/fonts` (à la place de la police Marianne).
-
-```
-static
-└── assets
-    ├── css
-    │   ├── fonts.css
-    │   └── main.css
-    ├── favicons
-    │   ├── android-chrome-192x192.png
-    │   ├── android-chrome-512x512.png
-    │   ├── apple-touch-icon.png
-    │   ├── favicon-16x16.png
-    │   ├── favicon-32x32.png
-    │   ├── favicon.ico
-    │   └── site.webmanifest
-    ├── fonts
-    │   ├── open-sans-bold.woff2
-    │   └── open-sans-regular.woff2
-    └── images
-        ├── logo.svg
-        └── logodark.svg
-```
 
 ### Contenus
 
@@ -365,44 +168,23 @@ La page de projets doit servir à présenter l’état de la démarche, puis le 
 
 #### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.csv`) et présent dans le répertoire `static/accessibility/`.
+L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.csv`) et présent dans le répertoire `content/audits/nomdelademarche/accessibility/`.
 
 L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
 ##### Accessibilité
 
-Éditer : `static/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
+Éditer : `content/audits/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans `content/audits/nomdelademarche/index.md` ou de `content/audits/nomdelademarche/accessibility.md`.
-
-```yaml
----
-type: accessibility // appel le gabarit accessibility :: static/nomdelademarche/accessibility/YYYY-MM-JJ.csv (fichier le plus récent)
-accessibility:
-  website: "amendes.gouv.fr"
-  audit:
-    guidelines: "RGAA 4.0"
-    condition: "Auto-évaluation"
-    technologies: ["HTML", "CSS", "JS", "PDF"]
-    tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
-    environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
-  contact:
-    email: stap-amendes@dgfip.finances.gouv.fr
-    address : 139 rue de Bercy, 75572 Paris, Cedex 12
----
-```
-
-Si on veut une déclaration de contexte propre à des audits en particulier c’est-à-dire par date, il est possible de créer un fichier `content/audits/nomdelademarche/accessibility/context.yml`.
-⚠️ Pas besoin de déclarer 2 fois le contexte d’audit. C’est soit dans `content/audits/nomdelademarche/index.md`, `content/audits/nomdelademarche/accessibility.md` ou dans `content/audits/nomdelademarche/accessibility/context.yml`.
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans le fichier `content/audits/nomdelademarche/accessibility/context.yml`.
 
 ```yaml
----
 website: "amendes.gouv.fr"
 contacts:
     email: stap-amendes@dgfip.finances.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12
 audits:
-    2021-03-05: // ⚠️ bien respecter la date de chaque fichier csv d’audit déjà présents dans `content/audits/nomdelademarche/accessibility/`
+    2021-03-05: # ⚠️ bien respecter la date de chaque fichier csv d’audit déjà présent dans `content/audits/nomdelademarche/accessibility/`
       guidelines: "RGAA 4.1"
       condition: "Auto-évaluation"
       technologies: ["HTML", "CSS", "JS", "PDF"]
@@ -414,7 +196,6 @@ audits:
       technologies: ["HTML", "CSS", "JS", "PDF"]
       tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
       environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
----
 ```
 
 ![Accessibilite](/images/accessibilite.png)
@@ -423,159 +204,40 @@ audits:
 
 ```yaml
 ---
-type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans static/nomdelademarche/quality/YYYY-MM-JJ.yml
+type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans content/audits/nomdelademarche/quality/YYYY-MM-JJ.yml
 ---
 ```
 
 ![Accessibilite](/images/qualite.png)
 
-#### Annuaire
-
-Lister les personnes contactées pendant la durée du défi de mise en conformité. Cet annuaire permet de partager les contacts dans le temps de l’amélioration de la démarche.
-
-Éditer : `static/directory.json`
-
-#### Recueil de tests utilisateurs
-
-Les tests utilisateurs de type quantitatifs consistent à poser des questions similaires à un panel important d’usagers. Pour le service *usertests*, il existe une mise en forme pour l’analyse rapide de ces résultats.
-
-Fonctionne à partir d’un JSON, mais pourrait marcher avec du CSV directement (Ici, penser à convertir le CSV en JSON).
-
-Éditer : `static/nomdelademarche/usertests/nometude.json` (à faire évoluer)
-
-Ajouter à l’entête du fichier de contenu :
-
-```yaml
----
-type: usertests // appel le gabarit usertests
-datafilename: etudiants // appelle le fichier nommé etudiants :: dans static/nomdelademarche/usertests/etudiants.json
----
-```
-
-![usertests](/images/usertests.png)
 
 #### Performance
 
-L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n’existe pas encore de gabarits d’analyse graphique dans le temps.
+L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n’existe pas encore de gabarits abouti d’analyse graphique dans le temps.
 
 
-Éditer : `static/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
+Éditer : `content/audits/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
 
 ![Performance](/images/performance.png)
 
-#### Personas
 
-Définir des personas et les afficher sur une même page pour les partager à l’équipe projet. On peut sélectionner les profils retenus pour les tests.
+## Administration système
 
-> Hugo nécessite de créer les pages correspondantes pour chaque persona ; si on veut afficher les personas en détail. Créer les pages dans  `content/personas/nomdelademarche/prenom-nom.md`.
+### Héberger
 
-Éditer : `static/nomdelademarche/personas.json`
+##### Héberger avec Github
 
-![Personas](/images/personas.png)
+Consulter la page [Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) pour plus d‘informations.
 
-#### Parcours
+Github utilise son système interne GitHub Action. Un exemple de fichier de configuration est disponible : [gh-pages.yml](exampleSite/exampleFiles/.github/workflows/gh-pages.yml).
 
-Ajouter un parcours type par persona pour fournir une base visuelle à l’équipe projet de ce qui est testé. Le gabarit permet de partir d’un élément parent unique puis de développer autant de sous branches possibles dans la limite de 4 niveaux de profondeur (compatible mobile).
+##### Héberger avec Gitlab
 
-Éditer : `static/nomdelademarche/personas.json`
+Consulter la page [Host on Gitlab](https://gohugo.io/hosting-and-deployment/hosting-on-gitlab/) pour plus d‘informations
 
-![Parcours](/images/parcours.png)
+Github utilise son système interne Gitlab CI. Un exemple de fichier de configuration est disponible : [.gitlab-ci.yml](exampleSite/exampleFiles/.gitlab-ci.yml).
 
-#### Composants
-
-##### Scores
-
-![Scores](/images/scores.png)
-
-##### Phases
-
-Nécessite d’ajouter un type de catégorie dans le `config.toml` ; et d’ajouter le *tag* dans chacun des contenus qu’on souhaite voir afficher dans une phase.
-
-Les contenus listés sont donc hétérogènes.
-
-![Phases](/images/phases.png)
-
-#### Shortcodes
-
-##### Galerie de capture écrans
-
-Afficher une liste de captures d’écran pour illustrer une étude comparative.
-
-```go
-{{< benchmark datafile="amendes" src="-explications" >}}{{< /benchmark >}}
-```
-
-##### Sites similaires
-
-Afficher la liste des sites similaires à la démarche (action de benchmarking). Les sites sont rangés par pays.
-
-Éditer : `static/nomdelademarche/similary.json`
-
-```go
-{{< similary project="amendes" >}}{{< /similary >}}
-```
-
-##### Diagrammes
-
-Appel de la librairie *mermaid.JS*. Ajouter la syntaxe *Mermaid* dans le contenu du shortcode.
-
-```go
-{{< mermaid >}}
-    graph TD
-      A(Je reçois un avis)
-      A --> B{Je paye une amende}
-      B --> |Carte Bancaire| C(Site web)
-      B --> |Carte Bancaire| D(Application)
-      B --> |Chèque| E(Courrier)
-      B --> |Chèque/Espèce/CB| F(Buraliste)
-      B --> |Carte Bancaire| G(Téléphone)
-      B --> |Chèque/Espèce/CB| H(Trésor Public)
-      B --> |Virement pour étrangers| I(Site web)
-{{< /mermaid >}}
-```
-
-![graphiques](/images/diagramme.png)
-
-##### Graphiques
-
-Petit aide pour l’affichage de graphiques. Passer les données dans le contenu du *shortcode*. Choisir le titre et le type de graphique à afficher : bar, line, donut…
-
-```go
-{{< graphic title="Ventilation des paiements dans l’année (en milliers)" type="bar">}}
-{
-    labels: ["Vitesse", "PV électronique", "Feux rouges"],
-    datasets: [
-      {
-        name: "Internet",
-        values: [3351, 2482, 85],
-      },
-      {
-        name: "Smartphone",
-        values: [492, 497, 12]
-      }
-    ]
-}
-{{< /graphic >}}
-```
-![graphiques](/images/graphiques.png)
-
-#### Personas
-
-Afficher les personas sur la page de son choix en fonction du projet de son choix.
-
-```go
-{{< personas project="amendes" >}} {{< /personas >}}
-```
-
-#### Parcours
-
-Afficher les parcours sur la page de son choix en fonction du projet de son choix.
-
-```go
-{{< parcours project="amendes" >}} {{< /parcours >}}
-```
-
-## Utiliser ce module comme thème d’un projet
+### Utiliser ce module comme thème d’un projet
 
 Site officiel :
 https://gohugo.io/hugo-modules/use-modules/#use-a-module-for-a-theme
