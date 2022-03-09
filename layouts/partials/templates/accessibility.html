@@ -87,7 +87,7 @@
         {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice -}}
         {{- range $id, $criterium := index $.context.Site.Data.rgaa.tests $auditname -}}
           {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
-            {{- if eq $criterium $value -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $value }}{{- end -}}
+            {{- if eq $criterium $key -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
           {{- end -}}
         {{- end -}}
         {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) ((($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.rgaa.tests $auditname))) -}}
@@ -317,7 +317,6 @@
 
   </article>
   {{- else -}}
-    {{ $project }}
     <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}accessibility</p>
     {{- if (ne (printf "%s/%s" (path.Dir $.context.Path) (path.Base $.context.Path)) "audits/_index.md") -}}
       <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($.context.Scratch.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>

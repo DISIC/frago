@@ -5,7 +5,7 @@
 {{ $patharray := split (path.Dir .context.Path) "/" }}
 {{ $rootpath  := partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility" }}
 {{ $path      := partial "render/filepath" (dict "context" $context "project" $project "type" .type) $project .type }}
-{{ $ext       := cond (eq "accessibility" .type) "csv" (cond (eq "quality" .type) "yml" "json") }}
+{{ $ext       := cond (eq "actions" .type) "csv" (cond (eq "accessibility" .type) "csv" (cond (eq "quality" .type) "yml" "json")) }}
 
 {{ $context.Scratch.Set    "auditpath-lastfile" "/false" }}
 {{ $context.Scratch.Delete "auditname-lastfile" }}
@@ -13,7 +13,7 @@
 {{ $context.Scratch.Delete "auditpath-all-lastfile" }}
 {{ $context.Scratch.Delete "auditname-all-lastfile" }}
 {{ $context.Scratch.Delete "pathdata" }}
-
+ss
 {{/* If a single data file is called in the front matter or not :: could be removed */}}
 {{ if .datafilename }}
   {{ $context.Scratch.Set "pathdata" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) }}

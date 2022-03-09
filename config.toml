@@ -13,7 +13,6 @@ removePathAccents = true
 [outputformats]
   _merge = 'deep'
 
-
 [outputFormats.declarationpage]
   baseName = "declaration"
   mediaType = "text/html"
@@ -59,5 +58,3 @@ removePathAccents = true
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
-
-

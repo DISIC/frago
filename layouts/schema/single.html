@@ -3,17 +3,12 @@
   {{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
   {{- $contact := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
   {{- $teamNumber := .Params.team.number -}}
-  {{- $webNumber := 30 -}}
-  {{- $appNumber := 20 -}}
-  <strong>{{ $organisation }}</strong><hr>
-  <strong>{{ $contact }}</strong> - <strong>{{ .Params }}</strong>
-  <hr>
-  {{ len (where .Site.RegularPages "Section" "audits") }}
-  <hr>
+  {{- $webNumber := cond (not .Params.website.number) (len (where .Site.RegularPages "Section" "audits")) (.Params.website.number) -}}
+  {{- $appNumber := cond (not .Params.application.number) "" (.Params.application.number) -}}
   <h1>Schéma Pluriannuel</h1>
   {{ if fileExists "content/schema.md" }}
     {{- if ge (len (.GetPage "schema").Content) 5 -}}
-      {{ with .GetPage "schema" }}{{ .Content }}{{ end }}
+      {{ with .GetPage "schema" }}{{ .Content }}{{- end -}}
       {{ else }}
       <h2 id="introduction"><a class="anchor" href="#introduction" title='"Introduction"'><svg aria-hidden="true"
             height="16" version="1.1" viewBox="0 0 16 16" width="16">
@@ -97,8 +92,8 @@
         de ce processus.</p>
       <p>Le pilotage et le suivi de la conformité au Référentiel Général d’Amélioration de l’Accessibilité (RGAA)
         reviennent
-        à l’équipe UX et Accessibilité <strong>{{ $contact.email }}</strong>. L’équipe est actuellement composée de
-        {{ with $teamNumber }}{{ . }}{{ end }}
+        à l’équipe UX et Accessibilité <strong>{{ $contact.email }}</strong>. {{ with $teamNumber }}L’équipe est actuellement composée de
+        <strong>{{ . }}</strong>{{- end -}}
         personnes. Elle peut-être assistée de prestataires externes experts en accessibilité.</p>
       <h2 id="organisation-de-la-prise-en-compte-de-laccessibilité-numérique"><a class="anchor"
           href="#organisation-de-la-prise-en-compte-de-laccessibilité-numérique"
@@ -116,7 +111,7 @@
         <li>une modification des procédures de marché,</li>
         <li>la prise en charge des personnes en situation de handicap lorsqu’elles signalent des difficultés</li>
       </ul>
-      <p>Les éléments ci-dessous décrivent les points importants sur lesquels la DGFiP s’appuiera pour améliorer
+      <p>Les éléments ci-dessous décrivent les points importants sur lesquels <strong>{{ $organisation }}</strong> s’appuiera pour améliorer
         l’accessibilité numérique de l’ensemble de ses sites web et applications.</p>
       <h3 id="action-de-formation-et-de-sensibilisation">Action de formation et de sensibilisation</h3>
       <p>Tout au long de la période d’application de ce schéma, des actions de formation et de sensibilisation vont être
@@ -202,10 +197,10 @@
           </svg></a> Périmètre technique et fonctionnel </h2>
       {{ if or $webNumber $appNumber }}
       <h3 id="recensement">Recensement</h3>
-      <p><strong>{{ $organisation }}</strong> gère {{ with $webNumber }}<strong>{{ . }}</strong> sites web{{ end }} {{ with $appNumber }}et <strong>{{ . }}</strong>
-        applications mobiles à destination du public{{ end }}. Elle gère également de nombreux intranets et applications à
+      <p><strong>{{ $organisation }}</strong> gère {{ with $webNumber }}<strong>{{ . }}</strong> sites web{{- end -}}{{ with $appNumber }} et <strong>{{ . }}</strong>
+        applications mobiles à destination du public{{- end -}}. Elle gère également de nombreux intranets et applications à
         destination de ses agents.</p>
-      {{ end }}
+      {{- end -}}
       <h3 id="évaluation-et-qualification">Évaluation et qualification</h3>
       <p>Chaque site ou application a été qualifié selon des critères tels que :</p>
       <ul>
@@ -220,15 +215,16 @@
       <p>Ces évaluations portent sur un petit nombre de critères choisis pour leur pertinence en termes d’évaluation de
         la
         complexité et la faisabilité de la mise aux normes RGAA.</p>
-      <p>L’annexe 1 (infra : « Annexe 1 : périmètre technique et fonctionnel public ») décrit les éléments pouvant être
+      {{ with (where .Site.RegularPages "Section" "audits") }}
+      <p>L’annexe 1 (infra : « <a href="#annexe1">Annexe 1 : périmètre technique et fonctionnel public</a> ») décrit les éléments pouvant être
         rendus publics du périmètre technique et fonctionnel. En effet, certaines applications peuvent ne pas être
         rendues
         publiques pour des raisons de sécurité ou de confidentialité par exemple.</p>
+      {{- end -}}
       <p>Agenda planifié des interventions
         Compte tenu des informations recueillies lors de l’élaboration de ce schéma, la complexité des sites et
         applications, leur classement par ordre de priorité et leur évaluation en termes de faisabilité, les opérations
-        de
-        mise en conformité vont s’étaler sur les années [YYYY] à [YYYY] et au-delà.</p>
+        de mise en conformité vont s’étaler sur les années [YYYY] à [YYYY] et au-delà.</p>
       <h2 id="plans-annuels"><a class="anchor" href="#plans-annuels" title='"Plans annuels"'><svg aria-hidden="true"
             height="16" version="1.1" viewBox="0 0 16 16" width="16">
             <path fill-rule="evenodd"
@@ -243,7 +239,77 @@
         <li>Plan annuel N-1 - à venir</li>
         <li>Plan annuel N-0 - à venir</li>
       </ul>
-    {{ end }}
+    {{- end -}}
+    {{ with (where .Site.RegularPages "Section" "audits") }}
+    {{ range . }}
+        {{ $title := .Title }}
+        {{ $project := partial "render/projectpath" . }}
+        {{ $lastfile := (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "actions") $project "actions") }}
+        {{ $lastname := index $lastfile "auditfile-all-name" }}
+        {{ range $id, $value := (index $lastfile "auditfile-all-path") }}
+          {{- $.Scratch.Set (printf "%s" $title) slice -}}
+          {{- $date := first 4 (index $lastname $id) -}}
+          {{ range $index, $line := (after 1 (getCSV "," .)) }}
+              {{ $.Scratch.Add (printf "%s%s%s" $title $id $date) (slice .) }}
+          {{- end -}}
+          {{ $.Scratch.Add (printf "%s%s" $title $date) ($.Scratch.Get (printf "%s%s%s" $title $id $date)) }}
+          {{ $.Scratch.SetInMap $date (printf "%s" $title) ($.Scratch.Get (printf "%s%s" $title $date)) }}
+          {{ $.Scratch.SetInMap "result" $date ($.Scratch.Get $date) }}
+        {{- end -}}
+    {{- end -}}
+    <h2>Plans d’actions</h2>
+    {{ range $key, $value := $.Scratch.Get "result" }}
+      <h3>Année {{ $key }}</h3>
+      <table>
+        <thead>
+          <tr>
+          <th>Démarches</th>
+          <th>Type</th>
+          <th>Action</th>
+          <th>Détails</th>
+          <th>Avancement</th>
+        </tr>
+      </thead>
+        <tbody>
+        {{ range $key, $value := $value }}
+          {{ range . }}
+            <tr>
+              <td>{{ $key }}</td>
+              {{ range . }}
+              <td>{{ . }}</td>
+              {{- end -}}
+            </tr>
+          {{- end -}}
+        {{- end -}}
+        </tbody>
+      </table>
+    {{- end -}}
+
+    <h2 id="annexe1"><a class="anchor" href="#annexe1" title='"Annexe 1 : périmètre technique public"'><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+      <path fill-rule="evenodd"
+        d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+      </path></svg></a> Annexe 1 : périmètre technique public
+    </h2>
+    <p>La liste ci-dessous présente les sites prioritaires faisant partie du schéma pluriannuel {{ with $organisation }}de <strong>{{ . }}</strong> {{- end -}}pouvant être portés à la connaissance du public.</p>
+    <table>
+      <thead>
+          <tr>
+          <th>Nom</th>
+          <th>Type</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{ range . }}
+        <tr>
+          <td>{{ .Title }}</td>
+          <td>Site web</td>
+          <td>{{ with (partialCached "render/context.html" (dict "context" . "project" (partialCached "render/projectpath" . .)) (partialCached "render/projectpath" . .)).website }}{{ . }}{{ else }}Non renseignée{{- end -}}</td>
+        </tr>
+      {{- end -}}
+      </tbody>
+    </table>
+    {{- end -}}
     {{- end -}}
   </article>
-{{ end }}
+{{- end -}}
