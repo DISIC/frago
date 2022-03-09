@@ -1,4 +1,4 @@
 ---
-title: "Schéma Pluriannuel MD"
+title: "Schéma Pluriannuel"
 type: schema
 ---
