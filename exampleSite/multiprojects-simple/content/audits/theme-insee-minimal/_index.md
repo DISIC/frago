@@ -1,3 +1,0 @@
----
-title: Thème Insee minimal
----

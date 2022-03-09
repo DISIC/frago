@@ -1,8 +1,0 @@
-baseURL = ""
-
-title = "INSEE"
-theme = ["frago"]
-
-[params]
-  organisation = "L’Institut national de la statistique et des études économiques"
-  logo = "INSEE <small>suivi de mise en conformité de démarches en ligne</small>"
