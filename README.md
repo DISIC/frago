@@ -43,14 +43,16 @@ Exemple d'architecture d'un projet avec `goHugo`, voir : [L'exemple d'architectu
 
 #### Ajouter le fichier : `config.toml`
 
-Télécharger le thème sur votre dépôt dans `themes`. Il ne sera pas synchronisé avec le dépôt GitHub, il faudra le mettre à jour à la main.
+Télécharger le thème sur votre dépôt dans `themes`: `themes/frago`.
+
+Note : Si vous le téléchargez, il ne sera pas synchronisé avec le dépôt GitHub, il faudra le mettre à jour à la main. Pour le mettre à jour, écraser le thème déjà présent est suffisant.
 
 ```toml
-title = "Mon administration"
+title = "Mon administration" # Ce qui s'affiche sur le site.
 theme = "frago"
 
 [params]
-  organisation = "Le nom complet de mon administration"
+  organisation = "Le nom complet de mon administration" # Utilisé dans la déclaration pour déclarer l’organisme
 ```
 
 #### Appeler le thème Hugo pour synchronisation et mise à jour automatiques (avec un submodule)
@@ -155,6 +157,7 @@ theme = "fargo"
     plan = "https://www.monadministration.gouv.fr/plan_annuel_2020.pdf" // Optionnel
 ```
 
+---
 
 ## Contenus
 
@@ -172,9 +175,9 @@ La page de projet présente un aperçu de tous les audits de la démarche.
 
 ### Audit
 
-L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.csv`) et présent dans le répertoire `content/audits/nomdelademarche/accessibility/`.
+Les audits de *conformité* sont présents dans le répertoire `content/audits/nomdelademarche/accessibility/`.
 
-L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
+L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement. Il sera présent dans le répertoire `content/audits/nomdelademarche/quality/`.
 
 #### Accessibilité
 
@@ -327,5 +330,5 @@ Le thème Frago utilise cette liste de bibliothèques :
 
 ## Auteur
 
-2019-2020, Bertrand Keller pour la direction interministérielle du numérique.
+2019-2020, Bertrand Keller pour la direction interministérielle du numérique.  
 2020-2021, Bertrand Keller pour le ministère de l’économie, des Finances et de la Relance.
