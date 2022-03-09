@@ -2,6 +2,8 @@
 
 > FRAGO : French governmental Reports for Accessibility compliance with goHugo
 
+---
+
 <p align="center">
   <img width="243" height="272" src="/images/frago.png">
 </p>
@@ -15,6 +17,8 @@ Le thème Frago a pour objectif d’aider à la génération de synthèses pour 
 ## Démarrage (Configuration simplifiée)
 
 ### Architecture de contenu
+
+Exemple d'architecture d'un projet avec `goHugo`, voir : [L'exemple d'architecture](/exampleSite/)
 
 ```
 .
@@ -57,7 +61,7 @@ git submodule add https://github.com/DISIC/frago.git/ themes/frago && git submod
 
 #### Appeler le thème Hugo pour synchronisation et mise à jour automatiques (avec le système de module `Go`)
 
-⚠️ - Le langage Go doit être installé sur le système
+⚠️ - Le langage Go doit être installé sur le système. Existant sur MacOS, mais difficile à installer sur Windows sans les droits administrateurs.
 
 ```toml
 [module]
@@ -88,7 +92,7 @@ hugo mod get
 
 #### Génération du site (mise en ligne)
 
-Ligne de commande lancer le server en local sur votre machine
+Ligne de commande pour lancer le serveur en local sur votre machine
 
 ```bash
 hugo serve
@@ -110,9 +114,9 @@ HUGO_ENV="production" hugo --buildFuture --gc --minify --cleanDestinationDir
 
 #### Accessibilité
 
-Le thème interprète un fichier d’audit `csv` avec une structure fixe. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests… puis le titre de chaque page).
+Le thème interprète un fichier d’audit `csv` avec une structure fixe et imposée. Les intitulés de colonnes doivent respecter un nommage précis (Thématiques, Critères, Tests… puis le titre de chaque page).
 
-Le titre d’une page peut être suivi de l’URL de la page ; titre et URL séparés par le caractère `|`.
+Note : Le titre d’une page peut être suivi de l’URL de la page ; titre et URL séparés par le caractère `|`.
 
 **Exemple d’un tableau avec uniquement la prise en compte des critères**
 
@@ -131,8 +135,8 @@ Le titre d’une page peut être suivi de l’URL de la page ; titre et URL sép
   * [Grille tests RGAA 4.0 vierge](/exampleSite/exampleFiles/grille-tests-rgaa4.0.csv)
   * [Grille tests RGAA 4.1 vierge](/exampleSite/exampleFiles/grille-tests-rgaa4.1.csv)
 
-Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères), intermédiaire (81 critères).  
-Exemple, pour un audit rapide, ne traiter que les cellules avec le numéro **25**.
+*Dans chacun de ces fichiers figurent des numéros qui correspondent aux notions d’audit rapide (25 critères), complémentaire (50 critères), intermédiaire (81 critères).*
+*Exemple, pour un audit rapide, ne traiter que les cellules avec le numéro **25**.*
 
 ## Configuration détaillée
 
@@ -152,31 +156,31 @@ theme = "fargo"
 ```
 
 
-### Contenus
+## Contenus
 
-#### Accueil
+### Accueil
 
-La page d’accueil présente la liste de tous les projets existants dans `content/projects`. Si le défi ne présente qu’un seul projet, et que le type de la page d’accueil est `type: "projects"`, alors la page affiche la page de résumé du projet.
+La page d’accueil présente la liste de tous les projets existants dans `content/audits`.
 
 ![Accueil](/images/accueil.png)
 
-#### Projets
+### Projet
 
-La page de projets doit servir à présenter l’état de la démarche, puis le planning d’avancée du commando et enfin lister éventuellement des liens vers des billets de types : réunions ou actions (à insérer dans `content/meetings` et `content/actions`).
+La page de projet présente un aperçu de tous les audits de la démarche.
 
 ![Projets](/images/projets.png)
 
-#### Audit
+### Audit
 
 L’audit d’accessibilité peut être de *conformité* ou d’*accompagnement*. L’audit de conformité peut-être unique (évoluera au cours du projet) ou daté (ex: `2021-03-12.csv`) et présent dans le répertoire `content/audits/nomdelademarche/accessibility/`.
 
 L’audit d’*accompagnement* a pour but de lister tous les types d’erreurs afin de faire un suivi des éléments à corriger avec une équipe de développement.
 
-##### Accessibilité
+#### Accessibilité
 
 Éditer : `content/audits/nomdelademarche/accessibility/YYYY-MM-JJ.csv`
 
-L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans l’entête du fichier `.md` de l’audit dans le fichier `content/audits/nomdelademarche/accessibility/context.yml`.
+L'audit accessibilité est généré à partir d‘un `.csv` (fichier à plat). Les données relatives au test (optionnelles) peuvent être indiquées dans le fichier `content/audits/nomdelademarche/accessibility/context.yml`.
 
 ```yaml
 website: "amendes.gouv.fr"
@@ -200,21 +204,67 @@ audits:
 
 ![Accessibilite](/images/accessibilite.png)
 
-##### Qualité
+#### Qualité
+
+Affiche les données du fichier plus récent dans content/audits/nomdelademarche/quality/YYYY-MM-JJ.yml. 
+
+Le fichier de recommandation est fastidieux à remplir, mais permet de suivre des corrections de manière sereine avec une synthèse disponible sous format `HTML` et plus dans une `.doc`
 
 ```yaml
----
-type: quality // appelle le gabarit quality :: avec les données du fichier plus récent dans content/audits/nomdelademarche/quality/YYYY-MM-JJ.yml
----
+- pages:
+  - name: Global au site
+    blocks:
+    - name: Gabarit
+      errors:
+      - name: Adresse de navigation # Titre de l’erreur
+        description: L’adresse de navigation ne change pas en fonction des pages.
+      - name: Code invalide
+        description: "Le code comporte des erreurs quand on passe le validateur : https://validator.w3.org/." # Description longue
+        criterion: 8.2, 8.4 # Critères RGAA concernées :: si erreur lié à un critère, l'erreur sera reporté dans la déclaration générée
+        status: moindre # Criticité : critique, important, moindre
+        delivery: lot 1 # Possibilité de regrouper des erreurs dans les lots en haut de page (l'intitulé du champ est libre)
+      - name: Titre invalide
+        description: Les titres (`<title>`) de page ne changent pas en fonction des pages et ne sont pas pertinents.
+        criterion: 8.6
+        delivery: lot 1 # Lot 1
+      - name: Hiérarchie des titres
+        description: Il n’existe parfois aucun titre dans les pages. Passer certains titres (haut de page)`<h3>` en `<h1>` ou ajouter des `<h1>` à toutes les pages.
+        criterion: 9.1
+        status: important # Criticité : critique, important, moindre
+        delivery: lot 2 # Lot 2
+  - name: Saisie de la déclaration # Nom de la page
+    - name: Formulaire # Titre du bloc
+      errors:
+      - name: Label
+        path: /html/body/div[2]/div[2]/div/div/div/div/div/div[3]/table/tbody[1]/tr/td[3]/div/input
+        description: Certains champs `input` n’ont pas de `label`.
+      - name: Label + Input liés
+        path: /html/body/div[2]/div[2]/div/div/div/div/div/div[5]/div/div/div/div/div[2]/div[6]/label # Xpath
+        description: Aucun champs `input` n'est relié avec son `label` avec une attribut `for`.
+        delivery: lot 3 # Lot 3
+        status: critique # Criticité : critique, important, moindre
+        criterion: 11.1
+        checked: true # Si l'erreur est corrigée
+        codebefore: |- # Code présent sur le site audité
+          <div class="form-group">
+            <label class="col-md-2 control-label">Année (AAAA) </label>
+            <div class="col-lg-1 col-md-2"><input type="text" class="form-control"></div>
+          </div>
+        codeafter: |- # Proposition de code pour que le critère soit conforme
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="year">Année (AAAA) </label>
+            <div class="col-lg-1 col-md-2"><input type="text" class="form-control" id="year"></div>
+          </div>
 ```
 
-![Accessibilite](/images/qualite.png)
+![Qualité](/images/qualite.png)
 
 
 #### Performance
 
 L’audit de performance apporte une complémentarité à l’audit d’accessibilité en listant de manière automatique des éléments à optimiser. Il peut être reproduit de manière régulière. Le dernier test vient surcharger les autres sur la page projet. Il n’existe pas encore de gabarits abouti d’analyse graphique dans le temps.
 
+Note : Lancer un audit `Lighthouse` à ma même date qu’un audit accessibilité
 
 Éditer : `content/audits/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
 
