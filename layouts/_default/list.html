@@ -12,9 +12,10 @@
 <h1>{{ .Title }}</h1>
 {{- $.Scratch.Set "linksingle" .RelPermalink -}}
 {{- $.Scratch.Set "hassection" .Sections -}}
+{{- $sectionTitle := (.Site.GetPage .Section).Title -}}
 {{- range $paginator.Pages -}}
   <div>
-    <h2 class="h3"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    <h2 class="h3"><a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ $sectionTitle }} {{ replace (path.Base .Path) (path.Ext .Path) "" }}{{ end }}</a></h2>
     {{- if or .Date ($.Scratch.Get "hassection") -}}
     <p style="display:block;margin-top:-1.5em;">
       {{- if .Date -}}<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ .Date.Day }} {{ index $.Site.Data.month (printf "%d" .Date.Month) }} {{ .Date.Year }}</time>{{ end }}

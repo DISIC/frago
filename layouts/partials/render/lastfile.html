@@ -12,8 +12,8 @@
 {{ $context.Scratch.Delete "auditname-context" }}
 {{ $context.Scratch.Delete "auditpath-all-lastfile" }}
 {{ $context.Scratch.Delete "auditname-all-lastfile" }}
-{{ $context.Scratch.Delete "pathdata" }}
-ss
+{{ $context.Scratch.Set    "pathdata" "/false" }}
+
 {{/* If a single data file is called in the front matter or not :: could be removed */}}
 {{ if .datafilename }}
   {{ $context.Scratch.Set "pathdata" ((replace ($path) (printf "%s" .type) (printf "%s/%s" .datafilename .type))) }}
@@ -56,7 +56,7 @@ ss
             {{ warnf "The file %s/%s has a bad name, it should be a date YYYY-MM-DD.csv" $path .Name }}
           {{ end }}
         {{ end }}
-        {{ if ($context.Scratch.Get "auditpath-all-lastfile") }}
+        {{ if (gt ($context.Scratch.Get "auditpath-all-lastfile") 0) }}
           {{ $context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($context.Scratch.Get "auditpath-all-lastfile"))) ""))) }}
         {{ end }}
         {{ if ($context.Scratch.Get "auditname-all-lastfile") }}

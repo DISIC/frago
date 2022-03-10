@@ -1,4 +1,4 @@
 ---
 title: "Schéma Pluriannuel"
-type: schema
+type: schemas
 ---

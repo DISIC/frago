@@ -8,6 +8,7 @@ defaultContentLanguage = "fr"
 defaultContentLanguageInSubdir = false
 enableInlineShortcodes = true
 removePathAccents = true
+enableGitInfo = true
 
 
 [outputformats]
