@@ -53,7 +53,7 @@
               {{- $context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) -}}
               {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores) "date" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).date)) -}}
           {{- end -}}
-          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" (sort ($.Scratch.Get $type) "date" "desc")) -}}
+          {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" (cond (not ($.Scratch.Get $type)) "" (sort ($.Scratch.Get $type) "date" "desc"))) -}}
         {{- end -}}
       {{- end -}}
       {{- if eq $type "quality" -}}

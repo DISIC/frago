@@ -11,13 +11,14 @@
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "render-is-empty") 0 }}
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "totalTest")       0 }}
   {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCrit")           0 }}
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere")         "" }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere")        "" }}
+  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "Average")         0 }}
 
   {{ $.context.Scratch.Delete $scorekey }}
   {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageC") "0"  slice }}
   {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageNC") "0" slice }}
 
-  {{/* Range csv file per lines/criteria */}}
+  {{/* START Range csv file per lines/criteria */}}
   {{ range $key1, $value1 := after 1 $auditfile }}
     {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValues") slice }}
     {{ $crit := printf "%s.%s" (index . 0) (index . 1) }}
@@ -27,7 +28,7 @@
       {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critPageValue") slice }}
     {{ end }}
 
-    {{/* Range columns of the csv file */}}
+    {{/* START Range columns of the csv file */}}
     {{ range $id, $value2 := after $auditmethodology . }}
       {{ if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") }}
         {{ $.context.Scratch.Add (printf "%s%s" $scorekey "render-is-empty") 1 }}
@@ -56,8 +57,10 @@
         }}
       {{ end }}
     {{ end }}
+    {{/* END Range columns of the csv file */}}
     {{ $.context.Scratch.Set (printf "%s%s" $scorekey "critere") $crit }}
   {{ end }}
+  {{/* END Range csv file per lines/criteria */}}
 
   {{/* START :: value criteria for each page */}}
   {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) }}
@@ -78,23 +81,28 @@
   {{ end }}
   {{/* END */}}
 
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "Average") 0 }}
-  {{ $lengthPageC := len ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
-  {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
-      {{ $lengthC  := (len $array) }}
-      {{ $lengthNC := (len (index ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) $key)) }}
-      {{ $value    := float (sub 100 (div (mul (float $lengthNC) 100) (add $lengthC $lengthNC)) | lang.NumFmt 1)}}
-      {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageAverage") (string $key) $value }}
-      {{ $.context.Scratch.Add (printf "%s%s" $scorekey "Average") (div $value $lengthPageC) }}
-  {{ end }}
-
-
+  {{/* Only if auditefile exists :: avoid problem when file is misread */}}
   {{ if and $auditfile ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty")) }}
+
+    {{/* START Calculate average score */}}
+    {{ $lengthPageC := len ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+    {{ range $key, $array := ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+        {{ $lengthC  := (len $array) }}
+        {{ $lengthNC := (len (index ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) $key)) }}
+        {{ $value    := cond (ne (add $lengthC $lengthNC) 0) (float (sub 100 (div (mul (float $lengthNC) 100) (add $lengthC $lengthNC)) | lang.NumFmt 1)) 0 }}
+        {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "pageAverage") (string $key) $value }}
+        {{ $.context.Scratch.Add (printf "%s%s" $scorekey "Average") (div $value $lengthPageC) }}
+    {{ end }}
+    {{/* END Calculate average score */}}
+
     {{ $auditfile := after 1 .auditfile }}
 
-    {{/* Range array with test result par pages */}}
+    {{/* START Range array with test result par pages */}}
     {{ range $id, $value := ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValuesUniq"))) }}
+      {{/* START avoid criterion not tested */}}
       {{ if ne (len $value) 0 }}
+
+      {{/* START if all cell for each page have the same value */}}
       {{ if eq (len $value) 1 }}
         {{/* Set each test case if the array as uniq values */}}
 
@@ -118,6 +126,7 @@
           {{ $.context.Scratch.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
         {{ end }}
 
+      {{/* START if all cell for each page have NOT the same value */}}
       {{ else }}
         {{/* Set each test case if the array as multiple value values as "na" or "nt" (or "25" "50" "81") */}}
         {{/* START - Should be removed */}}
@@ -178,49 +187,63 @@
         {{ end }}
 
       {{ end }}
+      {{/* END if all cell for each page have the same value or NOT */}}
     {{ end }}
+    {{/* END avoid criterion not tested */}}
   {{ end }}
+  {{/* END Range array with test result par pages */}}
 
-  {{ $critCount := (merge ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")))  }}
+    {{/* START count total number of criteria tested */}}
+    {{ $critCount := (merge ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")))  }}
 
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") 0 }}
-  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) }}
-    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") (len .) }}
+    {{/* START count number of criterion */}}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") 0 }}
+    {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critC")) }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritC") (len .) }}
+    {{ end }}
+
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") 0 }}
+    {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") (len .) }}
+    {{ end }}
+
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNT") 0 }}
+    {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT")) }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNT") (len .) }}
+    {{ end }}
+
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") 0 }}
+    {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") (len .) }}
+    {{ end }}
+    {{/* END count number of criterion */}}
+
+    {{/* START calculate compliance */}}
+    {{/* If any NC */}}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") 0 }}
+    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance")
+        (div (mul ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC")) 100) (len $critCount) )
+    }}
+
+    {{/* If NC :: avoid div by 0 when any NC */}}
+    {{ if ($.context.Scratch.Get "critNC") }}
+      {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul (($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))))) }}
+    {{ end }}
+    {{/* END calculate compliance */}}
+
+    {{ $.context.Scratch.Set "total"                                 (cond (not $critCount) 0 (add (len $critCount) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "totalTest")) }}
+    {{ $.context.Scratch.SetInMap $scorekey "total"                  (merge $critCount ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "conforme"               (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critC"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critC"))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "nonconforme"            (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "nonapplicable"          (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "nonteste"               (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) }}
+    {{ $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
+    {{ $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) }}
+    {{ $.context.Scratch.SetInMap $scorekey "pageaverage"            ($.context.Scratch.Get (printf "%s%s" $scorekey "pageAverage")) }}
+    {{/* $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) */}}
   {{ end }}
-
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") 0 }}
-  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA")) }}
-    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNA") (len .) }}
-  {{ end }}
-
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNT") 0 }}
-  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT")) }}
-    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNT") (len .) }}
-  {{ end }}
-
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") 0 }}
-  {{ with ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC")) }}
-    {{ $.context.Scratch.Set (printf "%s%s" $scorekey "iCritNC") (len .) }}
-  {{ end }}
-
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") 0 }}
-  {{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance")
-      (div (mul ($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC")) 100) (len $critCount) )
-  }}
-  {{ if ($.context.Scratch.Get "critNC") }}{{ $.context.Scratch.Set (printf "%s%s" $scorekey "compliance") ((div (mul (($.context.Scratch.Get (printf "%s%s" $scorekey "iCritC"))) 100) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))))) }}{{ end }}
-
-  {{ $.context.Scratch.Set "total"                                 (cond (not $critCount) 0 (add (len $critCount) (len ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))))) }}
-  {{ $.context.Scratch.SetInMap $scorekey "testtotal"              ($.context.Scratch.Get (printf "%s%s" $scorekey "totalTest")) }}
-  {{ $.context.Scratch.SetInMap $scorekey "total"                  $critCount }}
-  {{ $.context.Scratch.SetInMap $scorekey "conforme"               (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critC"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critC"))) }}
-  {{ $.context.Scratch.SetInMap $scorekey "nonconforme"            (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNC"))) }}
-  {{ $.context.Scratch.SetInMap $scorekey "nonapplicable"          (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNA"))) }}
-  {{ $.context.Scratch.SetInMap $scorekey "nonteste"               (cond (not ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) slice ($.context.Scratch.Get (printf "%s%s" $scorekey "critNT"))) }}
-  {{ $.context.Scratch.SetInMap $scorekey "conformepage"           ($.context.Scratch.Get (printf "%s%s" $scorekey "pageC")) }}
-  {{ $.context.Scratch.SetInMap $scorekey "nonconformepage"        ($.context.Scratch.Get (printf "%s%s" $scorekey "pageNC")) }}
-  {{ $.context.Scratch.SetInMap $scorekey "pageaverage"            ($.context.Scratch.Get (printf "%s%s" $scorekey "pageAverage")) }}
-  {{/* $.context.Scratch.SetInMap $scorekey "value"                  ($.context.Scratch.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) */}}
-  {{ end }}
+  {{/* END Range array with test result par pages */}}
 
   {{ return (dict
     "isempty"       ($.context.Scratch.Get (printf "%s%s" $scorekey "render-is-empty"))

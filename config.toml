@@ -8,21 +8,12 @@ defaultContentLanguage = "fr"
 defaultContentLanguageInSubdir = false
 enableInlineShortcodes = true
 removePathAccents = true
+enableGitInfo = true
 
-[outputs]
-  home    = ["HTML","JSON","schema"]
-  page    = ["HTML","JSON","declaration","declarationpage","accessibility","accessibilitypage","quality","qualitypage","performance","performancepage"]
-  section = ["HTML","JSON"]
 
 [outputformats]
   _merge = 'deep'
 
-[outputFormats.schema]
-  baseName = "schema"
-  mediaType = "text/html"
-  notAlternative = false
-  permalinkable = true
-  isHTML = true
 [outputFormats.declarationpage]
   baseName = "declaration"
   mediaType = "text/html"
@@ -68,5 +59,3 @@ removePathAccents = true
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
-
-

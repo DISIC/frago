@@ -1,6 +1,9 @@
 {{- define "title" -}}{{- .Title -}}{{- end -}}
+
 {{- define "main" -}}
+  {{/* Looking for alternate format */}}
   {{- $alternate  := where (where .OutputFormats "RelPermalink" "eq" .RelPermalink) "Rel" "eq" "alternate" -}}
+  {{/* If /schema.html exist */}}
   {{- if ne (len $alternate) 0 -}}
     {{- with $alternate -}}{{- range $key, $value := . -}}
       <article class="wrapper narrow">
@@ -9,17 +12,21 @@
         {{- partial "templates/schema.html" . | markdownify -}}
       {{- end -}}
     </article>
-    {{- end -}}
-    {{- end -}}
+    {{- end -}}{{- end -}}
   {{- else -}}
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
+    {{/* If only one project */}}
     {{- if (partial "render/issimpleproject.html" .) -}}
       {{- partial "templates/projects.html" . -}}
+    {{/* If several projects :: call list of projects */}}
     {{- else -}}
       {{- partialCached "templates/projects-list.html" . . -}}
     {{- end -}}
-    {{- partial "elements/content.html" .Content -}}
+    <section class="wrapper narrow">
+    {{ partial "elements/content.html" .Content }}
+    </section>
   {{- end -}}
 {{- end -}}
+
 {{- define "script" -}}
 {{- end -}}

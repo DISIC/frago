@@ -1,0 +1,101 @@
+{{- define "title" -}}
+Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
+{{- end -}}
+{{- define "main" -}}
+  {{- $pagedate := replace (path.Base .Path) (path.Ext .Path) "" -}}
+  {{- $.Scratch.Set "date" slice -}}
+  {{- $.Scratch.Set "update" slice -}}
+  {{- range (where .Site.RegularPages "Section" "schemas") -}}
+    {{- $year := float $pagedate -}}
+    {{- $dateStart := float (first 4 (replace (path.Base .Path) (path.Ext .Path) "")) -}}
+    {{- $dateEnd   := float (last 4 (replace (path.Base .Path) (path.Ext .Path) "")) -}}
+    {{- if and (ge $year $dateStart) (le $year $dateEnd) -}}
+      {{- $.Scratch.Add "date"   $dateStart -}}
+      {{- $.Scratch.Add "date"   $dateEnd -}}
+      {{- $.Scratch.Add "update" (((os.Stat .Path).ModTime).Format "02/01/2006") -}}
+      {{- $.Scratch.Add "params" (.Params) -}}
+      {{- $.Scratch.Add "link"   (.Permalink) -}}
+    {{- end -}}
+  {{- end -}}
+  <article class="wrapper narrow">
+    <h1>Plan annuel de l’année {{ replace (path.Base .Path) (path.Ext .Path) "" }}</h1>
+    <h2>Introduction</h2>
+    <p>L’article 47 de la loi n°2005-102 du 11 février 2005 pour l’égalité des droits et des chances, la participation et la citoyenneté des personnes rend obligatoire à tout service de communication publique en ligne d’être accessible à tous.</p>
+
+    <h2>Schéma pluriannuel</h2>
+    <p>La loi rend obligatoire la publication d’un schéma pluriannuel d’une durée de trois ans. L’objectif est d’informer le public des moyens et actions mis en place pour rendre les sites et applications accessibles à tous et plus particulièrement conformes au RGAA (Référentiel Général d’Amélioration de l’Accessibilité).</p>
+
+    <p>Le schéma pluriannuel pour l’accessibilité des sites et applications de la <strong>{{ ($.Scratch.Get "params").organisation }}</strong> a été publié en <strong>{{ index ($.Scratch.Get "date") 0 }}</strong> et est disponible à la consultation à cette adresse : <a href="{{- $.Scratch.Get "link" -}}">{{- $.Scratch.Get "link" -}}</a></p>
+
+    <h2>Plan annuel</h2>
+    <p>Le schéma pluriannuel doit être accompagné d’un plan annuel d’action qui détaille les opérations programmées et mises en œuvre pour l’année courante ainsi que l’état de suivis de ces actions.</p>
+
+    <p>Le présent document est le plan annuel <strong>{{ index ($.Scratch.Get "date") 0 }}</strong> associé au schéma pluriannuel <strong>{{ index ($.Scratch.Get "date") 0 }}</strong> – <strong>{{ index ($.Scratch.Get "date") 1 }}</strong>.</p>
+
+    <p>Il comporte un tableau récapitulatif des actions qui ont été ou seront mises en œuvre en <strong>{{ index ($.Scratch.Get "date") 0 }}</strong>, leur date d’échéance si elles sont connues ainsi que leur état d’avancement et de réalisation.</p>
+
+    <h2>Mises à jour</h2>
+    <p>Ce plan est susceptible d’être mis à jour sans préavis. La version en ligne est la seule version qui peut faire référence.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Mise à jour</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">Version initiale</td>
+          <td class="text-center">{{ index (last 1 (sort (index (index (partialCached "render/actions.html" .) "dates") $pagedate))) 0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Contact</h2>
+    <p>Ce document relève de la responsabilité du référent accessibilité (<strong>{{ ($.Scratch.Get "params").contacts.email }}</strong>).</p>
+    <p>Toute question doit être adressée par mail à l’adresse ci-dessus.</p>
+
+    <hr>
+
+    <h2>Plan d’actions</h2>
+    {{ partial "templates/actions" . }}
+
+    {{- with (where .Site.RegularPages "Section" "audits") -}}
+      {{- range . }}
+        {{- $title    := .Title -}}
+        {{- $project  := partial "render/projectpath" . -}}
+        {{- $lastfile := partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility" -}}
+        {{- $lastname := index $lastfile "auditfile-all-name" -}}
+        {{ $.Scratch.Set "allAuditsDates" slice }}
+        {{ range $lastname }}
+          {{- if eq (first 4 .) $pagedate }}
+            {{- $.Scratch.Add "allAuditsDates" (slice .) -}}
+          {{- end }}
+        {{- end }}
+        {{ $.Scratch.SetInMap "allAudits" $title (($.Scratch.Get "allAuditsDates")) }}
+      {{- end }}
+      {{- with $.Scratch.Get "allAudits" -}}
+      <h2>Audits</h2>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-left">Démarches</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{ range $key, $value := . }}
+        {{ range $key2, $value := . }}
+          <tr>
+            <td>{{ $key }}</td>
+            <td class="text-center">{{ . }}</td>
+          </tr>
+          {{ end }}
+          {{- end }}
+        </tbody>
+      </table>
+      {{- end -}}
+    {{- end -}}
+  </article>
+{{- end -}}

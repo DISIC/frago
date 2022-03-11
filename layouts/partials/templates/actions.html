@@ -1,0 +1,31 @@
+{{/* Variables */}}
+{{- $pagedate := replace (path.Base .Path) (path.Ext .Path) "" -}}
+{{- $kind := .Kind -}}
+
+{{/* START Write table with all actions */}}
+{{- with (partialCached "render/actions.html" .) -}}
+<table>
+  <thead>
+    <tr>
+    <th class="text-left">Démarches</th>
+    <th class="text-left">Type</th>
+    <th>Action</th>
+    <th>Détails</th>
+    <th>Avancement</th>
+  </tr>
+</thead>
+<tbody>
+{{- range $key, $value := (index (index . "actions") $pagedate) }}
+  {{- range . -}}
+    <tr>
+      <td>{{ $key }}</td>
+      {{- range . -}}
+      <td>{{ . }}</td>
+      {{- end -}}
+    </tr>
+  {{- end -}}
+{{- end -}}
+</tbody>
+</table>
+{{- end -}}
+{{/* END Write table with all actions */}}
