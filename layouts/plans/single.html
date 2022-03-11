@@ -2,18 +2,19 @@
 Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
 {{- end -}}
 {{- define "main" -}}
+  {{- $pagedate := replace (path.Base .Path) (path.Ext .Path) "" -}}
   {{- $.Scratch.Set "date" slice -}}
   {{- $.Scratch.Set "update" slice -}}
   {{- range (where .Site.RegularPages "Section" "schemas") -}}
-    {{- $year := float (replace (path.Base $.Path) (path.Ext $.Path) "") -}}
+    {{- $year := float $pagedate -}}
     {{- $dateStart := float (first 4 (replace (path.Base .Path) (path.Ext .Path) "")) -}}
     {{- $dateEnd   := float (last 4 (replace (path.Base .Path) (path.Ext .Path) "")) -}}
     {{- if and (ge $year $dateStart) (le $year $dateEnd) -}}
-        {{- $.Scratch.Add "date" $dateStart -}}
-        {{- $.Scratch.Add "date" $dateEnd -}}
-        {{- $.Scratch.Add "update" (((os.Stat .Path).ModTime).Format "02/01/2006") -}}
-        {{- $.Scratch.Add "params" (.Params) -}}
-        {{- $.Scratch.Add "link"   (.Permalink) -}}
+      {{- $.Scratch.Add "date"   $dateStart -}}
+      {{- $.Scratch.Add "date"   $dateEnd -}}
+      {{- $.Scratch.Add "update" (((os.Stat .Path).ModTime).Format "02/01/2006") -}}
+      {{- $.Scratch.Add "params" (.Params) -}}
+      {{- $.Scratch.Add "link"   (.Permalink) -}}
     {{- end -}}
   {{- end -}}
   <article class="wrapper narrow">
@@ -45,8 +46,8 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
       </thead>
       <tbody>
         <tr>
-          <td class="center">Version initiale</td>
-          <td>{{ $.Scratch.Get "update" }}</td>
+          <td class="text-center">Version initiale</td>
+          <td class="text-center">{{ index (last 1 (sort (index (index (partialCached "render/actions.html" .) "dates") $pagedate))) 0 }}</td>
         </tr>
       </tbody>
     </table>
@@ -55,7 +56,46 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
     <p>Ce document relève de la responsabilité du référent accessibilité (<strong>{{ ($.Scratch.Get "params").contacts.email }}</strong>).</p>
     <p>Toute question doit être adressée par mail à l’adresse ci-dessus.</p>
 
+    <hr>
+
     <h2>Plan d’actions</h2>
     {{ partial "templates/actions" . }}
+
+    {{- with (where .Site.RegularPages "Section" "audits") -}}
+      {{- range . }}
+        {{- $title    := .Title -}}
+        {{- $project  := partial "render/projectpath" . -}}
+        {{- $lastfile := partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility" -}}
+        {{- $lastname := index $lastfile "auditfile-all-name" -}}
+        {{ $.Scratch.Set "allAuditsDates" slice }}
+        {{ range $lastname }}
+          {{- if eq (first 4 .) $pagedate }}
+            {{- $.Scratch.Add "allAuditsDates" (slice .) -}}
+          {{- end }}
+        {{- end }}
+        {{ $.Scratch.SetInMap "allAudits" $title (($.Scratch.Get "allAuditsDates")) }}
+      {{- end }}
+      {{- with $.Scratch.Get "allAudits" -}}
+      <h2>Audits</h2>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-left">Démarches</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{ range $key, $value := . }}
+        {{ range $key2, $value := . }}
+          <tr>
+            <td>{{ $key }}</td>
+            <td class="text-center">{{ . }}</td>
+          </tr>
+          {{ end }}
+          {{- end }}
+        </tbody>
+      </table>
+      {{- end -}}
+    {{- end -}}
   </article>
 {{- end -}}

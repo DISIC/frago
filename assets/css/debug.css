@@ -83,28 +83,28 @@ table.debugprint tbody tr {
   height: auto;
 }
 
-.debugprint th,
+footer + div .debugprint th,
 .debugprint td {
-  padding: 0 1&em;
+  padding: 0 1em;
   border: 1px solid;
 }
 
-.debugprint td {
+footer + div .debugprint td {
   text-align: left;
   vertical-align: center;
 }
 
-.debugprint th {
+footer + div .debugprint th {
   font-weight: 700;
   text-align: left;
   background-color: #000;
 }
 
-.debugprint th.type {
+footer + div .debugprint th.type {
   display: none;
 }
 
-.debugprint td.key {
+footer + div  .debugprint td.key {
   color: #ffffff;
 }
 
@@ -114,7 +114,7 @@ table.debugprint tbody tr {
   color: #ced0d3;
 }
 
-.debugprint td.value {
+footer + div .debugprint td.value {
   font-family: "Source Code Pro", monospace;
   color: #ced0d3;
 }

@@ -1,71 +1,31 @@
+{{/* Variables */}}
 {{- $pagedate := replace (path.Base .Path) (path.Ext .Path) "" -}}
 {{- $kind := .Kind -}}
 
-{{ $.Scratch.Set "dates" slice }}
-
-{{- if fileExists "content/plans/actions" -}}
-    {{ range $id, $value := (readDir "content/plans/actions") }}
-      {{ $.Scratch.Add "dates" (string (first 4 .Name)) }}
-      {{ $.Scratch.SetInMap (printf "actions-%s" (string (first 4 .Name))) (string $id) (after 1 (getCSV "," (printf "content/plans/actions/%s" .Name))) }}
-    {{ end }}
-{{ end }}
-{{ range (uniq ($.Scratch.Get "dates")) }}
-
-{{ end }}
-{{ range (uniq ($.Scratch.Get "dates")) }}
-  {{ $date := . }}
-  {{ $.Scratch.Set (printf "slice-%s" $date) slice }}
-  {{ range ($.Scratch.Get (printf "actions-%s" .)) }}
-    {{ $.Scratch.Add (printf "slice-%s" $date) . }}
-  {{ end }}
-  {{ $.Scratch.SetInMap (printf "%s" .) "Ensemble des services" ($.Scratch.Get (printf "slice-%s" $date)) }}
-{{ end }}
-
-{{ with (where .Site.RegularPages "Section" "audits") }}
+{{/* START Write table with all actions */}}
+{{- with (partialCached "render/actions.html" .) -}}
+<table>
+  <thead>
+    <tr>
+    <th class="text-left">Démarches</th>
+    <th class="text-left">Type</th>
+    <th>Action</th>
+    <th>Détails</th>
+    <th>Avancement</th>
+  </tr>
+</thead>
+<tbody>
+{{- range $key, $value := (index (index . "actions") $pagedate) }}
   {{- range . -}}
-      {{- $title    := .Title -}}
-      {{- $project  := partial "render/projectpath" . -}}
-      {{- $lastfile := partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "actions") $project "actions" -}}
-      {{- $lastname := index $lastfile "auditfile-all-name" -}}
-      {{- range $id, $value := (index $lastfile "auditfile-all-path") -}}
-        {{- $.Scratch.Set (printf "%s" $title) slice -}}
-        {{- $date := first 4 (index $lastname $id) -}}
-        {{ $cond := cond (eq $kind "page") (eq $date $pagedate) true }}
-        {{- if $cond -}}
-        {{- range $index, $line := (after 1 (getCSV "," .)) -}}
-            {{- $.Scratch.Add (printf "%s%s%s" $title $id $date) (slice .) -}}
-        {{- end -}}
-        {{- $.Scratch.Add (printf "%s%s" $title $date) ($.Scratch.Get (printf "%s%s%s" $title $id $date)) -}}
-        {{- $.Scratch.SetInMap (printf "%s" $date) (printf "%s" $title) ($.Scratch.Get (printf "%s%s" $title $date)) -}}
-        {{- $.Scratch.SetInMap "result" (printf "%s" $date) ($.Scratch.Get (printf "%s" $date)) -}}
-        {{- end -}}
+    <tr>
+      <td>{{ $key }}</td>
+      {{- range . -}}
+      <td>{{ . }}</td>
       {{- end -}}
-  {{- end -}}
-
-  {{- range $key, $value := ($.Scratch.Get "result") -}}
-    {{ if and (ge (len ($.Scratch.Get "result")) 2) (eq $kind "section") }}<h3>Année {{ $key }}</h3>{{ end }}
-    <table>
-      <thead>
-        <tr>
-        <th>Démarches</th>
-        <th>Type</th>
-        <th>Action</th>
-        <th>Détails</th>
-        <th>Avancement</th>
-      </tr>
-    </thead>
-      <tbody>
-      {{ range $key, $value := $value }}
-        {{- range . -}}
-          <tr>
-            <td>{{ $key }}</td>
-            {{- range . -}}
-            <td>{{ . }}</td>
-            {{- end -}}
-          </tr>
-        {{- end -}}
-      {{- end -}}
-      </tbody>
-    </table>
+    </tr>
   {{- end -}}
 {{- end -}}
+</tbody>
+</table>
+{{- end -}}
+{{/* END Write table with all actions */}}

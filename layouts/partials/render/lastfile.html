@@ -27,13 +27,8 @@
   {{ $context.Scratch.Set "pathdata" (cond (eq "accessibility" .type) (cond (fileExists $pathrgaa) $pathrgaa ($context.Scratch.Get "pathdata")) ($context.Scratch.Get "pathdata")) }}
 {{ end }}
 
-{{/* Create the file variable to dertermnines if files exist */}}
-{{ $condfile   := cond (fileExists (printf "%s.%s" ($context.Scratch.Get "pathdata") $ext)) true false }}
-{{ $condfolder := cond (fileExists ($context.Scratch.Get "pathdata")) true false }}
-
-
 {{/* If the file accessibility.csv exists at the root of the project */}}
-{{ if $condfile }}
+{{ if (fileExists (printf "%s.%s" ($context.Scratch.Get "pathdata") $ext)) }}
   {{ $context.Scratch.Set "auditpath-lastfile" (printf "%s.%s" ($context.Scratch.Get "pathdata") $ext) }}
   {{ $context.Scratch.Set "auditname-lastfile" (now.Format "2006-01-02") }}
   {{ $context.Scratch.SetInMap "auditpath-all-lastfile" "999" ($context.Scratch.Get "auditpath-lastfile") }}
@@ -41,7 +36,7 @@
 {{ end }}
 
 {{/* If the folder exists at the root of the project */}}
-{{ if $condfolder }}
+{{ if (fileExists ($context.Scratch.Get "pathdata")) }}
   {{ $context.Scratch.Set "dir-lastfile" (readDir ($context.Scratch.Get "pathdata")) }}
   {{ $i := 0 }}
   {{ with ($context.Scratch.Get "dir-lastfile") }}
@@ -56,7 +51,7 @@
             {{ warnf "The file %s/%s has a bad name, it should be a date YYYY-MM-DD.csv" $path .Name }}
           {{ end }}
         {{ end }}
-        {{ if (gt ($context.Scratch.Get "auditpath-all-lastfile") 0) }}
+        {{ if (gt (len ($context.Scratch.Get "auditpath-all-lastfile")) 0) }}
           {{ $context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($context.Scratch.Get "auditpath-all-lastfile"))) ""))) }}
         {{ end }}
         {{ if ($context.Scratch.Get "auditname-all-lastfile") }}

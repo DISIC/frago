@@ -2,46 +2,35 @@
 Schéma Pluriannuel
 {{- end -}}
 {{- define "main" -}}
+{{- $path         := cond (eq .Path "schema.md") (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path .Path -}}
+{{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
+{{- $contact      := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
+{{- $rangedate    := cond (not .Params.rangedate) .Site.Params.rangedate .Params.rangedate -}}
+{{- $dateStart    := float (first 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $dateEnd      := float (last 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $teamNumber   := .Params.team.number -}}
+{{- $webNumber    := cond (not .Params.website.number) (len (where .Site.RegularPages "Section" "audits")) (.Params.website.number) -}}
+{{- $appNumber    := cond (not .Params.application.number) "" (.Params.application.number) -}}
 <article class="wrapper narrow">
-  {{- $path := cond (eq .Path "/schema.md") (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path .Path -}}
-  {{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
-  {{- $contact := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
-  {{- $rangedate := cond (not .Params.rangedate) .Site.Params.rangedate .Params.rangedate -}}
-  {{- $dateStart := float (first 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
-  {{- $dateEnd   := float (last 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
-  {{- $teamNumber := .Params.team.number -}}
-  {{- $webNumber := cond (not .Params.website.number) (len (where .Site.RegularPages "Section" "audits")) (.Params.website.number) -}}
-  {{- $appNumber := cond (not .Params.application.number) "" (.Params.application.number) -}}
   {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
-    <div>
+    <div hidden>
       <strong>{{ $path }}</strong><br>
       {{ printf "%s - %s - %s - %s - %s - %s" $organisation $contact $rangedate $teamNumber $webNumber $appNumber $dateStart $dateEnd }}
     </div>
     {{- end -}}
-  <h1>Schéma Pluriannuel</h1>
+  <h1>Schéma Pluriannuel {{ if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) }}{{ $dateStart }}-{{ $dateEnd }}{{ end }}</h1>
   {{ if fileExists "content/schema.md" }}
     {{- if ge (len (.GetPage "schema").Content) 5 -}}
       {{ with .GetPage "schema" }}{{ .Content }}{{- end -}}
     {{- end -}}
     {{ else }}
-    <h2 id="introduction"><a class="anchor" href="#introduction" title='"Introduction"'><svg aria-hidden="true"
-          height="16" version="1.1" viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a> Introduction</h2>
+    <h2 id="introduction">Introduction</h2>
     <p>L’article 47 de la loi n°2005-102 du 11 février 2005 pour l’égalité des droits et des chances, la participation
       et
       la citoyenneté des personnes rend obligatoire à tout service de communication publique en ligne d’être
       accessible à
       tous.</p>
-    <h2 id="définition-de-laccessibilité-numérique"><a class="anchor" href="#définition-de-laccessibilité-numérique"
-        title='"Définition de l’accessibilité numérique"'><svg aria-hidden="true" height="16" version="1.1"
-          viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a> Définition de l’accessibilité numérique </h2>
+    <h2 id="définition-de-laccessibilité-numérique">Définition de l’accessibilité numérique </h2>
     <p>L’accessibilité numérique permet d’accéder aux contenus (sites web, documents bureautiques, supports
       multimédias,
       intranets d’entreprise, applications mobiles…), quelle que soit sa façon de naviguer.</p>
@@ -64,14 +53,7 @@ Schéma Pluriannuel
       la maintenance et l’utilisation des dispositifs numériques : décideurs, chefs de projet, graphistes,
       développeurs,
       producteurs de contenus.</p>
-    <h2 id="politique-daccessibilité">
-      <a class="anchor" href="#politique-daccessibilité" title='"Politique d’accessibilité"'><svg aria-hidden="true"
-          height="16" version="1.1" viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a>
-      Politique d’accessibilité</h2>
+    <h2 id="politique-daccessibilité">Politique d’accessibilité</h2>
     <p>L’accessibilité numérique est au cœur des préoccupations liées au développement ou à la mise à disposition de
       sites
       web ou d’applications tant auprès du public que des personnels internes de <strong>{{ $organisation }}</strong>.
@@ -109,14 +91,7 @@ Schéma Pluriannuel
       à l’équipe UX et Accessibilité <strong>{{ $contact.email }}</strong>. {{ with $teamNumber }}L’équipe est actuellement composée de
       <strong>{{ . }}</strong>{{- end -}}
       personnes. Elle peut-être assistée de prestataires externes experts en accessibilité.</p>
-    <h2 id="organisation-de-la-prise-en-compte-de-laccessibilité-numérique"><a class="anchor"
-        href="#organisation-de-la-prise-en-compte-de-laccessibilité-numérique"
-        title='"Organisation de la prise en compte de l’accessibilité numérique"'><svg aria-hidden="true" height="16"
-          version="1.1" viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a> Organisation de la prise en compte de l’accessibilité numérique </h2>
+    <h2 id="organisation-de-la-prise-en-compte-de-laccessibilité-numérique">Organisation de la prise en compte de l’accessibilité numérique </h2>
     <p>La prise en compte de l’accessibilité numérique nécessite :</p>
     <ul>
       <li>une adaptation de l’organisation interne de production et de gestion des sites web et application concernés,
@@ -202,13 +177,7 @@ Schéma Pluriannuel
       interviennent en complément des opérations habituelles de recette et contrôles intermédiaires qui seront
       organisées,
       si nécessaire, tout au long de la vie des projets.</p>
-    <h2 id="périmètre-technique-et-fonctionnel"><a class="anchor" href="#périmètre-technique-et-fonctionnel"
-        title='"Périmètre technique et fonctionnel"'><svg aria-hidden="true" height="16" version="1.1"
-          viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a> Périmètre technique et fonctionnel </h2>
+    <h2 id="périmètre-technique-et-fonctionnel">Périmètre technique et fonctionnel </h2>
     {{ if or $webNumber $appNumber }}
     <h3 id="recensement">Recensement</h3>
     <p><strong>{{ $organisation }}</strong> gère {{ with $webNumber }}<strong>{{ . }}</strong> sites web{{- end -}}{{ with $appNumber }} et <strong>{{ . }}</strong>
@@ -239,12 +208,7 @@ Schéma Pluriannuel
       Compte tenu des informations recueillies lors de l’élaboration de ce schéma, la complexité des sites et
       applications, leur classement par ordre de priorité et leur évaluation en termes de faisabilité, les opérations
       de mise en conformité vont s’étaler sur les années <strong>{{ $dateStart }}</strong> à <strong>{{ $dateEnd }}</strong> et au-delà.</p>
-    <h2 id="plans-annuels"><a class="anchor" href="#plans-annuels" title='"Plans annuels"'><svg aria-hidden="true"
-          height="16" version="1.1" viewBox="0 0 16 16" width="16">
-          <path fill-rule="evenodd"
-            d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-          </path>
-        </svg></a> Plans annuels </h2>
+    <h2 id="plans-annuels">Plans annuels </h2>
     <p>Ce schéma pluriannuel est accompagné de plans annuels d’actions qui décrivent en détail les opérations mises en
       œuvre pour prendre en charge l’ensemble des besoins en termes d’accessibilité numérique de
       <strong>{{ $organisation }}</strong>.</p>
@@ -272,32 +236,28 @@ Schéma Pluriannuel
   {{- end -}}
 
 
-  {{ with (where .Site.RegularPages "Section" "audits") }}
-  <h2 id="annexe1"><a class="anchor" href="#annexe1" title='"Annexe 1 : périmètre technique public"'><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16">
-    <path fill-rule="evenodd"
-      d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
-    </path></svg></a> Annexe 1 : périmètre technique public
+  {{- with (where .Site.RegularPages "Section" "audits") -}}
+  <h2 id="annexe1">Annexe 1 : périmètre technique public
   </h2>
   <p>La liste ci-dessous présente les sites prioritaires faisant partie du schéma pluriannuel {{ with $organisation }}de <strong>{{ . }}</strong> {{- end -}}pouvant être portés à la connaissance du public.</p>
   <table>
     <thead>
         <tr>
-        <th>Nom</th>
-        <th>Type</th>
-        <th>URL</th>
+        <th class="text-left">Nom</th>
+        <th class="w-100">Type</th>
+        <th class="w-100">URL</th>
       </tr>
     </thead>
     <tbody>
-    {{ range . }}
+    {{- range . }}
       <tr>
         <td>{{ .Title }}</td>
-        <td>Site web</td>
-        <td>{{ with (partialCached "render/context.html" (dict "context" . "project" (partialCached "render/projectpath" . .)) (partialCached "render/projectpath" . .)).website }}{{ . }}{{ else }}Non renseignée{{- end -}}</td>
+        <td class="text-center">Site web</td>
+        <td class="text-center">{{ with (partialCached "render/context.html" (dict "context" . "project" (partialCached "render/projectpath" . .)) (partialCached "render/projectpath" . .)).website }}{{ . }}{{ else }}NA{{- end -}}</td>
       </tr>
-    {{- end -}}
+    {{ end -}}
     </tbody>
   </table>
-
   {{- end -}}
   </article>
 {{- end -}}
