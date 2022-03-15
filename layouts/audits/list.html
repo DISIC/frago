@@ -47,10 +47,10 @@
         {{- end -}}
       {{- end -}}{{- end -}}
     {{- else -}}
+      {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
       {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
-        {{- if (ge (len (split .RelPermalink "/")) 5) -}}
+        {{- if and (not (in (path.Base .Path) "index.md")) -}}
           <article class="wrapper narrow">
-            <h1 class="text-center wrapper">{{ .Title }}</h1>
             {{ partial "elements/content.html" .Content }}
           </article>
         {{- else -}}
@@ -65,10 +65,10 @@
       {{- end -}}
     {{- end -}}
   {{- else -}}
+    {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
     {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
-      {{- if (ge (len (split .RelPermalink "/")) 5) -}}
+      {{- if and (not (in (path.Base .Path) "index.md")) -}}
         <article class="wrapper narrow">
-          <h1 class="text-center wrapper">{{ .Title }}</h1>
           {{ partial "elements/content.html" .Content }}
         </article>
       {{- else -}}
@@ -77,8 +77,5 @@
     {{- else -}}
       {{- partialCached "templates/dashboard.html" $context $context -}}
     {{- end -}}
-    <section class="wrapper narrow">
-    {{ partial "elements/content.html" .Content }}
-    </section>
   {{- end -}}
 {{- end -}}
