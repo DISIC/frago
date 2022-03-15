@@ -1,6 +1,6 @@
 {{- $.Scratch.Delete "allscores" -}}
 {{- $.Scratch.Delete "projectfolders" -}}
-{{- $.Scratch.Set "rangepages" (where .Site.RegularPages "Section" "audits") -}}
+{{- $.Scratch.Set "rangepages" (where .Site.Pages "Section" "audits") -}}
 {{- if ($.Scratch.Get "rangepages") -}}
   <section class="section text-center">
     <div class="wrapper">
@@ -8,17 +8,20 @@
       {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
         {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
         {{- $context := . -}}
+        {{- if and (in (path.Base .Path) "index.md") (not (in "/audits/_index.md" .Path)) -}}
         {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") "auditfile-all-path") -}}
           {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
+        {{- end -}}
         {{- end -}}
         {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
       {{- end -}}
 
+      {{ if ($.Scratch.Get "rangepages") }}
       <ul class="list-unstyled" role="navigation">
       {{/* START Loop on all project in audits */}}
 
       {{- range sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}
-
+        {{- if and (in (path.Base .Path) "index.md") (not (in "/audits/_index.md" .Path)) -}}
         {{- $context   := . -}}
         {{- $path      := (split (path.Dir .Path) "/") -}}
 
@@ -65,9 +68,13 @@
               {{- end -}}
           </li>
         {{- end -}}
+        {{- end -}}
       {{- end -}}
       {{/* END Loop on all project in audits */}}
       </ul>
+      {{- else -}}
+        <p>Aucun service web n’a été créé.</p>
+      {{- end -}}
     </div>
   </section>
 {{- end -}}

@@ -48,14 +48,32 @@
       {{- end -}}{{- end -}}
     {{- else -}}
       {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
-        {{- partial "templates/projects.html" . -}}
+        {{- if (ge (len (split .RelPermalink "/")) 5) -}}
+          <article class="wrapper narrow">
+            <h1 class="text-center wrapper">{{ .Title }}</h1>
+            {{ partial "elements/content.html" .Content }}
+          </article>
+        {{- else -}}
+          {{- partial "templates/projects.html" $context -}}
+        {{- end -}}
       {{- else -}}
-        {{- partialCached "templates/dashboard.html" $context $context -}}
+        {{- if (partial "render/issimpleproject.html" .) -}}
+          {{- partial "templates/projects.html" $context -}}
+        {{- else -}}
+          {{- partialCached "templates/dashboard.html" $context $context -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- else -}}
     {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
-      {{- partial "templates/projects.html" . -}}
+      {{- if (ge (len (split .RelPermalink "/")) 5) -}}
+        <article class="wrapper narrow">
+          <h1 class="text-center wrapper">{{ .Title }}</h1>
+          {{ partial "elements/content.html" .Content }}
+        </article>
+      {{- else -}}
+        {{- partial "templates/projects.html" $context -}}
+      {{- end -}}
     {{- else -}}
       {{- partialCached "templates/dashboard.html" $context $context -}}
     {{- end -}}

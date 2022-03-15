@@ -20,7 +20,7 @@
       {{- end -}}
     {{- end -}}
   {{- else -}}
-        Synthèse
+    Synthèse
   {{- end -}}
   {{ with $projectTitle }} pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
@@ -49,6 +49,12 @@
     {{- end -}}
   {{- else -}}
     <h1 class="text-center wrapper">{{ .Title }}</h1>
-    {{- partial "templates/projects.html" $context -}}
+    {{- if (ge (len (split .RelPermalink "/")) 5) -}}
+      <article class="wrapper narrow">
+        {{ partial "elements/content.html" .Content }}
+      </article>
+    {{- else -}}
+      {{- partial "templates/projects.html" $context -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}

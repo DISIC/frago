@@ -2,12 +2,14 @@
 Schéma Pluriannuel
 {{- end -}}
 {{- define "main" -}}
-{{- $path         := cond (eq .Path "schema.md") (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path .Path -}}
+{{- $path         := cond (eq .Path "schema.md") .Path (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path -}}
 {{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
 {{- $contact      := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
 {{- $rangedate    := cond (not .Params.rangedate) .Site.Params.rangedate .Params.rangedate -}}
-{{- $dateStart    := float (first 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
-{{- $dateEnd      := float (last 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $dateStart    := (first 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $dateEnd      := (last 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $dateStart    := cond (ne (len (findRE "(\\d{4})" $dateStart)) 0) ($dateStart) (cond (not $rangedate.start) false $rangedate.start) -}}
+{{- $dateEnd      := cond (ne (len (findRE "(\\d{4})" $dateEnd)) 0) ($dateEnd) (cond (not $rangedate.end) false $rangedate.end) -}}
 {{- $teamNumber   := .Params.team.number -}}
 {{- $webNumber    := cond (not .Params.website.number) (len (where .Site.RegularPages "Section" "audits")) (.Params.website.number) -}}
 {{- $appNumber    := cond (not .Params.application.number) "" (.Params.application.number) -}}
@@ -18,7 +20,7 @@ Schéma Pluriannuel
       {{ printf "%s - %s - %s - %s - %s - %s" $organisation $contact $rangedate $teamNumber $webNumber $appNumber $dateStart $dateEnd }}
     </div>
     {{- end -}}
-  <h1>Schéma Pluriannuel {{ if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) }}{{ $dateStart }}-{{ $dateEnd }}{{ end }}</h1>
+  <h1>Schéma Pluriannuel {{ if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) }}{{ if and $dateStart $dateEnd }}{{ $dateStart }}-{{ $dateEnd }}{{ end }}{{ end }}</h1>
   {{ if fileExists "content/schema.md" }}
     {{- if ge (len (.GetPage "schema").Content) 5 -}}
       {{ with .GetPage "schema" }}{{ .Content }}{{- end -}}
@@ -206,8 +208,8 @@ Schéma Pluriannuel
     {{- end -}}
     <p>Agenda planifié des interventions
       Compte tenu des informations recueillies lors de l’élaboration de ce schéma, la complexité des sites et
-      applications, leur classement par ordre de priorité et leur évaluation en termes de faisabilité, les opérations
-      de mise en conformité vont s’étaler sur les années <strong>{{ $dateStart }}</strong> à <strong>{{ $dateEnd }}</strong> et au-delà.</p>
+      applications, leur classement par ordre de priorité et leur évaluation en termes de faisabilité{{ if and $dateStart $dateEnd}}, les opérations
+      de mise en conformité vont s’étaler sur les années <strong>{{ $dateStart }}</strong> à <strong>{{ $dateEnd }}</strong> et au-delà{{ end }}.</p>
     <h2 id="plans-annuels">Plans annuels </h2>
     <p>Ce schéma pluriannuel est accompagné de plans annuels d’actions qui décrivent en détail les opérations mises en
       œuvre pour prendre en charge l’ensemble des besoins en termes d’accessibilité numérique de
@@ -228,18 +230,15 @@ Schéma Pluriannuel
       {{- end -}}
     {{- end -}}
     </ul>
-  {{- else -}}
-    <p>Aucun plan d’actions actuellement.</p>
   {{- end -}}
   {{- if not ($.Scratch.Get "isAction") -}}
     <p>Aucun plan d’actions actuellement pour ce schéma.</p>
   {{- end -}}
 
-
-  {{- with (where .Site.RegularPages "Section" "audits") -}}
+  {{- with (where .Site.Pages "Section" "audits") -}}
   <h2 id="annexe1">Annexe 1 : périmètre technique public
   </h2>
-  <p>La liste ci-dessous présente les sites prioritaires faisant partie du schéma pluriannuel {{ with $organisation }}de <strong>{{ . }}</strong> {{- end -}}pouvant être portés à la connaissance du public.</p>
+  <p>La liste ci-dessous présente les sites prioritaires faisant partie du schéma pluriannuel {{ with $organisation }}de <strong>{{ . }}</strong> {{ end }}pouvant être portés à la connaissance du public.</p>
   <table>
     <thead>
         <tr>
@@ -250,11 +249,13 @@ Schéma Pluriannuel
     </thead>
     <tbody>
     {{- range . }}
+    {{- if and (in (path.Base .Path) "index.md") (not (in "/audits/_index.md" .Path)) -}}
       <tr>
         <td>{{ .Title }}</td>
         <td class="text-center">Site web</td>
         <td class="text-center">{{ with (partialCached "render/context.html" (dict "context" . "project" (partialCached "render/projectpath" . .)) (partialCached "render/projectpath" . .)).website }}{{ . }}{{ else }}NA{{- end -}}</td>
       </tr>
+    {{- end -}}
     {{ end -}}
     </tbody>
   </table>

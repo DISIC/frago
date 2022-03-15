@@ -54,7 +54,7 @@
         {{ if (gt (len ($context.Scratch.Get "auditpath-all-lastfile")) 0) }}
           {{ $context.Scratch.Set "auditpath-lastfile" (printf "%s" (string (delimit (last 1 (sort ($context.Scratch.Get "auditpath-all-lastfile"))) ""))) }}
         {{ end }}
-        {{ if ($context.Scratch.Get "auditname-all-lastfile") }}
+        {{ if (gt ($context.Scratch.Get "auditname-all-lastfile") 0) }}
           {{ $context.Scratch.Set "auditname-lastfile" (string (printf "%s" (delimit (last 1 (sort ($context.Scratch.Get "auditname-all-lastfile"))) ""))) }}
         {{ end }}
       {{ else }}

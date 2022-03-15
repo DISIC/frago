@@ -73,9 +73,10 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
             {{- $.Scratch.Add "allAuditsDates" (slice .) -}}
           {{- end }}
         {{- end }}
-        {{ $.Scratch.SetInMap "allAudits" $title (($.Scratch.Get "allAuditsDates")) }}
+        {{ if ($.Scratch.Get "allAuditsDates") }}{{ $.Scratch.SetInMap "allAudits" $title (($.Scratch.Get "allAuditsDates")) }}{{ end }}
       {{- end }}
       {{- with $.Scratch.Get "allAudits" -}}
+      {{ $.Scratch.Get "allAudits" }}
       <h2>Audits</h2>
       <table>
         <thead>

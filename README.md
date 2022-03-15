@@ -7,7 +7,7 @@
 <p align="center">
   <img width="243" height="272" src="/images/frago.png">
 </p>
-rm -rf $(find public | grep -e "accessibility" -e "quality.*" -e "performance.*" -e "lighthouse"  -e "declaration.*" -e "audits")
+
 ## Présentation
 
 Le thème Frago a pour objectif d’aider à la génération de synthèses pour l’amélioration des démarches en ligne du gouvernement français..
