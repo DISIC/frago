@@ -67,13 +67,13 @@
     {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
     <h1>Audit Accessibilité{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
 
-    {{/* START Display page content if exists */}}
-    {{- if gt (len .context.Content) 10 -}}
+    {{/* START Display page note if exists */}}
+    {{- with .context.Params.note -}}
     <div class="note">
-    {{- partial "elements/content.html" .context.Content -}}
+      {{ . | markdownify }}
     </div>
     {{- end -}}
-    {{/* END Display page content if exists */}}
+    {{/* END Display page note if exists */}}
 
     {{/* START Test if audit file exists */}}
     {{- if and ($.context.Scratch.Get "auditfile-csv") (ne ($.context.Scratch.Get "scores").isempty 0) -}}
@@ -87,24 +87,41 @@
         {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) slice -}}
         {{- range $id, $criterium := index $.context.Site.Data.rgaa.tests $auditname -}}
           {{- range $key, $value := ($.context.Scratch.Get "scores").criteria.total -}}
-            {{- if eq $criterium $value -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $value }}{{- end -}}
+            {{- if eq $criterium $key -}}{{ $.context.Scratch.Add (printf "criterecontrol%s" (string $auditname)) $key }}{{- end -}}
           {{- end -}}
         {{- end -}}
         {{- $.context.Scratch.Set (printf "criterecontrol%s" (string $auditname)) ((($.context.Scratch.Get (printf "criterecontrol%s" (string $auditname))) | symdiff (index $.context.Site.Data.rgaa.tests $auditname))) -}}
       {{- end -}}
 
       <script>
-        console.group("Critères par type: ");
-        console.log("Critères C [{{ len ($.context.Scratch.Get "scores").criteria.conforme }}]:" , "{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}")
-        console.log("Critères NC [{{ len ($.context.Scratch.Get "scores").criteria.nonconforme }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}")
-        console.log("Critères NA [{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}")
-        console.log("Critères NT [{{ len ($.context.Scratch.Get "scores").criteria.nonteste }}]:","{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste }}{{ $key }}, {{ end }}")
+        let Background = [
+          "padding: 2px",
+          "font-weight:bold",
+          "background: #222",
+          "color: #fff"
+        ].join(" ;");
+        let BackgroundRed = [
+          "padding: 2px",
+          "font-weight:bold",
+          "background:firebrick",
+          "color: #fff"
+        ].join(" ;");
+        let BackgroundWhite = [
+          "padding: 4px 2px",
+          "background:#fff",
+          "color: #000"
+        ].join(" ;");
+        console.group('%cCritères par type: ', 'font-size: 12px;');
+        console.log('%cCritères C %c %c{{ len ($.context.Scratch.Get "scores").criteria.conforme      }}%c \n{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.conforme      }}{{ $key }}, {{ end }}',Background,BackgroundWhite,BackgroundRed,BackgroundWhite)
+        console.log('%cCritères NC%c %c{{ len ($.context.Scratch.Get "scores").criteria.nonconforme   }}%c \n{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonconforme   }}{{ $key }}, {{ end }}',Background,BackgroundWhite,BackgroundRed,BackgroundWhite)
+        console.log('%cCritères NA%c %c{{ len ($.context.Scratch.Get "scores").criteria.nonapplicable }}%c \n{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonapplicable }}{{ $key }}, {{ end }}',Background,BackgroundWhite,BackgroundRed,BackgroundWhite)
+        console.log('%cCritères NT%c %c{{ len ($.context.Scratch.Get "scores").criteria.nonteste      }}%c \n{{ range $key, $value := ($.context.Scratch.Get "scores").criteria.nonteste      }}{{ $key }}, {{ end }}',Background,BackgroundWhite,BackgroundRed,BackgroundWhite)
         console.groupEnd();
-        console.group("Critères non testés: ");
-        console.log("Critères 25 :", "{{ delimit ($.context.Scratch.Get "criterecontrol25") ", " }}")
-        console.log("Critères 50 :", "{{ delimit ($.context.Scratch.Get "criterecontrol50") ", " }}")
-        console.log("Critères 81 :", "{{ delimit ($.context.Scratch.Get "criterecontrol81") ", " }}")
-        console.log("Critères 106 :","{{ delimit ($.context.Scratch.Get "criterecontrol106") ", " }}")
+        console.group('%cCritères non testés: ', 'font-size: 12px;');
+        console.log('%cCritères  25%c {{ with ($.context.Scratch.Get "criterecontrol25")  }}{{ delimit ($.context.Scratch.Get "criterecontrol25") ", "  }}{{ else }}aucun{{ end }}',Background,BackgroundWhite)
+        console.log('%cCritères  50%c {{ with ($.context.Scratch.Get "criterecontrol50")  }}{{ delimit ($.context.Scratch.Get "criterecontrol50") ", "  }}{{ else }}aucun{{ end }}',Background,BackgroundWhite)
+        console.log('%cCritères  81%c {{ with ($.context.Scratch.Get "criterecontrol81")  }}{{ delimit ($.context.Scratch.Get "criterecontrol81") ", "  }}{{ else }}aucun{{ end }}',Background,BackgroundWhite)
+        console.log('%cCritères 106%c {{ with ($.context.Scratch.Get "criterecontrol106") }}{{ delimit ($.context.Scratch.Get "criterecontrol106") ", " }}{{ else }}aucun{{ end }}',Background,BackgroundWhite)
         console.groupEnd();
       </script>
 
@@ -164,6 +181,15 @@
     </div>
     {{- end -}}
     {{/* END If several page tested */}}
+
+    {{/* START Display page content if exists */}}
+    {{- if gt (len .context.Content) 10 -}}
+    <h2>Notes correctives</h2>
+    <div>
+    {{- partial "elements/content.html" .context.Content -}}
+    </div>
+    {{- end -}}
+    {{/* END Display page content if exists */}}
 
     <h2>Par ordre des critères du référentiel RGAA</h2>
 

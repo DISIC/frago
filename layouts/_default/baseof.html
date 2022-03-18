@@ -97,7 +97,7 @@
   </div>
   <header role="banner" aria-label="Bannière">
     {{/*- Debug TPL -*/}}
-    {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
+    {{- if eq (getenv "HUGO_ENV") "dev" -}}
       <div hidden>
         {{ .Params | jsonify }}<hr>
         {{ .Site.Title }} - {{ .Site.Params }}<hr>
@@ -136,7 +136,7 @@
   </main>
   {{- partialCached "footer" . -}}
   {{ block "script" . }}{{- end -}}
-  {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
+  {{- if eq (getenv "HUGO_ENV") "dev" -}}
   {{- partial "debug/debug.html" (dict "context" .) -}}
   {{- end -}}
 </body>

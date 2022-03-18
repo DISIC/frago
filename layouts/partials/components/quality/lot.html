@@ -5,21 +5,25 @@
 
 {{- $.context.Scratch.Set "delivery" slice -}}
 {{- $.context.Scratch.Set "pagesdelivery" slice -}}
-{{- $.context.Scratch.Set "pagesdeliverynot" slice -}}
+{{- $.context.Scratch.Set "errorsdeliverynot" slice -}}
 {{- range ($.context.Scratch.Get "lastfile-quality") -}}
 {{- range $idpage, $s := .pages -}}
   {{- $.context.Scratch.Add "pageslistlot" .name -}}
+  {{- $name := .name -}}
   {{- $page := dict "pagename" .name -}}
+  {{- $.context.Scratch.Set "errorsbypages" slice -}}
   {{- range .blocks -}}
   {{- $block := dict "blockname" (printf "%s-%s" .name (string $idpage)) -}}
   {{- range $id, $s:= .errors -}}
     {{- $s := merge $s $block -}}
     {{- $s := merge $s $page -}}
     {{- with .delivery -}}
-    {{- $.context.Scratch.Add "delivery" . -}}
-    {{- $.context.Scratch.Add "pagesdelivery" $s -}}
-    {{ else }}
-    {{- $.context.Scratch.Add "pagesdeliverynot" $s -}}
+      {{- $.context.Scratch.Add "delivery" . -}}
+      {{- $.context.Scratch.Add "pagesdelivery" $s -}}
+    {{- else -}}
+      {{- $.context.Scratch.Add "errorsbypages" $s -}}
+      {{- $.context.Scratch.Add "errorsdeliverynot" $s -}}
+      {{- $.context.Scratch.SetInMap "pagesdeliverynot" (string $name) ($.context.Scratch.Get "errorsbypages") -}}
     {{- end -}}
   {{- end -}}
   {{- end -}}
@@ -27,13 +31,12 @@
 {{- end -}}
 
 
-
 {{- if $.context.Scratch.Get "pagesdelivery" -}}
 <h3>Erreurs par lots de livraison <small>- <span class="counter">{{ len ($.context.Scratch.Get "pagesdelivery") }}</span> erreurs sélectionnées</small></h3>
 {{- range sort (uniq ($.context.Scratch.Get "delivery")) -}}
   {{- $delivery := . -}}
   <table class="text-left">
-    <caption>{{ if . }}{{ . | humanize }}{{ end }}</caption>
+    <caption>{{ if . }}{{ . | humanize }}{{ end }} :: corrigées {{ len (where (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) "checked" true) }}/{{ len (where ($.context.Scratch.Get "pagesdelivery") "delivery" $delivery) }}</caption>
     <thead>
       <tr>
         <th>Intitulé</th>
@@ -80,7 +83,6 @@
         {{- $.context.Scratch.Set "blockname" .blockname -}}
       {{- end -}}
     {{- end -}}
-
   {{- end -}}
   </tbody>
   </table>
@@ -88,16 +90,19 @@
 {{- end -}}
   {{- if $.context.Scratch.Get "pagesdeliverynot" -}}
   <script>
-    function critere(titre, description, criterion) {
-      this.titre = titre;
-      this.description = description;
-      this.criterion = criterion;
-    }
-    var family = {};
-    {{ range $id, $value := $.context.Scratch.Get "pagesdeliverynot" }}
-    family.{{ .name | replaceRE "'" "-" | replaceRE " " "" | replaceRE "[èéêë]" "e" | replaceRE "[àáâãäå]" "a" | replaceRE "[ìíîï]" "i" | replaceRE "[òóôõö]" "o" | replaceRE "[ùúûü]" "u" | replaceRE "[æ]" "ae" | replaceRE "[/œ]" "oe" | anchorize | replaceRE "-" "" | safeJS }} = new critere("{{ .name | safeJS }}","{{ .description | safeJS }}","{{ .criterion | safeJS }}");
+    console.group('%cErreurs non attribuées à un lot de correction{{ with ($.context.Scratch.Get "errorsdeliverynot") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
+    {{- range $key, $value := $.context.Scratch.Get "pagesdeliverynot" -}}
+    console.group('%cPages {{ $key }} : ', 'font-size: 10px;');
+      {{- range $id, $value := . -}}
+      console.log(
+          '%c{{ .name | safeJS }} {{ with .criterion }}%c{{ . | safeJS }}{{ end }}',
+          'color: black',
+          {{- with .criterion }}'padding: 2px; font-weight:bold; background: #222; color: #fff'{{ end }}
+          );
+      {{- end -}}
+    console.groupEnd();
     {{- end -}}
-    console.table(family);
+    console.groupEnd();
   </script>
   {{- end -}}
 {{- end -}}

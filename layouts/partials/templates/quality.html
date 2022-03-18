@@ -22,7 +22,6 @@
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
 {{- $.context.Scratch.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
 {{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
-
 {{ if in "/audits/_index.md" $context.Path }}
 
   <section class="wrapper">
@@ -30,15 +29,16 @@
   </section>
 
 {{- else -}}
-
   <article class="wrapper narrow audit">
   {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
   <h1>Audit Qualité {{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
-  {{- if gt (len .context.Content) 10 -}}
-  <div class="note">
-  {{- partial "elements/content.html" .context.Content -}}
-  </div>
-  {{- end -}}
+  {{/* START Display page note if exists */}}
+    {{- with .context.Params.note -}}
+    <div class="note">
+      {{ . | markdownify }}
+    </div>
+    {{- end -}}
+  {{/* END Display page note if exists */}}
   {{- if ne (index $lastfile "auditfile-path") "/false" -}}
   {{- $.context.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
   {{- $.context.Scratch.Set "auditfile-name" (index $lastfile "auditfile-name") -}}
@@ -46,8 +46,17 @@
   {{/* Condition about structure level */}}
   {{- $.context.Scratch.Set "pathimage" (replace (printf "./static/images/%s/quality/%s" $project ($.context.Scratch.Get "auditfile-name")) "//" "/")}}
   {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
-  {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
+    {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
   {{- end -}}
+
+  {{/* START Display page content if exists */}}
+    {{- if gt (len .context.Content) 10 -}}
+    <h2>Notes correctives</h2>
+    <div>
+    {{- partial "elements/content.html" .context.Content -}}
+    </div>
+    {{- end -}}
+  {{/* END Display page content if exists */}}
 
   <h2 class="page-break">Erreurs à corriger</h2>
   {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
@@ -77,37 +86,90 @@
     {{- end -}}
   {{- end -}}
 
-  {{/* Create a anchors menu */}}
+  {{/* START Create a anchors menu */}}
+  {{- with ($.context.Scratch.Get "auditfile") -}}
   <div class="tableofcontents page-break">
   <h2>Accéder aux pages auditées</h2>
     <ul>
     {{- range ($.context.Scratch.Get "auditfile") -}}
-      {{- range .pages -}}
+      {{/* Range first level */}}
+      {{- range $idpage, $s := .pages -}}
         <li><a href="#{{ .name | urlize }}">{{ .name }}</a></li>
+        {{- $.context.Scratch.Set "countererrorspage" 0 -}}
+        {{/* Range second level */}}
+        {{- range $idblock, $b := .blocks -}}
+          {{/* Range third level and count errors */}}
+          {{- if .errors -}}
+          {{- range $s:= .errors -}}
+            {{- $name := .name -}}
+            {{- $.context.Scratch.Add "countererrorspage" 1 -}}
+            {{- $.context.Scratch.SetInMap "countererrorspagelist" (string $idpage) ($.context.Scratch.Get "countererrorspage") -}}
+            {{ $checked := .checked }}
+            {{- with .criterion -}}
+              {{- if not (or (in . "Pi") (in . "OP") (in . "ER")) -}}
+              {{- range (split (replace . " " "") ",") -}}
+                {{- $key := string . -}}
+                {{- $key := cond (lt (index (split $key ".") 0) 10) (printf "0%s.%s" (index (split $key ".") 0) (index (split $key ".") 1)) (string $key) -}}
+                {{- $key := cond (lt (index (split $key ".") 1) 10) (printf "%s.0%s" (index (split $key ".") 0) (index (split $key ".") 1)) (string $key) -}}
+                {{- $.context.Scratch.Add (printf "k-%s" $key) (slice $name) -}}
+                {{- $.context.Scratch.SetInMap "countercriterionlist" (string $key) ($.context.Scratch.Get (printf "k-%s" $key)) -}}
+                {{- if $checked -}}
+                  {{- $.context.Scratch.Add (printf "%s-checked" (string .)) (slice $name) -}}
+                  {{- $.context.Scratch.SetInMap "countercheckedlist" (string .) ($.context.Scratch.Get (printf "%s-checked" (string .))) -}}
+                {{- end -}}
+              {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+          {{- end -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
     </ul>
   </div>
+  {{- end -}}
+  {{/* END Create a anchors menu */}}
+  <script>
+    let Background = [
+      "padding: 2px",
+      "font-weight:bold",
+      "background: #222",
+      "color: #fff"
+    ].join(" ;");
+    let BackgroundWhite = [
+      "padding: 2px 2px",
+      "background:#fff",
+      "color: #000"
+    ].join(" ;");
+    console.group('%cErreurs par critère listé{{ with ($.context.Scratch.Get "countercriterionlist") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
+    {{- range $key, $criterion := $.context.Scratch.Get "countercriterionlist" }}
+      console.log(
+          {{- $key := printf "%s.%s" (string (float (index (split $key ".") 0))) (string (float (index (split $key ".") 1))) -}}
+          {{- $lenghtcriterion := len . }}
+          '%c{{- if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
+          %c corrigées pour %c{{ $key }}%c qui a le statut %c
+          {{- index (index ($.context.Scratch.Get "scores") "criteria").all $key -}}
+          %c\n-> Erreurs :
+          {{- range $id, $value := . -}}
+          {{ with ($.context.Scratch.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end }} {{ . }}
+          {{- if ne (add $id 1) (len ($criterion)) }} /-/ {{ end }}
+          {{- with ($.context.Scratch.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end -}}
+          {{- end }}',
+          'padding: 2px; font-weight:bold; background: {{ if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ if eq (len .) $lenghtcriterion }}green{{ else }}firebrick{{ end }}{{ else }}firebrick{{ end }}{{ end }}; color: #fff',
+          BackgroundWhite,
+          Background,
+          BackgroundWhite,
+          Background,
+          'color: black;',
+          {{ range $id, $value := . }}{{ if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ if (in (index ($.context.Scratch.Get "countercheckedlist") $key) .) }}'font-weight: bold; color: darkgreen;','color: black;',{{ end }}{{ end }}{{ end }}{{ end }}
+      );
+    {{ end }}
+    console.groupEnd();
+  </script>
 
   <h2>Liste des pages auditées</h2>
-  {{/* Range the quality file */}}
-  {{- range ($.context.Scratch.Get "auditfile") -}}
-    {{/* Range first level */}}
-    {{- range $idpage, $s := .pages -}}
-      {{- $name := .name -}}
-      {{- $.context.Scratch.Set "countererrorspage" 0 -}}
-      {{/* Range second level */}}
-      {{- range $idblock, $b := .blocks -}}
-        {{/* Range third level and count errors */}}
-        {{- if .errors -}}
-        {{- range $s:= .errors -}}
-          {{- $.context.Scratch.Add "countererrorspage" 1 -}}
-          {{- $.context.Scratch.SetInMap "countererrorspagelist" (string $idpage) ($.context.Scratch.Get "countererrorspage") -}}
-        {{- end -}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
+
+  {{/* START - List of all pages */}}
   {{- range ($.context.Scratch.Get "auditfile") -}}
     {{/* Range first level */}}
     {{- range $idpage, $s := .pages -}}
@@ -199,18 +261,20 @@
               <dd><strong>XPath :</strong> <span>{{ .path | markdownify | safeHTML }}</span></dd>
             {{- end -}}
             {{- if .criterion -}}
+            {{ range (split (replace .criterion " " "") ",") }}
               {{- $criteriafile := index (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
-              {{- $thematiques  := index (split .criterion ".") 0 -}}
-              {{- $criteria     := index (split .criterion ".") 1 -}}
+              {{- $thematiques  := index (split . ".") 0 -}}
+              {{- $criteria     := index (split . ".") 1 -}}
               {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
               {{- $s := where $criteriafile "number" "eq" (int ($thematiques)) -}}
               <dd class="details mt-1 mb-1">
                 <p class="summary">
                   {{ (replaceRE "=\"#" $glossaire ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML  }}<br>
-                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace .criterion "." "-" }}">{{ .criterion | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
+                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace . "." "-" }}">{{ . | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
                   {{/* Pourcentage potentiel de correction du RGAA : {{ index ($.context.Scratch.Get "criteriavalue") (string .criterion) */}}
                 </p>
               </dd>
+            {{- end -}}
             {{- end -}}
             {{- else if (in .criterion "Pi") -}}
               {{- $criterionpi := (index (where (index $.context.Site.Data.pidila "1.0").criteria.criterias "id" (replace .criterion "." "-")) 0) -}}
