@@ -31,8 +31,10 @@
 
 {{- else -}}
   <article class="wrapper narrow audit">
-  {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-  <h1>Audit Qualité {{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
+  {{- if $project -}}
+  <p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>
+  {{- end -}}
+  <h1>Recommandations {{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
   {{/* START Display page note if exists */}}
     {{- with .context.Params.note -}}
     <div class="note">
@@ -394,4 +396,3 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-

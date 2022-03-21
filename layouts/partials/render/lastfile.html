@@ -24,6 +24,12 @@
   {{ $datalastfile.Set "pathdata" (cond (eq "accessibility" .type) (cond (fileExists $pathrgaa) $pathrgaa ($datalastfile.Get "pathdata")) ($datalastfile.Get "pathdata")) }}
 {{ end }}
 
+{{/* In case of accessibility type - the folder name can be recommendation */}}
+{{ if (eq "quality" .type) }}
+  {{ $pathtemp := partialCached "render/filepath" (dict "context" $context "project" $project "type" "recommendation") $project "recommendation" }}
+  {{ $context.Scratch.Set "pathdata" (cond (eq "quality" .type) (cond (fileExists $pathtemp) $pathtemp ($context.Scratch.Get "pathdata")) ($context.Scratch.Get "pathdata")) }}
+{{ end }}
+
 {{/* If the file accessibility.csv exists at the root of the project */}}
 {{ if (fileExists (printf "%s.%s" ($datalastfile.Get "pathdata") $ext)) }}
   {{ $datalastfile.Set "auditpath-lastfile" (printf "%s.%s" ($datalastfile.Get "pathdata") $ext) }}

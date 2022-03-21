@@ -53,6 +53,6 @@
     )
   }}
 {{ else }}
-  {{ warnf "Maybe quality file is missing in %s" .context }}
+  {{ if ne .context.Path "_index.md" }}{{ warnf "Maybe recommendation file is missing in %s" .context.Path }}{{ end }}
 {{ end }}
 {{/* END Test if audit file not false */}}

@@ -1,7 +1,7 @@
 
 {{- define "title" -}}
   {{- $context      := . -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}Audit Qualité {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}Recommandations {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}

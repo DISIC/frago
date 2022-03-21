@@ -1,6 +1,20 @@
 {{/* return the rootpath of the audits files */}}
-{{ $rootpath := (cond (fileExists (printf "content/audits/%s/%s/" .project .type)) "content/audits" (cond (fileExists (printf "content/audits/%s/" .type)) "content/audits" "static")) }}
+{{ $project := .project }}
+{{ $data := newScratch }}
+{{ $data.Set "rootpath" "static" }}
+{{ $loop := (dict
+    "accessibility"   (slice "accessibility" "rgaa")
+    "recommendation"  (slice "quality" "recommendation" "recommendations")
+    "quality"         (slice "quality" "recommendation" "recommendations")
+    "performance"     (slice "lighthouse" "performance")
+    "lighthouse"      (slice "lighthouse" "performance")
+  )
+}}
+
+{{ range $key, $value := index $loop .type }}
+  {{ $data.Set "rootpath" (cond (fileExists (printf "content/audits/%s/%s/" $project $value)) "content/audits" (cond (fileExists (printf "content/audits/%s/" $value)) "content/audits" ($data.Get "rootpath"))) }}
+{{ end }}
 {{/* if eq (getenv "HUGO_ENV") "dev" -}}
 {{ warnf "RootPath for project %s is: %s" .project $rootpath  }}
 {{ end */}}
-{{ return $rootpath }}
+{{ return ($data.Get "rootpath") }}

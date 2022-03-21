@@ -1,5 +1,5 @@
-{{- $context := . -}}
-{{- $project :=  (partial "render/projectpath" $context $context) -}}
+{{- $context       := . -}}
+{{- $project       :=  (partial "render/projectpath" $context $context) -}}
 {{- $OutputFormats := cond (fileExists "content/audits/_index.md") ($context.GetPage "/audits/_index.md").OutputFormats (cond (fileExists "content/audits/index.md") ($context.GetPage "/audits/index.md").OutputFormats .OutputFormats) -}}
 
 {{- if and (ne $project "audits") (ne .Path "audits") -}}
@@ -11,9 +11,9 @@
     {{- $.Scratch.Set "accessibility-all-path"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-path") -}}
     {{- $.Scratch.Set "accessibility-all-name"  (index ($.Scratch.Get "accessibility-lastfile") "auditfile-all-name") -}}
 
-    {{- $accessibility := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path")  }}
-    {{- $quality       := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path") -}}
-    {{- $lighthouse    := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
+    {{- $accessibility := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
+    {{- $quality       := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality")       $project "quality") "auditfile-path") -}}
+    {{- $lighthouse    := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse")    $project "lighthouse") "auditfile-path") -}}
 
     {{/* START - Display medium compliance */}}
     {{- if and $accessibility (eq (len (split $project "/")) 1) -}}
@@ -117,9 +117,17 @@
     {{/* START - If Quality */}}
     {{- if $quality -}}
       <h3 class="m-0">
-        Qualité {{ with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "quality")) }}
-        {{- $AuditLink := cond (in $project (index . 0).Permalink) (index . 0).Permalink (printf "%saudits/%s/%s.html" $context.Site.BaseURL $project (index . 0).Format.BaseName) -}}
-        <small>- <a href="{{ $AuditLink }}" aria-label="Accéder au rapport de qualité">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport de qualité">Accéder au rapport</a></small>{{- end -}}
+        Recommandations
+        {{- with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "quality")) -}}
+          {{- $AuditLink := cond (in $project (index . 0).Permalink) (index . 0).Permalink (printf "%saudits/%s/%s.html" $context.Site.BaseURL $project (index . 0).Format.BaseName) -}}
+          <small>- <a href="{{ $AuditLink }}" aria-label="Accéder au rapport de qualité">Accéder au rapport</a></small>
+        {{- end -}}
+        {{ $pagequality        := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}
+        {{ $pagerecommendation := (printf "/content/audits/%s/recommendation.md" ($project | anchorize)) }}
+        {{ $pageauditpath      := cond (fileExists $pagerecommendation) (fileExists $pagerecommendation) (cond (fileExists $pagequality) (fileExists $pagequality) false) -}}
+        {{- if $pageauditpath -}}
+        <small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport de qualité">Accéder au rapport</a></small>
+        {{- end -}}
       </h3>
       {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
         {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
