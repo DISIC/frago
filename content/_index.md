@@ -17,4 +17,7 @@ cascade:
     - accessibilitypage
     - qualitypage
     - performancepage
+- _target:
+    path: /audits/index.md
+  type: "audits"
 ---
