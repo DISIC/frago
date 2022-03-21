@@ -6,7 +6,7 @@
 {{- $.context.Scratch.Set "scores" "" -}}
 
 
-{{ if in "/audits/_index.md" $context.Path }}
+{{ if and (in "/audits/_index.md" $context.Path) (not (partial "render/issimpleproject.html" )) }}
   <section class="wrapper">
   {{- partial "templates/projects-monitoring.html" $context $context -}}
   </section>

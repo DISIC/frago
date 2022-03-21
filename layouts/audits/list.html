@@ -29,6 +29,7 @@
 {{- $patharray  := split (path.Dir .Path) "/" -}}
 {{- $context    := . -}}
 {{- $project    := cond (eq (len (split (path.Dir $context.Path) "/")) 1) "audits" (replace (path.Dir $context.Path) "audits/" "") -}}
+
 {{- if or (and (gt (len $patharray) 1) ($project)) (eq (len (split (.RelPermalink) "/")) 2) (eq (len $patharray) 1) -}}
   {{- $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
     {{ if ne (len $alternate) 0 }}
