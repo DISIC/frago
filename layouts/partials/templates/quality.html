@@ -35,8 +35,17 @@
   {{/* START Display page note if exists */}}
     {{- with .context.Params.note -}}
     <div class="note">
+      <h2>Notes annexes au rapport d’audit</h2>
       {{ . | markdownify }}
     </div>
+    {{- end -}}
+    {{- with (partialCached "render/notepath" $context $context) -}}
+      <div class="note">
+        {{- range . -}}
+          <h2>Notes annexes au rapport d’audit</h2>
+          {{ . }}
+        {{- end -}}
+      </div>
     {{- end -}}
   {{/* END Display page note if exists */}}
   {{- if ne (index $lastfile "auditfile-path") "/false" -}}
@@ -329,7 +338,14 @@
   </article>
   {{- end -}}
   {{- else -}}
+    {{- with (partialCached "render/notepath" $context $context) -}}
+      {{- range . -}}
+        <h2>Notes annexes au rapport d’audit</h2>
+        {{ . }}
+      {{- end -}}
+    {{ else }}
     <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}quality</p>
+    {{ end }}
   {{- end -}}
 {{- end -}}
 
