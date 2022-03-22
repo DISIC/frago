@@ -182,6 +182,12 @@ hr {
 /* TYPOGRAPHY
    ----------------------------- */
 
+
+h1,
+.h1 {
+  line-height: 1;
+}
+
 /* = Link = */
 
 .anchor {

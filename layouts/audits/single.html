@@ -55,7 +55,7 @@
       </article>
     {{- else -}}
       {{- partial "templates/projects.html" $context -}}
-      {{- if (partialCached "render/notepath" . .) -}}
+      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/quality.html" $project)))) 1) -}}
         <article class="wrapper narrow">
           <h3 class="m-0">Recommandations<small>- <a href="{{ site.BaseURL | default "/" }}{{ printf "/%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small></h3>
         </article>
