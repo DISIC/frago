@@ -35,6 +35,7 @@
   {{/* START Display page note if exists */}}
     {{- with .context.Params.note -}}
     <div class="note">
+      <h2>Notes annexes au rapport d’audit</h2>
       {{ . | markdownify }}
     </div>
     {{- end -}}
@@ -55,7 +56,17 @@
     <div>
     {{- partial "elements/content.html" .context.Content -}}
     </div>
+    {{- else -}}
+      {{- with (partialCached "render/notepath" $context $context) -}}
+      <h2>Notes correctives</h2>
+      <div>
+        {{- range . -}}
+          {{ . }}
+        {{- end -}}
+      </div>
     {{- end -}}
+    {{- end -}}
+
   {{/* END Display page content if exists */}}
 
   <h2 class="page-break">Erreurs à corriger</h2>
@@ -329,7 +340,14 @@
   </article>
   {{- end -}}
   {{- else -}}
+    {{- with (partialCached "render/notepath" $context $context) -}}
+      {{- range . -}}
+        <h2>Notes annexes au rapport d’audit</h2>
+        {{ . }}
+      {{- end -}}
+    {{ else }}
     <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}quality</p>
+    {{ end }}
   {{- end -}}
 {{- end -}}
 

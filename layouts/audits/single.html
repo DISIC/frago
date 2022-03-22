@@ -1,5 +1,5 @@
 {{- define "title" -}}
-  {{- $context    := . -}}
+  {{- $context      := . -}}
   {{- $project      := partialCached "render/projectpath" . . -}}
   {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
   {{- $projectTitle := (.GetPage $projectPath).Title -}}
@@ -55,6 +55,11 @@
       </article>
     {{- else -}}
       {{- partial "templates/projects.html" $context -}}
+      {{- if (partialCached "render/notepath" . .) -}}
+        <article class="wrapper narrow">
+          <h3 class="m-0">Recommandations<small>- <a href="{{ site.BaseURL | default "/" }}{{ printf "/%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small></h3>
+        </article>
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
