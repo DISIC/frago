@@ -1,3 +1,4 @@
+{{- if (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
 {{- $patharray      := split (path.Dir .Path) "/" -}}
 {{- $context        := . -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
@@ -7,7 +8,7 @@
 {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" . "project" $project) $project) -}}
 {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path") -}}
   {{- range $key, $path := . -}}
-  {{- $file := (partialCached "render/accessibility" (dict "context" . "project" $project "auditfile" .) .) -}}
+  {{- $file := (partialCached "render/accessibility" (dict  "auditfile" .) .) -}}
   {{- $.Scratch.SetInMap "score" (string $key) (dict "score" $file.scores "context" (index ($context.Scratch.Get "context") (index $file "date"))) -}}
   {{- end -}}
 {{- end -}}
@@ -16,3 +17,4 @@
   "slug" $project
   "rgaa" ($.Scratch.Get "score")
 ) | jsonify -}}
+{{- end -}}

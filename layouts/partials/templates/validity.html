@@ -1,25 +1,23 @@
-
-
-
 {{- $context := .context -}}
 {{- $score   := .score -}}
 {{- $audit   := .audit -}}
+{{- $data         := newScratch -}}
 
-{{- $.context.Scratch.Set "criterioncounter" 0 -}}
+{{- $data.Set "criterioncounter" 0 -}}
 {{- if fileExists (printf "%s/quality" (index $audit "pathproject")) -}}
 {{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "quality") (index $audit "project")) "auditfile-path") -}}
 {{- if fileExists . -}}
 {{- range (readFile . | transform.Unmarshal) -}}
-  {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{ $block := .name }}{{- range .errors -}}{{- $.context.Scratch.Delete "criterions" -}}{{- $.context.Scratch.Set "path" 0 -}}
+  {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{ $block := .name }}{{- range .errors -}}{{- $data.Delete "criterions" -}}{{- $data.Set "path" 0 -}}
     {{- if and .criterion (not .checked) -}}
       {{- $name        := .name -}}
       {{- $description := .description -}}
       {{- $path        := .path -}}
       {{ range (split (replace .criterion " " "") ",") }}
-        {{- $.context.Scratch.Add "criterioncounter" 1 -}}
-        {{- with $path -}}{{- $.context.Scratch.Add "path" 1 -}}{{- end -}}
-        {{- $.context.Scratch.SetInMap (string .) $name (slice (dict "page" $name "name" $name "block" $block "description" $description "path" $path "pathexist" ($.context.Scratch.Get "path"))) -}}
-        {{- $.context.Scratch.SetInMap "criterion" (string .) ($.context.Scratch.Get (string .)) -}}
+        {{- $data.Add "criterioncounter" 1 -}}
+        {{- with $path -}}{{- $data.Add "path" 1 -}}{{- end -}}
+        {{- $data.SetInMap (string .) $name (slice (dict "page" $name "name" $name "block" $block "description" $description "path" $path "pathexist" ($data.Get "path"))) -}}
+        {{- $data.SetInMap "criterion" (string .) ($data.Get (string .)) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}{{- end -}}{{- end -}}
@@ -34,9 +32,9 @@
 {{- range $key, $value := (index $score "nonconforme") -}}
   {{- $key := cond (lt (index (split $key ".") 0) 10) (printf "0%s.%s" (index (split $key ".") 0) (index (split $key ".") 1)) $key -}}
   {{- $key := cond (lt (index (split $key ".") 1) 10) (printf "%s.0%s" (index (split $key ".") 0) (index (split $key ".") 1)) $key -}}
-  {{- $.context.Scratch.SetInMap "crit" $key $value -}}
+  {{- $data.SetInMap "crit" $key $value -}}
 {{- end -}}
-{{ range $key, $value :=  ($.context.Scratch.Get "crit") }}
+{{ range $key, $value :=  ($data.Get "crit") }}
   {{- $thematiques := float (index (split $key ".") 0) -}}
   {{- $criteria    := float (index (split $key ".") 1) -}}
   <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br/>
@@ -46,7 +44,7 @@
   <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em>
   </br>
       {{- end -}}
-      {{- with ($.context.Scratch.Get "criterion") -}}
+      {{- with ($data.Get "criterion") -}}
       {{ with (index . (printf "%v.%v" $thematiques $criteria)) }}
           <table>
             {{ range first 1 (index (sort .) 0) }}

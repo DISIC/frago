@@ -1,31 +1,32 @@
 {{/* Var */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := .context -}}
+{{- $data         := newScratch -}}
 {{- $project :=  (partialCached "render/projectpath" .context .context) -}}
 {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
 {{- $projectTitle := ($context.GetPage $projectPath).Title -}}
-{{- $.context.Scratch.Set "context"  . -}}
-{{- $.context.Scratch.Set "pathimage" "" -}}
+{{- $data.Set "context"  . -}}
+{{- $data.Set "pathimage" "" -}}
 
 {{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
 
-{{- $.context.Scratch.Set "guidelinename" "rgaa" -}}
-{{- $.context.Scratch.Set "guidelineversion" "4.1" -}}
+{{- $data.Set "guidelinename" "rgaa" -}}
+{{- $data.Set "guidelineversion" "4.1" -}}
 {{- with ($.context.GetPage (printf "/content/%saccessibility.md" .Dir)) -}}
 {{- with .Params.accessibility.guidelines -}}
   {{- $guideline := (replace (. | urlize) "-" "") -}}
-  {{- $.context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-  {{- $.context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+  {{- $data.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+  {{- $data.Set "guidelineversion" (replace $guideline ($data.Get "guidelinename") "") -}}
 {{- end -}}
 {{- end -}}
 
 {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
-{{- $.context.Scratch.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
-{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "context" $context "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv") ) -}}
+{{- $data.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
+{{- $data.Set "scores" (partialCached "render/accessibility" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
 {{ if in "/audits/_index.md" $context.Path }}
 
   <section class="wrapper">
-  {{- partial "templates/projects-monitoring.html" $context $context -}}
+  {{- partialCached "templates/projects-monitoring.html" $context $context -}}
   </section>
 
 {{- else -}}
@@ -41,11 +42,11 @@
     {{- end -}}
   {{/* END Display page note if exists */}}
   {{- if ne (index $lastfile "auditfile-path") "/false" -}}
-  {{- $.context.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
-  {{- $.context.Scratch.Set "auditfile-name" (index $lastfile "auditfile-name") -}}
+  {{- $data.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
+  {{- $data.Set "auditfile-name" (index $lastfile "auditfile-name") -}}
 
   {{/* Condition about structure level */}}
-  {{- $.context.Scratch.Set "pathimage" (replace (printf "./static/images/%s/quality/%s" $project ($.context.Scratch.Get "auditfile-name")) "//" "/")}}
+  {{- $data.Set "pathimage" (replace (printf "./static/images/%s/quality/%s" $project ($data.Get "auditfile-name")) "//" "/")}}
   {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
     {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
   {{- end -}}
@@ -73,22 +74,22 @@
   {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
   {{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
-  {{- $cScores := ($.context.Scratch.Get "scores").scores.criteria.conforme -}}
-  {{- $ncScores := ($.context.Scratch.Get "scores").scores.criteria.nonconforme -}}
+  {{- $cScores := ($data.Get "scores").scores.criteria.conforme -}}
+  {{- $ncScores := ($data.Get "scores").scores.criteria.nonconforme -}}
   {{- $percent := 0 }}
   {{- if $cScores -}}
     {{- $percent = (div 100 (add (float $cScores) (float $ncScores))) | lang.NumFmt 10 -}}
   {{- end -}}
-  {{- range ($.context.Scratch.Get "auditfile") -}}
+  {{- range ($data.Get "auditfile") -}}
     {{- range $idpage, $s := .pages -}}
       {{- range $idblock, $b := .blocks -}}
         {{- if .errors -}}
           {{- range $s:= .errors -}}
             {{- if not (or (in .criterion "Pi") (in .criterion "OP") (in .criterion "ER")) -}}
               {{- with .criterion -}}
-              {{- $.context.Scratch.Add (printf "criterion-%s" .) 1 -}}
-              {{- $.context.Scratch.SetInMap "criterianumber" (string .) ($.context.Scratch.Get (printf "criterion-%s" .)) -}}
-              {{- $.context.Scratch.SetInMap "criteriavalue" (string .) (math.Round (div (float $percent) (float ($.context.Scratch.Get (printf "criterion-%s" .))))) -}}
+              {{- $data.Add (printf "criterion-%s" .) 1 -}}
+              {{- $data.SetInMap "criterianumber" (string .) ($data.Get (printf "criterion-%s" .)) -}}
+              {{- $data.SetInMap "criteriavalue" (string .) (math.Round (div (float $percent) (float ($data.Get (printf "criterion-%s" .))))) -}}
               {{- end -}}
             {{- end -}}
           {{- end -}}
@@ -98,23 +99,23 @@
   {{- end -}}
 
   {{/* START Create a anchors menu */}}
-  {{- with ($.context.Scratch.Get "auditfile") -}}
+  {{- with ($data.Get "auditfile") -}}
   <div class="tableofcontents page-break">
   <h2>Accéder aux pages auditées</h2>
     <ul>
-    {{- range ($.context.Scratch.Get "auditfile") -}}
+    {{- range ($data.Get "auditfile") -}}
       {{/* Range first level */}}
       {{- range $idpage, $s := .pages -}}
         <li><a href="#{{ .name | urlize }}">{{ .name }}</a></li>
-        {{- $.context.Scratch.Set "countererrorspage" 0 -}}
+        {{- $data.Set "countererrorspage" 0 -}}
         {{/* Range second level */}}
         {{- range $idblock, $b := .blocks -}}
           {{/* Range third level and count errors */}}
           {{- if .errors -}}
           {{- range $s:= .errors -}}
             {{- $name := .name -}}
-            {{- $.context.Scratch.Add "countererrorspage" 1 -}}
-            {{- $.context.Scratch.SetInMap "countererrorspagelist" (string $idpage) ($.context.Scratch.Get "countererrorspage") -}}
+            {{- $data.Add "countererrorspage" 1 -}}
+            {{- $data.SetInMap "countererrorspagelist" (string $idpage) ($data.Get "countererrorspage") -}}
             {{ $checked := .checked }}
             {{- with .criterion -}}
               {{- if not (or (in . "Pi") (in . "OP") (in . "ER")) -}}
@@ -122,11 +123,11 @@
                 {{- $key := string . -}}
                 {{- $key := cond (lt (index (split $key ".") 0) 10) (printf "0%s.%s" (index (split $key ".") 0) (index (split $key ".") 1)) (string $key) -}}
                 {{- $key := cond (lt (index (split $key ".") 1) 10) (printf "%s.0%s" (index (split $key ".") 0) (index (split $key ".") 1)) (string $key) -}}
-                {{- $.context.Scratch.Add (printf "k-%s" $key) (slice $name) -}}
-                {{- $.context.Scratch.SetInMap "countercriterionlist" (string $key) ($.context.Scratch.Get (printf "k-%s" $key)) -}}
+                {{- $data.Add (printf "k-%s" $key) (slice $name) -}}
+                {{- $data.SetInMap "countercriterionlist" (string $key) ($data.Get (printf "k-%s" $key)) -}}
                 {{- if $checked -}}
-                  {{- $.context.Scratch.Add (printf "%s-checked" (string .)) (slice $name) -}}
-                  {{- $.context.Scratch.SetInMap "countercheckedlist" (string .) ($.context.Scratch.Get (printf "%s-checked" (string .))) -}}
+                  {{- $data.Add (printf "%s-checked" (string .)) (slice $name) -}}
+                  {{- $data.SetInMap "countercheckedlist" (string .) ($data.Get (printf "%s-checked" (string .))) -}}
                 {{- end -}}
               {{- end -}}
               {{- end -}}
@@ -152,27 +153,27 @@
       "background:#fff",
       "color: #000"
     ].join(" ;");
-    console.group('%cErreurs par critère listé{{ with ($.context.Scratch.Get "countercriterionlist") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
-    {{- range $key, $criterion := $.context.Scratch.Get "countercriterionlist" }}
+    console.group('%cErreurs par critère listé{{ with ($data.Get "countercriterionlist") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
+    {{- range $key, $criterion := $data.Get "countercriterionlist" }}
       console.log(
           {{- $key := printf "%s.%s" (string (float (index (split $key ".") 0))) (string (float (index (split $key ".") 1))) -}}
           {{- $lenghtcriterion := len . }}
-          '%c{{- if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
+          '%c{{- if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
           %c corrigées pour %c{{ $key }}%c qui a le statut %c
-          {{- index (index ($.context.Scratch.Get "scores") "criteria").all $key -}}
+          {{- index (index ($data.Get "scores") "criteria").all $key -}}
           %c\n-> Erreurs :
           {{- range $id, $value := . -}}
-          {{ with ($.context.Scratch.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end }} {{ . }}
+          {{ with ($data.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end }} {{ . }}
           {{- if ne (add $id 1) (len ($criterion)) }} /-/ {{ end }}
-          {{- with ($.context.Scratch.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end -}}
+          {{- with ($data.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end -}}
           {{- end }}',
-          'padding: 2px; font-weight:bold; background: {{ if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ if eq (len .) $lenghtcriterion }}green{{ else }}firebrick{{ end }}{{ else }}firebrick{{ end }}{{ end }}; color: #fff',
+          'padding: 2px; font-weight:bold; background: {{ if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ if eq (len .) $lenghtcriterion }}green{{ else }}firebrick{{ end }}{{ else }}firebrick{{ end }}{{ end }}; color: #fff',
           BackgroundWhite,
           Background,
           BackgroundWhite,
           Background,
           'color: black;',
-          {{ range $id, $value := . }}{{ if ($.context.Scratch.Get "countercheckedlist") }}{{ if (index ($.context.Scratch.Get "countercheckedlist") $key) }}{{ if (in (index ($.context.Scratch.Get "countercheckedlist") $key) .) }}'font-weight: bold; color: darkgreen;','color: black;',{{ end }}{{ end }}{{ end }}{{ end }}
+          {{ range $id, $value := . }}{{ if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ if (in (index ($data.Get "countercheckedlist") $key) .) }}'font-weight: bold; color: darkgreen;','color: black;',{{ end }}{{ end }}{{ end }}{{ end }}
       );
     {{ end }}
     console.groupEnd();
@@ -181,48 +182,48 @@
   <h2>Liste des pages auditées</h2>
 
   {{/* START - List of all pages */}}
-  {{- range ($.context.Scratch.Get "auditfile") -}}
+  {{- range ($data.Get "auditfile") -}}
     {{/* Range first level */}}
     {{- range $idpage, $s := .pages -}}
       {{- $name := .name -}}
       {{/* Range second level */}}
-      <h3 id="{{ .name | urlize }}"><span class="small-caps">{{ $name }}</span> <small>- <span class="counter">{{ index ($.context.Scratch.Get "countererrorspagelist") (string $idpage) }}</span> erreurs recensées sur cette page</small></h3>
+      <h3 id="{{ .name | urlize }}"><span class="small-caps">{{ $name }}</span> <small>- <span class="counter">{{ index ($data.Get "countererrorspagelist") (string $idpage) }}</span> erreurs recensées sur cette page</small></h3>
       {{- range $idblock, $b := .blocks -}}
-        {{- $.context.Scratch.Set "countererrorsblock" 0 -}}
+        {{- $data.Set "countererrorsblock" 0 -}}
         {{/* Range third level and count errors */}}
         {{- if .errors -}}
         {{- range $s:= .errors -}}
-          {{- $.context.Scratch.Add "countererrorsblock" 1 -}}
-          {{- $.context.Scratch.SetInMap "countererrorsblocklist" (string $idblock) ($.context.Scratch.Get "countererrorsblock") -}}
+          {{- $data.Add "countererrorsblock" 1 -}}
+          {{- $data.SetInMap "countererrorsblocklist" (string $idblock) ($data.Get "countererrorsblock") -}}
         {{- end -}}
         {{- end -}}
         {{- if .url -}}<p>URL : <a href="{{ .url }}">{{ .url }}</a></p>{{- end -}}
-        {{- $.context.Scratch.Set "fileexist" false -}}
-        {{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}
-          {{ range (readDir ($.context.Scratch.Get "pathimage")) }}{{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}{{- $.context.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
+        {{- $data.Set "fileexist" false -}}
+        {{- if (fileExists ($data.Get "pathimage")) -}}
+          {{ range (readDir ($data.Get "pathimage")) }}{{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
         {{- end -}}
-        {{- if $.context.Scratch.Get "fileexist" -}}
+        {{- if $data.Get "fileexist" -}}
         <div class="benchmark grid grid-center lightbox-{{ $idpage }}">
-          {{ $.context.Scratch.Set "isAfter" 0 }}
-          {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if eq (replace (.Name) ".png" "") ((replace $name ".png" "-after.png")  | urlize) -}}{{ $.context.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
-          {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
+          {{ $data.Set "isAfter" 0 }}
+          {{- range (readDir ($data.Get "pathimage")) -}}{{- if eq (replace (.Name) ".png" "") ((replace $name ".png" "-after.png")  | urlize) -}}{{ $data.Set "isAfter" 1 }}{{- end -}}{{- end -}}
+          {{- range (readDir ($data.Get "pathimage")) -}}
             {{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}
             <div class="flex flex-column">
               <figure class="flex flex-max" id="{{ .Name }}">
-                <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
-                  <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
+                <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
+                  <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
                 </a>
               </figure>
-              <div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div>
+              <div class="benchmark-name">{{ if eq ($data.Get "isAfter") 1 }}Actuel -{{ end }} {{ $name }}</div>
             </div>
             {{- end -}}
           {{- end -}}
-          {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
+          {{- range (readDir ($data.Get "pathimage")) -}}
             {{- if eq (.Name) ((printf "%s-after.png" $name)  | urlize) -}}
             <div class="flex flex-column">
               <figure class="flex flex-max" id="{{ .Name }}">
-                <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
-                  <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
+                <a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified">
+                  <img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center">
                 </a>
               </figure>
               <div class="benchmark-name">Après - {{ $name }}</div>
@@ -231,33 +232,33 @@
           {{- end -}}
         </div>
         {{- end -}}
-      {{- $.context.Scratch.Set "paths" slice -}}
+      {{- $data.Set "paths" slice -}}
       {{/* Range second level */}}
 
-        {{- $.context.Scratch.Set "index" slice -}}
-        <h4>{{ $b.name }} <small>- <span class="counter">{{ index ($.context.Scratch.Get "countererrorsblocklist") (string $idblock) }}</span> erreurs recensées sur ce bloc</small></h4>
+        {{- $data.Set "index" slice -}}
+        <h4>{{ $b.name }} <small>- <span class="counter">{{ index ($data.Get "countererrorsblocklist") (string $idblock) }}</span> erreurs recensées sur ce bloc</small></h4>
         {{/* Range third level */}}
         {{- range $s := .errors -}}
           {{- $path := .name -}}
           {{- $filename := printf "%s-%s-%s.png" ($name | anchorize) ($b.name | anchorize) (.name | anchorize) -}}
           {{/* Create an array for the images slider with screen capture */}}
-          {{- $.context.Scratch.Add "index" (slice $path) -}}
+          {{- $data.Add "index" (slice $path) -}}
           <dl>
             {{- if not (or (in .criterion "Pi") (in .criterion "OP") (in .criterion "ER")) -}}
             <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
-              {{- $.context.Scratch.Set "fileexist" false -}}
-              {{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}
-                {{ range (readDir ($.context.Scratch.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $.context.Scratch.Set "fileexist" true -}}{{ end }}{{ end }}
+              {{- $data.Set "fileexist" false -}}
+              {{- if (fileExists ($data.Get "pathimage")) -}}
+                {{ range (readDir ($data.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
               {{- end -}}
               <small class="no-print">
                 {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
-                  {{- if $.context.Scratch.Get "fileexist" -}}
+                  {{- if $data.Get "fileexist" -}}
                   &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
                   {{- end -}}
                 {{- else -}}
                   &nbsp;-&nbsp;
-                  {{- if $.context.Scratch.Get "fileexist" -}}
-                  <a href="#{{ $filename }}">/{{ ($.context.Scratch.Get "auditfile-name") }}/{{ $filename }}</a>
+                  {{- if $data.Get "fileexist" -}}
+                  <a href="#{{ $filename }}">/{{ ($data.Get "auditfile-name") }}/{{ $filename }}</a>
                   {{- else -}}
                   {{ $filename }}
                   {{- end -}}
@@ -273,7 +274,7 @@
             {{- end -}}
             {{- if .criterion -}}
             {{ range (split (replace .criterion " " "") ",") }}
-              {{- $criteriafile := index (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
+              {{- $criteriafile := index (index (index $.context.Site.Data ($data.Get "guidelinename")) ($data.Get "guidelineversion")).criteria.topics -}}
               {{- $thematiques  := index (split . ".") 0 -}}
               {{- $criteria     := index (split . ".") 1 -}}
               {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
@@ -281,8 +282,8 @@
               <dd class="details mt-1 mb-1">
                 <p class="summary">
                   {{ (replaceRE "=\"#" $glossaire ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML  }}<br>
-                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $.context.Scratch.Get "guidelinename" }}/{{- $.context.Scratch.Get "guidelineversion" }}/criteres/#{{ replace . "." "-" }}">{{ . | safeHTML }}</a> du {{ $.context.Scratch.Get "guidelinename" }} {{ $.context.Scratch.Get "guidelineversion" }}.
-                  {{/* Pourcentage potentiel de correction du RGAA : {{ index ($.context.Scratch.Get "criteriavalue") (string .criterion) */}}
+                  Critère : <a href="{{ $.context.Site.BaseURL | default "/" }}{{- $data.Get "guidelinename" }}/{{- $data.Get "guidelineversion" }}/criteres/#{{ replace . "." "-" }}">{{ . | safeHTML }}</a> du {{ $data.Get "guidelinename" }} {{ $data.Get "guidelineversion" }}.
+                  {{/* Pourcentage potentiel de correction du RGAA : {{ index ($data.Get "criteriavalue") (string .criterion) */}}
                 </p>
               </dd>
             {{- end -}}
@@ -316,24 +317,24 @@
               <br>
             </div>
           {{- end -}}
-          {{- if $.context.Scratch.Get "fileexist" -}}
+          {{- if $data.Get "fileexist" -}}
             <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }}">
-              {{ $.context.Scratch.Set "isAfter" 0 }}
-              {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}{{ $.context.Scratch.Set "isAfter" 1 }}{{- end -}}{{- end -}}
-              {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
+              {{ $data.Set "isAfter" 0 }}
+              {{- range (readDir ($data.Get "pathimage")) -}}{{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}{{ $data.Set "isAfter" 1 }}{{- end -}}{{- end -}}
+              {{- range (readDir ($data.Get "pathimage")) -}}
                 {{- if in (string .Name) (string $filename) -}}
-                <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($.context.Scratch.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
+                <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">{{ if eq ($data.Get "isAfter") 1 }}Actuel - {{ end }}{{ $path }}</div></div>
                 {{- end -}}
               {{- end -}}
-              {{- range (readDir ($.context.Scratch.Get "pathimage")) -}}
+              {{- range (readDir ($data.Get "pathimage")) -}}
                 {{- if in (string .Name) (string (replace $filename ".png" "-after.png")) -}}
-                <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
+                <div class="flex flex-column"><figure class="flex flex-max" id="{{ .Name }}"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name">Après - {{ $path }}</div></div>
                 {{- end -}}
               {{- end -}}
             </div>
           {{- end -}}
         {{- end -}}{{/* Range second level */}}
-        <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }} d-none">{{/* Range errors name */}}{{- range $errorname := ($.context.Scratch.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($.context.Scratch.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($.context.Scratch.Get "pathimage")) -}}{{- range (readDir ($.context.Scratch.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
+        <div class="benchmark grid grid-4 lightbox-{{ $idpage }}-{{ $idblock }} d-none">{{/* Range errors name */}}{{- range $errorname := ($data.Get "index") -}}{{- $filename := printf "%s/%s-%s-%s.png" ($data.Get "auditfile-name") ($name | urlize) ($b.name | urlize) (. | urlize) -}}{{- if (fileExists ($data.Get "pathimage")) -}}{{- range (readDir ($data.Get "pathimage")) -}}{{- if in (string .Name) (string $filename) -}}<div class="flex flex-column"><figure class="flex flex-max"><a href="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" cfmodified="modified"><img src="{{ $.context.Site.BaseURL | default "/" }}{{ replace ($data.Get "pathimage") "./static/" "" }}/{{ .Name }}" alt="" class="align-items-center"></a></figure><div class="benchmark-name" id="{{ .Name }}">{{ $errorname }}</div></div>{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{/* Range errors name */}}</div>
     {{- end -}}{{/* Range first level */}}
     <hr class="divider-strong">
   {{- end -}}{{/* Range the quality file */}}

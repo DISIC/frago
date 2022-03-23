@@ -3,7 +3,7 @@
 {{- $performance := partialCached "render/performance.html" (dict "context" .context "auditfile" $lastfile) $lastfile -}}
 
 {{- if $performance.LCP -}}
-  <small class="text-center"><b class="h3 d-block">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b>de&nbsp;chargement</small>
+  <small class="text-center d-block"><b class="h3 d-block">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b>de&nbsp;chargement</small>
 {{- else -}}
   {{- warnf "Lighthouse file %s has to a test to be relaunched" $lastfile -}}
 {{- end -}}

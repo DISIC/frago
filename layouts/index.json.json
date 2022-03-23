@@ -1,3 +1,4 @@
+{{- if (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
 {{- $context := . -}}
 {{- $pagetype := slice "accessibility" "quality" "performance" -}}
 {{- $.Scratch.Set "folder" "" -}}
@@ -47,16 +48,16 @@
     {{- $.Scratch.Set "guideline" "" }}
       {{- if eq $type "accessibility" -}}
         {{- $accessibility := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
-        {{- if (partialCached "render/accessibility" (dict "context" $context "auditfile" $accessibility) $accessibility) -}}
+        {{- if (partialCached "render/accessibility" (dict "auditfile" $accessibility) $accessibility) -}}
           {{- range $idx, $value := ((index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-all-path")) -}}
-              {{- $date := index (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) "date" -}}
+              {{- $date := index (partialCached "render/accessibility" (dict "auditfile" . ) . ) "date" -}}
               {{- if (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
                 {{- $context.Scratch.Set "context" (index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) $date) -}}
               {{- else -}}
                 {{- $context.Scratch.Set "context" "" -}}
               {{- end -}}
-              {{- $date := index (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ) "date" -}}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).scores) "date" ((partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ).date)) -}}
+              {{- $date := index (partialCached "render/accessibility" (dict "auditfile" . ) . ) "date" -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "context" ($context.Scratch.Get "context") "score" ((partialCached "render/accessibility" (dict "auditfile" . ) . ).scores) "date" ((partialCached "render/accessibility" (dict "auditfile" . ) . ).date)) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1)) "declaration" (printf "%sdeclaration.txt" (substr $path $pathstart -14)))  "rgaa" (cond (not ($.Scratch.Get $type)) "" (sort ($.Scratch.Get $type) "date" "desc"))) -}}
         {{- end -}}
@@ -72,9 +73,9 @@
       {{- end -}}
       {{- if eq $type "performance" -}}
         {{ $performance := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") }}
-        {{- if (partialCached "render/performance" (dict "context" $context "auditfile" $performance) $performance) -}}
+        {{- if (partialCached "render/performance" (dict "auditfile" $performance) $performance) -}}
           {{ range $idx, $value := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") }}
-              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "indexes" (partialCached "render/performance" (dict "context" $context "auditfile" .) . )) -}}
+              {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "indexes" (partialCached "render/performance" (dict "auditfile" .) . )) -}}
           {{- end -}}
           {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1))) "scores" ($.Scratch.Get $type)) -}}
         {{- end -}}
@@ -89,3 +90,4 @@
   "websites" ($.Scratch.Get "slug")
   "pages" ($.Scratch.Get "pages")
 ) | jsonify -}}
+{{ end }}

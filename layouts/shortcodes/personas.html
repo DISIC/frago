@@ -6,7 +6,7 @@
 {{- if fileExists $filepath -}}
 <div class="flex grid">
 {{- range (getJSON (printf "static/%s/personas.json" $project)) -}}
-  {{ partial "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project)}}
+  {{ partialCached "components/personas/template.html" (dict "context" . "pages" $.Site "project" $project) . }}
 {{- end -}}
 </div>
 {{- else -}}

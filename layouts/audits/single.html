@@ -42,7 +42,7 @@
         {{- else if eq .Format.BaseName "declaration" -}}
           <article class="wrapper narrow">
             {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
-            {{- partial "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) -}}
+            {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) ($context.Scratch.Get "audits") -}}
           </article>
         {{- end -}}
       {{- end -}}
@@ -51,10 +51,10 @@
     {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
     {{- if and (not (in (path.Base .Path) "index.md")) -}}
       <article class="wrapper narrow">
-        {{ partial "elements/content.html" .Content }}
+        {{ partialCached "elements/content.html" .Content .Content }}
       </article>
     {{- else -}}
-      {{- partial "templates/projects.html" $context -}}
+      {{- partialCached "templates/projects.html" $context $context -}}
       {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/quality.html" $project)))) 1) -}}
         <article class="wrapper narrow">
           <h3 class="m-0">Recommandations<small>- <a href="{{ site.BaseURL | default "/" }}{{ printf "/%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small></h3>

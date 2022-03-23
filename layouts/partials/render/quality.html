@@ -2,33 +2,34 @@
 {{/* Determine values from quality files */}}
 {{ $pathlen   := len (split (path.Dir .context.Path) "/") }}
 {{ $auditfile := .auditfile }}
+{{ $data      := newScratch }}
 {{/* START Test if audit file not false */}}
 {{ if (ne $auditfile "/false") }}
   {{ $lastfile  := readFile $auditfile | transform.Unmarshal }}
-  {{ $.context.Scratch.Delete "counterquality" }}
+  {{ $data.Delete "counterquality" }}
 
   {{ range $lastfile }}
-    {{ $.context.Scratch.Set "countererrorstotal" 0 }}
-    {{ $.context.Scratch.Set "countererrorschecked" 0 }}
-    {{ $.context.Scratch.Set "countererrorstypecode" 0 }}
-    {{ $.context.Scratch.Set "countererrorstypevisual" 0 }}
-    {{ $.context.Scratch.Set "countererrorstypestructure" 0 }}
-    {{ $.context.Scratch.Set "countererrorstypetext" 0 }}
-    {{ $.context.Scratch.Set "countererrorscritical" 0 }}
-    {{ $.context.Scratch.Set "countererrorsimportant" 0 }}
-    {{ $.context.Scratch.Set "countererrorsmedium" 0 }}
+    {{ $data.Set "countererrorstotal" 0 }}
+    {{ $data.Set "countererrorschecked" 0 }}
+    {{ $data.Set "countererrorstypecode" 0 }}
+    {{ $data.Set "countererrorstypevisual" 0 }}
+    {{ $data.Set "countererrorstypestructure" 0 }}
+    {{ $data.Set "countererrorstypetext" 0 }}
+    {{ $data.Set "countererrorscritical" 0 }}
+    {{ $data.Set "countererrorsimportant" 0 }}
+    {{ $data.Set "countererrorsmedium" 0 }}
     {{ range .pages }}
       {{ range $b := .blocks }}
         {{ range .errors }}
-          {{ $.context.Scratch.Add "countererrorstotal" 1 }}
-          {{ if .checked }}{{ $.context.Scratch.Add "countererrorschecked" 1 }}{{ end }}
-          {{ if in .type "code" }}{{ $.context.Scratch.Add "countererrorstypecode" 1 }}{{ end }}
-          {{ if in .type "vis" }}{{ $.context.Scratch.Add "countererrorstypevisual" 1 }}{{ end }}
-          {{ if in .type "structure" }}{{ $.context.Scratch.Add "countererrorstypestructure" 1 }}{{ end }}
-          {{ if in .type "text" }}{{ $.context.Scratch.Add "countererrorstypetext" 1 }}{{ end }}
-          {{ if in .status "criti" }}{{ $.context.Scratch.Add "countererrorscritical" 1 }}{{ end }}
-          {{ if in .status "important" }}{{ $.context.Scratch.Add "countererrorsimportant" 1 }}{{ end }}
-          {{ if in .status "moindre" }}{{ $.context.Scratch.Add "countererrorsmedium" 1 }}{{ end }}
+          {{ $data.Add "countererrorstotal" 1 }}
+          {{ if .checked }}{{ $data.Add "countererrorschecked" 1 }}{{ end }}
+          {{ if in .type "code" }}{{ $data.Add "countererrorstypecode" 1 }}{{ end }}
+          {{ if in .type "vis" }}{{ $data.Add "countererrorstypevisual" 1 }}{{ end }}
+          {{ if in .type "structure" }}{{ $data.Add "countererrorstypestructure" 1 }}{{ end }}
+          {{ if in .type "text" }}{{ $data.Add "countererrorstypetext" 1 }}{{ end }}
+          {{ if in .status "criti" }}{{ $data.Add "countererrorscritical" 1 }}{{ end }}
+          {{ if in .status "important" }}{{ $data.Add "countererrorsimportant" 1 }}{{ end }}
+          {{ if in .status "moindre" }}{{ $data.Add "countererrorsmedium" 1 }}{{ end }}
         {{ end }}
       {{ end }}
     {{ end }}
@@ -38,16 +39,16 @@
     (dict
       "date"          (replace (path.Base $auditfile) (path.Ext $auditfile) "")
       "pathlen"       ($pathlen)
-      "total"         ($.context.Scratch.Get "countererrorstotal")
-      "checked"       ($.context.Scratch.Get "countererrorschecked")
-      "critical"      ($.context.Scratch.Get "countererrorscritical")
-      "important"     ($.context.Scratch.Get "countererrorsimportant")
-      "medium"        ($.context.Scratch.Get "countererrorsmedium")
+      "total"         ($data.Get "countererrorstotal")
+      "checked"       ($data.Get "countererrorschecked")
+      "critical"      ($data.Get "countererrorscritical")
+      "important"     ($data.Get "countererrorsimportant")
+      "medium"        ($data.Get "countererrorsmedium")
       "type" (dict
-              "code"        ($.context.Scratch.Get "countererrorstypecode")
-              "visual"      ($.context.Scratch.Get "countererrorstypevisual")
-              "structure"   ($.context.Scratch.Get "countererrorstypestructure")
-              "text"        ($.context.Scratch.Get "countererrorstypetext")
+              "code"        ($data.Get "countererrorstypecode")
+              "visual"      ($data.Get "countererrorstypevisual")
+              "structure"   ($data.Get "countererrorstypestructure")
+              "text"        ($data.Get "countererrorstypetext")
             )
     )
   }}

@@ -1,61 +1,62 @@
 {{/* Variables */}}
 {{- $pagedate := replace (path.Base .Path) (path.Ext .Path) "" -}}
-{{- $kind := .Kind -}}
-{{- $.Scratch.Set "datesAction" slice -}}
-{{- $.Scratch.Delete "allActions" -}}
-{{- $.Scratch.Delete "allDates" -}}
+{{- $kind     := .Kind -}}
+{{- $data     := newScratch -}}
+{{- $data.Set "datesAction" slice -}}
+{{- $data.Delete "allActions" -}}
+{{- $data.Delete "allDates" -}}
 
 {{/* START Loop over all actions */}}
 {{/* START Loop over general actions */}}
 {{/* Build a map with all csv files AND a a map with dates */}}
 {{- if fileExists "content/plans/actions" -}}
     {{- range $id, $value := (readDir "content/plans/actions") -}}
-      {{- $.Scratch.Add "datesAction" (string (first 4 .Name)) -}}
-      {{- $.Scratch.SetInMap (printf "actions-%s" (string (first 4 .Name))) (string $id) (printf "content/plans/actions/%s" .Name) -}}
+      {{- $data.Add "datesAction" (string (first 4 .Name)) -}}
+      {{- $data.SetInMap (printf "actions-%s" (string (first 4 .Name))) (string $id) (printf "content/plans/actions/%s" .Name) -}}
     {{- end -}}
 {{- end -}}
 {{/* Loop over date AND next over csv files */}}
-{{- range (uniq ($.Scratch.Get "datesAction")) }}
+{{- range (uniq ($data.Get "datesAction")) }}
   {{- $date := . -}}
-  {{- $.Scratch.Set (printf "listDate-%s" $date) slice -}}
-  {{- $.Scratch.Set (printf "slice-%s" $date) slice -}}
+  {{- $data.Set (printf "listDate-%s" $date) slice -}}
+  {{- $data.Set (printf "slice-%s" $date) slice -}}
   {{/* Feed an array with all action in a file */}}
-  {{- range ($.Scratch.Get (printf "actions-%s" .)) }}
-    {{- $.Scratch.Add (printf "slice-%s" $date) (after 1 (getCSV "," .)) -}}
-    {{- $.Scratch.Add (printf "listDates-%s" $date) (slice (((os.Stat .).ModTime).Format "02/01/2006")) -}}
+  {{- range ($data.Get (printf "actions-%s" .)) }}
+    {{- $data.Add (printf "slice-%s" $date) (after 1 (getCSV "," .)) -}}
+    {{- $data.Add (printf "listDates-%s" $date) (slice (((os.Stat .).ModTime).Format "02/01/2006")) -}}
   {{- end -}}
   {{/* Feed a map where key is the date */}}
-  {{- $.Scratch.SetInMap (printf "listActions-%s" $date) "Opérations diverses" ($.Scratch.Get (printf "slice-%s" $date)) -}}
+  {{- $data.SetInMap (printf "listActions-%s" $date) "Opérations diverses" ($data.Get (printf "slice-%s" $date)) -}}
   {{/* Feed final map */}}
-  {{- $.Scratch.SetInMap "allDates"   (printf "%s" $date) ($.Scratch.Get (printf "listDates-%s" $date)) -}}
-  {{- $.Scratch.SetInMap "allActions" (printf "%s" $date) ($.Scratch.Get (printf "listActions-%s" $date)) -}}
+  {{- $data.SetInMap "allDates"   (printf "%s" $date) ($data.Get (printf "listDates-%s" $date)) -}}
+  {{- $data.SetInMap "allActions" (printf "%s" $date) ($data.Get (printf "listActions-%s" $date)) -}}
 {{- end -}}
 {{/* END Loop over general actions */}}
 {{/* START Loop over services actions */}}
 {{- with (where $.Site.RegularPages "Section" "audits") }}
   {{- range . -}}
       {{- $title    := .Title -}}
-      {{- $project  := partial "render/projectpath" . -}}
+      {{- $project  := partialCached "render/projectpath" . . -}}
       {{- $lastfile := partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "actions") $project "actions" -}}
       {{- $lastname := index $lastfile "auditfile-all-name" -}}
       {{/* Loop over csv files */}}
       {{- range $id, $value := (index $lastfile "auditfile-all-path") -}}
         {{- $date := first 4 (index $lastname $id) -}}
-        {{- $.Scratch.Set (printf "listDate-%s" $date) slice -}}
+        {{- $data.Set (printf "listDate-%s" $date) slice -}}
         {{- $cond := cond (eq $kind "page") (eq $date $pagedate) true -}}
         {{/*- if $cond -*/}}
           {{/* Feed an array with all action in a file */}}
           {{- range $index, $line := (after 1 (getCSV "," .)) -}}
-            {{- $.Scratch.Add (printf "%s%s%s" $title $id $date) (slice .) -}}
+            {{- $data.Add (printf "%s%s%s" $title $id $date) (slice .) -}}
           {{- end -}}
           {{/* Feed a map where key is the project title */}}
-          {{- $.Scratch.Add (printf "%s%s" $title $date) ($.Scratch.Get (printf "%s%s%s" $title $id $date)) -}}
+          {{- $data.Add (printf "%s%s" $title $date) ($data.Get (printf "%s%s%s" $title $id $date)) -}}
           {{/* Feed a map where key is the date */}}
-          {{- $.Scratch.Add      (printf "listDates-%s" $date) (slice (((os.Stat .).ModTime).Format "02/01/2006")) -}}
-          {{- $.Scratch.SetInMap (printf "listActions-%s" $date) (printf "%s" $title) ($.Scratch.Get (printf "%s%s" $title $date)) -}}
+          {{- $data.Add      (printf "listDates-%s" $date) (slice (((os.Stat .).ModTime).Format "02/01/2006")) -}}
+          {{- $data.SetInMap (printf "listActions-%s" $date) (printf "%s" $title) ($data.Get (printf "%s%s" $title $date)) -}}
           {{/* Feed final map */}}
-          {{- $.Scratch.SetInMap "allDates"   (printf "%s" $date) ($.Scratch.Get (printf "listDates-%s" $date)) -}}
-          {{- $.Scratch.SetInMap "allActions" (printf "%s" $date) ($.Scratch.Get (printf "listActions-%s" $date)) -}}
+          {{- $data.SetInMap "allDates"   (printf "%s" $date) ($data.Get (printf "listDates-%s" $date)) -}}
+          {{- $data.SetInMap "allActions" (printf "%s" $date) ($data.Get (printf "listActions-%s" $date)) -}}
         {{/*- end -*/}}
       {{- end -}}
   {{- end -}}
@@ -65,7 +66,7 @@
 
 {{ return
   (dict
-    "actions" ($.Scratch.Get "allActions")
-    "dates"   ($.Scratch.Get "allDates")
+    "actions" ($data.Get "allActions")
+    "dates"   ($data.Get "allDates")
   )
 }}

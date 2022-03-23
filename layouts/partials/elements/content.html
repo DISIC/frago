@@ -1,18 +1,18 @@
 {{- $currentLang := site.Language.Lang }}
 {{- with findRE "<table>" . -}}
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "table") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "table") "table" }}
 {{- end -}}
 {{- with findRE "<dl>" . -}}
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "definitionlists") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "definitionlists") "definitionlists" }}
 {{- end -}}
 {{- with findRE "<pre>" . -}}
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "codeformatting") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "codeformatting") "codeformatting" }}
 {{- end -}}
 {{- with or (findRE "<blockquote>" .) (findRE "<q>" .) -}}
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") "blockquote" }}
 {{- end -}}
 {{- with or (findRE "<iframe>" .) (findRE "<embed>" .) -}}
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "iframe") }}
 {{- end -}}
 
 {{- if eq $currentLang "fr" -}}

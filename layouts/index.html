@@ -16,14 +16,14 @@
   {{- else -}}
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
     {{/* If only one project */}}
-    {{- if (partial "render/issimpleproject.html" .) -}}
-      {{- partial "templates/projects.html" . -}}
+    {{- if (partialCached "render/issimpleproject.html" . .) -}}
+      {{- partialCached "templates/projects.html" . . -}}
     {{/* If several projects :: call list of projects */}}
     {{- else -}}
       {{- partialCached "templates/projects-list.html" . . -}}
     {{- end -}}
     <section class="wrapper narrow">
-    {{ partial "elements/content.html" .Content }}
+    {{ partialCached "elements/content.html" .Content .Content }}
     </section>
   {{- end -}}
 {{- end -}}

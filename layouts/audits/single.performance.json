@@ -1,3 +1,4 @@
+{{- if (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := . -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
@@ -6,7 +7,7 @@
 {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
 {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
   {{- range $key, $path := . -}}
-      {{- $.Scratch.SetInMap "scoreperformance" (string $key) (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+      {{- $.Scratch.SetInMap "scoreperformance" (string $key) (partialCached "render/performance" (dict "project" $project "auditfile" .) $project .) -}}
   {{- end -}}
 {{- end -}}
 {{- (dict
@@ -14,3 +15,4 @@
   "slug" $project
   "scores" ($.Scratch.Get "scoreperformance")
 ) | jsonify -}}
+{{- end -}}

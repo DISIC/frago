@@ -1,4 +1,4 @@
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "nav-tabs") }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "nav-tabs") "nav-tabs" }}
 <section>
   <h2 class="text-center">{{ .Params.steps.title }}</h2>
   <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="nav">

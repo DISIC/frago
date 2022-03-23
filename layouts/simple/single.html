@@ -1,5 +1,5 @@
 {{- define "main" -}}
-{{ partial "elements/content.html" .Content }}
+{{ partialCached "elements/content.html" .Content .Content }}
 {{- end -}}
 {{- define "script" -}}
 {{- end -}}

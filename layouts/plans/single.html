@@ -64,7 +64,7 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
     {{- with (where .Site.RegularPages "Section" "audits") -}}
       {{- range . }}
         {{- $title    := .Title -}}
-        {{- $project  := partial "render/projectpath" . -}}
+        {{- $project  := partialCached "render/projectpath" . . -}}
         {{- $lastfile := partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility") $project "accessibility" -}}
         {{- $lastname := index $lastfile "auditfile-all-name" -}}
         {{ $.Scratch.Set "allAuditsDates" slice }}

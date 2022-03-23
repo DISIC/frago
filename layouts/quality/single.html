@@ -6,5 +6,5 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $context := . -}}
-{{- partial "templates/quality.html" (dict "context" $context) -}}
+{{- partialCached "templates/quality.html" (dict "context" $context) $context -}}
 {{- end -}}

@@ -4,7 +4,7 @@
   {{- partial "elements/tableofcontent.html" . -}}
 
   <!--Content-->
-  {{ partial "elements/content.html" .Content }}
+  {{ partialCached "elements/content.html" .Content .Content }}
 
   <!--Tag-->
   {{- partial "navigations/tags.html" . -}}

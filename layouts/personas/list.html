@@ -7,7 +7,7 @@
 {{- if $project -}}
 <div class="wrapper">
   <h1>{{ .Title }}</h1>
-  {{ partial "elements/content.html" .Content }}
+  {{ partialCached "elements/content.html" .Content .Content }}
   <div class="grid">
   {{/* Range all regular pages */}}
   {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
@@ -26,7 +26,7 @@
 {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
 <article class="wrapper narrow">
   <h1>{{ .Title }}</h1>
-  {{ partial "elements/content.html" .Content }}
+  {{ partialCached "elements/content.html" .Content .Content }}
   {{- $.Scratch.Set "linksingle" .RelPermalink -}}
   {{- $.Scratch.Set "hassection" .Sections -}}
   {{- range $paginator.Pages -}}

@@ -45,7 +45,7 @@
   {{- $style := $style | postCSS (dict "config" "postcss.config.js") -}}
   {{- end -}}
   <!-- Call font files -->
-  {{- partial "utils/css.html" (dict "context" . "filefolder" "" "filename" "fonts") -}}
+  {{- partialCached "utils/css.html" (dict "context" . "filefolder" "" "filename" "fonts") "fonts" -}}
   <style id="style-screen">
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>

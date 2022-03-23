@@ -1,5 +1,5 @@
 {{- define "main" -}}
     <h1 class="text-center wrapper">{{ .Title }}</h1>
-    {{- partial "templates/projects.html" . -}}
+    {{- partialCached "templates/projects.html" . . -}}
     {{- partial "elements/content.html" .Content -}}
 {{- end -}}

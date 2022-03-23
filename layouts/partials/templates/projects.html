@@ -4,49 +4,6 @@
 
 {{- if and (ne $project "audits") (ne .Path "audits") -}}
 <section class="wrapper narrow">
-    {{- $.Scratch.Set "listmonths" slice -}}
-    {{- range $id, $value := .Params.gantt -}}
-      {{- range .time -}}
-        {{- $.Scratch.Add "listmonths" (index (split . " ") 0) -}}
-      {{- end -}}
-    {{- end -}}
-
-    {{- with uniq ($.Scratch.Get "listmonths") -}}
-    <div class="hide">
-    {{- $months := . -}}
-    <h2 class="text-center">Planning</h2>
-    {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "gantt") -}}
-    <div class="gantt" style="grid-template-columns: {{ mul (len .) 8 }};">
-    {{- range $separator, $value := . -}}
-        <span class="d-{{ add $separator 1 }}"></span>
-        <span class="d-{{ add $separator 1 }}mid"></span>
-        {{- $.Scratch.Set "counter" (add $separator 2) -}}
-    {{- end -}}
-      <span class="d-{{ $.Scratch.Get "counter" }}"></span>
-    {{- range $separator, $value := . -}}
-        <h3 class="h-" style="grid-column: {{ add (mul $separator 2) 1 }}/span 2">{{ . }}</h3>
-        {{ $month := . }}
-        {{- range $id, $value := $.Params.gantt -}}
-          {{ if eq (index (split (index .time 0) " ") 0) $month }}
-            {{- $start := index (split (index .time 0) " ") 0 -}}
-            {{- $startpar := index (split (index .time 0) " ") 1 -}}
-            {{- $end := index (split (index .time 1) " ") 0 -}}
-            {{- $endpar := index (split (index .time 1) " ") 1 -}}
-            {{- $.Scratch.Set "startmod" 0 -}}
-            {{- $.Scratch.Set "endmod" 0 -}}
-            {{- if eq $startpar "middle" -}}{{ $.Scratch.Set "startmod" 1 }}{{- end -}}
-            {{- if eq $startpar "end" -}}{{ $.Scratch.Set "startmod" 2 }}{{- end -}}
-            {{- if eq $endpar "middle" -}}{{ $.Scratch.Set "endmod" 1 }}{{- end -}}
-            {{- if eq $endpar "end" -}}{{ $.Scratch.Set "endmod" 2 }}{{- end -}}
-            {{- range $id, $value := $months -}}{{ if eq . $start }}{{ $.Scratch.Set "positionstart" $id }}{{- end -}}{{- end -}}
-            {{- range $id, $value := $months -}}{{ if eq . $end }}{{ $.Scratch.Set "positionend" $id }}{{- end -}}{{- end -}}
-            <div class="t-{{ add $id 1}}" style="grid-column: {{ add (add (mul ($.Scratch.Get "positionstart") 2) 1) ($.Scratch.Get "startmod") }} / {{ add (add (mul ($.Scratch.Get "positionend") 2) 1) ($.Scratch.Get "endmod") }};">{{ .name }}</div>
-          {{- end -}}
-        {{- end -}}
-    {{- end -}}
-    </div>
-    </div>
-    {{- end -}}
 
     {{/* Load lasts file */}}
     {{- $.Scratch.Set "accessibility-lastfile"  (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename) -}}
@@ -78,7 +35,7 @@
     {{/* START - If accessibility */}}
     {{- if $accessibility -}}
       {{- $.Scratch.Set "render" slice -}}
-      {{- $.Scratch.Set "audit" (partialCached "render/accessibility" (dict "context" . "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path")) -}}
+      {{- $.Scratch.Set "audit" (partialCached "render/accessibility" (dict "auditfile" ($.Scratch.Get "accessibility-path")) ($.Scratch.Get "accessibility-path")) -}}
       <h3 class="m-0">Accessibilité
         {{- if ($.Scratch.Get "audit").scores.compliance -}}
           {{- $pageauditpath := (printf "/content/audits/%s/accessibility.md" ($project | urlize)) -}}
@@ -101,7 +58,7 @@
 
       {{/* START - If several accessibility files */}}
       {{- with ($.Scratch.Get "accessibility-all-path") -}}
-        {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) . ))) -}}{{- end -}}
+        {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility" (dict "auditfile" . ) . ))) -}}{{- end -}}
       {{- end -}}
       {{- with ($.Scratch.Get "render") -}}
         {{- if gt (len .) 1 -}}
@@ -208,7 +165,7 @@
         <small>- <a href="{{ $AuditLink }}" aria-label="Accéder au rapport de performance">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/performance.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport de performance">Accéder au rapport</a></small>{{- end -}}
       </h3>
       {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path" -}}
-        {{- partial "components/scores/performance" (dict "context" $context "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .)) -}}
+        {{- partial "components/scores/performance" (dict "context" $context "counter" (partialCached "render/performance" (dict "project" $project "auditfile" .) $project .)) -}}
       {{- end -}}
       {{/* START - If several Lighthouse files */}}
       {{- $lasfileobj := (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") -}}
@@ -239,7 +196,7 @@
                     },
                     {
                       name: "Chargement",
-                      values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "context" $context "auditfile" .) . }}{{ if ne $id "0" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
+                      values: [{{ range $id, $value := $lastfiles }}{{ $performancefile := partialCached "render/performance.html" (dict "auditfile" .) . }}{{ if ne $id "0" }},{{ end }}{{ if $performancefile.LCP }}"{{ div $performancefile.LCP 1000 | lang.NumFmt 1 }}"{{- end -}}{{- end -}}],
                       chartType: 'bar'
                     }
                   ],

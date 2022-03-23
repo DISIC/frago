@@ -1,5 +1,6 @@
 {{- define "main" -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
+
 {{- $.Scratch.Set "guidelinename" "rgaa" -}}
 {{- $.Scratch.Set "guidelineversion" "4.1" -}}
 {{- if ge ($patharray) 2 -}}
@@ -7,9 +8,9 @@
   {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
+
 <article class="wrapper narrow">
 <h1>{{ .Title }}</h1>
-{{- partial "elements/content.html" .Content -}}
 {{- range $key, $value := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).glossary -}}
   {{- range $value -}}
   <h2>{{ .section }}</h2>

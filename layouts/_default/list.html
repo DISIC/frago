@@ -1,5 +1,5 @@
 {{- define "main" -}}
-{{ partial "elements/content.html" .Content }}
+{{ partialCached "elements/content.html" .Content .Content }}
 <!--$paginator-->
 {{- if .IsHome -}}
 {{.Scratch.Set "Paginator" (.Paginate (where .Site.RegularPages "Page.Type" "in" site.Params.mainSections)) }}

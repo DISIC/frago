@@ -1,28 +1,29 @@
-{{- $.Scratch.Delete "allscores" -}}
-{{- $.Scratch.Delete "projectfolders" -}}
-{{- $.Scratch.Set "rangepages" (where .Site.RegularPages "Section" "audits") -}}
+{{- $data         := newScratch -}}
+{{- $data.Delete "allscores" -}}
+{{- $data.Delete "projectfolders" -}}
+{{- $data.Set "rangepages" (where .Site.RegularPages "Section" "audits") -}}
 {{- $pageType := (index (where .OutputFormats "Permalink" "eq" .Permalink) 0).Format.BaseName -}}
 
-{{- $.Scratch.Set "accessibility" slice -}}
-{{- $.Scratch.Set "quality" slice -}}
-{{- $.Scratch.Set "performance" slice -}}
+{{- $data.Set "accessibility" slice -}}
+{{- $data.Set "quality" slice -}}
+{{- $data.Set "performance" slice -}}
 
-{{- if ($.Scratch.Get "rangepages") -}}
+{{- if ($data.Get "rangepages") -}}
   <div class="text-center">
       <h1 class="center">Monitoring {{ $pageType }}</h1>
       {{/* Build a map with all accessibility score for using it later in code :: maybe for catching progression or regression */}}
-      {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
+      {{- range sort ($data.Get "rangepages") ".Title" "desc" -}}
         {{- $project := (replace (index (split (path.Dir .Path) "/") 1) ".md" "") -}}
         {{- $context := . -}}
         {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") "auditfile-all-path") -}}
-          {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
+          {{- $data.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
         {{- end -}}
-        {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
+        {{- $data.SetInMap "allscores" $project ($data.Get $project) -}}
       {{- end -}}
 
 
       {{/* START Loop on all project in audits */}}
-      {{- range sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}
+      {{- range sort ($data.Get "rangepages") ".Title" "asc" -}}
 
         {{- $context   := . -}}
         {{- $path      := (split (path.Dir .Path) "/") -}}
@@ -42,8 +43,8 @@
               {{- if eq $pageType "accessibility" -}}
                 {{/* If Accessibility exists */}}
                 {{- if $accessibility -}}
-                  {{- $scoressmall := index (last 1 (sort (index ($.Scratch.Get "allscores") $project))) 0 -}}
-                  {{ $.Scratch.Add "accessibility" $scoressmall.scores.compliance }}
+                  {{- $scoressmall := index (last 1 (sort (index ($data.Get "allscores") $project))) 0 -}}
+                  {{ $data.Add "accessibility" $scoressmall.scores.compliance }}
                 {{- end -}}
               {{- end -}}
 
@@ -51,7 +52,7 @@
               {{/* If Quality exists */}}
               {{- if $quality -}}
                 {{ $auditfile := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path") }}
-                {{ $.Scratch.Add "quality" (partialCached "render/quality" (dict "context" . "project" $project "auditfile" $auditfile) $auditfile).total }}
+                {{ $data.Add "quality" (partialCached "render/quality" (dict "context" . "project" $project "auditfile" $auditfile) $auditfile).total }}
               {{- end -}}
               {{- end -}}
 
@@ -60,7 +61,7 @@
                 {{- if $lighthouse -}}
                   {{- $lastfile    := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
                   {{- $performance := partialCached "render/performance.html" (dict "context" . "auditfile" $lastfile) $lastfile -}}
-                  {{ $.Scratch.Add "performance" (div ($performance.LCP) 1000 | lang.NumFmt 1) }}
+                  {{ $data.Add "performance" (div ($performance.LCP) 1000 | lang.NumFmt 1) }}
                 {{- end -}}
               {{ end }}
           {{- end -}}
@@ -83,20 +84,20 @@
               colors: [hslToHex(hslprimary),hslToHex(hslsecondary),hslToHex(hsltertiary),hslToHex(hslquartenary)]
           }
           const data = {
-              labels: [{{- range $id, $value := sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ .Title }}"{{- end -}}],
+              labels: [{{- range $id, $value := sort ($data.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ .Title }}"{{- end -}}],
               datasets: [
                 {
                   {{- if eq $pageType "accessibility" -}}
                   name: "Accessibilité",
-                  values: [{{- range $id, $value := sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($.Scratch.Get "accessibility") $id }}"{{- end -}}]
+                  values: [{{- range $id, $value := sort ($data.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($data.Get "accessibility") $id }}"{{- end -}}]
                   {{- end }}
                   {{- if eq $pageType "quality" -}}
                   name: "Qualité",
-                  values: [{{- range $id, $value := sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($.Scratch.Get "quality") $id }}"{{- end -}}]
+                  values: [{{- range $id, $value := sort ($data.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($data.Get "quality") $id }}"{{- end -}}]
                   {{- end }}
                   {{- if eq $pageType "performance" -}}
                   name: "performance",
-                  values: [{{- range $id, $value := sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($.Scratch.Get "performance") $id }}"{{- end -}}]
+                  values: [{{- range $id, $value := sort ($data.Get "rangepages") ".Title" "asc" -}}{{ if ne $id 0 }},{{ end }}"{{ index ($data.Get "performance") $id }}"{{- end -}}]
                   {{- end }}
                   }
               ],
@@ -119,17 +120,17 @@
           </tr>
         </thead>
         <tbody>
-          {{- range $id, $value := sort ($.Scratch.Get "rangepages") ".Title" "asc" -}}
+          {{- range $id, $value := sort ($data.Get "rangepages") ".Title" "asc" -}}
           <tr>
             <td>{{ .Title }}</td>
             {{- if eq $pageType "accessibility" -}}
-            <td class="text-center"><strong>{{ with (index ($.Scratch.Get "accessibility") $id) }}{{ . }}%{{ else }}NA{{ end }}</strong></td>
+            <td class="text-center"><strong>{{ with (index ($data.Get "accessibility") $id) }}{{ . }}%{{ else }}NA{{ end }}</strong></td>
             {{- end }}
             {{- if eq $pageType "quality" -}}
-            <td class="text-center"><strong>{{ with (index ($.Scratch.Get "quality") $id) }}{{ . }}{{ else }}NA{{ end }}</strong></td>
+            <td class="text-center"><strong>{{ with (index ($data.Get "quality") $id) }}{{ . }}{{ else }}NA{{ end }}</strong></td>
             {{- end }}
             {{- if eq $pageType "performance" -}}
-            <td class="text-center"><strong>{{ with (index ($.Scratch.Get "performance") $id) }}{{ . }}{{ else }}NA{{ end }}</strong></td>
+            <td class="text-center"><strong>{{ with (index ($data.Get "performance") $id) }}{{ . }}{{ else }}NA{{ end }}</strong></td>
             {{- end }}
           </tr>
           {{- end -}}

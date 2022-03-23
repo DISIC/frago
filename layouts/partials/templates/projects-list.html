@@ -10,7 +10,7 @@
         {{- $context := . -}}
         {{- if and (in (path.Base .Path) "index.md") (not (in "/audits/_index.md" .Path)) -}}
         {{- range $id, $value := (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility") "auditfile-all-path") -}}
-          {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "context" $context "auditfile" . ) .) -}}
+          {{- $.Scratch.SetInMap $project (string $id) (partialCached "render/accessibility" (dict "auditfile" . ) .) -}}
         {{- end -}}
         {{- end -}}
         {{- $.Scratch.SetInMap "allscores" $project ($.Scratch.Get $project) -}}
@@ -27,7 +27,7 @@
 
         {{- if (eq (len $path) 2) -}}
           {{- $project        := partialCached "render/projectpath" $context $context -}}
-          {{- $rootPath       := partial "render/rootpath" (dict "context" . "project" $project "type" "accessibility") -}}
+          {{- $rootPath       := partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project -}}
           {{- $projectFolders := cond (eq ($path) 2) (printf "%s" $rootPath) (printf "%s/%s" $rootPath $project) -}}
 
           {{- $accessibilitypath := "/false" -}}

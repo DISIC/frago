@@ -38,7 +38,7 @@
         {{- else if eq .Format.BaseName "quality" -}}
           {{- partialCached "templates/quality.html" (dict "context" $context "project" $project) $project -}}
         {{- else if eq .Format.BaseName "performance" -}}
-          {{- partialCached "templates/performance.html" (dict "context" $context "project" $project) $project -}}
+          {{- partialCached "templates/performance.html" (dict "project" $project) $project -}}
         {{- else if eq .Format.BaseName "declaration" -}}
           <article class="wrapper narrow">
             {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
@@ -48,16 +48,16 @@
       {{- end -}}{{- end -}}
     {{- else -}}
       {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
-      {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
+      {{- if and (ne $project "audits") (not (partialCached "render/issimpleproject.html" . . )) -}}
         {{- if and (not (in (path.Base .Path) "index.md")) -}}
           <article class="wrapper narrow">
-            {{ partial "elements/content.html" .Content }}
+            {{ partialCached "elements/content.html" .Content .Content }}
           </article>
         {{- else -}}
           {{- partial "templates/projects.html" $context -}}
         {{- end -}}
       {{- else -}}
-        {{- if (partial "render/issimpleproject.html" .) -}}
+        {{- if (partialCached "render/issimpleproject.html" . .) -}}
           {{- partial "templates/projects.html" $context -}}
         {{- else -}}
           {{- partialCached "templates/dashboard.html" $context $context -}}
@@ -66,10 +66,10 @@
     {{- end -}}
   {{- else -}}
     {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
-    {{- if and (ne $project "audits") (not (partial "render/issimpleproject.html" .)) -}}
+    {{- if and (ne $project "audits") (not (partialCached "render/issimpleproject.html" . . )) -}}
       {{- if and (not (in (path.Base .Path) "index.md")) -}}
         <article class="wrapper narrow">
-          {{ partial "elements/content.html" .Content }}
+          {{ partialCached "elements/content.html" .Content .Content }}
         </article>
       {{- else -}}
         {{- partial "templates/projects.html" $context -}}

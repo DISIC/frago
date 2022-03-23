@@ -1,3 +1,4 @@
+{{- if (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production")) -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $context := . -}}
 {{- $project :=  (partialCached "render/projectpath" $context $context) -}}
@@ -38,4 +39,5 @@
     "projects" ($.Scratch.Get "projectsmap")
   ) | jsonify -}}
   {{- end -}}
+{{- end -}}
 {{- end -}}

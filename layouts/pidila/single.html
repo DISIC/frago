@@ -12,7 +12,7 @@
 {{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteria.criterias -}}
 <article class="wrapper narrow">
 <h1>Critères {{ replace ($.Scratch.Get "guidelinename" | upper) "RGAA" "RGAA "}}</h1>
-{{ partial "elements/content.html" .Content }}
+{{ partialCached "elements/content.html" .Content .Content }}
 
 {{- range $key1, $value := $criteriafile -}}
     {{- if eq (len (findRE "<li>RGAA : " .rawHTMLContent)) 0 -}}
