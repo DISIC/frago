@@ -1,4 +1,4 @@
-baseURL = ""
+baseURL = "https://disic.github.io/frago/"
 languageCode = "fr-FR"
 title = "Documentation "
 theme = ["documentago"]
