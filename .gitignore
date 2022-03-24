@@ -1,0 +1,10 @@
+# Hugo
+public
+resources
+_vendor
+
+# OS file systems
+.DS_Store
+
+# Editors
+.vscode

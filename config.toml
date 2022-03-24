@@ -1,4 +1,4 @@
-baseURL = "www.example.com"
+baseURL = ""
 languageCode = "fr-FR"
 title = "Documentation "
 themesDir = "../.."
@@ -7,10 +7,6 @@ theme = "documentago"
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
-
-[module]
-  [[module.imports]]
-    path = "github.com/bertrandkeller/documentago"
 
 # Controls how many words are printed in the content summary on the docs homepage.
 # See https://gohugo.io/content-management/summaries/
