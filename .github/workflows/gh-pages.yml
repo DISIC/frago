@@ -1,22 +1,32 @@
-name: Publish Site
+name: github pages
 
 on:
   push:
     branches:
-      - docs
+      - docs  # Set a branch to deploy
+  pull_request:
 
 jobs:
-  build-deploy:
-    runs-on: ubuntu-latest
-
+  deploy:
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
-          submodules: true
-      - name: Publish Site
-        uses: chabad360/hugo-gh-pages@master
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          args: --gc --minify --cleanDestinationDir
+          hugo-version: 'latest'
+          # extended: true
+
+      - name: Build
+        run: git submodule add https://github.com/bertrandkeller/documentago.git/ themes/documentago && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
