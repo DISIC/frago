@@ -3,7 +3,7 @@ name: Publish Site
 on:
   push:
     branches:
-      - doc
+      - docs
 
 jobs:
   build-deploy:
@@ -18,5 +18,5 @@ jobs:
         uses: chabad360/hugo-gh-pages@master
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: doc
+          branch: gh-pages
           args: --gc --minify --cleanDestinationDir
