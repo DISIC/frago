@@ -1,3 +1,5 @@
-module github.com/disic/frago
+module github.com/bertrandkeller/documentago
 
-go 1.14
+// replace github.com/someone/hugo-module => /Users/BK/sites/documentago
+
+go 1.17

@@ -1,9 +1,0 @@
-{{- define "title" -}}
-  {{- $context      := . -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}Audit Performance {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
-{{- end -}}
-{{- define "main" -}}
-{{/* Vars */}}
-{{- $context := . -}}
-{{- partialCached "templates/performance.html" (dict "context" $context) $context -}}
-{{- end -}}

@@ -1,9 +1,0 @@
-{{- if .criteria.testtotal -}}
-<div class="scores">
-    <ul>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{ if .criteria.conforme -}}{{ len .criteria.conforme }}{{ else }}0{{ end }}</b><br>Critères conformes</span></li>
-      <li class="counter text-center d-inline-block"><span><b class="h2">{{ if .criteria.nonapplicable }}{{ len .criteria.nonapplicable }}{{ else }}0{{ end }}</b><br>Critères non applicables</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{ if .criteria.nonconforme }}{{ len .criteria.nonconforme }}{{ else }}0{{ end }}</b><br>Critères non conformes</span></li>
-    </ul>
-</div>
-{{- end -}}

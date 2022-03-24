@@ -1,3 +1,0 @@
----
-title: Projet 1
----
