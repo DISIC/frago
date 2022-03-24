@@ -67,10 +67,14 @@
   }
 }
 
+.card-border:hover,
+.card-border-light:hover,
 .card-inline:hover {
   background: var(--background-color-grey-dark);
 }
 
+.card-border:active,
+.card-border-light:active,
 .card-inline:active {
   background: var(--background-color-grey-verydark);
 }
@@ -90,7 +94,7 @@
   border: 1px solid var(--color-grey);
 }
 
-.card-shadow {
+.card-border {
   box-shadow: var(--enable-shadows, 0 0 1px rgba(0, 0, 0, 0.11), 0 0 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11));
 }
 

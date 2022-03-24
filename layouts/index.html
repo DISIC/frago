@@ -17,17 +17,21 @@
   {{- else -}}
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
     {{/* If only one project */}}
-    {{- if (partialCached "render/issimpleproject.html" "arg" "arg") -}}
-      {{- $partial := (partialCached "templates/projects.html" . .) -}}
-      {{- partialCached "elements/content.html" $partial "projects" -}}
-    {{/* If several projects :: call list of projects */}}
+    {{- if eq (getenv "HUGO_ENV") "portal" -}}
+      {{- partialCached "templates/portal.html" . . -}}
     {{- else -}}
-      {{- $partial := (partialCached "templates/projects-list.html" . .) -}}
-      {{- partialCached "elements/content.html" $partial "projectslist" -}}
+      {{- if (partialCached "render/issimpleproject.html" "arg" "arg") -}}
+        {{- $partial := (partialCached "templates/projects.html" . .) -}}
+        {{- partialCached "elements/content.html" $partial "projects" -}}
+      {{/* If several projects :: call list of projects */}}
+      {{- else -}}
+        {{- $partial := (partialCached "templates/projects-list.html" . .) -}}
+        {{- partialCached "elements/content.html" $partial "projectslist" -}}
+      {{- end -}}
+      <section class="fg-wrapper narrow">
+        {{ partialCached "elements/content.html" .Content .Content }}
+      </section>
     {{- end -}}
-    <section class="fg-wrapper narrow">
-      {{ partialCached "elements/content.html" .Content .Content }}
-    </section>
   {{- end -}}
 {{- end -}}
 

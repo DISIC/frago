@@ -113,6 +113,10 @@
   margin-bottom: calc(var(--baseline) / 2);
 }
 
+.mb-2 {
+  margin-bottom: var(--baseline);
+}
+
 .mr-1 {
   margin-right: calc(var(--baseline) / 2);
 }

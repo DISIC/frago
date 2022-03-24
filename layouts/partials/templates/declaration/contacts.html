@@ -1,0 +1,20 @@
+{{ $organisation := .organisation }}
+{{ with .context }}
+{{ if and $organisation  }}
+  <h2>Retour d’information et contact</h2>
+  <address>
+    <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with $organisation }}<strong>{{ . }}</strong>{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
+    sous une autre forme.</p>
+
+    {{/* START contact */}}
+    {{- with .contacts -}}
+      <ul>
+        {{ if .email }}<li>Envoyer un message à : <strong>{{ .email }}</strong></li>{{ end }}
+        {{ if .address }}<li>Contacter : <strong>{{ with $organisation }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
+      </ul>
+    {{- end -}}
+    {{/* END contact */}}
+  </address>
+{{- end -}}
+{{- end -}}
+{{/* END If "organisation" */}}

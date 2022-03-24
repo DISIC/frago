@@ -1,0 +1,57 @@
+<article class="wrapper narrow">
+  {{- $date := now.Format "2006" -}}
+  <h2>Documentation sur l’accessibilité</h2>
+  <div class="section-background m-2">
+    <ul class="m-0 p-0 grid grid-2 list-unstyled text-center" role="navigation">
+      {{- with (where .Site.RegularPages "Section" "schemas") -}}
+        {{ range . }}
+          {{ $basename := (replace (path.Base .Path) (path.Ext .Path) "") }}
+          {{- if and (ge $date (float (first 4 $basename))) (le $date (float (last 4 $basename))) -}}
+            {{ $.Scratch.Set "schemaslast" . }}
+          {{- end -}}
+        {{- end -}}
+        {{ with $.Scratch.Get "schemaslast" }}
+          <li class="enlarge-link card-border p-1">
+            <h3 id="plan" class="h4">
+              <a class="link-text" href="{{ .Permalink }}" aria-labelledby="plan">Schéma pluriannuel de mise en accessibilité</a>
+            </h3>
+          </li>
+        {{- else -}}
+        <li class="enlarge-link card-border">
+          <h3 id="plan" class="h4">
+            Aucun Schéma pluriannuel
+          </h3>
+        </li>
+        {{- end -}}
+      {{- end -}}
+      {{- with (where .Site.RegularPages "Section" "plans") -}}
+        {{ range . }}
+          {{- if (eq $date (replace (path.Base .Path) (path.Ext .Path) "")) -}}
+            {{ $.Scratch.Set "planslast" . }}
+          {{- end -}}
+        {{- end -}}
+        {{ with $.Scratch.Get "planslast" }}
+          <li class="enlarge-link card-border p-1">
+            <h2 id="plan" class="h4">
+              <a class="link-text" href="{{ .Permalink }}" aria-labelledby="plan">Plan d’actions de l’année en cours</a>
+            </h2>
+          </li>
+        {{- else -}}
+        <li class="enlarge-link card-border">
+          <h2 id="plan" class="h4">
+            Aucun Plan d’actions
+          </h2>
+        </li>
+        {{- end -}}
+      {{- end -}}
+    </ul>
+  </div>
+  <h2 class="mt-2">Liste des services numériques et leur déclaration d’accessibilité</h2>
+  <ul class="list-unstyled">
+  {{ range (where .Site.Pages "Section" "audits") }}
+    {{- if and (in (path.Base .Path) "index.md") (not (in "/audits/_index.md" .Path)) -}}
+    <li class="card-border-light"><a class="d-block p-1 link-text" href="{{ .Permalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  {{ end }}
+  </ul>
+</article>
