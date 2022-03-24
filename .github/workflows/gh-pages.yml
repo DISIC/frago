@@ -22,7 +22,7 @@ jobs:
           # extended: true
 
       - name: Build
-        run: git submodule add https://github.com/bertrandkeller/documentago.git/ themes/documentago && git submodule update --init --recursive && hugo --gc --minify --buildFuture --templateMetrics && ls
+        run: git submodule add https://github.com/bertrandkeller/documentago.git/ themes/documentago && git submodule update --init --recursive && ls && hugo --gc --minify --buildFuture --templateMetrics
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
