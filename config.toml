@@ -2,7 +2,7 @@ baseURL = ""
 languageCode = "fr-FR"
 title = "Documentation "
 themesDir = "../.."
-theme = "documentago"
+theme = ["documentago"]
 
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
