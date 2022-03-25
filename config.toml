@@ -31,19 +31,19 @@ summaryLength = 10
   google_analytics_id=""
   homepage_button_link = '/docs'
   homepage_button_text = 'Lire la documentation'
-  homepage_intro = 'Documentago est un site de documentation réalisé avec goHugo.'
+  homepage_intro = 'Frago est un outil pour la génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.'
   # homepage_image = '/images/terminal.gif'
 
   ## You can enable to add anchor links to header elements
   # enable_anchor_link = true
 
   [params.homepage_meta_tags]
-    meta_description = "Documentago est un site de documentation réalisé avec goHugo."
-    meta_og_title = "Documentago"
+    meta_description = "Frago est un outil pour la génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web."
+    meta_og_title = "Frago"
     meta_og_type = "website"
-    # meta_og_url = "https://hugo-whisper.netlify.app"
+    meta_og_url = "https://disic.github.io/frago/docs/"
     # meta_og_image = "https://raw.githubusercontent.com/JugglerX/hugo-whisper-theme/master/images/tn.png"
-    meta_og_description = "Documentago est un site de documentation réalisé avec goHugo."
+    meta_og_description = "Frago est un outil pour la génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web."
     meta_twitter_card = "summary"
     meta_twitter_site = "@bertrandkeller"
     meta_twitter_creator = "@bertrandkeller"
