@@ -31,31 +31,26 @@
   <div class="wrapper">
     {{ partial "header.html" . }}
 
-    {{ $displaySidebar := false }}
-    {{ range .Site.Params.mainSections }}
-    {{ if eq $.Section . }}
-    {{ $displaySidebar = true }}
-    {{ end }}
-    {{ end }}
+    {{- $displaySidebar := false -}}
+    {{- if intersect (slice $.Section) .Site.Params.mainSections -}}
+    {{- $displaySidebar = true -}}
+    {{- end -}}
 
-    {{ if $displaySidebar }}
     <div class="container pt-2 pt-md-6 pb-3 pb-md-6">
       <div class="row">
+        {{- if $displaySidebar -}}
         <div class="col-12 col-md-3 mb-3">
           <div class="sidebar">
             {{ partial "sidebar.html" . }}
           </div>
         </div>
-        <div class="col-12 col-md-9">
+        {{ end }}
+        <div class="col-12{{ if $displaySidebar }} col-md-9{{ end }}">
           {{ block "main" . }}
           {{ end }}
         </div>
       </div>
     </div>
-    {{ else }}
-    {{ block "main" . }}
-    {{ end }}
-    {{ end}}
   </div>
 
   {{ partial "sub-footer.html" . }}
@@ -70,8 +65,6 @@
   {{ else }}
   <script type="text/javascript" src="{{ ($scripts | minify | fingerprint).RelPermalink }}"></script>
   {{ end }}
-
-  {{ partial "google-analytics.html" . }}
 
 </body>
 
