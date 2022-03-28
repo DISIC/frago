@@ -60,13 +60,14 @@
       </article>
     {{- else -}}
       {{- partialCached "templates/projects.html" $context $context -}}
-      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/quality.html" $project)))) 1) -}}
+      {{- $baseURL := $.Site.BaseURL | default "/" -}}
+      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "%saudits/%s/quality.html" $baseURL $project)))) 1) -}}
         <article class="wrapper narrow">
           <h3 class="m-0">
             Recommandations<small
               >-
               <a
-                href="{{ site.BaseURL | default "/" }}{{ printf "/%s/quality.html" (path.Dir .Path) }}"
+                href="{{ site.BaseURL | default "/" }}{{ printf "%s/quality.html" (path.Dir .Path) }}"
                 aria-label="Accéder au rapport de recommandations"
                 >Accéder au rapport</a
               ></small
