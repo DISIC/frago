@@ -42,7 +42,6 @@
   {{- $.context.Scratch.Set "context" $contextlast -}}
   {{- if (not (index . $date)) -}}
     {{ warnf "%s/accessibility/context.yml is not well filed, maybe the last value for date last audit is missing" $project }}
-    sss
   {{- end -}}
 {{- end -}}
 {{/* Find if the audit file is by criteria or by tests */}}
