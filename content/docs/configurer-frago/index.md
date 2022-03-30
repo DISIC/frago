@@ -79,7 +79,6 @@ Le thème est présent dans le répertoire `themes/frago`. Vous pouvez le synchr
 baseURL = "/"
 title = "Mon administration" # Ce qui s'affiche sur le site.
 theme = "frago"
-removePathAccents = true
 
 # Utilisés dans les documents légaux
 [params]
@@ -96,12 +95,11 @@ removePathAccents = true
 ⚠️ Le langage Go doit être installé sur le système. Installé sur MacOS/Unix ou Linux, mais difficile à installer sur Windows sans les droits administrateurs.
 
 ```toml
+title = "Mon administration"
+
 [module]
   [[module.imports]]
     path = "github.com/disic/frago"
-
-title = "Mon administration"
-theme = "frago"
 
 # Utilisés dans les documents légaux
 [params]
@@ -114,19 +112,22 @@ theme = "frago"
 ##### Créer le fichier `go.mod` (commande dans le terminal)
 
 ```bash
-hugo mod init github.com/disic/frago
+hugo mod init github.com/organisme/nomdepotgit
 ```
-
-Modifier le contenu du fichier `go.mod` (Ajouter https://) :
-`module github.com/disic/frago => module https://github.com/disic/frago`
 
 ##### Créer le fichier `go.sum`  (commande dans le terminal)
 
 ```bash
-hugo mod get
+hugo mod get github.com/disic/frago
 ```
 
-#### Génération du site (mise en ligne)
+##### Mettre à jour le thème le fichier `go.sum`  (commande dans le terminal)
+
+```bash
+hugo mod get -u
+```
+
+### Génération du site (mise en ligne)
 
 Ligne de commande pour lancer le serveur en local sur votre machine
 
