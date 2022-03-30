@@ -5,7 +5,7 @@ date: 2022-03-25
 
 ## Découvrez FRAGO
 
-**FRAGO**, pour **F**rench governmental **R**eports for **A**ccessibility compliance with **GO**, est un outil créé pour suivre les démarches de mise en conformité (RGAA) de services numériques.
+**FRAGO**, pour **F**rench **R**eports for **A**ccessibility compliance with **GO**, est un outil créé pour suivre les démarches de mise en conformité (RGAA) de services numériques.
 
 Accéder au dépôt Github de FRAGO : <https://github.com/DISIC/frago/>
 
