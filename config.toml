@@ -1,7 +1,13 @@
 baseURL = ""
 
-title = "Mon titre"
-theme = ["frago"]
+title = "Le titre de mon observatoire FRAGO"
+
+[module]
+  [[module.imports]]
+    path = "github.com/disic/frago"
 
 [params]
   organisation = "Mon organisation"
+  [params.contacts]
+    email = "referent-accessibilite@douane.finances.gouv.fr"
+    address = "11, rue des deux Communes, 93558 Montreuil, cedex FRANCE"

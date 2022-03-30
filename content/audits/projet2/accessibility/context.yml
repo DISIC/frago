@@ -1,15 +1,15 @@
-website: "projet1.fr"
+website: "www.projet1.fr"
 contacts:
     email: stap-amendes@ministere.gouv.fr
     address : 139 rue de Bercy, 75572 Paris, Cedex 12
 audits:
-    2022-01-18:
+    2022-01-18: # Same date as files in accessibility folder :: Même date que les noms de fichier dans accessibility
       guidelines: "RGAA 4.1"
       condition: "Auto-évaluation"
       technologies: ["HTML", "CSS", "JS", "PDF"]
       tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
       environment: ["MacOS", "Firefox", "Safari", "VoiceOver"]
-    2020-04-01:
+    2020-04-01: # Same date as files in accessibility folder :: Même date que les noms de fichier dans accessibility
       guidelines: "RGAA 4.1"
       condition: "Auto-évaluation"
       technologies: ["HTML", "CSS", "JS", "PDF"]

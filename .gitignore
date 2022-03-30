@@ -1,7 +1,15 @@
-config-local.toml
-package-lock.json
-.vscode
-resources/_gen
+# Hugo
 public
-themesdev
+resources
 hugo.log
+.hugo_build.lock
+_vendor
+
+# OS file systems
+.DS_Store
+
+# Node
+package-lock.json
+
+# Editors
+.vscode
