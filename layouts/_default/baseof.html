@@ -54,26 +54,35 @@
   <style id="style-screen">
     {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>
-  <!-- CSS fonts file -->
-  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" as="style">
-  <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" media="screen">
-  </noscript>
+  {{- $.Scratch.Set "isCSS" false -}}
+  {{- $.Scratch.Set "isFONT" false -}}
+  {{- range readDir "./" -}}{{- if eq .Name "static" -}}{{- range readDir "./static" -}}
+    {{- if eq .Name "assets" -}}
+      {{- range readDir "./static/assets" -}}
+        {{- if eq .Name "css" }}{{- $.Scratch.Set "isCSS" (readDir "./static/assets/css") -}}{{- end -}}
+        {{- if eq .Name "fonts" -}}{{- $.Scratch.Set "isFONT" (readDir "./static/assets/fonts") -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}{{- end -}}{{- end -}}
   <!-- CSS style file -->
-  {{- if (fileExists "/static/assets/css") -}}
-  {{ range readDir "/static/assets/css" }}{{ if ne .Name "fonts.css"}}
+  {{- with ($.Scratch.Get "isCSS") -}}
+  {{- range . }}
   <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/{{ .Name }}" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/{{ .Name }}" media="screen">
   </noscript>
   {{- end -}}
-  {{ end }}
+  {{- else -}}
+  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" as="style">
+  <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}assets/css/fonts.css" media="screen">
+  </noscript>
   {{- end -}}
   <!-- Preload font files -->
   {{/* Find font files for preloading fonts */}}
-  {{- if (fileExists "./static/assets/fonts") -}}
-  {{- range readDir "./static/assets/fonts" -}}
+  {{- with ($.Scratch.Get "isFONT") -}}
+  {{- range . }}
   <link rel="preload" href="/assets/fonts/{{ .Name }}" as="font" crossorigin=anonymous>
   {{- end -}}
   {{- else -}}
