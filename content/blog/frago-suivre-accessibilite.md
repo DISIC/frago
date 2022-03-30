@@ -21,7 +21,7 @@ La démarche de mise en conformité (**RGAA**) présente plusieurs obstacles qui
 
 ### 1. L'archivage des audits
 
-La forme la plus courante rencontrée pour les audits d’accessibilité est celle du tableau `excel` envoyé par le moyen de la messagerie électronique. Un fichier « intangible » présent dans des boîtes de receptions, puis éventuellement stocké dans sur des serveurs partagés… et parfois oubliés.
+La forme la plus courante rencontrée pour les audits d’accessibilité est celle du tableau `excel` envoyé par le moyen de la messagerie électronique. Un fichier « intangible » présent dans des boîtes de réception, puis éventuellement stocké dans sur des serveurs partagés… et parfois oubliés.
 
 **FRAGO** publie des audits à partir des données d’audits stockées dans des fichiers `csv` (de type tableur). Ces données sont stockées dans un dépôt `git`.
 
@@ -29,7 +29,7 @@ En utilisant un fichier au format ouvert `csv` et en le stockant sur un système
 
 ### 2. La collecte des données
 
-Lorsqu’un organisme est sollicité pour transmettre ses résultats d’audits, un administrateur va aller demander à chaque responsable de services numérisés de lui envoyer les scores pour les collecter dans un nouveau fichier de type tableur. Ce fichier sera lui même transmis par messagerie électronique et stocké de la même manière que les audits, mais à un endroit différent et avec des chiffres dédoublés (les taux de conformité sont recopiés de fichiers en fichiers).
+Lorsqu’un organisme est sollicité pour transmettre ses résultats d’audit, un administrateur va aller demander à chaque responsable de services numérisés de lui envoyer les scores pour les collecter dans un nouveau fichier de type tableur. Ce fichier sera lui même transmis par messagerie électronique et stocké de la même manière que les audits, mais à un endroit différent et avec des chiffres dédoublés (les taux de conformité sont recopiés de fichiers en fichiers).
 
 **FRAGO** publie des pages audits sous format HTML, lisibles dans de simples navigateurs web. Leur mise en ligne permet le partage des informations sans avoir à passer par des séries de mails. Les résultats sont certifiés comme étant les plus à jours (a priori).
 
