@@ -39,6 +39,8 @@ Exemple d'architecture d'un projet avec `goHugo`, voir : [L'exemple d’architec
                     └── context.yml // Déclarer le contexte de chaque audit
 ```
 
+Récupérer un exemple de structure de contenu : <https://github.com/DISIC/frago/tree/content>/
+
 ### Installer le thème
 
 #### Télécharger le thème (pour un premier essai)
