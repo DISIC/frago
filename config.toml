@@ -11,6 +11,8 @@ pygmentsUseClasses = true
 # Controls how many words are printed in the content summary on the docs homepage.
 # See https://gohugo.io/content-management/summaries/
 summaryLength = 10
+[permalinks]
+  blog = '/:year/:month/:title/'
 
 [[menu.main]]
     name = "Accueil"

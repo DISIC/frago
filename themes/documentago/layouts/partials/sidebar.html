@@ -1,6 +1,6 @@
 {{$currentNode := .}}
 <div class="docs-menu">
-  <h4>{{ .Section | humanize }}</h4>
+  <h4>Menu</h4>
   <ul>
     {{ range where .Site.RegularPages "Section" .Section }}
     <li class="{{ if eq .File.UniqueID $currentNode.File.UniqueID }}active {{ end }}">
