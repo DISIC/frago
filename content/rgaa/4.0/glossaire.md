@@ -1,4 +1,0 @@
----
-title: Glossaire
-type: glossary
----

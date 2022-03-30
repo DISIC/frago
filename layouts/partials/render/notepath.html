@@ -1,9 +1,0 @@
-{{ $data := newScratch }}
-{{ $path := printf "content/%s" (path.Dir .Path) }}
-{{- range $key, $value := readDir (printf "content/%s" (path.Dir .Path)) -}}
-  {{- $file := .Name -}}
-  {{- if gt (len ((intersect (slice $file) (slice "quality.md" "recommendation.md" "recommendations.md" "notes.md" "note.md")))) 0 -}}
-    {{- $data.SetInMap "notes" (string $key) ((readFile (printf "%s/%s" $path $file)) | markdownify) -}}
-  {{- end -}}
-{{- end -}}
-{{ return ($data.Get "notes") -}}

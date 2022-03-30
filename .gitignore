@@ -1,8 +1,7 @@
-# Hugo
-public
-
-# OS file systems
-.DS_Store
-
-# Editors
+config-local.toml
+package-lock.json
 .vscode
+resources/_gen
+public
+themesdev
+hugo.log

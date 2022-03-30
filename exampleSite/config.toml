@@ -1,7 +1,0 @@
-baseURL = ""
-
-title = "Mon titre"
-theme = ["frago"]
-
-[params]
-  organisation = "Mon organisation"
