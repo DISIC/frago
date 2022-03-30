@@ -5,7 +5,7 @@ description = "Tool for a French governemental Reports for Accessibility complia
 homepage = "https://github.com/disic/frago/"
 tags = ["audits", "accessibility", "compliance","RGAA","quality","front-end"]
 min_version = 0.8
-theme_version = "1.6.2"
+theme_version = "1.6.9"
 
 [author]
   name = "Bertrand Keller"
