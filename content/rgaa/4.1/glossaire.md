@@ -1,5 +1,5 @@
 ---
-title: Glossaire RGAA
+title: Glossaire RGAA 4.1
 type: glossary
 menu:
   footer:

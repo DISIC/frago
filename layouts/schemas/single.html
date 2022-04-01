@@ -6,8 +6,8 @@ Schéma Pluriannuel
 {{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
 {{- $contact      := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
 {{- $rangedate    := cond (not .Params.rangedate) .Site.Params.rangedate .Params.rangedate -}}
-{{- $dateStart    := (first 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
-{{- $dateEnd      := (last 4 (replace (path.Base $path) (path.Ext $path) "")) -}}
+{{- $dateStart    := first 4 (replace (path.Base $path) (path.Ext $path) "") -}}
+{{- $dateEnd      := last 4 (replace (path.Base $path) (path.Ext $path) "") -}}
 {{- $dateStart    := cond (ne (len (findRE "(\\d{4})" $dateStart)) 0) ($dateStart) (cond (not $rangedate.start) false $rangedate.start) -}}
 {{- $dateEnd      := cond (ne (len (findRE "(\\d{4})" $dateEnd)) 0) ($dateEnd) (cond (not $rangedate.end) false $rangedate.end) -}}
 {{- $teamNumber   := .Params.team.number -}}
