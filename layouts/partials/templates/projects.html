@@ -241,6 +241,37 @@
       {{- end -}}
       {{- end -}}
     {{- end -}}
+
+    {{- with (index (index (partialCached "render/actions.html" .).actions (string (now.Format "2006"))) .Title) -}}
+    <h2 class="text-center">Actions de la démarche en {{ (now.Format "2006") }}</h2>
+    <table>
+      <thead>
+        <tr>
+        <th class="text-left">Type</th>
+        <th>Action</th>
+        <th>Détails</th>
+        <th>Avancement</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{- range $key, $value := . }}
+        <tr>
+          {{- range . -}}
+          <td>
+            {{- if findRE "(\\d{2})-(\\d{2})" . }}
+            De {{ index $.Site.Data.month (string (float (index (split . "-") 0))) }} à {{ index $.Site.Data.month (string (float (index (split . "-") 1))) }} {{ (string (now.Format "2006")) -}}
+            {{- else if (findRE "(\\d{2})/(\\d{2})" .) }}
+            le {{ (float (index (split . "/") 0)) }} {{ index $.Site.Data.month (string (float (index (split . "/") 1))) }} {{ (string (now.Format "2006")) -}}
+            {{- else -}}
+            {{ . }}
+            {{- end -}}</td>
+          {{- end -}}
+        </tr>
+      {{- end -}}
+    </tbody>
+    </table>
+    {{- end -}}
+
 </section>
 
 {{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}

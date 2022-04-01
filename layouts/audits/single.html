@@ -22,12 +22,7 @@
   {{- else -}}
     Synthèse
   {{- end -}}
-  {{ with $projectTitle }}
-    pour
-    {{ $projectTitle }}
-  {{ else }}
-    {{ (index (split (path.Dir .Path) "/") 1) }}
-  {{ end }}
+  {{ with $projectTitle }} pour {{ $projectTitle }} {{ else }} {{ (index (split (path.Dir .Path) "/") 1) }} {{ end }}
 {{- end -}}
 
 {{- define "main" -}}
@@ -60,18 +55,13 @@
       </article>
     {{- else -}}
       {{- partialCached "templates/projects.html" $context $context -}}
-      {{- $baseURL := $.Site.BaseURL | default "/" -}}
-      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "%saudits/%s/quality.html" $baseURL $project)))) 1) -}}
+      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/quality.html" $project) (printf "/audits/%s/recommendation.html" $project)))) 1) -}}
         <article class="wrapper narrow">
           <h3 class="m-0">
-            Recommandations<small
-              >-
-              <a
-                href="{{ site.BaseURL | default "/" }}{{ printf "%s/quality.html" (path.Dir .Path) }}"
-                aria-label="Accéder au rapport de recommandations"
-                >Accéder au rapport</a
-              ></small
-            >
+            Recommandations
+            <small> -
+              <a href="{{ site.BaseURL | default "/" }}{{ printf "%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a>
+            </small>
           </h3>
         </article>
       {{- end -}}

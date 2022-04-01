@@ -10,6 +10,7 @@ enableInlineShortcodes = true
 removePathAccents = true
 enableGitInfo = true
 
+disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
 
 [outputformats]
   _merge = 'deep'

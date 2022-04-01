@@ -34,7 +34,7 @@
   width: 100%;
 }
 
-.card-inline > *:first-child {
+.card-inline > h2 {
   flex: 1;
   margin: 0;
   max-width: 75%;

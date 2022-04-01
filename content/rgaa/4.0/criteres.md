@@ -1,3 +1,3 @@
 ---
-title: Critères RGAA
+title: Critères RGAA 4.0
 ---

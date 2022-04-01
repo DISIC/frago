@@ -3,6 +3,10 @@ title: Accueil
 outputs:
   - html
   - json
+disableKinds:
+  - RSS
+  - taxonomy
+  - taxonomyTerm
 cascade:
 - _target:
     path: /audits/**/index.md

@@ -1,0 +1,25 @@
+{{- define "main" -}}
+<h1 class="text-center wrapper">{{ .Title }}</h1>
+<article class="wrapper narrow">
+  {{ range (where (symdiff $.Site.RegularPages $.Site.Pages) ".Params.sitemapExclude" "ne" true) }}
+    {{ if not (intersect (slice .Type) (slice "categories" "tags")) }}
+    <h2>{{ .Title }} <small>- <a href="{{ .Permalink }}" aria-label="Lien vers {{ .Title }}">Lien</a></small></h2>
+    {{ with .RegularPages }}
+    <ul class="list-unstyled">
+      {{ range where . ".Params.sitemapExclude" "ne" true }}
+        <li><strong>=> <a class="link-text text-center" href="{{ .Permalink }}">{{ with .Title }}{{ . }}{{ else }}{{ .Type }}{{ end }}</a></strong>
+        {{ with (where .OutputFormats "Rel" "eq" "alternate") }}
+        <ul class="grid text-center flex-wrap list-unstyled mt-2">
+        {{- range . -}}
+          <li class="grid-center card-shadow p-1"><a class="link-text text-center" href="{{ .Permalink | safeURL }}">{{ path.Base .RelPermalink | safeURL }}</a></li>
+        {{- end -}}
+        </ul>
+        {{- end -}}
+        </li>
+      {{ end }}
+      </ul>
+  {{- end -}}
+  {{- end -}}
+  {{- end -}}
+</article>
+{{- end -}}
