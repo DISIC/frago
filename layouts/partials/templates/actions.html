@@ -20,7 +20,17 @@
     <tr>
       <td>{{ $key }}</td>
       {{- range . -}}
-      <td>{{ . }}</td>
+        <td>
+          {{- with (trim . " ") -}}
+          {{- if findRE "(\\d{2})-(\\d{2})" . }}
+          De {{ index $.Site.Data.month (string (float (index (split . "-") 0))) }} à {{ index $.Site.Data.month (string (float (index (split . "-") 1))) }} {{ (string (now.Format "2006")) -}}
+          {{- else if (findRE "(\\d{2})/(\\d{2})" .) }}
+          le {{ (float (index (split . "/") 0)) }} {{ index $.Site.Data.month (string (float (index (split . "/") 1))) }} {{ (string (now.Format "2006")) -}}
+          {{- else -}}
+          {{ . }}
+          {{- end -}}
+          {{- end -}}
+        </td>
       {{- end -}}
     </tr>
   {{- end -}}
