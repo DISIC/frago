@@ -1,7 +1,0 @@
-{{- if and (gt .WordCount 400 ) (.Params.toc) -}}
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "tableofcontents") }}
-<aside class="tableofcontents">
-<h2>Table of contents</h2>
-{{.TableOfContents | replaceRE "id=\"TableOfContents\"" "" | replaceRE "ul" "ul class=\"list-unstyled\"" | safeHTML }}
-</aside>
-{{- end -}}

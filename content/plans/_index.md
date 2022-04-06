@@ -1,3 +1,0 @@
----
-title: "Plan d’actions"
----

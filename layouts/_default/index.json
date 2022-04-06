@@ -1,5 +1,0 @@
-{
-  "contents":{{ .Content | plainify | jsonify }}
-  {{ if .Params.tags }},"tags":{{ .Params.tags | jsonify }}{{ end }}
-  {{ if .Params.categories }},"categories" : {{ .Params.categories | jsonify }},{{ end }}
-}
