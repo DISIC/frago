@@ -30,29 +30,29 @@ Le fichier de recommandation est fastidieux à remplir, mais permet de suivre de
         criterion: 9.1
         status: important # Criticité : critique, important, moindre
         delivery: lot 2 # Lot 2
-  - name: Saisie de la déclaration # Nom de la page
-    - name: Formulaire # Titre du bloc
-      errors:
-      - name: Label
-        path: /html/body/div[2]/div[2]/div/div/div/div/div/div[3]/table/tbody[1]/tr/td[3]/div/input
-        description: Certains champs `input` n’ont pas de `label`.
-      - name: Label + Input liés
-        path: /html/body/div[2]/div[2]/div/div/div/div/div/div[5]/div/div/div/div/div[2]/div[6]/label # Xpath
-        description: Aucun champs `input` n'est relié avec son `label` avec une attribut `for`.
-        delivery: lot 3 # Lot 3
-        status: critique # Criticité : critique, important, moindre
-        criterion: 11.1
-        checked: true # Si l'erreur est corrigée
-        codebefore: |- # Code présent sur le site audité
-          <div class="form-group">
-            <label class="col-md-2 control-label">Année (AAAA) </label>
-            <div class="col-lg-1 col-md-2"><input type="text" class="form-control"></div>
-          </div>
-        codeafter: |- # Proposition de code pour que le critère soit conforme
-          <div class="form-group">
-            <label class="col-md-2 control-label" for="year">Année (AAAA) </label>
-            <div class="col-lg-1 col-md-2"><input type="text" class="form-control" id="year"></div>
-          </div>
+    - name: Saisie de la déclaration # Nom de la page
+      - name: Formulaire # Titre du bloc
+        errors:
+        - name: Label
+          path: /html/body/div[2]/div[2]/div/div/div/div/div/div[3]/table/tbody[1]/tr/td[3]/div/input
+          description: Certains champs `input` n’ont pas de `label`.
+        - name: Label + Input liés
+          path: /html/body/div[2]/div[2]/div/div/div/div/div/div[5]/div/div/div/div/div[2]/div[6]/label # Xpath
+          description: Aucun champs `input` n'est relié avec son `label` avec une attribut `for`.
+          delivery: lot 3 # Lot 3
+          status: critique # Criticité : critique, important, moindre
+          criterion: 11.1
+          checked: true # Si l'erreur est corrigée
+          codebefore: |- # Code présent sur le site audité
+            <div class="form-group">
+              <label class="col-md-2 control-label">Année (AAAA) </label>
+              <div class="col-lg-1 col-md-2"><input type="text" class="form-control"></div>
+            </div>
+          codeafter: |- # Proposition de code pour que le critère soit conforme
+            <div class="form-group">
+              <label class="col-md-2 control-label" for="year">Année (AAAA) </label>
+              <div class="col-lg-1 col-md-2"><input type="text" class="form-control" id="year"></div>
+            </div>
 ```
 
 ![Qualité](https://raw.githubusercontent.com/DISIC/frago/master/images/qualite.png)
