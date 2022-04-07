@@ -127,6 +127,7 @@
                 {{- $data.SetInMap "countercriterionlist" (string $key) ($data.Get (printf "k-%s" $key)) -}}
                 {{- if $checked -}}
                   {{- $data.Add (printf "%s-checked" (string .)) (slice $name) -}}
+
                   {{- $data.SetInMap "countercheckedlist" (string .) ($data.Get (printf "%s-checked" (string .))) -}}
                 {{- end -}}
               {{- end -}}
@@ -155,25 +156,24 @@
     ].join(" ;");
     console.group('%cErreurs par critère listé{{ with ($data.Get "countercriterionlist") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
     {{- range $key, $criterion := $data.Get "countercriterionlist" }}
+      {{ . }}
       console.log(
           {{- $key := printf "%s.%s" (string (float (index (split $key ".") 0))) (string (float (index (split $key ".") 1))) -}}
           {{- $lenghtcriterion := len . }}
-          '%c{{- if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
+          '%c{{- if ($data.Get "countercheckedlist") }}{{ with (index ($data.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
           %c corrigées pour %c{{ $key }}%c qui a le statut %c
           {{- index (index ($data.Get "scores") "criteria").all $key -}}
-          %c\n-> Erreurs :
-          {{- range $id, $value := . -}}
-          {{ with ($data.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end }} {{ . }}
+          %c\n-> Erreurs : {{ range $id, $value := . -}}
+          {{ with ($data.Get "countercheckedlist") }}{{- if (intersect (index . $key) $criterion) }}%c{{ end }}{{ end }}{{ . }}
           {{- if ne (add $id 1) (len ($criterion)) }} /-/ {{ end }}
-          {{- with ($data.Get "countercheckedlist") }}{{- if (in (index . $key) .) }}%c{{ end }}{{ end -}}
           {{- end }}',
-          'padding: 2px; font-weight:bold; background: {{ if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ if eq (len .) $lenghtcriterion }}green{{ else }}firebrick{{ end }}{{ else }}firebrick{{ end }}{{ end }}; color: #fff',
+          'padding: 2px; font-weight:bold; background: {{ if ($data.Get "countercheckedlist") }}{{ with (index ($data.Get "countercheckedlist") $key) }}{{ if eq (len .) $lenghtcriterion }}green{{ else }}firebrick{{ end }}{{ else }}firebrick{{ end }}{{ end }}; color: #fff',
           BackgroundWhite,
           Background,
           BackgroundWhite,
           Background,
           'color: black;',
-          {{ range $id, $value := . }}{{ if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ if (in (index ($data.Get "countercheckedlist") $key) .) }}'font-weight: bold; color: darkgreen;','color: black;',{{ end }}{{ end }}{{ end }}{{ end }}
+          {{ range $id, $value := . }}{{ if ($data.Get "countercheckedlist") }}{{ if (index ($data.Get "countercheckedlist") $key) }}{{ if (in (index ($data.Get "countercheckedlist") $key) .) }}'font-weight: bold; color: darkgreen;',{{ else }}'color: black;',{{ end }}{{ end }}{{ end }}{{ end }}
       );
     {{ end }}
     console.groupEnd();

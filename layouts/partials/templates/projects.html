@@ -243,6 +243,7 @@
     {{- end -}}
 
     {{- with (partialCached "render/actions.html" .).actions -}}
+    {{- if .Title -}}
     {{- with (index (index . (string (now.Format "2006"))) .Title) -}}
     <h2 class="text-center">Actions de la démarche en {{ (now.Format "2006") }}</h2>
     <table>
@@ -274,6 +275,7 @@
       {{- end -}}
     </tbody>
     </table>
+    {{- end -}}
     {{- end -}}
     {{- end -}}
 
