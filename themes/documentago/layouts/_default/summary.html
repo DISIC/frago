@@ -2,6 +2,6 @@
   {{ if .Params.image }}
   <img alt="{{ .Title }}" src="{{ .Params.image }}" />
   {{ end}}
-  <h2 class="title-summary"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+  <h3 class="title-summary"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
   {{ if eq $.Section "docs" }}<p>{{ .Summary }}</p>{{ end }}
 </div>

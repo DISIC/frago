@@ -5,12 +5,21 @@
 {{ define "main" }}
 
 <h1 class="title">{{ .Title }}</h1>
-<div class="content">
-  {{ .Content }}
-</div>
-
-{{ range.Pages }}
-{{ .Render "summary" }}
-{{ end }}
+{{- $currentNode := . -}}
+{{- $data := newScratch -}}
+{{- $data.Set "section" (slice "false") -}}
+{{- range (where .Site.Pages "Section" .Section) -}}
+  {{- if in .Path "/_index.md" -}}
+    {{- $data.Add "section" .Path -}}
+  {{- end -}}
+{{- end -}}
+{{ range $data.Get "section" }}
+  {{- if ($.Site.GetPage .).Pages -}}
+  {{ if ne $currentNode.Path . }}<h2 class="mt-2 mb-2">{{ ($.Site.GetPage .).Title }}</h2>{{  end }}
+    {{- range ($.Site.GetPage .).RegularPages -}}
+      {{ .Render "summary" }}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
 {{ end }}

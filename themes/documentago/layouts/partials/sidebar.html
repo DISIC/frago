@@ -1,11 +1,22 @@
-{{$currentNode := .}}
+{{- $currentNode := . -}}
+{{- $data := newScratch -}}
+{{- $data.Set "section" (slice "false") -}}
+{{- range (where .Site.Pages.ByWeight "Section" .Section) -}}
+  {{- if in .Path "/_index.md" -}}
+    {{- $data.Add "section" .Path -}}
+  {{- end -}}
+{{- end -}}
 <div class="docs-menu">
-  <h4>Menu</h4>
-  <ul>
-    {{ range where .Site.RegularPages "Section" .Section }}
-    <li class="{{ if eq .File.UniqueID $currentNode.File.UniqueID }}active {{ end }}">
-      <a href="{{ .Permalink }}">{{ .Title }}</a>
-    </li>
-    {{ end }}
-  </ul>
+  {{ range $data.Get "section" }}
+    {{- if ($.Site.GetPage .).Pages.ByWeight -}}
+    {{ if ne $currentNode.Path . }}<h4 class="mt-2">{{ ($.Site.GetPage .).Title }}</h4>{{  end }}
+    <ul>
+      {{- range ($.Site.GetPage .).RegularPages -}}
+      <li class="{{ if eq .File.UniqueID $currentNode.File.UniqueID }}active {{ end }}">
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </li>
+      {{- end -}}
+    </ul>
+    {{- end -}}
+  {{- end -}}
 </div>
