@@ -69,7 +69,7 @@
         colors: [hslToHex(hslprimary),hslToHex(hslsecondary),hslToHex(hsltertiary),hslToHex(hslquartenary)]
     }
     const datapagechartpagecriteres = {
-        labels: [{{ range $id, $value := $.context.Scratch.Get "pageslistgraph" }}{{ if ne $id 0 }},{{ end }}"{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}"{{ end }}],
+        labels: [{{ range $id, $value := $scores.pagelist }}{{ if ne $id "0" }},{{ end }}"{{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}"{{ end }}],
         datasets: [
           {
             name: "Non Conforme",
