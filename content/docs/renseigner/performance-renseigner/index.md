@@ -10,4 +10,4 @@ Note : Lancer un audit `Lighthouse` à ma même date qu’un audit accessibilit�
 
 Éditer : `content/audits/nomdelademarche/lighthouse/YYYY-MM-JJ.json`
 
-![Performance](https://raw.githubusercontent.com/DISIC/frago/master/images/performance.png)
+![Performance](/frago/images/performance.png)

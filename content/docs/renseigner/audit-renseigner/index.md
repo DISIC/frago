@@ -34,4 +34,4 @@ audits:
       environment: ["MacOS", "Firefox", "Chrome", "ChromeVox"]
 ```
 
-![Accessibilite](https://raw.githubusercontent.com/DISIC/frago/master/images/accessibilite.png)
+![Accessibilite](/frago/images/accessibilite.png)

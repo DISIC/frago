@@ -19,13 +19,13 @@ Comprendre comment installer goHugo sur sa machine ou le configurer sur un syst�
 
 Consulter la page [Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) pour plus d‘informations.
 
-Github utilise son système interne GitHub Action. Un exemple de fichier de configuration est disponible : [gh-pages.yml](https://raw.githubusercontent.com/DISIC/frago/master/exampleSite/exampleFiles/.github/workflows/gh-pages.yml).
+Github utilise son système interne GitHub Action. Un exemple de fichier de configuration est disponible : [gh-pages.yml](/frago/exampleSite/exampleFiles/.github/workflows/gh-pages.yml).
 
 #### Héberger avec Gitlab
 
 Consulter la page [Host on Gitlab](https://gohugo.io/hosting-and-deployment/hosting-on-gitlab/) pour plus d‘informations
 
-Github utilise son système interne Gitlab CI. Un exemple de fichier de configuration est disponible : [.gitlab-ci.yml](https://raw.githubusercontent.com/DISIC/frago/master/exampleSite/exampleFiles/.gitlab-ci.yml).
+Github utilise son système interne Gitlab CI. Un exemple de fichier de configuration est disponible : [.gitlab-ci.yml](/frago/exampleSite/exampleFiles/.gitlab-ci.yml).
 
 #### Héberger sans GO
 

@@ -57,4 +57,4 @@ Le fichier de recommandation est fastidieux à remplir, mais permet de suivre de
             </div>
 ```
 
-![Qualité](https://raw.githubusercontent.com/DISIC/frago/master/images/qualite.png)
+![Qualité](/frago/images/qualite.png)
