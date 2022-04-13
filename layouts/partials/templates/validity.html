@@ -5,7 +5,7 @@
 
 {{- $data.Set "criterioncounter" 0 -}}
 {{- if fileExists (printf "%s/quality" (index $audit "pathproject")) -}}
-{{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "quality") (index $audit "project")) "auditfile-path") -}}
+{{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "recommendation") (index $audit "project")) "recommendation") -}}
 {{- if fileExists . -}}
 {{- range (readFile . | transform.Unmarshal) -}}
   {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{ $block := .name }}{{- range .errors -}}{{- $data.Delete "criterions" -}}{{- $data.Set "path" 0 -}}
@@ -23,7 +23,7 @@
   {{- end -}}{{- end -}}{{- end -}}
 {{- end -}}
 {{- else -}}
-{{- warnf "Folder \"%s/quality/\" is empty" (index $audit "pathproject") -}}
+{{- warnf "Folder \"%s/recommendation/\" is empty" (index $audit "pathproject") -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

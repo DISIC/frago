@@ -42,15 +42,15 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
-[outputFormats.qualitypage]
-  baseName = "quality"
+[outputFormats.recommendationpage]
+  baseName = "recommendation"
   mediaType = "text/html"
   notAlternative = false
   permalinkable = true
   isHTML = true
-[outputFormats.qualitycsv]
-  baseName = "quality"
-  mediaType = "text/csv"
+[outputFormats.recommendation]
+  baseName = "recommendation"
+  mediaType = "application/json"
   isPlainText = true
   notAlternative = false
 [outputFormats.quality]
@@ -65,11 +65,6 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   notAlternative = false
   permalinkable = true
   isHTML = true
-[outputFormats.performancecsv]
-  baseName = "performance"
-  mediaType = "text/csv"
-  isPlainText = true
-  notAlternative = false
 [outputFormats.performance]
   baseName = "performance"
   mediaType = "application/json"

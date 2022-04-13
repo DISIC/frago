@@ -1,7 +1,7 @@
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $project   := (partial "render/projectpath" . .) -}}
+{{- $project   := (partialCached "render/projectpath" . .) -}}
 {{- $path      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 
 {{- if $project -}}

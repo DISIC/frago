@@ -1,10 +1,10 @@
 
 {{- define "title" -}}
   {{- $context      := . -}}
-  {{- $projectTitle := (.GetPage "./").Title -}}Audit Qualité {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+  {{- $projectTitle := (.GetPage "./").Title -}}Recommandations {{ with $projectTitle }}pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
 {{- end -}}
 {{- define "main" -}}
 {{/* Vars */}}
 {{- $context := . -}}
-{{- partialCached "templates/quality.html" (dict "context" $context) $context -}}
+{{- partialCached "templates/recommendation.html" (dict "context" $context) $context -}}
 {{- end -}}

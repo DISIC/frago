@@ -20,9 +20,9 @@
 {{- end -}}
 {{- end -}}
 
-{{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .context.Params.datafilename) $project "quality" .context.Params.datafilename) -}}
+{{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .context.Params.datafilename) $project "recommendation" .context.Params.datafilename) -}}
 {{- $data.Set "auditpath-csv" (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
-{{- $data.Set "scores" (partialCached "render/accessibility" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
+{{- $data.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
 {{ if in "/audits/_index.md" $context.Path }}
 
   <section class="wrapper">
@@ -31,8 +31,10 @@
 
 {{- else -}}
   <article class="wrapper narrow audit">
-  {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
-  <h1>Audit Qualité {{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
+  {{- if $project -}}
+  <p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>
+  {{- end -}}
+  <h1>Recommandations {{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
   {{/* START Display page note if exists */}}
     {{- with .context.Params.note -}}
     <div class="note">
@@ -47,8 +49,8 @@
 
   {{/* Condition about structure level */}}
   {{- $data.Set "pathimage" (replace (printf "./static/images/%s/quality/%s" $project ($data.Get "auditfile-name")) "//" "/")}}
-  {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
-    {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) .)) -}}
+  {{- with index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation") $project "recommendation") "auditfile-path" -}}
+    {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/recommendation" (dict "context" $context "project" $project "auditfile" .) .)) -}}
   {{- end -}}
 
   {{/* START Display page content if exists */}}
@@ -358,10 +360,10 @@
   {{- $project   :=  (partialCached "render/projectpath" . .) -}}
   {{- $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
   {{- if ne (len $alternate) 0 -}}
-  {{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputquality" (eq .Format.BaseName "quality") }}{{- end -}}{{- end -}}
+  {{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputrecommendation" (or (eq .Format.BaseName "recommendation")) }}{{- end -}}{{- end -}}
   {{- end -}}
-  {{- if and (ne (len $patharray) 1) (or (in . "quality.md") ($.Scratch.Get "outputquality")) -}}
-    {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality" "datafilename" .Params.datafilename) $project "quality" .Params.datafilename) -}}
+  {{- if and (ne (len $patharray) 1) (or (in . "quality.md") ($.Scratch.Get "outputrecommendation")) -}}
+    {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .Params.datafilename) $project "recommendation" .Params.datafilename) -}}
     {{- if ne (index $lastfile "auditfile-path") "/false" -}}
       {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
       {{ partial "utils/css.html" (dict "context" $context "filefolder" "overgo/object" "filename" "benchmark") }}
@@ -369,8 +371,8 @@
       {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
       {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
       {{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
-      {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/qualityBundle.css" -}}
-      {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/qualityBundle.js" -}}
+      {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/recommendationBundle.css" -}}
+      {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/recommendationBundle.js" -}}
       <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
       <script type="text/javascript" src="{{ $js.Permalink }}"></script>
       {{- range ($.Scratch.Get "auditfile") -}}
@@ -394,4 +396,3 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-

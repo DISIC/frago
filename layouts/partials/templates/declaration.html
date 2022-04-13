@@ -34,7 +34,7 @@
 {{/* END Load the criteria file for the good audit version */}}
 
 {{/* START Load Scores, context and pageslist */}}
-{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility" (dict "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
+{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
 {{- $date := (string (index $audit "auditfile-name")) -}}
 
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
