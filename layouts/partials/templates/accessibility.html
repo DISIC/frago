@@ -17,7 +17,7 @@
   {{- $data.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
   {{- $data.Set "auditpath-csv" (index ($data.Get "audits") "auditfile-path") -}}
   {{/* Display declaration tpl when output format is set */}}
-  {{- if (in .context.Permalink "declaration.html") -}}
+  {{- if and (in .context.Permalink "declaration.html") ($data.Get "audits") -}}
     {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
   {{- else -}}
   {{/* START Test if audit file exists */}}
@@ -351,8 +351,8 @@
 {{/* END Test if audit file exists */}}
 {{- end -}}
 {{/* Display declaration in accessibility page if no output format setted */}}
-{{ if not (.context.OutputFormats.Get "declarationpage") }}
-<hr class="divider">
-{{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
+{{- if and (not (.context.OutputFormats.Get "declarationpage")) ($data.Get "audits") -}}
+  <hr class="divider">
+  {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
 {{- end -}}
 
