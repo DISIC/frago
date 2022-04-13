@@ -6,7 +6,7 @@
 {{- $data.Set "pageslist" "" -}}
 {{- $data.Set "scores" "" -}}
 
-{{ if and (in "/audits/_index.md" $context.Path) (not (partialCached "render/issimpleproject.html" . .)) }}
+{{ if and (in "/audits/_index.md" $context.Path) (not (partialCached "render/issimpleproject.html" "" "")) }}
   <section class="wrapper">
   {{- partialCached "templates/projects-monitoring.html" $context $context -}}
   </section>
@@ -25,7 +25,7 @@
 
     {{- $data.Set "auditfile-csv" (getCSV "," ($data.Get "auditpath-csv")) -}}
     {{/* Calculate accessibility compliance */}}
-    {{- $data.Set "scores" (partialCached "render/accessibility" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
+    {{- $data.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
 
     {{/* START Test if the csv file has a good name : YYYY-MM-DD.csv */}}
     {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (index ($data.Get "audits") "auditfile-name")))) -}}
@@ -145,17 +145,15 @@
 
       {{/* START Display audit context */}}
       {{- with ($data.Get "context") -}}
-      {{- with (index . (($data.Get "date").Format "2006-01-02")).audit -}}
-        <h2>Contexte</h2>
-        <p>
-          {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
-          {{ with .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-          {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-          {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
-        </p>
-      {{- end -}}
-      {{- else -}}
-      {{- warnf "Context is missing in %s" $project -}}
+        {{- with (index . (($data.Get "date").Format "2006-01-02")).audit -}}
+          <h2>Contexte</h2>
+          <p>
+            {{ with .guidelines }}<strong>Version du référentiel&nbsp;: </strong>{{ . }}<br>{{ end }}
+            {{ with .technologies }}<strong>Technologies utilisées sur le site&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+            {{ with .tools }}<strong>Outils pour réaliser l’audit&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+            {{ with .environment }}<strong>Environnement de test&nbsp;: </strong>{{ delimit . ", " }}<br>{{ end }}
+          </p>
+        {{- end -}}
       {{- end -}}
       {{/* END Display audit context */}}
 

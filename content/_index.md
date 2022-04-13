@@ -16,10 +16,10 @@ cascade:
     - declaration
     - declarationpage
     - accessibility
-    - quality
+    - recommendation
     - performance
     - accessibilitypage
-    - qualitypage
+    - recommendationpage
     - performancepage
 - _target:
     path: /audits/**/_index.md
@@ -34,10 +34,10 @@ cascade:
     - html
     - json
     - accessibility
-    - quality
+    - recommendation
     - performance
     - accessibilitypage
-    - qualitypage
+    - recommendationpage
     - performancepage
 - _target:
     path: /audits/index.md

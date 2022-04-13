@@ -3,7 +3,7 @@
 {{ $project    := .project   }}
 {{ $data       := newScratch }}
 {{ $auditfile  := .auditfile }}
-{{ $results    := partialCached "render/accessibility" (dict "auditfile" $auditfile) $auditfile }}
+{{ $results    := partialCached "render/accessibility.html" (dict "auditfile" $auditfile) $auditfile }}
 {{ $data.Delete "compliance" }}
 
 {{/* Declare all the variables */}}
@@ -23,7 +23,7 @@
       {{ $lastfile := (partialCached "render/lastfile.html" (dict "project" $project "type" "accessibility") $project "accessibility") }}
       {{ if index $lastfile "auditfile-name" }}
         {{ with index $lastfile "auditfile-path" }}
-          {{ $file         := (partialCached "render/accessibility" (dict "auditfile" .) .) }}
+          {{ $file         := (partialCached "render/accessibility.html" (dict "auditfile" .) .) }}
           {{ $auditcontext := index (partialCached "render/context.html" (dict "context" $context "project" $project) $project) (index $lastfile "auditfile-name") }}
           {{ $data.SetInMap "compliance"           (string (add $id 1)) $file.scores.compliance }}
           {{ $data.SetInMap "complianceaverage"    (string (add $id 1)) $file.scores.complianceaverage }}

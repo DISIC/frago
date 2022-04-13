@@ -1,12 +1,12 @@
 
-{{/* Determine values from quality files */}}
+{{/* Determine values from recommendation files */}}
 {{ $pathlen   := len (split (path.Dir .context.Path) "/") }}
 {{ $auditfile := .auditfile }}
 {{ $data      := newScratch }}
 {{/* START Test if audit file not false */}}
 {{ if (ne $auditfile "/false") }}
   {{ $lastfile  := readFile $auditfile | transform.Unmarshal }}
-  {{ $data.Delete "counterquality" }}
+  {{ $data.Delete "counterrecommendation" }}
 
   {{ range $lastfile }}
     {{ $data.Set "countererrorstotal" 0 }}

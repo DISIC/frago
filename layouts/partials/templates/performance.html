@@ -24,7 +24,7 @@
     {{- if ne ($data.Get "lastfile") "/false" -}}
     <h2>Scores</h2>
     {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path" -}}
-      {{- partialCached "components/scores/performance" (dict "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) $project .)) -}}
+      {{- partialCached "components/scores/performance" (dict "counter" (partialCached "render/performance" (dict "context" $context "project" $project "auditfile" .) .)) -}}
     {{- end -}}
     {{- with ($data.Get "lastfile") -}}
     {{/* Vars with the last file of the lighthouse directory */}}

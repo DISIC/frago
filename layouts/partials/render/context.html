@@ -37,14 +37,14 @@
   {{ $contextpath := cond (fileExists (printf "/audits/%s/accessibility.md" $project)) (printf "/audits/%s/accessibility.md" $project) (cond (fileExists (printf "/audits/%s/_index.md" $project)) (printf "/audits/%s/_index.md" $project) (printf "/audits/%s/index.md" $project)) }}
   {{ with $context.GetPage $contextpath }}{{ $data.SetInMap "context" ($data.Get "datecontext") (dict "declared" .Params.accessibility "contacts" (cond (not .Params.accessibility.contacts) ($context.Site.Params.contacts) (.Params.accessibility.contacts)) "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" $contextpath) }}{{ end }}
   {{/* If content has only one project */}}
-  {{ if (partial "render/issimpleproject.html" .context) }}
-    {{ $contextpath := cond (fileExists "/audits/accessibility.md") ("/audits/accessibility.md") (cond (fileExists "/audits/_index.md") ("/audits/%_index.md") ("/audits/%s/index.md")) }}
+  {{ if (partialCached "render/issimpleproject.html" "" "") }}
+    {{ $contextpath := cond (fileExists "/audits/accessibility.md") ("/audits/accessibility.md") (cond (fileExists "/audits/_index.md") ("/audits/_index.md") ("/audits/index.md")) }}
     {{ with $context.GetPage $contextpath }}{{ $data.SetInMap "context" ($data.Get "datecontext") (dict "declared" .Params.accessibility "contacts" (cond (not .Params.accessibility.contacts) ($context.Site.Params.contacts) (.Params.accessibility.contacts)) "website" .Params.accessibility.website "audit" (.Params.accessibility.audit) "path" $contextpath) }}{{ end }}
   {{ end }}
 {{ end }}
 {{/* If context information doesn’t exist try to warn */}}
 {{ if not ($data.Get "context") }}
-  {{ warnf "Context is not declared for the project %s see the documentation" $context.Path }}
+  {{ warnf "Context is not declared for %s see the documentation" $context.Path }}
 {{ else }}
   {{ if and ($data.Get "datecontext") (index ($data.Get "context") ($data.Get "datecontext")).declared }}
     {{/*  if (cond (not .Params.accessibility.contacts) ($context.Site.Params.contacts) (.Params.accessibility.contacts)) }}
@@ -61,7 +61,7 @@
     {{ end }}
   {{ else }}
     {{/* This line Should debug "audits/_index.md" path for list.xxxx.json output */}}
-    {{ if and (ne (printf "%s/%s" (path.Dir $context.Path) (path.Base $context.Path)) "audits/_index.md") (partialCached "render/issimpleproject.html" . . ) }}
+    {{ if and (ne (printf "%s/%s" (path.Dir $context.Path) (path.Base $context.Path)) "audits/_index.md") (partialCached "render/issimpleproject.html" "" "") }}
       {{ warnf "Context is not declared for %s see the documentation - it can be done in files content/audits/%s or content/audits/%s/accessibility/context.yml" (cond (not $projectname) (printf "this project") (printf "the project %s" $project)) $context.Path $project }}
     {{ end }}
   {{ end }}

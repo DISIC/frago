@@ -1,6 +1,6 @@
 {{/* return the rootpath of the audits files */}}
 {{ $project := .project }}
-{{ $data := newScratch }}
+{{ $data    := newScratch }}
 {{ $data.Set "rootpath" "static" }}
 {{ $loop := (dict
     "accessibility"   (slice "accessibility" "rgaa")

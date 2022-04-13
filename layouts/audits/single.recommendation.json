@@ -5,14 +5,14 @@
 {{- $.Scratch.Delete "score" -}}
 
 {{- with .GetPage (printf "audits/%s/_index.md" $project) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
-{{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path" -}}
+{{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "recommendation") $project "recommendation") "auditfile-all-path" -}}
   {{- range $key, $path := . -}}
-    {{- $.Scratch.SetInMap "scorequality" (string $key) (partialCached "render/quality" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
+    {{- $.Scratch.SetInMap "scorerecommendation" (string $key) (partialCached "render/recommendation" (dict "context" $context "project" $project "auditfile" .) $project .) -}}
   {{- end -}}
 {{- end -}}
 {{- (dict
   "name" ($.Scratch.Get "title")
   "slug" $project
-  "scores" ($.Scratch.Get "scorequality")
+  "scores" ($.Scratch.Get "scorerecommendation")
 ) | jsonify -}}
 {{- end -}}
