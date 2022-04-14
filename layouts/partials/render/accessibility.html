@@ -33,14 +33,12 @@
 
     {{/* START Range columns of the csv file */}}
     {{ range $id, $value2 := after $auditmethodology . }}
-      {{ if or (eq (index (split . "|") 0) "c") (eq (index (split . "|") 0) "nc") }}
+
+      {{ $value2 := lower (index (split . "|") 0) }}
+      {{ if or (eq $value2 "c") (eq $value2 "nc") }}
         {{ $data.Add (printf "%s%s" $scorekey "render-is-empty") 1 }}
       {{ end }}
-      {{ if or
-        (eq (index (split . "|") 0) "c")
-        (eq (index (split . "|") 0) "nc")
-        (eq (index (split . "|") 0) "na")
-        (eq . "?") }}
+      {{ if or (eq $value2 "c") (eq $value2 "nc") (eq $value2 "na") (eq . "?") }}
         {{ $data.Add (printf "%s%s" $scorekey "totalTest") 1 }}
         {{ $data.Add (printf "%s%s" $scorekey "iCrit") 1 }}
       {{ end }}
@@ -58,11 +56,14 @@
           (string $crit)
           (($data.Get (printf "%s%s" $scorekey "critPageValues")))
         }}
-        {{ $data.SetInMap
-            (printf "%s%s" $scorekey "pagelist")
-            (string $id)
-            (index $pageslist $id)
+        {{/* If a page has only nt for all criteria */}}
+        {{ if (ne $value2 "nt") }}
+          {{ $data.SetInMap
+              (printf "%s%s" $scorekey "pagelist")
+              (string $id)
+              (index $pageslist $id)
           }}
+        {{ end }}
       {{ end }}
     {{ end }}
     {{/* END Range columns of the csv file */}}
@@ -114,27 +115,29 @@
       {{ if eq (len $value) 1 }}
         {{/* Set each test case if the array as uniq values */}}
 
-        {{ if eq (index (split (index $value 0) "|") 0) "?" }}
+        {{ $valuelower := lower (index (split (index $value 0) "|") 0) }}
+
+        {{ if eq $valuelower "?" }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
           {{ $data.SetInMap "AllCriteria" (string $id) "na" }}
         {{ end }}
 
-        {{ if eq (index (split (index $value 0) "|") 0) "na" }}
+        {{ if eq $valuelower "na" }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "critNA") (string $id) . }}
           {{ $data.SetInMap "AllCriteria" (string $id) "na" }}
         {{ end }}
 
-        {{ if eq (index (split (index $value 0) "|") 0) "nt" }}
+        {{ if eq $valuelower "nt" }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "critNT") (string $id) . }}
           {{ $data.SetInMap "AllCriteria" (string $id) "nt" }}
         {{ end }}
 
-        {{ if eq (index (split (index $value 0) "|") 0) "c"  }}
+        {{ if eq $valuelower "c"  }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "critC") (string $id) . }}
           {{ $data.SetInMap "AllCriteria" (string $id) "c" }}
         {{ end }}
 
-        {{ if eq (index (split (index $value 0) "|") 0) "nc" }}
+        {{ if eq $valuelower "nc" }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "critNC") (string $id) . }}
           {{ $data.SetInMap "AllCriteria" (string $id) "nc" }}
         {{ end }}
@@ -256,20 +259,27 @@
     {{ end }}
     {{/* END calculate compliance */}}
 
-    {{ $data.Set "total"                                 (cond (not $critCount) 0 (add (len $critCount) (len ($data.Get (printf "%s%s" $scorekey "critNA"))))) }}
+    {{ $data.Set (printf "%s%s" $scorekey "critC")  (cond (not ($data.Get (printf "%s%s" $scorekey "critC"))) slice ($data.Get (printf "%s%s" $scorekey "critC"))) }}
+    {{ $data.Set (printf "%s%s" $scorekey "critNC") (cond (not ($data.Get (printf "%s%s" $scorekey "critNC"))) slice ($data.Get (printf "%s%s" $scorekey "critNC"))) }}
+    {{ $data.Set (printf "%s%s" $scorekey "critNA") (cond (not ($data.Get (printf "%s%s" $scorekey "critNA"))) slice ($data.Get (printf "%s%s" $scorekey "critNA"))) }}
+    {{ $data.Set (printf "%s%s" $scorekey "critNAtest") (cond (not ($data.Get (printf "%s%s" $scorekey "critNA"))) (dict "0" "false") ($data.Get (printf "%s%s" $scorekey "critNA"))) }}
+    {{ $data.Set (printf "%s%s" $scorekey "critNT") (cond (not ($data.Get (printf "%s%s" $scorekey "critNT"))) slice ($data.Get (printf "%s%s" $scorekey "critNT"))) }}
+
+    {{ $data.Set "total"                                 (cond (not $critCount) 0 (add (len $critCount) (len (cond (not ($data.Get (printf "%s%s" $scorekey "critNA"))) slice ($data.Get (printf "%s%s" $scorekey "critNA")))))) }}
 
     {{ $data.SetInMap $scorekey "testtotal"              ($data.Get (printf "%s%s" $scorekey "totalTest")) }}
     {{ $data.SetInMap $scorekey "all"                    ($data.Get "AllCriteria") }}
-    {{ $data.SetInMap $scorekey "total"                  (merge $critCount ($data.Get (printf "%s%s" $scorekey "critNA"))) }}
-    {{ $data.SetInMap $scorekey "conforme"               (cond (not ($data.Get (printf "%s%s" $scorekey "critC"))) slice ($data.Get (printf "%s%s" $scorekey "critC"))) }}
-    {{ $data.SetInMap $scorekey "nonconforme"            (cond (not ($data.Get (printf "%s%s" $scorekey "critNC"))) slice ($data.Get (printf "%s%s" $scorekey "critNC"))) }}
-    {{ $data.SetInMap $scorekey "nonapplicable"          (cond (not ($data.Get (printf "%s%s" $scorekey "critNA"))) slice ($data.Get (printf "%s%s" $scorekey "critNA"))) }}
-    {{ $data.SetInMap $scorekey "nonteste"               (cond (not ($data.Get (printf "%s%s" $scorekey "critNT"))) slice ($data.Get (printf "%s%s" $scorekey "critNT"))) }}
+    {{ $data.SetInMap $scorekey "total"                  (cond (eq (index ($data.Get (printf "%s%s" $scorekey "critNAtest")) "0") "false") $critCount (merge $critCount ($data.Get (printf "%s%s" $scorekey "critNAtest")))) }}
+    {{ $data.SetInMap $scorekey "conforme"               ($data.Get (printf "%s%s" $scorekey "critC")) }}
+    {{ $data.SetInMap $scorekey "nonconforme"            ($data.Get (printf "%s%s" $scorekey "critNC")) }}
+    {{ $data.SetInMap $scorekey "nonapplicable"          ($data.Get (printf "%s%s" $scorekey "critNA")) }}
+    {{ $data.SetInMap $scorekey "nonteste"               ($data.Get (printf "%s%s" $scorekey "critNT")) }}
     {{ $data.SetInMap $scorekey "conformepage"           ($data.Get (printf "%s%s" $scorekey "pageC")) }}
     {{ $data.SetInMap $scorekey "nonconformepage"        ($data.Get (printf "%s%s" $scorekey "pageNC")) }}
     {{ $data.SetInMap $scorekey "pageaverage"            ($data.Get (printf "%s%s" $scorekey "pageAverage")) }}
     {{ $data.SetInMap $scorekey "pagelist"               ($data.Get (printf "%s%s" $scorekey "pagelist")) }}
     {{/* $data.SetInMap $scorekey "value"                  ($data.Get (printf "%s%s" $scorekey (printf "%s%s" $scorekey "critValues"))) */}}
+
   {{ end }}
   {{/* END Range array with test result par pages */}}
 

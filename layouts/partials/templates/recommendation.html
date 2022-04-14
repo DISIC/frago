@@ -1,8 +1,8 @@
 {{/* Var */}}
-{{- $patharray := split (path.Dir .Path) "/" -}}
-{{- $context := .context -}}
+{{- $patharray    := split (path.Dir .Path) "/" -}}
+{{- $context      := .context -}}
 {{- $data         := newScratch -}}
-{{- $project :=  (partialCached "render/projectpath" .context .context) -}}
+{{- $project      :=  (partialCached "render/projectpath" .context .context) -}}
 {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
 {{- $projectTitle := ($context.GetPage $projectPath).Title -}}
 {{- $data.Set "context"  . -}}
