@@ -15,7 +15,7 @@
 {{- $sectionTitle := (.Site.GetPage .Section).Title -}}
 <hr>
 {{- range $paginator.Pages -}}
-  <article class="p-1">
+  <article>
     <h2 class="h3"><a href="{{ .Permalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ $sectionTitle }} {{ replace (path.Base .Path) (path.Ext .Path) "" }}{{ end }}</a></h2>
     {{- if or .Date ($.Scratch.Get "hassection") -}}
     <p style="display:block;margin-top:-1.5em;">

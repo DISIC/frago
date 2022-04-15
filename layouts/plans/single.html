@@ -13,7 +13,7 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
       {{- $.Scratch.Add "date"   $dateStart -}}
       {{- $.Scratch.Add "date"   $dateEnd -}}
       {{- $.Scratch.Add "update" (((os.Stat .Path).ModTime).Format "02/01/2006") -}}
-      {{- $.Scratch.Add "params" (.Params) -}}
+      {{- $.Scratch.Add "params" (cond (not .Params) "" .Params) -}}
       {{- $.Scratch.Add "link"   (.Permalink) -}}
     {{- end -}}
   {{- end -}}

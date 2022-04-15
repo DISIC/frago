@@ -2,7 +2,7 @@
 Schéma Pluriannuel
 {{- end -}}
 {{- define "main" -}}
-{{- $path         := cond (eq .Path "schema.md") .Path (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path -}}
+{{- $path         := cond (eq .Path "schema.md") (index (last 1 (where .Site.RegularPages "Section" "schemas")) 0).Path .Path -}}
 {{- $organisation := cond (not .Params.organisation) .Site.Params.organisation .Params.organisation -}}
 {{- $contact      := cond (not .Params.contacts) .Site.Params.contacts .Params.contacts -}}
 {{- $rangedate    := cond (not .Params.rangedate) .Site.Params.rangedate .Params.rangedate -}}
@@ -22,10 +22,6 @@ Schéma Pluriannuel
     {{- end -}}
   <h1>Schéma Pluriannuel {{ if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) }}{{ if and $dateStart $dateEnd }}{{ $dateStart }}-{{ $dateEnd }}{{ end }}{{ end }}</h1>
   {{ if fileExists "content/schema.md" }}
-    {{- if ge (len (.GetPage "schema").Content) 5 -}}
-      {{ with .GetPage "schema" }}{{ .Content }}{{- end -}}
-    {{- end -}}
-    {{ else }}
     <h2 id="introduction">Introduction</h2>
     <p>L’article 47 de la loi n°2005-102 du 11 février 2005 pour l’égalité des droits et des chances, la participation
       et
@@ -214,7 +210,7 @@ Schéma Pluriannuel
     <p>Ce schéma pluriannuel est accompagné de plans annuels d’actions qui décrivent en détail les opérations mises en
       œuvre pour prendre en charge l’ensemble des besoins en termes d’accessibilité numérique de
       <strong>{{ $organisation }}</strong>.</p>
-  {{- end -}}
+  {{- end -}} 
 
   {{- $.Scratch.Set "isAction" false -}}
   {{- with (where .Site.RegularPages "Section" "plans") -}}
