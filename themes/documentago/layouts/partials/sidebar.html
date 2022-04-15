@@ -6,10 +6,10 @@
     {{- $data.Add "section" .Path -}}
   {{- end -}}
 {{- end -}}
-<div class="docs-menu">
+<nav id="secondary-menu" class="docs-menu" aria-labelledby="Navigation secondaire">
   {{ range $data.Get "section" }}
     {{- if ($.Site.GetPage .).Pages.ByWeight -}}
-    {{ if ne $currentNode.Path . }}<h4 class="mt-2">{{ ($.Site.GetPage .).Title }}</h4>{{  end }}
+    {{ if ne $currentNode.Path . }}<p class="h4 bold m-0 mt-2">{{ ($.Site.GetPage .).Title }}</p>{{  end }}
     <ul>
       {{- range ($.Site.GetPage .).RegularPages -}}
       <li class="{{ if eq .File.UniqueID $currentNode.File.UniqueID }}active {{ end }}">
@@ -19,4 +19,4 @@
     </ul>
     {{- end -}}
   {{- end -}}
-</div>
+</nav>

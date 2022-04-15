@@ -65,14 +65,14 @@
     color: lighten($black, 10%);
     font-weight: 400;
   }
-  h1 {
+  h1,.h1 {
     font-family: $font-family-base;
     font-size: 2.6rem;
     line-height: 1.4;
     font-weight: 300;
     margin-bottom: 40px;
   }
-  h2 {
+  h2,.h2 {
     font-size: 2.2rem;
     line-height: 1.4;
     font-weight: 300;
@@ -81,7 +81,7 @@
     margin-top: 30px;
     margin-bottom: 30px;
   }
-  h3 {
+  h3,.h3 {
     font-size: 1.8rem;
     line-height: 1.4;
     font-weight: 400;
@@ -89,7 +89,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  h4 {
+  h4,.h4 {
     font-size: 1.4rem;
     line-height: 1.4;
     font-weight: 500;

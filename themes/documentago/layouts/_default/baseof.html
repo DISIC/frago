@@ -35,6 +35,11 @@
 </head>
 
 <body class='page {{ block "body_classes" . }}{{ end }}'>
+  <div id="skip">
+    <a href="#main-menu">Navigation principale</a>
+    <a href="#content">Contenu principal</a>
+    <a href="#secondary-menu">Navigation secondaire</a>
+  </div>
   {{ partial "main-menu-mobile.html" . }}
   <div class="wrapper">
     {{ partial "header.html" . }}
@@ -53,7 +58,7 @@
           </div>
         </aside>
         {{ end }}
-        <article class="col-12{{ if $displaySidebar }} col-md-9{{ end }}">
+        <article id="content" class="col-12{{ if $displaySidebar }} col-md-9{{ end }}">
           {{ block "main" . }}
           {{ end }}
         </article>

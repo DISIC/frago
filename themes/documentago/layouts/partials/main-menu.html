@@ -1,4 +1,4 @@
-<div id="main-menu" class="main-menu">
+<nav id="main-menu" class="main-menu" aria-labelledby="Navigation principale">
   <ul>
     {{ $currentPage := . }}
     {{ range .Site.Menus.main }}
@@ -7,6 +7,6 @@
         <span>{{ .Name }}</span>
       </a>
     </li>
-    {{end}}
+    {{ end }}
   </ul>
-</div>
+</nav>
