@@ -1,6 +1,6 @@
 ---
 title: 'Configurer FRAGO'
-weight: 2
+weight: 3
 ---
 
 Comprendre comment configurer FRAGO pour la génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.
