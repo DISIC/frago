@@ -52,7 +52,7 @@
   {{- $counternonconformesum = add $counternonconformesum  ($.context.Scratch.Get "counternonconformetopic") -}}
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
-{{- if gt (len (index $scores.conformepage "0")) 3 -}}
+{{- if and (gt (len (index $scores.conformepage "0")) 3) (index $scores.nonconformepage "0") -}}
 <div id="chartpagecriteres-csv"></div>
 <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
 <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
