@@ -202,7 +202,7 @@
         {{- if .url -}}<p>URL : <a href="{{ .url }}">{{ .url }}</a></p>{{- end -}}
         {{- $data.Set "fileexist" false -}}
         {{- if (fileExists ($data.Get "pathimage")) -}}
-          {{ range (readDir ($data.Get "pathimage")) }}{{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
+          {{- range (readDir ($data.Get "pathimage")) }}{{- if eq (replace (.Name) ".png" "") ($name  | urlize) -}}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
         {{- end -}}
         {{- if $data.Get "fileexist" -}}
         <div class="benchmark grid grid-center lightbox-{{ $idpage }}">
@@ -250,16 +250,16 @@
             <dt id="{{ .name | urlize }}">{{ if .checked }}☒ {{ else }}☐ {{ end }}{{ .name }}
               {{- $data.Set "fileexist" false -}}
               {{- if (fileExists ($data.Get "pathimage")) -}}
-                {{ range (readDir ($data.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
+                {{- range (readDir ($data.Get "pathimage")) }}{{ if in (string .Name) (string $filename) }}{{- $data.Set "fileexist" true -}}{{ end }}{{ end }}
               {{- end -}}
               <small class="no-print">
-                {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
+                {{- if and $context.Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq $context.Site.Params.env "production"))) -}}
                   {{- if $data.Get "fileexist" -}}
                   &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
                   {{- end -}}
                 {{- else -}}
                   &nbsp;-&nbsp;
-                  {{- if $data.Get "fileexist" -}}
+                  {{- if $data.Get "fileexist" -}}ss
                   <a href="#{{ $filename }}">/{{ ($data.Get "auditfile-name") }}/{{ $filename }}</a>
                   {{- else -}}
                   {{ $filename }}

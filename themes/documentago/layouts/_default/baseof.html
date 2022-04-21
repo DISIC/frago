@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{{ block "title" . }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ .Site.Params.homepage_meta_tags.meta_description }}" />
+  <meta property="og:title" content="{{ with .Title }}{{ . }}{{ else }}{{ .Site.Params.homepage_meta_tags.meta_og_title }}{{ end }}" />
+  <meta property="og:type" content="{{ .Site.Params.homepage_meta_tags.meta_og_type }}" />
+  <meta property="og:url" content="{{ with .Permalink }}{{ . }}{{ else }}{{ .Site.Params.homepage_meta_tags.meta_og_url }}{{ end }}" />
+  <meta property="og:image" content="{{ $.Site.BaseURL | default "/" }}twittercard.png" />
+  <meta property="og:description" content="{{ .Site.Params.homepage_meta_tags.meta_og_description }}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="{{ .Site.Params.homepage_meta_tags.meta_twitter_site }}" />
+  <meta name="twitter:creator" content="{{ .Site.Params.homepage_meta_tags.meta_twitter_creator }}" />
+  <link rel="icon" href="{{ "favicon-32x32.png" | absURL}}">
+
+  {{ if .Site.IsServer }}
+  {{ $style := resources.Get "scss/style.scss" | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" true) }}
+  <link rel="stylesheet" href="{{ ($style).RelPermalink }}">
+  {{ else }}
+  {{ $style := resources.Get "scss/style.scss" | toCSS (dict "targetPath" "css/style.css" "enableSourceMap" false) }}
+  <link rel="stylesheet" href="{{ ($style | minify | fingerprint).RelPermalink }}">
+  {{ end }}
+  <!-- CSS fonts file -->
+  <link rel="preload" href="{{ $.Site.BaseURL | default "/" }}css/fonts.css" as="style">
+  <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}css/fonts.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="{{ $.Site.BaseURL | default "/" }}css/fonts.css" media="screen">
+  </noscript>
+  {{ block "header_css" . }}{{ end }}
+
+</head>
+
+<body class='page {{ block "body_classes" . }}{{ end }}'>
+  <div id="skip">
+    <a href="#main-menu">Navigation principale</a>
+    <a href="#content">Contenu principal</a>
+    <a href="#secondary-menu">Navigation secondaire</a>
+  </div>
+  {{ partial "main-menu-mobile.html" . }}
+  <div class="wrapper">
+    {{ partial "header.html" . }}
+
+    {{- $displaySidebar := false -}}
+    {{- if intersect (slice $.Section) .Site.Params.mainSections -}}
+    {{- $displaySidebar = true -}}
+    {{- end -}}
+
+    <main class="container pt-2 pt-md-6 pb-3 pb-md-6">
+      <div class="row">
+        {{- if $displaySidebar -}}
+        <aside class="col-12 col-md-3 mb-3">
+          <div class="sidebar">
+            {{ partial "sidebar.html" . }}
+          </div>
+        </aside>
+        {{ end }}
+        <article id="content  " class="col-12{{ if $displaySidebar }} col-md-9{{ end }}">
+          {{ block "main" . }}
+          {{ end }}
+        </article>
+      </div>
+    </main>
+  </div>
+
+  {{ $scripts := resources.Get "js/scripts.js" }}
+
+  {{ block "footer_js" . }}
+  {{ end }}
+
+  {{ if .Site.IsServer }}
+  <script type="text/javascript" src="{{ $scripts.RelPermalink }}"></script>
+  {{ else }}
+  <script type="text/javascript" src="{{ ($scripts | minify | fingerprint).RelPermalink }}"></script>
+  {{ end }}
+
+</body>
+
+</html>

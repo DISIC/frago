@@ -117,7 +117,7 @@
     {{/* START - If Recommendation */}}
     {{- if $recommendation -}}
       <h3 class="m-0">
-        Recommandation
+        Recommandations
         {{- with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "recommendation")) -}}
           {{- $AuditLink := cond (in $project (index . 0).Permalink) (index . 0).Permalink (printf "%saudits/%s%s.html" $context.Site.BaseURL (cond (not $project) "" (printf "%s/" $project)) (index . 0).Format.BaseName) -}}
           <small> - <a href="{{ $AuditLink }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small>
@@ -162,6 +162,16 @@
               })
           </script>
       {{- end -}}
+      {{- else -}}
+        {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/quality.html" $project) (printf "/audits/%s/recommendation.html" $project)))) 1) -}}
+          <h3 class="m-0">
+            Recommandations
+            <small> -
+              <a href="{{ site.BaseURL | default "/" }}{{ printf "%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a>
+            </small>
+          </h3>
+          <br>
+        {{- end -}}
       {{- end -}}
       {{/* END - If several recommendation files */}}
     {{/* END - If recommendation */}}
