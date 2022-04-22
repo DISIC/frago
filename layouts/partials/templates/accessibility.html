@@ -6,7 +6,7 @@
 {{- $data.Set "pageslist" "" -}}
 {{- $data.Set "scores" "" -}}
 
-{{ if and (in "/audits/_index.md" $context.Path) (not (partialCached "render/issimpleproject.html" "" "")) }}
+{{ if and (in "/audits/_index.md" $context.Path) (not (partialCached "render/issimpleproject.html" "arg" "arg")) }}
   <section class="wrapper">
   {{- partialCached "templates/projects-monitoring.html" $context $context -}}
   </section>

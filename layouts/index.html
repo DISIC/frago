@@ -16,7 +16,7 @@
   {{- else -}}
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
     {{/* If only one project */}}
-    {{- if (partialCached "render/issimpleproject.html" "" "") -}}
+    {{- if (partialCached "render/issimpleproject.html" "arg" "arg") -}}
       {{- partialCached "templates/projects.html" . . -}}
     {{/* If several projects :: call list of projects */}}
     {{- else -}}
