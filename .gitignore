@@ -1,5 +1,6 @@
 # Hugo
 public
+.hugo_build.lock
 
 # OS file systems
 .DS_Store
