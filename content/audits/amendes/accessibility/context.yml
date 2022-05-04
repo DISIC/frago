@@ -1,0 +1,23 @@
+website: "amendes.gouv.fr"
+contacts:
+    email: stap-amendes@dgfip.finances.gouv.fr
+    address : 139 rue de Bercy, 75572 Paris, Cedex 12
+audits:
+    2022-01-10:
+      guidelines: "RGAA 4.1"
+      condition: "Auto-évaluation"
+      technologies: ["HTML", "CSS", "JS", "PDF"]
+      tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+      environment: ["MacOS", "Firefox", "Chrome", "VoiceOver"]
+    2021-03-05:
+      guidelines: "RGAA 4.1"
+      condition: "Auto-évaluation"
+      technologies: ["HTML", "CSS", "JS", "PDF"]
+      tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+      environment: ["MacOS", "Firefox", "Chrome", "VoiceOver"]
+    2020-10-12:
+      guidelines: "RGAA 4.0"
+      condition: "Auto-évaluation"
+      technologies: ["HTML", "CSS", "JS", "PDF"]
+      tools: ["Wave", "AXE", "Web Developper","Usability Hike","Heading Maps"]
+      environment: ["MacOS", "Firefox", "Chrome", "VoiceOver"]

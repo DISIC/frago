@@ -1,0 +1,641 @@
+---
+- pages:
+  - name: Global au site
+    blocks:
+    - name: Page
+      errors:
+      - name: Titres de pages
+        description: Le titre des pages devrait être composée du titre de son contenu, suivi du nom du site
+        codebefore: "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+        codeafter: "<title>Site officiel unique de télépaiement | Amendes.gouv.fr</title>"
+        type: structure
+        status: moindre
+        checked: true
+    - name: Contenu
+      errors:
+      - name: Contenu - largeur
+        description: Le nombre de caractère maximum sur chaque ligne est trop important. Limiter la largeur de la page de contenu pour 70 caractères maximum
+        type: visuel
+        status: important
+      - name: Titre - casse
+        description: Les intitulés des titres devraient être en minuscule.
+        type: visuel
+        status: moindre
+        delivery: lot 09 - Titres
+    - name: Header
+      errors:
+      - name: Langue de la page
+        description: Le changement de langue ne modifie pas la langue du document
+          (ou pas toujours). Voir <https://stackoverflow.com/questions/26461711/angularjs-dynamic-lang-attribute-of-html>.
+        criterion: 8.4
+        status: moindre
+        type: code
+        codebefore: <html lang="en">
+        delivery: lot 01 - Langue
+        checked: true
+      - name: Traduction du titre de la page
+        description: Le changement de langue ne modifie pas le contenu de la balise `title`. Où le modifie parfois et parfois pas.
+        criterion: 8.8
+        type: code
+        status: moindre
+        codebefore: "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+        delivery: lot 01 - Langue
+        checked: true
+      - name: Langue URL
+        description: Le changement de langue ne modifie pas l’url de la page. Il n'est pas possible de faire de lien vers la bonne langue depuis l’ANTAI ou un autre site.
+        type: code
+        status: critique
+        delivery: lot 01 - Langue
+        checked: true
+    - name: Header
+      errors:
+      - name: Menu langues structure
+        description: Il est possible d’améliorer la structure du menu avec ce code. Ajout d'un attribut de `lang` pour la vocalisation.
+        criterion: 12.6
+        type: code
+        status: important
+        checked: true
+        codebefore: |-
+          <ul class="lang-selector no-print" role="navigation">
+            <li *ngFor="let lang of translate.getLangs(); let i=index">
+              <a (click)="translate.use(lang)"
+                [class.active]="translate.currentLang === lang"
+                [title]="choixLangues[i]">
+                {{lang.toUpperCase()}}
+              </a>
+            </li>
+          </ul>
+        codeafter: |-
+          <nav>
+            <ul class="lang-selector no-print" role="navigation">
+              <li *ngFor="let lang of translate.getLangs(); let i=index">
+                <a (click)="translate.use(lang)"
+                  [class.active]="translate.currentLang === lang"
+                  [title]="choixLangues[i]"
+                  [lang]="lang.toUpperCase()">
+                  <span aria-hidden=true>{{ lang.toUpperCase() }}</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        delivery: lot 01 - Langue
+      - name: Menu langues liens
+        description: Les liens n’ont pas d’attribut (ex `lang='es'`) permettant de savoir qu'on va être redirigé vers une page dans une autre langue et de prononcer l'intitulé dans la bonne langue (mais comme on change pas de page…).
+        criterion: 8.7
+        type: code
+        status: important
+        codebefore: <a href="javascript:void(0);">ES</a>
+        codeafter: <a href="javascript:void(0);" lang="es">ES</a>
+        delivery: lot 01 - Langue
+        checked: true
+      - name: Menu langues titre
+        description: Modifier l’attribut `title` des liens pour un attribut `aria-label`
+        type: code
+        status: important
+        codebefore: <a title="Je souhaite cette page en français" class="active" href="javascript:void(0);"> FR </a>
+        codeafter: <a aria-label="Je souhaite cette page en français" class="active" href="javascript:void(0);">FR</a>
+        criterion: 6.1
+        delivery: lot 07 - Liens
+        checked: true
+      - name: Menu langues couleur
+        description: Le contraste n‘est pas assez prononcé pour le lien inactif. Prendre un gris plus prononcé.
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+    - name: Contenu
+      errors:
+      - name: Landmark
+        description: Ajouter un titre pour la zone de contenu. Faire un lien le titre de la page.
+        type: code
+        status: moindre
+        codebefore: <main role="main">
+        codeafter: <main aria-labelledby="title-main">
+        criterion: 12.6
+        delivery: lot 03 - Structure
+        checked: true
+      - name: Landmark titre principal
+        description: Ajouter Une id sur tous les titres de page du site.
+        type: code
+        status: moindre
+        codebefore: <h2>
+        codeafter: <h1 id="title-main">
+        criterion: 12.6
+        delivery: lot 03 - Structure
+        checked: true
+    - name: Pied de page
+      errors:
+      - name: Landmark
+        description: Ajouter `role=contentinfo`
+        type: code
+        status: moindre
+        codebefore: <footer>
+        codeafter: <footer role="contentinfo">
+        criterion: 12.6
+        delivery: lot 03 - Structure
+        checked: true
+      - name: Liens - sites externes version alternative
+        description: Les liens dans les langues alternatives ne redirigent pas vers les versions des sites (externes) dans la même langue.
+        type: code
+        status: moindre
+  - name: Chargement
+    url: https://www.amendes.gouv.fr/tai/
+    blocks:
+    - name: Page
+      errors:
+      - name: Appel feuille de styles
+        description: La feuille CSS est bloquante dans le chargement de la page. Modifier le code pour ne plus rendre la CSS comme critique dans le chargement.
+        type: code
+        status: important
+        codebefore: <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css">
+        codeafter: |-
+          <link rel="preload" href="styles.145cb581b4910a74f4f8.css" as="style">
+          <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css" onload="this.media='all'">
+          <noscript>
+            <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css" media="screen">
+          </noscript>
+      - name: Styles inutiles
+        description: La page présente des styles apparement adaptés à des sites comportant des liens de tracking publicitaires. Pourquoi ces styles ? S'ils sont non utiles les supprimer.
+        type: code
+        status: moindre
+        codebefore: |-
+          <style type="text/css">
+            :root iframe[style="border: 0; width: 728px; height: 110px;"],
+            ...
+  - name: Accueil
+    url: https://www.amendes.gouv.fr/tai
+    blocks:
+    - name: Bannière
+      errors:
+      - name: Description couleur
+        description: Le fond situé sous le texte de description n'est pas assez constrasté.
+        type: visuel
+        status: important
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+    - name: Formulaire
+      errors:
+      - name: Champ Numéro de télépaiement placeholder
+        description: Le champ du numéro de télépaiement ne présente pas de placeholder pour l’aide à la saisie du bon numéro.
+        type: code
+        status: important
+        delivery: lot 04 - Formulaire
+      - name: Champ Numéro de télépaiement - type
+        description: Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.
+        type: code
+        status: moindre
+      - name: Champ Clé - placeholder
+        description: Le champ du numéro de télépaiement ne présente pas de placeholder pour l’aide à la saisie du bon numéro.
+        type: code
+        status: important
+        delivery: lot 04 - Formulaire
+      - name: Champ Clé - type
+        description: Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.
+        type: code
+        status: moindre
+      - name: Messages contextuels
+        description: La zone de message contextuel déplace la zone de saisie du formulaire. C'est gênant pour finir de remplir son numéro de paiement.
+        type: code
+        status: moindre
+      - name: Messages contextuels couleur
+        description: Le contraste n‘est pas assez prononcé. Prendre un rouge plus prononcé.
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+      - name: Erreurs formulaire
+        description: La zone d’erreur devrait se situer en premier parmi les éléments de formulaire.
+        type: code
+        status: important
+      - name: Label couleur
+        description: Le contraste n‘est pas assez prononcé. Prendre un gris plus prononcé.
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+      - name: Astérisque (*) couleur
+        description: Le contraste n‘est pas assez prononcé. Prendre un rouge plus prononcé.
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+      - name: Bouton couleur
+        description: Le bouton n’a pas d’état actif (`:active`)
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+    - name: Où trouver mon numéro de télépaiement et la clé ?
+      errors:
+      - name: Modale suppression
+        description: Est-ce que supprimer la modale, ajouter le menu accordéon directement sur la page d'accueil. Et faire que le lien d’ouverture de la modale ne serait pas un moyen plus simple de corriger les soucis d'accessibilités.
+        type: code
+        criterion: 7.1
+        delivery: lot 0 - Suppression
+        checked: true
+      - name: Modale
+        description: "La modale ne prend pas le focus clavier. Ressources : https://tympanus.net/codrops/2021/10/06/how-to-implement-and-style-the-dialog-element/"
+        type: code
+        criterion: 7.1
+        delivery: lot 06 - Modale
+        checked: true
+      - name: Modale fermeture esc
+        description: La modale ne se ferme pas en appuyant sur la touchde clavier `esc`.
+        type: code
+        criterion: 7.1
+        delivery: lot 06 - Modale
+        checked: true
+      - name: Modale fermeture reprise focus
+        description: Lors de la fermeture de la fenêtre modale, le focus doit revenir à l’endroit (bouton) qui a enclenché l’ouverture de la modale.
+        type: code
+        criterion: 7.1
+        delivery: lot 06 - Modale
+      - name: Accordéon - vocalisation de la flèche
+        description: La flèche à gauche des éléments d’accordéon est vocalisé par Voice-Over.
+        criterion: 7.1
+        delivery: lot 10 - Accordéon
+      - name: Accordéon - focus
+        description: L’accordéon ne prend pas le focus quand on navigue dans la modale
+        criterion: 7.1
+        delivery: lot 10 - Accordéon
+      - name: Accordéon - description
+        description: Le texte de la description n’est pas compréhensible.
+        type: texte
+        delivery: lot 10 - Accordéon
+        codebefore: "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs de 4,4,4 et 2 chiffres ou 5 blocs de 4,4,4,4 et 2 chiffres et la clé sur sa droite sur 2 chiffres.</p>"
+        codeafter: "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs avec 3 bloc de 4 chiffres plus un bloc de 2 chiffres ou bien 5 blocs avec 4 blocs de 4 chiffres et un bloc de 2 chiffres plus la clé sur sa droite avec un bloc de 2 chiffres.</p>"
+      - name: Accordéon - image texte
+        description: L’alternative texte ne décrit pas suffisamment l’image. Il devrait être indiqué le cas de figure précis que présente l’image.
+        criterion: 1.3
+        type: texte
+        status: important
+        codebefore: <img src="img/content/carte-paiement-ACO.jpg" alt="Où trouver le numéro de télépaiement et la clé ?">
+        codeafter: <img src="img/content/carte-paiement-ACO.jpg" alt="Pour une amende forfaitaire - Où trouver le numéro de télépaiement et la clé ?">
+        delivery: lot 08 - Images
+        checked: true
+      - name: Accordéon - image
+        description: Les images présentent une qualité médiocre. Le positionnement du numéro de télépaiement devrait être entouré.
+        type: texte
+        status: important
+        delivery: lot 08 - Images
+      - name: Accordéon - image figure
+        description: L’image pourrait être inclue dans une balise `<figure>` avec une `<figcaption>` pour décrire où se situe le numéro sur le formulaire de télépaiement.
+        criterion: 1.6
+        type: texte
+        status: moindre
+        delivery: lot 08 - Images
+    - name: Les autres moyens de payer à distance
+      errors:
+      - name: Liens vers autres moyens de paiement
+        description: Les liens ne sont pas valorisés de manières évidentes clicables.
+        type: visuel
+        status: moindre
+        criterion: 10.6
+        delivery: lot 07 - Liens
+    - name: À savoir
+      errors:
+      - name: Blocs actualités
+        description: Certaines actualités date de 2013. Est-ce qu’il s’agit d‘information, d’aides… a-t-on envie de consulter des brêves quand on vient payer une amende ? Nous proposons de supprimer ce bloc ainsi que toutes les pages de news (et liens depuis plan du site).
+        type: visuel
+        status: moindre
+        delivery: lot 0 - Suppression
+        checked: true
+      - name: Titre page niveau
+        description: Les titres devraient être des h3.
+        type: structure
+        status: moindre
+        criterion: 9.1
+        delivery: lot 09 - Titres
+      - name: Titre couleur
+        description: "Le contraste n‘est pas assez prononcé. Changer la couleur bleue du site de #097DAD à #0b6ba8."
+        type: visuel
+        status: moindre
+        criterion: 3.2
+        delivery: lot 02 - Couleur
+        checked: true
+      - name: Date
+        description: La balise contenant la date ne présente pas l’attribut <code>&lt;datetime&gt;</code>.
+        type: texte
+        status: moindre
+  - name: Actualité
+    url: https://www.amendes.gouv.fr/tai/actu/1
+    blocks:
+    - name: Page
+      errors:
+      - name: Titres de pages
+        description: Le titre des pages devrait être composé du titre de son contenu, suivi du nom du site.
+        codebefore: "<title>Actualités | Service de télépaiement des amendes</title>"
+        codeafter: "<title>Actualités | Amendes.gouv.fr</title>"
+        type: texte
+        delivery: lot 09 - Titres
+        checked: true
+      - name: Titres de pages texte
+        description: Le titre `<title>` des pages des actualités ne change pas en fonction des actualités.
+        codebefore: "<title>Actualités | Service de télépaiement des amendes</title>"
+        codeafter: "<title>Du nouveau dans l'utilisation du timbre-amende papier | Amendes.gouv.fr</title>"
+        type: texte
+        delivery: lot 09 - Titres
+        checked: true
+  - name: Vérification des informations
+    url: https://www.amendes.gouv.fr/tai/amende/33333122111221/29
+    blocks:
+    - name: Contenu
+      errors:
+      - name: Titre contenu
+        description: Le titre de la zone de contenu (titre bleu) reprend le contenu de la bannière. Il devrait préciser le contenu indiqué dans la zone qui la suit.
+        type: texte
+        status: moindre
+      - name: Liens - annuler
+        description: Le lien devrait s’appeler « retour à la page d’accueil » et avoir le style d’un lien et non d’un bouton. Nous proposons de supprimer ces liens (sur toutes les pages où il est présent), pour plus de simplicité.
+        criterion: 6.1, 6.2
+        type: texte
+        status: moindre
+        delivery: lot 0 - Suppression
+        checked: true
+      - name: La liste des documents des historiques de paiement
+        description: Cette liste pourrait être un tableau, aucune sémantique présente pour les données. Ou ajouter des aria-label avec le type de champ `<div aria-label="Montant de 600,00 €">`.
+        status: moindre
+    - name: Important
+      errors:
+      - name: Titre de la zone
+        description: Nommer la zone pour les lecteurs d’écran
+        type: code
+        criterion: 12.6
+        status: moindre
+        codebefore: |-
+          <aside>
+            <h3>IMPORTANT</h3>
+          </aside>
+        codeafter: |-
+          <aside class="no-print" aria-labelledby="title-complementary">
+            <h3 id="title-complementary">Important</h3>
+          </aside>
+        delivery: lot 03 - Structure
+        checked: true
+    - name: Formulaire
+      errors:
+      - name: Message alerte consignation
+        description: Le numéro de consignation devrait être séparé en plusieurs chiffres. 33394999999141 pour 3339 4999 9991 42.
+        type: texte
+        status: moindre
+      - name: Paiement - paiement fractionnée
+        description: Le message de description pour la zone de paiement fractionnée n’a pas de `aria-labelledby``.
+        type: texte
+        status: moindre
+        criterion: 7.5
+        delivery: lot 04 - Formulaire
+      - name: Message alerte - paiement fractionnée
+        description: Le message d’erreur n’a pas de `role="alert"`
+        type: texte
+        status: moindre
+        criterion: 7.5
+        delivery: lot 04 - Formulaire
+      - name: Groupement - paiement fractionnée
+        description: Devrait être dans un `fieldset`, son titre dans une `legend`
+        status: moindre
+        criterion: 7.5
+        delivery: lot 04 - Formulaire
+      - name: Champ valeur - paiement fractionnée
+        description: Le champ ne devrait pas avoir le `type=number`
+        status: important
+        criterion: 7.5
+        delivery: lot 04 - Formulaire
+  - name: Justificatif
+    url: https://www.amendes.gouv.fr/tai/paiement/confirmation/33335988812171/33/justificatif
+    blocks:
+    - name: Page
+      errors:
+      - name: Titre contenu
+        description: Le titre de la zone de contenu reprend le contenu de la bannière. Il devrait préciser le contenu indiquer dans le zone qui la suit. Ex. « Liste des informations du justificatif »
+        type: texte
+        status: moindre
+      - name: Lien - revenir à la page d’accueil
+        description: Le lien est présenté sous forme d’un bouton. Il doit avoir l'allure d‘un lien. Il est possible de supprimer ce bouton qui est redondant avec le logo présent dans le header.
+        type: visuel
+        status: moindre
+        criterion: 6.1
+        delivery: lot 07 - Liens
+        checked: true
+      - name: Lien - hover
+        description: Le bouton n'a pas le même effet de survol que le bouton sur la page d’accueil. Il est possible de supprimer ce bouton qui est redondant avec le logo présent dans le header.
+        type: visuel
+        status: moindre
+    - name: Status
+      errors:
+      - name: Message
+        description: Le message s'affiche comme une information concernant le parcours sur le site, alors que c'est une information de status de la contravention.
+        type: visuel
+    - name: Modale
+      errors:
+      - name: Affichage
+        description: La modale présente un bouton ”fermer” mal aligné, il semble manquer parfois un titre. Sur petit écran, elle s’affiche en haut et à gauche de l’écran
+        type: visuel
+        criterion: 7.1
+        delivery: lot 06 - Modale
+      - name: Fermeture croix
+        description: Le bouton de fermeture du haut n’a pas de texte, on ne peut pas savoir avec le lecteur d’écran, qu'il permet de fermer la modale (Fonctionnement acceptable sur les modales avec un bouton ”fermer” en bas mais pas dans tous les cas).
+        type: code
+        criterion: 7.1
+        delivery: lot 06 - Modale
+      - name: Fermeture bouton
+        description: Le bouton de fermeture du bas contient un initulé "fermer", il devrait indiquer "Fermer la fenêtre TITRE DE LA MODALE".
+        type: code
+        criterion: 7.1
+        delivery: lot 06 - Modale
+      - name: Titre
+        description: "La modale n‘a pas titre. Il semble y avoir un manque dans le code : `aria-labelledby='exampleModalLongTitle'` doit faire référence une `id`. Il devrait peut-être être inclue dans uen `<h4>`"
+        type: code
+        criterion: 7.1
+        codebefore: |-
+          <div aria-labelledby="exampleModalLongTitle" aria-modal="true" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-sm" ng-reflect-klass="modal-dialog" ng-reflect-ng-class="modal-sm">
+              <div class="modal-content">
+                <div class="modal-header"><button><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        codeafter: |-
+          <div aria-labelledby="modal-title" aria-modal="true" role="dialog" tabindex="-1">
+            <div class="modal-dialog modal-sm" ng-reflect-klass="modal-dialog" ng-reflect-ng-class="modal-sm">
+              <div class="modal-content">
+                <div class="modal-header"><button><span aria-hidden="true">×</span></button>
+                  <h4 id="modal-title" class="modal-title">Recevoir par courriel</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        delivery: lot 06 - Modale
+    - name: Saisir une adresse de courrier électronique
+      errors:
+      - name: Saisir une adresse mail - champ obligatoire
+        description: Le champ de saisi n’a pas d’attribut `required`
+        type: code
+        criterion: "11.10"
+        delivery: lot 04 - Formulaire
+      - name: Saisir une adresse mail - placeholder
+        description: "Le placeholder (`xxx.xxx@xxx.xx`) n’est pas parlant en synthèse vocal. Préférer : `prenom.nom@mail.com`"
+        type: code
+        delivery: lot 04 - Formulaire
+    - name: Obtenir le justificatif de règlement
+      errors:
+      - name: Titre de la zone
+        description: Nommer la zone pour les lecteurs d’écran
+        type: code
+        criterion: 12.6
+        status: moindre
+        codebefore: |-
+          <aside class="no-print">
+            <h3>Obtenir le justificatif de règlement :</h3>
+            <ul class="action-zone">
+              <li><button id="email"><span>Recevoir par courriel</span></button></li>
+              <li><button id="pdf"><span>Enregistrer en pdf</span></button></li>
+              <li class="secondary"><button id="print"><span>Imprimer</span></button></li>
+              <li class="secondary"><button id="poste"><span>Recevoir par voie postale</span></button></li>
+            </ul>
+          </aside>
+        codeafter: |-
+          <aside class="no-print" aria-labelledby="title-complementary">
+            <h3 id="title-complementary">Obtenir le justificatif de règlement :</h3>
+            <ul class="action-zone">
+              <li><button id="email"><span>Recevoir par courriel</span></button></li>
+              <li><button id="pdf"><span>Enregistrer en pdf</span></button></li>
+              <li class="secondary"><button id="print"><span>Imprimer</span></button></li>
+              <li class="secondary"><button id="poste"><span>Recevoir par voie postale</span></button></li>
+            </ul>
+          </aside>
+        delivery: lot 03 - Structure
+        checked: true
+    - name: Document imprimé
+      errors:
+      - name: Bandeau
+        description: Ne pas imprimer le bandeau en taille aussi importante.
+        type: visuel
+        status: important
+        criterion: 13.3
+        delivery: lot 11 - Affichage
+      - name: Logo
+        description: Revoir l’alignement du logo avec le texte.
+        type: visuel
+        status: important
+        criterion: 13.3
+        delivery: lot 11 - Affichage
+  - name: Choix modalités de réglement
+    url: https://www.amendes.gouv.fr/tai/paiement/33333122311221/15/1/choixModalitesReglement
+    blocks:
+    - name: Important
+      errors:
+      - name: Titre de la zone
+        description: Nommer la zone pour les lecteurs d’écran.
+        type: code
+        criterion: 12.6
+        status: moindre
+        codebefore: |-
+          <aside>
+            <h3>IMPORTANT</h3>
+          </aside>
+        codeafter: |-
+          <aside class="no-print" aria-labelledby="title-complementary">
+            <h3 id="title-complementary">Important</h3>
+          </aside>
+        delivery: lot 03 - Structure
+        checked: true
+  - name: Saisie Indicatif
+    url: https://www.amendes.gouv.fr/tai/paiement/33333111111221/1/saisieIndicatifOperation
+    blocks:
+    - name: Formulaire
+      errors:
+      - name: Groupement des champs de saisie
+        description: Les champs de saisie ne sont pas regroupés dans une balise de formulaire `<form>`.
+        type: code
+        status: critique
+        delivery: lot 04 - Formulaire
+        checked: true
+      - name: Groupement des champs de saisie - Intitulé
+        description: Les champs de saisie ne sont pas précédés d‘une legend `<legend>`.
+        criterion: 11.6
+        type: code
+        status: critique
+        delivery: lot 04 - Formulaire
+        checked: true
+      - name: Indicatif d'opération - mention « requis »
+        description: Le label de l’Indicatif d'opération n’indique pas que le champ est obligatoire.
+        criterion: "11.10"
+        type: code
+        status: critique
+        delivery: lot 04 - Formulaire
+        checked: true
+      - name: Zone message erreur
+        description: La zone de message d’erreur ne présente pas de <code>role='alert'</code>.
+        type: code
+        status: critique
+        criterion: 7.5
+        codebefore: <div class="message no-ok">
+        codeafter: <p class="message no-ok" role="alert">
+        delivery: lot 04 - Formulaire
+        checked: true
+      - name: Liens - annuler
+        description: Le lien devrait s’appeler « retour à la page d’accueil » et avoir le style d’un lien et non d’un bouton. Nous proposons de supprimer ces liens (sur toutes les pages où il est présent), pour plus de simplicité.
+        criterion: 11.9
+        type: texte
+        status: moindre
+        delivery: lot 0 - Suppression
+      - name: Illustration - image texte
+        description: L’alternative texte ne décrit pas suffisamment l’image. Il devrait être indiqué le cas de figure précis que présente l’image.
+        criterion: 1.3
+        type: texte
+        status: moindre
+        codebefore: <img _ngcontent-kuc-c66="" src="assets/img/content/Exemple_AFM_de.jpg" alt="Indicatif d'opération">
+        codeafter: <img _ngcontent-kuc-c66="" src="assets/img/content/Exemple_AFM_de.jpg" alt="Où trouver le numéro indicatif d'opération ?">
+        delivery: lot 08 - Images
+  - name: Glossaire
+    url: https://www.amendes.gouv.fr/tai/glossaire
+    blocks:
+    - name: Contenu
+      errors:
+      - name: Tableau de contenu
+        description: Le tableau ne présente pas styles appropriés pour son affichage sur petit écran (défilement).
+        type: visuel
+        status: moindre
+        criterion: 10.11
+        delivery: lot 05 - Tableau
+  - name: Foire aux questions
+    url: https://www.amendes.gouv.fr/tai/faq
+    blocks:
+    - name: Contenu
+      errors:
+      - name: Table - en-têtes
+        description: 'Les en-têtes du tableau de données de la FAQ ne sont pas correctement associées à chaque cellule. Voir : <https://developer.mozilla.org/fr/docs/Apprendre/HTML/Tableaux/Basics>'
+        criterion: 5.6
+        type: code
+        status: moindre
+        delivery: lot 05 - Tableau
+        checked: true
+      - name: Table - cellules
+        description: 'Les cellules du tableau de données de la FAQ ne sont pas correctement associées à chaque en-têtes. Voir : <https://developer.mozilla.org/fr/docs/Apprendre/HTML/Tableaux/Basics>'
+        criterion: 5.7
+        type: code
+        status: moindre
+        delivery: lot 05 - Tableau
+        checked: true
+  - name: Plan du site
+    url: https://www.amendes.gouv.fr/tai/plan
+    blocks:
+    - name: Page
+      errors:
+      - name: suppression de la page
+        description: La page plan du site n'est pas obligatoire pour ce type de site. Il est possible de la supprimer.
+        type: texte
+        status: moindre
+        criterion: 12.3
+        delivery: lot 11 - Affichage

@@ -1,7 +1,11 @@
 baseURL = "https://disic.github.io/frago/"
 languageCode = "fr-FR"
-title = "Documentation "
+title = "Documentation"
 theme = ["documentago"]
+
+[module]
+  [[module.imports]]
+    path = "github.com/disic/frago"
 
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
