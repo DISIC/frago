@@ -90,9 +90,9 @@
   {{/* END */}}
   {{/* Only if auditefile exists :: avoid problem when file is misread */}}
   {{ if and $auditfile ($data.Get (printf "%s%s" $scorekey "render-is-empty")) }}
-
-    {{/* START Calculate average score */}}
+    {{/* START Calculate average score :: Calcul du taux global (moyenne de conformité des pages) */}}
     {{ $lengthPageC := len ($data.Get (printf "%s%s" $scorekey "pageC")) }}
+    {{ if ne (len (index ($data.Get (printf "%s%s" $scorekey "pageC")) "0")) 0 }}
     {{ range $key, $array := ($data.Get (printf "%s%s" $scorekey "pageC")) }}
         {{ $lengthC  := (len $array) }}
         {{ $lengthNC := 0 }}
@@ -102,6 +102,7 @@
         {{ $value    := cond (ne (add $lengthC $lengthNC) 0) (float (sub 100 (div (mul (float $lengthNC) 100) (add $lengthC $lengthNC)) | lang.NumFmt 1)) 0 }}
         {{ $data.SetInMap (printf "%s%s" $scorekey "pageAverage") (string $key) $value }}
         {{ $data.Add (printf "%s%s" $scorekey "Average") (div $value $lengthPageC) }}
+    {{ end }}
     {{ end }}
     {{/* END Calculate average score */}}
 
