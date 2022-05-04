@@ -2,49 +2,55 @@
 {{- $path := print .image -}}
 {{- $url := $path -}}
 {{- $image := resources.Get $url -}}
-{{- if ge $image.Width "800" -}}
-  {{ $image800 := printf ", %s 800w" ($image.Resize "800x").Permalink }}
-{{- end -}}
-{{- if .title -}}
-<figure>
-{{- end -}}
-<link rel='preload' as='image' srcset='
-{{- if ge $image.Width "500" -}}
-  {{ ($image.Resize "500x").Permalink | safeURL }} 500w
-{{- end -}}
-{{- if ge $image.Width "800" -}}
-  ,{{ ($image.Resize "800x").Permalink }} 800w
-{{- end -}}
-{{- if ge $image.Width "1200" -}}
-  ,{{ ($image.Resize "1200x").Permalink | safeURL }} 1200w
-{{- end -}}
-{{- if ge $image.Width "1500" -}}
-  ,{{ ($image.Resize "1500x").Permalink | safeURL }} 1500w
-{{- end -}}'
-href='{{ ($image.Resize "500x").Permalink | safeURL }}'
-imagesizes='50vw'>
-<img
-width='{{ ($image.Resize "500x").Width }}'
-height='{{ ($image.Resize "500x").Height }}'
-loading="lazy"
-sizes="(min-width: 35em) 1200px, 100vw"
-srcset='
-{{- if ge $image.Width "500" -}}
-  {{ ($image.Resize "500x").Permalink | safeURL }} 500w
-{{- end -}}
-{{- if ge $image.Width "800" -}}
-  ,{{ ($image.Resize "800x").Permalink | safeURL }} 800w
-{{- end -}}
-{{- if ge $image.Width "1200" -}}
-  ,{{ ($image.Resize "1200x").Permalink | safeURL }} 1200w
-{{- end -}}
-{{- if ge $image.Width "1500" -}}
-  ,{{ ($image.Resize "1500x").Permalink | safeURL }} 1500w
-{{- end -}}'
-  src="{{ ($image.Resize "500x").Permalink | safeURL }}"
-  alt="{{ .alt }}"
->
-{{- if .title -}}
-<figcaption>{{ .title }}</figcaption>
-</figure>
+{{- with $image -}}
+  {{- if ge .Width "800" -}}
+    {{ $image800 := printf ", %s 800w" (.Resize "800x").Permalink }}
+  {{- end -}}
+  {{- with .title -}}
+  <figure>
+  {{- end -}}
+  <link rel='preload' as='image' srcset='
+  {{- if ge .Width "500" -}}
+    {{ (.Resize "500x").Permalink | safeURL }} 500w
+  {{- end -}}
+  {{- if ge .Width "800" -}}
+    ,{{ (.Resize "800x").Permalink }} 800w
+  {{- end -}}
+  {{- if ge .Width "1200" -}}
+    ,{{ (.Resize "1200x").Permalink | safeURL }} 1200w
+  {{- end -}}
+  {{- if ge .Width "1500" -}}
+    ,{{ (.Resize "1500x").Permalink | safeURL }} 1500w
+  {{- end -}}'
+  href='{{ (.Resize "500x").Permalink | safeURL }}'
+  imagesizes='50vw'>
+  <img
+  width='{{ (.Resize "500x").Width }}'
+  height='{{ (.Resize "500x").Height }}'
+  loading="lazy"
+  sizes="(min-width: 35em) 1200px, 100vw"
+  srcset='
+  {{- if ge .Width "500" -}}
+    {{ (.Resize "500x").Permalink | safeURL }} 500w
+  {{- end -}}
+  {{- if ge .Width "800" -}}
+    ,{{ (.Resize "800x").Permalink | safeURL }} 800w
+  {{- end -}}
+  {{- if ge .Width "1200" -}}
+    ,{{ (.Resize "1200x").Permalink | safeURL }} 1200w
+  {{- end -}}
+  {{- if ge .Width "1500" -}}
+    ,{{ (.Resize "1500x").Permalink | safeURL }} 1500w
+  {{- end -}}'
+    src="{{ (.Resize "500x").Permalink | safeURL }}"
+    alt="{{ .alt }}"
+  >
+  {{- with .title -}}
+  <figcaption>{{ . }}</figcaption>
+  </figure>
+  {{- end -}}
+{{- else -}}
+  <figure>
+    <img src="$url" alt=""/>
+  </figure>
 {{- end -}}
