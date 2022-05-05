@@ -1,7 +1,9 @@
 baseURL = "https://disic.github.io/frago/"
 languageCode = "fr-FR"
-title = "Documentation "
-theme = ["documentago"]
+title = "Documentation"
+
+theme = ["documentago", "github.com/disic/frago"]
+
 
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
