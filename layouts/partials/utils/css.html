@@ -1,9 +1,9 @@
 {{- $filepath := printf "/css/%s/%s.css" .filefolder .filename -}}
 {{- $css      := (resources.Get $filepath) -}}
 {{- if $css -}}
-  {{- $css      := $css | minify  -}}
+  {{- $css := $css | minify  -}}
   {{- if .inline -}}
-    <style id="style-screen">
+    <style>
       {{ (slice $css | resources.Concat $filepath | minify).Content | safeCSS }}
     </style>
   {{- else -}}

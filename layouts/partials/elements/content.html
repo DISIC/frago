@@ -1,6 +1,8 @@
 {{- $currentLang := site.Language.Lang }}
 {{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "main" "inline" "true") "main" -}}
 {{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "layout" "inline" "true") "layout" -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "overgo/config/colors" "inline" "true") "colors" -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "overgo/config/typography" "inline" "true") "typography" -}}
 {{- with (findRE "class=\"counter" .) -}}
   {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "counter") "counter" }}
 {{- end -}}
