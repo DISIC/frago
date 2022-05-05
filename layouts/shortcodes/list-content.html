@@ -1,7 +1,7 @@
 {{- $rangepages := where .Site.RegularPages "Section" (.Get "section") -}}
 {{- if $rangepages -}}
 <section class="section{{ if .Get "type" }}-{{ .Get "type" }}{{ end }} text-center">
-<div class="wrapper">
+<div class="fg-wrapper">
 <h2>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
 {{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}

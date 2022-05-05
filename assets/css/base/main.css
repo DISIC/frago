@@ -2,6 +2,20 @@
 /// Main styles
 */
 
+:root {
+  --background-color: var(--color-primary-dark);
+
+  --base-font-name: "Marianne";
+  --title-font-name: var(--base-font-name);
+  --base-primary: 240;
+  --base-secondary: calc(var(--base-primary) + 125);
+  --link-color: var(--color-primary);
+  --text-color: hsl(0 0% var(--l-0));
+  --text-color-lighter: hsl(0 0% var(--l-10));
+  --title-color: var(--text-color);
+  --background-color-selection: var(--color-primary-light);
+}
+
 /* = section = */
 
 section {
@@ -25,7 +39,7 @@ p + pre {
 
 article h2 + time,
 time + p,
-article h2 + .text-center {
+article h2 + p.text-center {
   display: block;
   margin: -1.5rem auto 1.5rem;
   width: 100%;
@@ -117,6 +131,7 @@ h1,
 }
 
 .link-more:hover {
+  color: currentColor;
   background-size: 100% 100%;
 }
 
@@ -161,11 +176,6 @@ h3 + time {
 .site-logo img {
   max-width: 100px;
   height: initial;
-}
-
-.grid > ul {
-  margin: 0;
-  padding-left: 1em;
 }
 
 /* Figure

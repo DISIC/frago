@@ -7,12 +7,12 @@
 {{- $data.Set "scores" "" -}}
 
 {{ if and (in "/audits/_index.md" $context.Path) (not (partialCached "render/issimpleproject.html" "arg" "arg")) }}
-  <section class="wrapper">
+  <section class="fg-wrapper">
   {{- partialCached "templates/projects-monitoring.html" $context $context -}}
   </section>
 
 {{- else -}}
-  <article class="wrapper narrow">
+  <article class="fg-wrapper narrow">
   {{/* Load the audit file */}}
   {{- $data.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" .context.Params.datafilename) $project "accessibility" .context.Params.datafilename) -}}
   {{- $data.Set "auditpath-csv" (index ($data.Get "audits") "auditfile-path") -}}
@@ -166,6 +166,7 @@
     {{- if and (gt (len ($data.Get "pageslist")) 1) -}}
     <h2>Liste des pages auditées</h2>
     {{/* Create a anchors menu with audited pages */}}
+    {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
     <div class="tableofcontents">
       <h3>Accéder aux pages auditées</h3>
       <nav>
@@ -352,7 +353,7 @@
 {{/* Display declaration in accessibility page if no output format setted */}}
 {{- if and (not (.context.OutputFormats.Get "declarationpage")) ($data.Get "audits") -}}
   <hr class="divider">
-  <article class="wrapper narrow">
+  <article class="fg-wrapper narrow">
     {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
   </article>
 {{- end -}}

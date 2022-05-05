@@ -9,7 +9,7 @@
 {{- $.Scratch.Set "tasknumber" slice -}}
 {{- $.Scratch.Set "answer" slice -}}
 
-<div class="wrapper">
+<div class="fg-wrapper">
 {{/* Find all task id */}}
 {{- range $key, $value := ($.Scratch.Get "auditfile")  -}}
   {{- $.Scratch.Add "userid" (slice (index . "Id user")) -}}
@@ -64,7 +64,7 @@
 {{- end -}}
 {{- end -}}
 
-<div class="wrapper">
+<div class="fg-wrapper">
 <p class="no-print" hidden>← <a href="{{ $.Site.BaseURL | default "/" }}projects/{{ $project }}/" class="link-more link-back">Retour à la page {{ $project }}</a></p>
 <h1>{{ .Title }} <small>{{ if .Params.tags }}{{ range .Params.tags }}pour <a href="{{ $.Site.BaseURL | default "/" }}tags/{{ . }}">{{ . }}</a>{{- end -}}{{- end -}}</small></h1>
 {{/* Range questions with array of answers inside */}}

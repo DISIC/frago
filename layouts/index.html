@@ -6,10 +6,11 @@
   {{/* If /schema.html exist */}}
   {{- if ne (len $alternate) 0 -}}
     {{- with $alternate -}}{{- range $key, $value := . -}}
-      <article class="wrapper narrow">
+      <article class="fg-wrapper narrow">
       {{- if eq .Format.BaseName "schema" -}}
         <h1>Schéma Pluriannuel</h1>
-        {{- partial "templates/schema.html" . | markdownify -}}
+        {{- $partial := (partialCached "templates/schema.html" . .) | markdownify -}}
+        {{- partialCached "elements/content.html" $partial $partial -}}
       {{- end -}}
     </article>
     {{- end -}}{{- end -}}
@@ -24,7 +25,7 @@
       {{- $partial := (partialCached "templates/projects-list.html" . .) -}}
       {{- partialCached "elements/content.html" $partial "projectslist" -}}
     {{- end -}}
-    <section class="wrapper narrow">
+    <section class="fg-wrapper narrow">
       {{ partialCached "elements/content.html" .Content .Content }}
     </section>
   {{- end -}}

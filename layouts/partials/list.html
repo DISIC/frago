@@ -13,7 +13,7 @@
 
 {{- if $.context.Scratch.Get "element" -}}
 <section class="section{{ if .type }}-{{ .type }}{{ end }} text-center">
-<div class="wrapper">
+<div class="fg-wrapper">
 <h2>{{ with .context.Site.GetPage .section }}{{ .Title }}{{ end }}</h2>
 <br>
 <ul class="grid">

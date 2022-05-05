@@ -3,8 +3,8 @@
 {{- $OutputFormats := cond (fileExists "content/audits/_index.md") ($context.GetPage "/audits/_index.md").OutputFormats (cond (fileExists "content/audits/index.md") ($context.GetPage "/audits/index.md").OutputFormats .OutputFormats) -}}
 
 {{- if and (ne $project "audits") (ne .Path "audits") -}}
-<section class="wrapper narrow">
-
+<section class="fg-wrapper narrow">
+    <p class="no-print">← <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
     {{/* Load lasts file */}}
     {{- $.Scratch.Set "accessibility-lastfile"  (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename) -}}
     {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path")     -}}
@@ -20,7 +20,7 @@
       {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.Scratch.Get "accessibility-path")) $context $project ($.Scratch.Get "accessibility-path") -}}
         {{- if ne (len .compliance) 1 -}}
           {{- $.Scratch.Set "subservice" true -}}
-          <div class="scores"><ul><li class="medal text-center d-inline-block"><span><b class="h2">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
+          <div class="scores grid"><ul><li class="medal text-center d-inline-block"><span><b class="h2">{{ .percentage }}%</b>Conformité moyenne</span></li></ul></div>
           <hr>
         {{- end -}}
       {{- end -}}
@@ -303,5 +303,6 @@
 {{/*- partial "list.html" (dict "context" . "section" "meetings") -*/}}
 {{/*- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -*/}}
 {{- else -}}
-  {{- partialCached "templates/projects-list.html" . . -}}
+{{- $partial := (partialCached "templates/projects-list.html" . .) -}}
+{{- partialCached "elements/content.html" $partial "projectslist" -}}
 {{- end -}}

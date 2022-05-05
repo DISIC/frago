@@ -1,5 +1,6 @@
 # Hugo
 public
+resources
 .hugo_build.lock
 
 # OS file systems

@@ -1,5 +1,5 @@
 {{- if .criteria.testtotal -}}
-<div class="scores">
+<div class="scores grid">
     <ul>
       <li class="counter text-center d-inline-block good"><span><b class="h2">{{ if .criteria.conforme -}}{{ len .criteria.conforme }}{{ else }}0{{ end }}</b><br>Critères conformes</span></li>
       <li class="counter text-center d-inline-block"><span><b class="h2">{{ if .criteria.nonapplicable }}{{ len .criteria.nonapplicable }}{{ else }}0{{ end }}</b><br>Critères non applicables</span></li>

@@ -119,7 +119,7 @@
       </div>
     {{- end -}}
     {{- $baseURL := $.Site.BaseURL | default "/" -}}
-    <div class="wrapper flex align-items-center padding-baseline">
+    <div class="fg-wrapper flex align-items-center padding-baseline">
       <div class="flex align-items-center">
         <a href="{{ $baseURL }}" title="Accueil - {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}" rel="home" class="site-logo">
           <picture>

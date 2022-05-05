@@ -13,7 +13,7 @@ Schéma Pluriannuel
 {{- $teamNumber   := .Params.team.number -}}
 {{- $webNumber    := cond (not .Params.website.number) (len (where .Site.RegularPages "Section" "audits")) (.Params.website.number) -}}
 {{- $appNumber    := cond (not .Params.application.number) "" (.Params.application.number) -}}
-<article class="wrapper narrow">
+<article class="fg-wrapper narrow">
     {{- if eq (getenv "HUGO_ENV") "dev" -}}
     <div hidden>
       <strong>{{ $path }}</strong><br>

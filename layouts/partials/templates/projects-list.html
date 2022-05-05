@@ -3,7 +3,7 @@
 {{- $.Scratch.Set "rangepages" (where .Site.Pages "Section" "audits") -}}
 {{- if ($.Scratch.Get "rangepages") -}}
   <section class="section text-center">
-    <div class="wrapper">
+    <div class="fg-wrapper">
       {{/* Build a map with all accessibility score for using it later in code :: maybe for catching progression or regression */}}
       {{- range sort ($.Scratch.Get "rangepages") ".Title" "desc" -}}
         {{- $project := partialCached "render/projectpath" . . -}}

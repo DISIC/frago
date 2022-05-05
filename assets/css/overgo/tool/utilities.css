@@ -55,7 +55,7 @@
   float: right;
 }
 
-.w-100 {
+.w-full {
   width: 100%;
 }
 
@@ -133,11 +133,11 @@
 
 /* Width */
 
-.w-100 {
+.wd-100 {
   width: 100px;
 }
 
-.w-120 {
+.wd-120 {
   width: 120px;
 }
 

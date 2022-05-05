@@ -7,7 +7,7 @@
 {{.Scratch.Set "Paginator" (.Paginate .RegularPagesRecursive) }}
 {{- end -}}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
-<article class="wrapper narrow">
+<article class="fg-wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- $.Scratch.Set "linksingle" .RelPermalink -}}
 {{- $.Scratch.Set "hassection" .Sections -}}

@@ -1,5 +1,5 @@
 {{- define "main" -}}
-<div class="wrapper">
+<div class="fg-wrapper">
 {{- partialCached "elements/content.html" .Content .Content -}}
 {{- with $.Site.Data.directory -}}
 {{- range sort . "name" "asc" -}}

@@ -5,7 +5,7 @@
 {{- $path      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 
 {{- if $project -}}
-<div class="wrapper">
+<div class="fg-wrapper">
   <h1>{{ .Title }}</h1>
   {{ partialCached "elements/content.html" .Content .Content }}
   <div class="grid">
@@ -22,7 +22,7 @@
 <!--$paginator-->
 {{ .Scratch.Set "Paginator" (.Paginate .Pages) }}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
-<article class="wrapper narrow">
+<article class="fg-wrapper narrow">
   <h1>{{ .Title }}</h1>
   {{ partialCached "elements/content.html" .Content .Content }}
   {{- $.Scratch.Set "linksingle" .RelPermalink -}}

@@ -3,7 +3,6 @@
 */
 
 .scores {
-  display: grid;
   overflow: hidden;
   align-items: stretch;
   margin: 0;

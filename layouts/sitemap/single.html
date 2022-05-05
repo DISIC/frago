@@ -1,6 +1,6 @@
 {{- define "main" -}}
 <h1 class="text-center wrapper">{{ .Title }}</h1>
-<article class="wrapper narrow">
+<article class="fg-wrapper narrow">
   {{ range (where (symdiff $.Site.RegularPages $.Site.Pages) ".Params.sitemapExclude" "ne" true) }}
     {{ if not (intersect (slice .Type) (slice "categories" "tags")) }}
     <h2>{{ .Title }} <small>- <a href="{{ .Permalink }}" aria-label="Lien vers {{ .Title }}">Lien</a></small></h2>

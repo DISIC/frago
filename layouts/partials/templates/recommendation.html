@@ -2,7 +2,7 @@
 {{- $patharray    := split (path.Dir .Path) "/" -}}
 {{- $context      := .context -}}
 {{- $data         := newScratch -}}
-{{- $project      :=  (partialCached "render/projectpath" .context .context) -}}
+{{- $project      := (partialCached "render/projectpath" .context .context) -}}
 {{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
 {{- $projectTitle := ($context.GetPage $projectPath).Title -}}
 {{- $data.Set "context"  . -}}
@@ -25,12 +25,13 @@
 {{- $data.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
 {{ if in "/audits/_index.md" $context.Path }}
 
-  <section class="wrapper">
-  {{- partialCached "templates/projects-monitoring.html" $context $context -}}
+  <section class="fg-wrapper">
+    {{- $partial := (partialCached "templates/recommendation.html" (dict "context" $context) $context) -}}
+    {{- partialCached "elements/content.html" $partial $partial -}}
   </section>
 
 {{- else -}}
-  <article class="wrapper narrow audit">
+  <article class="fg-wrapper narrow audit">
   {{- if $project -}}
   <p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>
   {{- end -}}
@@ -74,7 +75,7 @@
 
   <h2 class="page-break">Erreurs à corriger</h2>
   {{- $partial := (partialCached "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) $project "lot") -}}
-  {{- partialCached "elements/content.html" $partial "projectslist" -}}
+  {{- partialCached "elements/content.html" $partial "lot" -}}
   {{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
   {{- $cScores := ($data.Get "scores").scores.criteria.conforme -}}
@@ -103,6 +104,7 @@
 
   {{/* START Create a anchors menu */}}
   {{- with ($data.Get "auditfile") -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
   <div class="tableofcontents page-break">
   <h2>Accéder aux pages auditées</h2>
     <ul>
@@ -280,7 +282,7 @@
               {{- $criteriafile := index (index (index $.context.Site.Data ($data.Get "guidelinename")) ($data.Get "guidelineversion")).criteria.topics -}}
               {{- $thematiques  := index (split . ".") 0 -}}
               {{- $criteria     := index (split . ".") 1 -}}
-              {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($context.Scratch.Get "guidelinename") ($context.Scratch.Get "guidelineversion")) -}}
+              {{- $glossaire    := (printf "=\"%s%s/%s/glossaire/#" ($.context.Site.BaseURL | default "/") ($data.Get "guidelinename") ($data.Get "guidelineversion")) -}}
               {{- $s := where $criteriafile "number" "eq" (int ($thematiques)) -}}
               <dd class="details mt-1 mb-1">
                 <p class="summary">
@@ -355,45 +357,42 @@
   {{- end -}}
 {{- end -}}
 
-{{- define "script" -}}
-  {{- $patharray := split (path.Dir .Path) "/" -}}
-  {{- $context   := . -}}
-  {{- $project   :=  (partialCached "render/projectpath" . .) -}}
-  {{- $alternate := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
-  {{- if ne (len $alternate) 0 -}}
-  {{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputrecommendation" (or (eq .Format.BaseName "recommendation")) }}{{- end -}}{{- end -}}
-  {{- end -}}
-  {{- if and (ne (len $patharray) 1) (or (in . "quality.md") ($.Scratch.Get "outputrecommendation")) -}}
-    {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .Params.datafilename) $project "recommendation" .Params.datafilename) -}}
-    {{- if ne (index $lastfile "auditfile-path") "/false" -}}
-      {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
-      {{ partialCached "utils/css.html" (dict "context" $context "filefolder" "object" "filename" "benchmark") "benchmark" }}
-      {{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
-      {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
-      {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
-      {{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
-      {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/recommendationBundle.css" -}}
-      {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/recommendationBundle.js" -}}
-      <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
-      <script type="text/javascript" src="{{ $js.Permalink }}"></script>
-      {{- range ($.Scratch.Get "auditfile") -}}
-        {{- range $idpage, $p := .pages -}}
-        {{- $name := .name -}}
-        <script>
-          var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
-          {{- range $idblock,$b := .blocks -}}
-          var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
-          {{- end -}}
-        </script>
-        {{- end -}}
-      {{- end -}}
+{{- $patharray := split (path.Dir $context.Path) "/" -}}
+{{- $alternate := where (where $context.OutputFormats "Permalink" "eq" $context.Permalink) "Rel" "eq" "alternate" -}}
+{{- if ne (len $alternate) 0 -}}
+{{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputrecommendation" (or (eq .Format.BaseName "recommendation")) }}{{- end -}}{{- end -}}
+{{- end -}}
+{{- if and (ne (len $patharray) 1) (or (in $context "quality.md") (in $context "recommandation.md") (in $context "recommandations.md") ($.Scratch.Get "outputrecommendation")) -}}
+  {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .Params.datafilename) $project "recommendation" .Params.datafilename) -}}
+  {{- if ne (index $lastfile "auditfile-path") "/false" -}}
+    {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
+    {{ partialCached "utils/css.html" (dict "context" $context "filefolder" "object" "filename" "benchmark") "benchmark" }}
+    {{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
+    {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
+    {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}
+    {{- $jshighlight  := resources.Get "js/highlight.min.js" -}}
+    {{- $css          := slice $csslightbox $csshighlight | resources.Concat "/assets/js/recommendationBundle.css" -}}
+    {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/recommendationBundle.js" -}}
+    <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
+    <script type="text/javascript" src="{{ $js.Permalink }}"></script>
+    {{- range ($.Scratch.Get "auditfile") -}}
+      {{- range $idpage, $p := .pages -}}
+      {{- $name := .name -}}
       <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-        document.querySelectorAll('pre code').forEach((block) => {
-          hljs.highlightBlock(block);
-        });
-      });
+        var {{ printf "$%s%s" (replace ( $name | anchorize) "-" "") ($idpage | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }} figure a', {captionPosition:'bottom',loop: 'false'});
+        {{- range $idblock,$b := .blocks -}}
+        var {{ printf "$%s%s%s%s" (replace ( $name | anchorize) "-" "") (replace ( $b.name | anchorize ) "-" "") ($idpage | anchorize) ($idblock | anchorize) | safeJS }} = new SimpleLightbox('.lightbox-{{ $idpage }}-{{ $idblock }} figure a', {captionPosition:'bottom',loop: 'false'});
+        {{- end -}}
       </script>
+      {{- end -}}
     {{- end -}}
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    });
+    </script>
   {{- end -}}
 {{- end -}}
+

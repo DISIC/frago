@@ -15,14 +15,14 @@
 }
 
 .page,
-.wrapper {
+.fg-wrapper {
   margin-right: auto;
   margin-left: auto;
   width: 100vw;
   max-width: 100%;
 }
 
-.wrapper {
+.fg-wrapper {
   padding-right: var(--baseline);
   padding-left: var(--baseline);
   width: clamp(16rem, 90vw, var(--layout-max-width));
