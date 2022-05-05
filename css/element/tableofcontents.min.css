@@ -1,0 +1,1 @@
+.tableofcontents{margin:var(--baseline)s 0 calc(var(--baseline) * 2);padding:0 var(--baseline)var(--baseline);color:var(--text-color);border:1px solid var(--color-grey);background:var(--background-color-body,#fff)}.tableofcontents ul{margin:var(--baseline)0 0;padding-left:var(--baseline)}.tableofcontents a{color:var(--text-color)}.tableofcontents a{font-weight:700}

@@ -1,0 +1,786 @@
+---
+- pages:
+  - name: Global
+    blocks:
+    - name: Page
+      errors:
+      - name: Titres de pages
+        element: title
+        description: Le titre des pages devrait être composé du titre de son contenu, suivi du nom du site
+        criterion: ER-01
+        codebefore: "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+        codeafter: "<title>Site officiel unique de télépaiement | Amendes.gouv.fr</title>"
+        type: structure
+        status: moindre
+      - name: Titres
+        element: h1
+        description: La structure des titres devrait remonter d’un cran. h2 => h1 et h3 => h2. En supprimant le h1 du header (sur le logo).
+        criterion: '9.1'
+        type: texte
+        status: important
+        checked: true
+      - name: Liens d’évitement
+        element: nav
+        description: Il n’existe pas de liens d’accès rapides vers le contenu principal, le menu et le moteur de recherche.
+        criterion: '12.7'
+        type: structure
+        status: critique
+        checked: true
+        delivery: lot 1
+        codeafter: |-
+          <div id="skip-link">
+            <div class="container" role="list">
+              <div role="listitem">
+                <a href="#main">Aller au contenu</a>
+              </div>
+            </div>
+          </div>
+
+          <style>
+            #skip-link {
+              overflow: auto;
+              background: #272729;
+            }
+
+            #skip-link a {
+              display: block;
+              osition: absolute !important;
+              clip: rect(1px 1px 1px 1px);
+              clip: rect(1px, 1px, 1px, 1px);
+              overflow: hidden;
+              height: 1px;
+              margin: 0;
+              padding: 0;
+            }
+
+            .skip-link a:focus {
+                position: static !important;
+                clip: auto;
+                overflow: visible;
+                height: auto;
+                margin: 10px;
+                padding: 10px;
+                color: #ffffff;
+                text-decoration: none;
+            }
+          </style>
+      - name: Agrandissement texte
+        element: body
+        description: À 200%, des élements sortent du cadre de la page (3ème actualité),
+          apparition d'un scroll horizontal (sur certain périphérique).
+        criterion: 10.11.2
+        type: texte
+        status: critique
+        checked: true
+      - name: Police - Modifier
+        element: body
+        description: La police est Roboto. Le site <impots.gouv.fr> charge la police Open Sans. Modifier la police par défaut et appeler les bons formats (ex.woff2)
+        type: code
+        status: moindre
+        checked: true
+        delivery: lot 1
+      - name: Police - Preload
+        element: body
+        description: La police est appelé dans le CSS. Son chargement retarde le chargement de la CSS. Charger la police dans un fichier `font.css`, à part.
+        type: code
+        status: critique
+        checked: true
+    - name: Contenu
+      errors:
+      - name: Contenu - largeur
+        element: p
+        description: Le nombre de caractère maximum sur chaque ligne est trop important. Limiter la largeur de la page de contenu pour 70 caractères maximum
+        type: visuel
+        status: important
+        delivery: lot 1
+      - name: Contenu - interlignage
+        element: p
+        description: L’espacement entre les lignes de texte n‘est pas suffisant pour une bonne lisibilité du contenu. Augmenter l’interlignage.
+        type: visuel
+        status: important
+        checked: true
+        codebefore: |-
+          body {
+            line-height: 1;
+            background-color: #fff
+          }
+        codeafter: |-
+          body {
+            line-height: 1.5;
+            background-color: #fff
+          }
+        delivery: lot 1
+      - name: Contenu - zone 'sup'
+        element: p
+        description: L’élément de mise en forme `class='sup'` ne présente pas des marges permettant une bonne lisibilité.
+        type: visuel
+        status: important
+        checked: true
+        codebefore: |-
+          .sup {
+            margin-bottom: 0 1em;
+            border: 1px solid #ccc;
+          }
+        codeafter: |-
+          .sup {
+            margin-bottom: 1em 0;
+            padding: 1em 1em 2em;
+            border: 1px solid #ccc;
+          }
+        delivery: lot 1
+    - name: Header
+      errors:
+      - name: Retour accueil
+        element: a
+        description: Le lien de retour à l’accueil propose le contenu alternatif de
+          l’image comme texte. Il est possible de mettre un attribut <code>aria-label='Retour
+          à l’accueil de amendes.gouv.fr'</code>.
+        type: code
+        status: moindre
+        checked: true
+        delivery: lot 1
+        codebefore: <a routerlink="/tai" href="/tai">
+        codeafter: <a routerlink="/tai" href="/tai" aria-label="Retour à l’accueil
+          de amendes.gouv.fr">
+      - name: Menu langues
+        element: ul
+        description: Le menu de changement de langue, n'a pas de rôle navigation. Il doit soit être inclu dans une balise <code>&lt;nav&gt;</code>, soit comporter un attribut <code>role=navigation</code>.
+        criterion: 9.2.1
+        type: structure
+        status: critique
+        checked: true
+        delivery: lot 1
+        codebefore: <ul class="lang-selector no-print">
+        codeafter: <ul class="lang-selector no-print" role="navigation">
+      - name: Menu langues - aspect
+        element: ul
+        description: Le menu pourrait présenter des informations textuelles plutôt que visuelles. Supprimer les images pour du texte.
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+        codebefore: |-
+          <ul class="lang-selector no-print">
+            <li><a href="javascript:void(0);"><img alt="" src="img/design/flag/fr.jpg"><span class="skip">Je souhaite cette page en français</span></a></li>
+            <li><a href="javascript:void(0);"><img alt="" src="img/design/flag/en.jpg"><span class="skip">I wish to consult this web page in English</span></a></li>
+            <li><a href="javascript:void(0);"><img alt="" src="img/design/flag/de.jpg"><span class="skip">Ich möchte diese Webseite auf Deutsch konsultieren.</span></a></li>
+            <li><a href="javascript:void(0);"><img alt="" src="img/design/flag/nl.jpg"><span class="skip">Ik wil deze webpagina in het Nederlands raadplegen</span></a></li>
+            <li><a href="javascript:void(0);"><img alt="" src="img/design/flag/it.jpg"><span class="skip">Desidero consultare questo sito in italiano</span></a></li><li><a href="javascript:void(0);"><img alt="" src="img/design/flag/es.jpg"><span class="skip">Deseo consultar este página en español</span></a></li>
+          </ul>
+        codeafter: |-
+          <ul class="lang-selector no-print">
+            <li><a (click)="translate.use('fr')" [class.active]="this.translate.currentLang === 'fr'" title="Je souhaite cette page en français">FR</a></li>
+            <li><a (click)="translate.use('en')" [class.active]="this.translate.currentLang === 'en'" title="I wish to consult this web page in English">EN</a></li>
+            <li><a (click)="translate.use('de')" [class.active]="this.translate.currentLang === 'de'" title="Ich möchte diese Webseite auf Deutsch konsultieren.">DE</a></li>
+            <li><a (click)="translate.use('nl')" [class.active]="this.translate.currentLang === 'ne'" title="Ik wil deze webpagina in het Nederlands raadplegen"></a>NE</li>
+            <li><a (click)="translate.use('it')" [class.active]="this.translate.currentLang === 'it'" title="Desidero consultare questo sito in italiano">IT</a></li>
+            <li><a (click)="translate.use('es')" [class.active]="this.translate.currentLang === 'es'" title="Deseo consultar este página en español">ES</a></li>
+          </ul>
+      - name: Langue de la page
+        element: html
+        description: Le changement de langue ne modifie pas la langue du document
+          (ou pas toujours). Voir <https://stackoverflow.com/questions/26461711/angularjs-dynamic-lang-attribute-of-html>.
+        criterion: '8.3'
+        status: moindre
+        type: code
+        codebefore: <html lang="en">
+      - name: Traduction du titre de la page
+        element: title
+        description: Le changement de langue ne modifie pas le contenu de la balise
+          &lt;title&gt;. Où le modifie parfois et parfois pas.
+        criterion: 8.8.1
+        type: code
+        status: moindre
+        codebefore: "<title>Amendes.gouv.fr : site officiel unique de télépaiement</title>"
+      - name: Langue URL
+        element: url
+        description: Le changement de langue ne modifie pas l’url de la page. Il n'est pas possible de faire de lien vers la bonne langue depuis l’ANTAI ou un autre site.
+        type: code
+        status: critique
+      - name: Menu langues liens
+        element: a
+        description: Les liens n’ont pas d’attribut <code>lang='es'</code> permettant de savoir qu'on va être redirigé vers une page dans une autre langue (mais comme on change pas de page…).
+        criterion: '8.7'
+        type: code
+        status: important
+        codebefore: <a href="javascript:void(0);">
+        codeafter: <a href="javascript:void(0);" lang="es">
+      - name: Validation contrôle
+        element: form
+        description: Le contrôle du formulaire est réalisé avec du code JavaScript plutôt que d’utiliser des fonctions natives du navigateur.
+        type: code
+    - name: Footer
+      errors:
+      - name: Liens - sousligne
+        element: div
+        description: Les liens ne sont pas soulignés.
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+        codebefore: |-
+          footer a {
+            color: #fff;
+            text-decoration: none;
+          }
+
+          footer a:focus, footer a:hover {
+            text-decoration: underline;
+          }
+        codeafter: |-
+          footer a {
+            color: #fff;
+            text-decoration: none;
+          }
+
+          footer a:focus, footer a:hover {
+            color: currentColor;
+            text-decoration: underline;
+          }
+      - name: Liens - hover
+        element: div
+        description: Les liens présentent un constraste insuffisant lors du passage de la souris.
+        type: visuel
+        status: critique
+        checked: true
+      - name: Liens - sites externes
+        element: div
+        description: Les liens ne doivent pas contenir l’attribut <code>&lt;target='_blank'&gt;</code>.
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+      - name: Liens - sites externes version alternative
+        element: div
+        description: Les liens dans les langues alternatives ne redirigent pas vers les versions des sites (externes) dans la même langue.
+        type: code
+        status: moindre
+        delivery: lot 1
+      - name: Liens - sites externes styles
+        element: div
+        description: Il n'y a pas d’indication de l'ouverture d'une nouvelle fenêtre.
+        criterion: ER-11
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+    - name: Boîte de dialogue
+      errors:
+      - name: Composant à déplacer dans une page
+        element: div
+        description: "<strong>Placer le contenu de « Foire aux questions » et « Glossaire » de cette boîte de dialogue dans une page spécifique</strong>. Supprime les accordéons, afin de corriger plusieurs erreurs d’accessibilités d‘un seul coup."
+        type: texte
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Accordéon
+        element: div
+        description: Le bloc de accordéon ne présente pas les attributs ARIA nécessaires à la navigation au clavier.
+        type: code
+        status: critique
+        checked: true
+      - name: Accordéon - description
+        element: p
+        description: Le texte de la description n’est pas compréhensible.
+        type: texte
+        codebefore: "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs de 4,4,4 et 2 chiffres ou 5 blocs de 4,4,4,4 et 2 chiffres et la clé sur sa droite sur 2 chiffres.</p>"
+        codeafter: "<p>Le numéro de télépaiement et la clé se situent sur la carte de paiement. Le numéro de télépaiement est constitué de 4 blocs avec 3 bloc de 4 chiffres plus un bloc de 2 chiffres ou bien 5 blocs avec 4 blocs de 4 chiffres et un bloc de 2 chiffres plus la clé sur sa droite avec un bloc de 2 chiffres.</p>"
+      - name: Accordéon - image texte
+        element: img
+        description: L’alternative texte ne décrit pas suffisamment l'image. Il devrait être indiqué le cas de figure précis que présente l’image.
+        type: texte
+        status: important
+        delivery: lot 1
+        codebefore: <img src="img/content/carte-paiement-ACO.jpg" alt="Où trouver le numéro de télépaiement et la clé ?">
+        codeafter: <img src="img/content/carte-paiement-ACO.jpg" alt="Pour une amende forfaitaire - Où trouver le numéro de télépaiement et la clé ?">
+      - name: Accordéon - image
+        element: img
+        description: Les images présentent une qualité médiocre. Le positionnement du numéro de télépaiement devrait être entouré.
+        type: texte
+        status: important
+        delivery: lot 1
+      - name: Accordéon - image figure
+        element: img
+        description: L’image pourrait être inclue dans une balise <code>&lt;figure&gt;</code> avec une <code>&lt;figcaption&gt;</code> pour décrire où se situe le numéro sur le formulaire de télépaiement.
+        type: texte
+        status: moindre
+      - name: Table - légende
+        element: table
+        description: Les tableaux de données de la FAQ ne présentent pas de balise <code>&lt;caption&gt;</code>.
+        criterion: '5.1'
+        type: code
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Table - en-têtes
+        element: table
+        description: 'Les en-têtes du tableau de données de la FAQ ne sont pas correctement associées à chaque cellule. Voir : <https://developer.mozilla.org/fr/docs/Apprendre/HTML/Tableaux/Basics>'
+        criterion: '5.7'
+        type: code
+        status: moindre
+        delivery: lot 1
+      - name: Dimension largeur
+        element: div
+        description: La boîte de dialogue prend une largeur trop importante sur mobile. Elle ne s’adapte pas à l'écran.
+        criterion: ER-27
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Dimension - hauteur
+        element: div
+        description: La boîte de dialogue se positionne au milieu de la page en hauteur. Si la boîte est trop haute, elle sort de l'écran des informations sont inaccessibles.
+        criterion: ER-27
+        type: visuel
+        status: critique
+        checked: true
+      - name: Dimension fermeture
+        element: div
+        description: La boîte de dialogue se ferme pas lors du clic en dehors de la zone de dialogue. Si la boîte dépasse de l'écran, on ne peut pas sortir car les boutons fermer sont cachés.
+        criterion: ER-27
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+  - name: Chargement
+    url: https://www.amendes.gouv.fr/tai/
+    blocks:
+    - name: Page
+      errors:
+      - name: Contenu
+        element: div
+        description: 'Le contenu de la page manque de pertinence, surtout quand la page met du temps à charger ou que le chargement n’abouti pas. Ajouter un bloc de texte dans le cas où le JavaScript côté client n’est pas activé , avec un lien vers les moyens de paiement : <https://www.antai.gouv.fr/comment-payer#parag_1>.'
+        type: texte
+        delivery: lot 1
+        status: critique
+        checked: true
+      - name: Styles
+        element: style
+        description: Les styles de la page de chargement ne doivent pas dépendre de la feuille CSS. Pour des raisons de performance, ils doivent être appelés en dur dans le fichier html à l'intérieur d’une balise <code>&lt;style&gt;</code>.
+        type: code
+        delivery: lot 1
+        status: important
+        checked: true
+      - name: Appel feuille de styles
+        element: style
+        description: La feuille CSS est bloquante dans le chargement de la page. Modifier le code pour ne plus rendre la CSS comme critique dans le chargement.
+        type: code
+        status: important
+        delivery: lot 1
+        codebefore: <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css">
+        codeafter: |-
+          <link rel="preload" href="styles.145cb581b4910a74f4f8.css" as="style">
+          <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css" onload="this.media='all'">
+          <noscript>
+            <link rel="stylesheet" href="styles.145cb581b4910a74f4f8.css" media="screen">
+          </noscript>
+      - name: Logo
+        element: img
+        description: L’image n'est pas centrée sur toutes les tailles d’écrans.
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+        codebefore: |-
+          @media screen and (min-width: 450px) {
+            .logo {
+              display: block;
+              position: relative;
+              margin-left: 100px;
+            }
+          }
+        codeafter: |-
+          @media screen and (min-width: 450px) {
+            .logo {
+              display: block;
+              position: relative;
+              margin: auto;
+            }
+          }
+      - name: Styles inutiles
+        element: style
+        description: La page présente des styles apparement adaptés à des sites comportant des liens de tracking publicitaires. Pourquoi ces styles ? S'ils sont non utiles les supprimer.
+        type: code
+        status: moindre
+        delivery: lot 1
+        codebefore: |-
+          <style type="text/css">
+            :root iframe[style="border: 0; width: 728px; height: 110px;"],
+            ...
+  - name: Accueil
+    url: https://www.amendes.gouv.fr/tai
+    blocks:
+    - name: Bannière
+      errors:
+      - name: Titres
+        element: hx
+        description: 'Le titre de la bannière est renseigné comme titre 2. Alors qu’il n’y a pas de titre 1 dans la page (un h1 appliqué au logo n’est pas unebonne pratique). Ce titre doit : soit être un titre 1, soit précédé d‘un titre 1.'
+        type: structure
+        status: important
+        checked: true
+    - name: Formulaire
+      errors:
+      - name: Légende - formulaire
+        element: legend
+        description: Le texte de la légende du formulaire ne précise pas le rôle de la zone (il propose une liste des champs présent). La légende devrait indiquer ce qui est présent dans le h3 (caché) « Saisir les renseignement pour le télépaiement »
+        type: texte
+        status: moindre
+        checked: true
+      - name: Champ Numéro de télépaiement placeholder
+        element: input
+        description: Le champ du numéro de télépaiement ne présente pas de placeholder
+          pour l’aide à la saisie du bon numéro.
+        type: code
+        status: important
+        delivery: lot 1
+      - name: Champ Numéro de télépaiement - mention « requis »
+        element: input
+        description: Le label du numéro de télépaiement n’indique pas que le champ est obligatoire.
+        criterion: 11.10.1
+        type: code
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Champ Numéro de télépaiement - type
+        element: input
+        description: Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.
+        type: code
+        status: moindre
+      - name: Champ Clé - placeholder
+        element: input
+        description: Le champ du numéro de télépaiement ne présente pas de placeholder pour l’aide à la saisie du bon numéro.
+        type: code
+        status: important
+        delivery: lot 1
+      - name: Champ Clé - mention « requis »
+        element: input
+        description: Le label de la clé n’indique pas que le champ est obligatoire.
+        criterion: 11.10.1
+        type: code
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Champ Clé - type
+        element: input
+        description: Le champ du numéro de télépaiement indique un champ de type téléphone <code>type='tel'</code>.
+        type: code
+        status: moindre
+      - name: Aide
+        element: p
+        description: Le lien d’aide devrait se trouver au dessus du formulaire dans une zone de notice.
+        type: code
+        status: important
+        checked: true
+        delivery: lot 1
+      - name: Message contextuels
+        element: p
+        description: La zone de message contextuel déplace la zone de saisie du formulaire. C'est gênant pour finir de remplir son numéro de paiement.
+        type: code
+        status: moindre
+      - name: Erreurs formulaire
+        element: p
+        description: La zone d’erreur devrait se situer en premier parmi les éléments de formulaire.
+        type: code
+        status: important
+      - name: Bouton position
+        element: button
+        description: Le bouton pourrait se trouver au milieu ou aligner à gauche avec les champs liés.
+        type: visuel
+        status: moindre
+        checked: true
+        delivery: lot 1
+      - name: Bouton - intitulé sousligné
+        element: button
+        description: Le texte du bouton présente une soulignement. Seuls les liens doivent être soulignés.
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+      - name: Aide - lien
+        element: a
+        description: Le lien devrait se trouver avant le champ de saisi du numéro de télépaiement.
+        type: structure
+        status: moindre
+        checked: true
+      - name: Aide - hover
+        element: a
+        description: Il n'y a pas de changement d’état lors du survol du lien.
+        criterion: '10.6'
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+      - name: Bouton - Indication sécurisation
+        element: p
+        description: Le lien ne fait référence à aucun type de sécurisation en particulier, il est situé après le bouton, donc inaccessible aux non voyants.
+        type: texte
+        status: moindre
+        checked: true
+    - name: Les autres moyens de payer à distance
+      errors:
+      - name: Titre blocs
+        element: h3
+        description: Le ratio de couleur bleue sur fond gris n'est pas suffisant.
+        criterion: '3.2'
+        type: visuel
+        status: moindre
+        checked: true
+        delivery: lot 1
+      - name: Liens - hover
+        element: a
+        description: Il n'y a pas de changement d’état lors du survol du lien.
+        criterion: '10.6'
+        type: visuel
+        status: important
+        checked: true
+        delivery: lot 1
+    - name: À savoir
+      errors:
+      - name: Blocs actualités
+        element: div
+        description: Certaines actualités date de 2013. Est-ce qu'il s’agit d‘information, d’aides… a-t-on envie de consulter des brêves quand on vient payer une amende ? Nous proposons de supprimer ce bloc ainsi que toutes les pages de news (et liens depuis plan du site).
+        type: visuel
+        status: moindre
+        delivery: lot 1
+      - name: Titre page niveau
+        element: h4
+        description: Les titres devraient être des h3.
+        type: structure
+        status: moindre
+      - name: En savoir plus
+        element: a
+        description: Les liens « en savoir plus » n’ont pas d’attribut <code>&lt;title&gt;</code>. Le lien devrait être sur le titre du bloc.
+        type: code
+        status: important
+        checked: true
+        delivery: lot 1
+      - name: Date
+        element: span
+        description: La balise contenant la date ne présente pas l’attribut <code>&lt;datetime&gt;</code>.
+        type: texte
+        status: moindre
+  - name: Actualité
+    url: https://www.amendes.gouv.fr/tai/actu/1
+    blocks:
+    - name: Page
+      errors:
+      - name: Titres de pages
+        element: title
+        description: Le titre des pages devrait être composé du titre de son contenu, suivi du nom du site.
+        criterion: ER-01
+        codebefore: "<title>Actualités | Service de télépaiement des amendes</title>"
+        codeafter: "<title>Actualités | Amendes.gouv.fr</title>"
+        type: texte
+      - name: Titres de pages texte
+        element: title
+        description: Le titre `<title>` des pages des actualités ne change pas en fonction des actualités.
+        codebefore: "<title>Actualités | Service de télépaiement des amendes</title>"
+        codeafter: "<title>Du nouveau dans l'utilisation du timbre-amende papier | Amendes.gouv.fr</title>"
+        type: texte
+      - name: Largeur de page
+        element: div
+        description: L’application de la largeur de page ne se fait pas comme sur la page d’accueil, la bandeau est limité en largeur. Sur la page d’accueil il prend toute la largeur de l'écran.
+        type: visuel
+        status: moindre
+        checked: true
+        delivery: lot 1
+    - name: Bannière
+      errors:
+      - name: Titres
+        element: h
+        description: Le bandeau affiche le titre de l’actualité. Il devient illisible car la bannière n’est pas faite pour cette usage.
+        type: structure
+        status: important
+        checked: true
+    - name: Contenu
+      errors:
+      - name: Liens revenir à la page d’accueil
+        element: a
+        description: Le lien est présenté sous forme d’un bouton. Il doit avoir l'allure d‘un lien.
+        type: visuel
+        status: important
+        checked: true
+  - name: Plan du site
+    url: https://www.amendes.gouv.fr/tai/plan
+    blocks:
+    - name: Page
+      errors:
+      - name: Contenu
+        element: div
+        description: 'Le contenu de la page ne liste pas toutes les pages du site, manque : aide sur le site, Confidentialité / Informations personnelles, Sécurité informatique, Accessibilité, Les engagements de la DGFiP.'
+        type: texte
+        status: important
+        delivery: lot 1
+        checked: true
+  - name: Engagements
+    url: https://www.amendes.gouv.fr/tai/engagement
+    blocks:
+    - name: Page
+      errors:
+      - name: Liens accéder
+        element: a
+        description: Le lien est présenté sous forme d’un bouton. Il doit avoir l'allure d‘un lien vers une ressource externe.
+        type: visuel
+        status: important
+        checked: true
+  - name: Informations avis
+    url: https://www.amendes.gouv.fr/tai/amende/33333122111221/29
+    blocks:
+    - name: Contenu
+      errors:
+      - name: Titre contenu
+        element: a
+        description: Le titre de la zone de contenu (titre bleu) reprend le contenu de la bannière. Il devrait préciser le contenu indiqué dans la zone qui la suit.
+        type: texte
+        status: moindre
+      - name: Liens - annuler
+        element: a
+        description: Le lien devrait s’appeler « retour à la page d’accueil » et avoir le style d’un lien et non d’un bouton. Nous proposons de supprimer ces liens (sur toutes les pages où il est présent), pour plus de simplicité.
+        type: texte
+        status: moindre
+        delivery: lot 1
+      - name: Zone message montant
+        element: p.info
+        description: La zone de message pour la consignation ne présente pas de <code>role='status' aria-live='polite'</code>.
+        type: code
+        status: critique
+        checked: true
+        codebefore: <p class="prix">
+        codeafter: <p class="prix" role="status" aria-live="polite">
+        delivery: lot 1
+    - name: Formulaire
+      errors:
+      - name: Bouton radios
+        element: input
+        description: Les espaces et les alignements ne sont pas agréables pour la lecture.
+        type: visuel
+        status: moindre
+        checked: true
+        delivery: lot 1
+      - name: Bouton radios - association champ input
+        element: input
+        description: Les labels en sont pas associés avec leur champ input.
+        criterion: 11.1.1
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+        codebefore: |-
+          <input name="type"type="radio" value="2" ng-reflect-name="type" ng-reflect-value="2" ng-reflect-model="2" class="ng-valid ng-dirty ng-touched">
+          <label>Régler pour consigner</label>
+        codeafter: |-
+          <input id="consignation" name="type" type="radio" value="2" ng-reflect-name="type" ng-reflect-value="2" ng-reflect-model="2" class="ng-valid ng-dirty ng-touched">
+          <label for="consignation">Régler pour consigner</label>
+      - name: Zone explication consignation
+        element: div
+        description: La zone explicative concernant la consignation, s’affiche dans une modale (après avoir découvert un lien à côté du bouton radio). Nous proposons de mettre directement le texte en dessous du formulaire, avec un attribut `aria-describedby='explication'`
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+        codebefore: "<input name=\"type\"type=\"radio\" value=\"2\" ng-reflect-name=\"type\"
+          ng-reflect-value=\"2\" ng-reflect-model=\"2\" class=\"ng-valid ng-dirty
+          ng-touched\">\n<label>Régler pour consigner \n <a class=\"pastille\" pastille=\"\"
+          href=\"javascript:void(0);\">\n  <span class=\"initiale\" style=\"\">i</span>\n
+          \ <span class=\"libelle\" style=\"display: none;\">information sur la consignation</span>\n
+          </a>\n</label>"
+        codeafter: |-
+          <input name="type" type="radio" value="2" ng-reflect-name="type" ng-reflect-value="2" ng-reflect-model="2" class="ng-valid ng-dirty ng-touched" id="consignation" aria-describedby="explication">
+          <label for="consignation">Régler pour consigner</label>
+          <p id="explication">[Contenu de la zone]</p>
+      - name: Zone message consignation texte
+        element: p.info
+        description: La zone de message pour la consignation présente un texte de taille trop petite.
+        type: visuel
+        status: critique
+        checked: true
+        delivery: lot 1
+      - name: Zone message consignation
+        element: p.info
+        description: La zone de message pour la consignation ne présente pas de <code>role='alert'</code>.
+        type: code
+        status: critique
+        checked: true
+        codebefore: <p class="info">
+        codeafter: <p class="info" role="alert">
+        delivery: lot 1
+      - name: Bouton validation
+        element: button
+        description: Le bouton n'a pas le même effet de survol que le bouton sur la page d’accueil.
+        type: visuel
+        status: moindre
+        checked: true
+        delivery: lot 1
+  - name: Justificatif
+    url: https://www.amendes.gouv.fr/tai/paiement/confirmation/33335988812171/33/justificatif
+    blocks:
+    - name: Page
+      errors:
+      - name: Titre contenu
+        element: a
+        description: Le titre de la zone de contenu reprend le contenu de la bannière. Il devrait préciser le contenu indiquer dans le zone qui la suit. Ex. « Liste des informations du justificatif »
+        type: texte
+        status: moindre
+      - name: Lien - revenir à la page d’accueil
+        element: a
+        description: Le lien est présenté sous forme d’un bouton. Il doit avoir l'allure d‘un lien. Il est possible de supprimer ce bouton qui est redondant avec le logo présent dans le header.
+        type: visuel
+        status: moindre
+        delivery: lot 1
+      - name: Lien - hover
+        element: button
+        description: Le bouton n'a pas le même effet de survol que le bouton sur la page d’accueil. Il est possible de supprimer ce bouton qui est redondant avec le logo présent dans le header.
+        type: visuel
+        status: moindre
+        delivery: lot 1
+    - name: Status
+      errors:
+      - name: Message
+        element: div
+        description: Le message s'affiche comme une information concernant le parcours sur le site, alors que c'est une information de status de la contravention.
+        type: visuel
+    - name: Impression
+      errors:
+      - name: Bandeau
+        element: div
+        description: Ne pas imprimer le bandeau en aussi important.
+        type: visuel
+        status: important
+      - name: Logo
+        element: div
+        description: Revoir l’alignement du logo avec le texte.
+        type: visuel
+        status: important
+  - name: Saisie Indicatif
+    url: https://www.amendes.gouv.fr/tai/paiement/33333111111221/1/saisieIndicatifOperation
+    blocks:
+    - name: Formulaire
+      errors:
+      - name: Groupement des champs de saisie
+        element: form
+        description: Les champs de saisie ne sont pas regroupés dans une balise de formulaire `<form>`.
+        type: code
+        status: critique
+      - name: Groupement des champs de saisie - Intitulé
+        element: legend
+        description: Les champs de saisie ne sont pas précédés d‘une legend `<legend>`.
+        type: code
+        status: critique
+      - name: Indicatif d'opération - mention « requis »
+        element: input
+        description: Le label de l’Indicatif d'opération n’indique pas que le champ est obligatoire.
+        criterion: 11.10.1
+        type: code
+        status: critique
+      - name: Zone message erreur
+        element: p
+        description: La zone de message d’ erreur ne présente pas de <code>role='alert'</code>.
+        type: code
+        status: critique
+        codebefore: <div class="message no-ok">
+        codeafter: <p class="message no-ok" role="alert">
+      - name: Liens - annuler
+        element: a
+        description: Le lien devrait s’appeler « retour à la page d’accueil » et avoir le style d’un lien et non d’un bouton. Nous proposons de supprimer ces liens (sur toutes les pages où il est présent), pour plus de simplicité.
+        type: texte
+        status: moindre
