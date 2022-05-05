@@ -1,10 +1,2 @@
-github.com/bertrandkeller/documentago v1.0.0 h1:JgX2YedVl4I2+AcVUUAl3WS+3ZDk3H9Oqj9Xdfg8KK0=
-github.com/bertrandkeller/documentago v1.0.0/go.mod h1:2G4625JJXggMRDL5mpHh9bYtb/LukVjUII4DbLQ9uw0=
-github.com/bertrandkeller/documentago v1.1.0 h1:7vD2vfrU4JTk5QEUHr0MoZdRn0o7P/wn4tZvONiVqqY=
-github.com/bertrandkeller/documentago v1.1.0/go.mod h1:2G4625JJXggMRDL5mpHh9bYtb/LukVjUII4DbLQ9uw0=
-github.com/disic/frago v1.7.5 h1:5Phtv1EJFVC2bqymMt0fMq4f8Dd0cY4FuLPkZdSCupk=
-github.com/disic/frago v1.7.5/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
-github.com/disic/frago v1.7.6 h1:kGDtkI6WYhuq2fEC5GLRpkgqzCai8cFTp6dbL6x/M6k=
-github.com/disic/frago v1.7.6/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
 github.com/disic/frago v1.8.0 h1:F7fdWc4FKFhg/WVcfbyB1SPhjyRrDUVm4Fs7du24FSA=
 github.com/disic/frago v1.8.0/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=

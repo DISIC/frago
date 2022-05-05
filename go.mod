@@ -1,8 +1,5 @@
-module github.com/disic/fragodocs
+module github.com/disic/fragodocss
 
 go 1.17
 
-require (
-	github.com/bertrandkeller/documentago v1.1.0 // indirect
-	github.com/disic/frago v1.8.0 // indirect
-)
+require github.com/disic/frago v1.8.0 // indirect

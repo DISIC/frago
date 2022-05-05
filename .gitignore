@@ -8,3 +8,5 @@ _vendor
 
 # Editors
 .vscode
+
+assets/css/base/main.css
