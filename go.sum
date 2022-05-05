@@ -6,3 +6,5 @@ github.com/disic/frago v1.7.5 h1:5Phtv1EJFVC2bqymMt0fMq4f8Dd0cY4FuLPkZdSCupk=
 github.com/disic/frago v1.7.5/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
 github.com/disic/frago v1.7.6 h1:kGDtkI6WYhuq2fEC5GLRpkgqzCai8cFTp6dbL6x/M6k=
 github.com/disic/frago v1.7.6/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
+github.com/disic/frago v1.8.0 h1:F7fdWc4FKFhg/WVcfbyB1SPhjyRrDUVm4Fs7du24FSA=
+github.com/disic/frago v1.8.0/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
