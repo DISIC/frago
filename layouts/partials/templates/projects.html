@@ -1,5 +1,5 @@
 {{- $context       := . -}}
-{{- $project       :=  (partial "render/projectpath" $context $context) -}}
+{{- $project       := (partial "render/projectpath" $context $context) -}}
 {{- $OutputFormats := cond (fileExists "content/audits/_index.md") ($context.GetPage "/audits/_index.md").OutputFormats (cond (fileExists "content/audits/index.md") ($context.GetPage "/audits/index.md").OutputFormats .OutputFormats) -}}
 
 {{- if and (ne $project "audits") (ne .Path "audits") -}}
@@ -299,7 +299,7 @@
 
 </section>
 
-{{- partial "components/phases/template.html" (dict "context" . "type" "dark") -}}
+{{- partialCached "components/phases/template.html" (dict "context" . "type" "dark") "dark" -}}
 {{/*- partial "list.html" (dict "context" . "section" "meetings") -*/}}
 {{/*- partial "list.html" (dict "context" . "section" "actions" "type" "dark") -*/}}
 {{- else -}}

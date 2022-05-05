@@ -34,33 +34,39 @@
     {{ if ne (len $alternate) 0 }}
       {{- with $alternate -}}{{- range $key, $value := . -}}
         {{- if eq .Format.BaseName "accessibility" -}}
-          {{- partialCached "templates/accessibility.html" (dict "context" $context "project" $project) $project -}}
+          {{- $partial := (partialCached "templates/accessibility.html" (dict "context" $context) $context) -}}
+          {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if or (eq .Format.BaseName "recommendation") -}}
-          {{- partialCached "templates/recommendation.html" (dict "context" $context) $context -}}
+          {{- $partial := (partialCached "templates/recommendation.html" (dict "context" $context) $context) -}}
+          {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if eq .Format.BaseName "performance" -}}
-          {{- partialCached "templates/performance.html" (dict "project" $project) $project -}}
+          {{- $partial := (partialCached "templates/performance.html" (dict "context" $context "project" $project) $project) -}}
+          {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if eq .Format.BaseName "declaration" -}}
           <article class="wrapper narrow">
             {{- $context.Scratch.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility" "datafilename" $context.Params.datafilename) $project "accessibility" $context.Params.datafilename) -}}
-            {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) ($context.Scratch.Get "audits") -}}
+            {{- $partial := (partialCached "templates/declaration.html" (dict "context" $context "audits" ($context.Scratch.Get "audits")) ($context.Scratch.Get "audits")) -}}
+            {{- partialCached "elements/content.html" $partial $partial -}}
           </article>
         {{- end -}}
       {{- end -}}{{- end -}}
     {{- else -}}
-      {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
       {{- if and (ne $project "audits") (not (partialCached "render/issimpleproject.html" "arg" "arg")) -}}
         {{- if and (not (in (path.Base .Path) "index.md")) -}}
           <article class="wrapper narrow">
             {{ partialCached "elements/content.html" .Content .Content }}
           </article>
         {{- else -}}
-          {{- partial "templates/projects.html" $context -}}
+          {{- $partialprojects := (partialCached "templates/projects.html" $context $context) -}}
+          {{- partialCached "elements/content.html" $partialprojects $partialprojects -}}
         {{- end -}}
       {{- else -}}
         {{- if (partialCached "render/issimpleproject.html" . .) -}}
-          {{- partial "templates/projects.html" $context -}}
+          {{- $partialprojects := (partialCached "templates/projects.html" $context $context) -}}
+          {{- partialCached "elements/content.html" $partialprojects $partialprojects -}}
         {{- else -}}
-          {{- partialCached "templates/dashboard.html" $context $context -}}
+          {{- $partialdashboard := (partialCached "templates/dashboard.html" $context $context) -}}
+          {{- partialCached "elements/content.html" $partialdashboard $partialdashboard -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
@@ -72,10 +78,12 @@
           {{ partialCached "elements/content.html" .Content .Content }}
         </article>
       {{- else -}}
-        {{- partial "templates/projects.html" $context -}}
+        {{- $partialprojects := (partialCached "templates/projects.html" $context $context) -}}
+        {{- partialCached "elements/content.html" $partialprojects $partialprojects -}}
       {{- end -}}
     {{- else -}}
-      {{- partialCached "templates/dashboard.html" $context $context -}}
+      {{- $partialdashboard := (partialCached "templates/dashboard.html" $context $context) -}}
+      {{- partialCached "elements/content.html" $partialdashboard $partialdashboard -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

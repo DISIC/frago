@@ -41,9 +41,11 @@
 	{{- range . -}}{{- if (in . "overgo") -}}{{- $.Scratch.Add "css" (slice .) -}}{{- end -}}{{- end -}}
   {{- end -}}
   {{/* Get the main styles CSS */}}
-  {{- $styles := resources.Get "/css/styles.css" -}}
+  {{- $styles   := resources.Get "/css/styles.css" -}}
+  {{- $main     := resources.Get "/css/base/main.css" -}}
+  {{- $layout   := resources.Get "/css/base/layout.css" -}}
   {{/* Union the both CSS */}}
-  {{- $.Scratch.Add "css" (slice $styles) -}}
+  {{- $.Scratch.Add "css" (slice $styles $main $layout) -}}
   {{- $style := ($.Scratch.Get "css") | resources.Concat "styles.css" -}}
   {{/* Optimise (purge, concat) if production */}}
   {{- if and .Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production"))) -}}
@@ -52,7 +54,7 @@
   <!-- CSS styles -->
   <!-- CSS critical -->
   <style id="style-screen">
-    {{ (slice $style | resources.Concat "styles.css" | minify).Content | safeCSS }}
+    {{ (slice $style $main $layout | resources.Concat "styles.css" | minify).Content | safeCSS }}
   </style>
   {{- $.Scratch.Set "isCSS" false -}}
   {{- $.Scratch.Set "isFONT" false -}}

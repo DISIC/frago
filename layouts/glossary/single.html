@@ -9,6 +9,8 @@
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
 
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "definitionlists") "definitionlists" }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "codeformatting") "codeformatting" }}
 <article class="wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- range $key, $value := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).glossary -}}

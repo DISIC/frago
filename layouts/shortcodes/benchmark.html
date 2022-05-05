@@ -3,7 +3,7 @@
 {{- $filepath := (partialCached "render/filepath" (dict "context" . "project" $project "type" "similary.json") $project "similary.json") -}}
 {{- if fileExists $filepath -}}ss
 {{- if eq .Ordinal 0 -}}
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "benchmark") }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "benchmark") "benchmark" }}
 <link rel="preload" href="/{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}" as="script">
 <script src="{{ (resources.Get "js/simple-lightbox.min.js").Permalink }}"></script>
 <link rel="stylesheet" href="/{{ (resources.Get "css/simple-lightbox.min.css").Permalink }}" media="print" onload="this.media='all'" />

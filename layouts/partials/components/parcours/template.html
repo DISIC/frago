@@ -1,4 +1,4 @@
-{{- partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "parcours") "parcours" -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "parcours") "parcours" -}}
 {{- if .context.parcours -}}
 {{- $.pages.Scratch.Set "counter" 0 -}}
 {{- range $id, $p := .context.parcours -}}

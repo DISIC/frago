@@ -1,0 +1,283 @@
+/*
+/// Main styles
+*/
+
+/* = section = */
+
+section {
+  margin: var(--baseline) auto 0;
+  padding: var(--baseline) 0;
+}
+
+.section-dark {
+  color: var(--background-color-body, #fff);
+  background-color: var(--color-primary);
+}
+
+section h2,
+section h3 {
+  color: currentColor;
+}
+
+p + pre {
+  margin-top: -1.5em;
+}
+
+article h2 + time,
+time + p,
+article h2 + .text-center {
+  display: block;
+  margin: -1.5rem auto 1.5rem;
+  width: 100%;
+  font-size: 90%;
+  color: var(--color-grey);
+}
+
+/* = Divider = */
+
+hr {
+  margin: var(--baseline) 0;
+  width: auto;
+  height: 0;
+  border: none;
+  border-top: 2px dotted var(--color-grey-light);
+  border-right: 90px solid transparent;
+  border-left: 90px solid transparent;
+  background: none;
+}
+
+.divider-strong {
+  margin: calc(var(--baseline) * 1.5) 0;
+  width: 100%;
+  border: none;
+  border-top: 2px dashed var(--color-primary-dark);
+}
+
+.divider,
+.divider:before {
+  border-radius: 50% 50% 50% 50%/50% 50% 50% 50%;
+}
+
+.divider {
+  overflow: hidden;
+  margin: calc(var(--baseline) * 2) auto;
+  max-width: 80%;
+  height: 4em;
+  border: none;
+  background: transparent;
+}
+
+.divider:before {
+  position: relative;
+  content: "";
+  top: 82px;
+  display: inline-block;
+  margin: 0 auto;
+  width: 80%;
+  height: 2em;
+  box-shadow: var(--enable-shadows, 50px -10px 40px hsla(var(--base-primary), var(--base-sat), var(--base-light), 1));
+}
+
+/* TYPOGRAPHY
+   ----------------------------- */
+
+
+h1,
+.h1 {
+  line-height: 1;
+}
+
+/* = Link = */
+
+.anchor {
+  position: relative;
+  margin-right: 5px;
+  margin-left: -21px;
+  color: var(--text-color);
+
+  scroll-margin-top: 100px;
+}
+
+.anchor svg {
+  fill: var(--text-color);
+}
+
+.link-more {
+  display: inline;
+  font-weight: 600;
+  transition: background-size 0.3s ease-in-out;
+  text-decoration: underline;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  background-image: linear-gradient(transparent calc(100% - 16%), var(--color-primary) calc(100% - 16%), var(--color-primary) calc(100% - 2%), transparent 2%);
+  background-repeat: no-repeat;
+  background-size: 0 100%;
+  will-change: background-size;
+}
+
+.link-more:hover {
+  background-size: 100% 100%;
+}
+
+.link-back {
+  text-transform: unset;
+}
+
+/* Placeholder */
+
+::-moz-placeholder {
+  opacity: 1;
+  color: var(--color-grey);
+}
+
+::-webkit-input-placeholder {
+  color: var(--color-grey);
+}
+
+h1 + time,
+h3 + time {
+  display: block;
+  margin-top: -1.5rem;
+}
+
+.note {
+  margin-bottom: var(--baseline);
+  padding: var(--baseline) var(--baseline) calc(var(--baseline) / 2);
+  font-size: var(--smaller);
+  color: var(--text-color);
+  border: 1px solid var(--color-primary-light);
+  background: var(--color-primary-verylight);
+}
+
+.note p,
+.note ul {
+  margin-bottom: calc(var(--baseline) / 2);
+}
+
+/* LOGO
+   ----------------------------- */
+
+.site-logo img {
+  max-width: 100px;
+  height: initial;
+}
+
+.grid > ul {
+  margin: 0;
+  padding-left: 1em;
+}
+
+/* Figure
+   ----------------------------- */
+
+figure.rounded {
+  display: grid;
+  overflow: hidden;
+  align-items: center;
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid var(--color-grey-verylight);
+  border-radius: 50%;
+}
+
+.rounded img {
+  height: 100%;
+  max-height: 1000em;
+  object-fit: none;
+}
+
+/* Footer
+   ----------------------------- */
+
+/* = Footer = */
+
+footer {
+  margin: var(--baseline) 0 0;
+  padding: var(--baseline);
+  text-align: center;
+  color: var(--color-grey-verylight);
+  background-color: #0a0a0a;
+}
+
+footer a {
+  color: #fff;
+}
+
+/* Task list for markdown checklist
+   ----------------------------- */
+
+.checkbox {
+  margin-left: 1rem;
+}
+
+.checkbox + br {
+  display: none;
+}
+
+.task-list {
+  list-style-type: none;
+}
+
+/* Counter & counter color
+   ----------------------------- */
+
+.critical > *:first-child {
+  max-width: 30px;
+  text-align: center;
+}
+.emoticon {
+  display: inline-block;
+  margin-right: 0.25rem;
+  vertical-align: middle;
+  color: transparent;
+  text-shadow: 0 0 0 #fff;
+}
+
+
+
+/* = Badge = */
+
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.3em;
+  font-size: 0.5em;
+  color: var(--color-grey-verylight);
+  border-radius: 5px;
+  vertical-align: middle;
+}
+
+/* = Dot = */
+
+.dot {
+  display: inline-block;
+  clip: rect(0 0 0 0);
+  margin-right: 3px;
+  width: 20px;
+  height: 20px;
+  font-size: 0;
+  border-radius: 50%;
+  background: var(--color-primary-dark);
+}
+
+.dot-missed {
+  background: var(--color-primary-light);
+}
+
+/* Js plugin
+   ----------------------------- */
+
+/* = Lighbox = */
+
+.sl-overlay {
+  background: #000 !important;
+}
+
+.sl-close,
+.sl-counter,
+.sl-navigation button {
+  font-size: 2rem !important;
+  color: #fff !important;
+}

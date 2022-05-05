@@ -7,7 +7,6 @@
 {{.Scratch.Set "Paginator" (.Paginate .RegularPagesRecursive) }}
 {{- end -}}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
 <article class="wrapper narrow">
 <h1>{{ .Title }}</h1>
 {{- $.Scratch.Set "linksingle" .RelPermalink -}}

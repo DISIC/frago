@@ -14,6 +14,7 @@
 
 <article class="wrapper narrow">
 <h1>Critères {{ replace ($.Scratch.Get "guidelinename" | upper) "RGAA" "RGAA "}}</h1>
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
   <div class="tableofcontents">
     <h2>Thématiques</h2>
     <ol>
@@ -26,6 +27,7 @@
   {{- $auditquick := index .Site.Data.rgaa.tests "25" -}}
   {{- $auditcomplementary := index .Site.Data.rgaa.tests "50" -}}
   {{- $auditnecessary := index .Site.Data.rgaa.tests "81" -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "buttons") "buttons" }}
   <ul class="list-unstyled list-inline">
     <li><button id="auditall" class="btn btn-small mb-0">Tous les critères</button></li>&nbsp;
     <li><button id="auditquick" class="btn btn-small mb-0">25 critères</button></li>&nbsp;

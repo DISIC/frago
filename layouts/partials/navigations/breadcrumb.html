@@ -1,3 +1,4 @@
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "breadcrumb") "breadcrumb" -}}
 <ol class="breadcrumb">
   {{- range $i, $e := (split .URL "/") -}}
     {{ $.Scratch.Set "index" $i }}{{- end -}}

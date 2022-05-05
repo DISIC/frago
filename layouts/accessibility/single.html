@@ -15,5 +15,6 @@
 
 {{- define "main" -}}
   {{- $context := . -}}
-  {{- partial "templates/accessibility.html" (dict "context" $context) -}}
+  {{- $partial := (partialCached "templates/accessibility.html" (dict "context" $context) $context) -}}
+  {{- partialCached "elements/content.html" $partial $partial -}}
 {{- end -}}

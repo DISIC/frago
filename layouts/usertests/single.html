@@ -76,7 +76,7 @@
     {{ $.Scratch.Add "counter" (index ($.Scratch.Get "countanswer") .) }}
   {{- end -}}
   <h3 class="h5">{{ $key }}</h3>
-  {{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "usertests") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "usertests") "usertests" }}
   <div class="usertests">
     {{ if gt ($.Scratch.Get "counter") (len $userid) }}
     <div class="flex-column usertests-vis">
@@ -103,7 +103,7 @@
 {{- end -}}
 
 <hr>
-{{- partial "elements/content.html" .Content -}}
+{{- partialCached "elements/content.html" .Content .Content -}}
 {{/*
 <h2 class="page-break">Listes des réponses par personne</h2>
 {{- range $userid -}}

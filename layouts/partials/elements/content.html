@@ -1,20 +1,33 @@
 {{- $currentLang := site.Language.Lang }}
-{{- with findRE "<table>" . -}}
-  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "table") "table" }}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "main" "inline" "true") "main" -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "layout" "inline" "true") "layout" -}}
+{{- with (findRE "class=\"counter" .) -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "counter") "counter" }}
 {{- end -}}
-{{- with findRE "<dl>" . -}}
-  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "definitionlists") "definitionlists" }}
+{{- with (findRE "class=\"scores" .) -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "scores") "scores" }}
 {{- end -}}
-{{- with findRE "<pre>" . -}}
-  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "codeformatting") "codeformatting" }}
+{{- with (findRE "class=\"medal" .) -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "medal") "medal" }}
+{{- end -}}
+{{- with (findRE "class=\"card" .) -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" }}
+{{- end -}}
+{{- with findRE "<table" . -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "table") "table" }}
+{{- end -}}
+{{- with findRE "<dl" . -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "definitionlists") "definitionlists" }}
+{{- end -}}
+{{- with or (findRE "<pre" .) (findRE "<code" .) -}}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "codeformatting") "codeformatting" }}
 {{- end -}}
 {{- with or (findRE "<blockquote>" .) (findRE "<q>" .) -}}
-  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "blockquote") "blockquote" }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "blockquote") "blockquote" }}
 {{- end -}}
 {{- with or (findRE "<iframe>" .) (findRE "<embed>" .) -}}
-  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/element" "filename" "iframe") }}
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "iframe") }}
 {{- end -}}
-
 {{- if eq $currentLang "fr" -}}
     {{- $content := . -}}
     <!-- # Ordinals -->
@@ -59,5 +72,5 @@
     <!-- Render Content -->
     {{- $content | safeHTML -}}
 {{- else -}}
-    {{ . }}
+  {{ . }}
 {{- end -}}

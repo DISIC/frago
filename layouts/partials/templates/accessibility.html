@@ -18,7 +18,8 @@
   {{- $data.Set "auditpath-csv" (index ($data.Get "audits") "auditfile-path") -}}
   {{/* Display declaration tpl when output format is set */}}
   {{- if and (in .context.Permalink "declaration.html") ($data.Get "audits") -}}
-    {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
+    {{- $partial := (partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits")) -}}
+    {{- partialCached "elements/content.html" $partial $partial -}}
   {{- else -}}
   {{/* START Test if audit file exists */}}
   {{- if and ($data.Get "auditpath-csv") (ne ($data.Get "auditpath-csv") "/false") -}}
@@ -184,7 +185,7 @@
     {{- if gt (len .context.Content) 10 -}}
     <h2>Notes correctives</h2>
     <div>
-    {{- partial "elements/content.html" .context.Content -}}
+    {{- partialCached "elements/content.html" .context.Content .context.Content -}}
     </div>
     {{- end -}}
     {{/* END Display page content if exists */}}
@@ -351,6 +352,8 @@
 {{/* Display declaration in accessibility page if no output format setted */}}
 {{- if and (not (.context.OutputFormats.Get "declarationpage")) ($data.Get "audits") -}}
   <hr class="divider">
-  {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
+  <article class="wrapper narrow">
+    {{- partialCached "templates/declaration.html" (dict "context" $context "audits" ($data.Get "audits")) ($data.Get "audits") -}}
+  </article>
 {{- end -}}
 

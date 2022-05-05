@@ -1,6 +1,6 @@
 {{- if .context.Site.Taxonomies -}}
 {{- if .context.Site.Taxonomies.phases -}}
-{{- partialCached "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "timeline") "timeline" -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "timeline") "timeline" -}}
 {{- with .context.File -}}{{- $.context.Scratch.Set "BaseFileName" .BaseFileName -}}{{- end -}}
 {{- $tags := (slice ($.context.Scratch.Get "BaseFileName") (index (last 2 (split (path.Dir .context.Path) "/")) 1 )) -}}
 {{- $site := .context.Site -}}

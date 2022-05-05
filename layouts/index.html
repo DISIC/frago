@@ -17,13 +17,15 @@
   <h1 class="text-center wrapper">{{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Title }}{{ end }}</h1>
     {{/* If only one project */}}
     {{- if (partialCached "render/issimpleproject.html" "arg" "arg") -}}
-      {{- partialCached "templates/projects.html" . . -}}
+      {{- $partial := (partialCached "templates/projects.html" . .) -}}
+      {{- partialCached "elements/content.html" $partial "projects" -}}
     {{/* If several projects :: call list of projects */}}
     {{- else -}}
-      {{- partialCached "templates/projects-list.html" . . -}}
+      {{- $partial := (partialCached "templates/projects-list.html" . .) -}}
+      {{- partialCached "elements/content.html" $partial "projectslist" -}}
     {{- end -}}
     <section class="wrapper narrow">
-    {{ partialCached "elements/content.html" .Content .Content }}
+      {{ partialCached "elements/content.html" .Content .Content }}
     </section>
   {{- end -}}
 {{- end -}}

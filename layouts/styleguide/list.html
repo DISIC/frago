@@ -121,7 +121,7 @@
 </table>
 <h2 id="forms">Forms</h2>
 
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "form") }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "form") "form" }}
 <form class="tacenter">
 <fieldset>
     <legend>Legend</legend>
@@ -150,7 +150,7 @@
   <button class="btn" disabled>Disabled Button</button>
 </div>
 
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" }}
 <h2 id="grid">Grid</h2>
 <div class="grid">
   <div class="card card-border text-center">1</div>

@@ -18,6 +18,23 @@
   background: var(--background-color-grey);
 }
 
+.card {
+  padding: var(--baseline);
+  color: #666;
+  color: var(--background-color);
+  border-radius: 30px;
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card h3 a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.card h3 a:hover {
+  text-decoration: underline;
+}
+
 .card-inline {
   display: flex;
   align-items: center;
@@ -117,4 +134,9 @@
 
 .card a:hover {
   text-decoration: inherit;
+}
+
+.card-shadow {
+  border: 1px solid var(--color-primary);
+  box-shadow: var(--enable-shadows, inset 0 -0.25rem 0 0 var(--color-primary));
 }

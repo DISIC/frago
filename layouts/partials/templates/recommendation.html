@@ -8,7 +8,7 @@
 {{- $data.Set "context"  . -}}
 {{- $data.Set "pathimage" "" -}}
 
-{{ partial "utils/css.html" (dict "context" $.context "filefolder" "overgo/object" "filename" "summary") }}
+{{ partialCached "utils/css.html" (dict "context" $.context "filefolder" "object" "filename" "summary") "summary" }}
 
 {{- $data.Set "guidelinename" "rgaa" -}}
 {{- $data.Set "guidelineversion" "4.1" -}}
@@ -57,7 +57,7 @@
     {{- if gt (len .context.Content) 10 -}}
     <h2>Notes correctives</h2>
     <div>
-    {{- partial "elements/content.html" .context.Content -}}
+    {{- partialCached "elements/content.html" .context.Content .context.Content -}}
     </div>
     {{- else -}}
       {{- with (partialCached "render/notepath" $context $context) -}}
@@ -73,7 +73,8 @@
   {{/* END Display page content if exists */}}
 
   <h2 class="page-break">Erreurs à corriger</h2>
-  {{- partial "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -}}
+  {{- $partial := (partialCached "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) $project "lot") -}}
+  {{- partialCached "elements/content.html" $partial "projectslist" -}}
   {{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
   {{- $cScores := ($data.Get "scores").scores.criteria.conforme -}}
@@ -366,7 +367,7 @@
     {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .Params.datafilename) $project "recommendation" .Params.datafilename) -}}
     {{- if ne (index $lastfile "auditfile-path") "/false" -}}
       {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
-      {{ partial "utils/css.html" (dict "context" $context "filefolder" "overgo/object" "filename" "benchmark") }}
+      {{ partialCached "utils/css.html" (dict "context" $context "filefolder" "object" "filename" "benchmark") "benchmark" }}
       {{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
       {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
       {{- $jslightbox   := resources.Get "js/simple-lightbox.min.js" -}}

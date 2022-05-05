@@ -17,6 +17,7 @@
       {{- end -}}
 
       {{ if ($.Scratch.Get "rangepages") }}
+      {{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}
       <ul class="list-unstyled" role="navigation">
       {{/* START Loop on all project in audits */}}
 

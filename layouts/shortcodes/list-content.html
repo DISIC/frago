@@ -4,6 +4,7 @@
 <div class="wrapper">
 <h2>{{ with .Site.GetPage (.Get "section") }}{{ .Title }}{{ end }}</h2>
 <br>
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}
 <ul class="grid">
 {{- range first 4 $rangepages -}}
   <li class="card card-shadow card-animate">

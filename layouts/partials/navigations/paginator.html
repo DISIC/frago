@@ -1,4 +1,4 @@
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "pagination") }}
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "pagination") "pagination" }}
 <nav class="grid">
   {{ if .Paginator.HasPrev }}
     <span class="pagination--prev"><a href="{{ .Paginator.Prev.URL }}" class="pagination--item">Précedent</a></span>

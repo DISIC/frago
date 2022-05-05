@@ -1,6 +1,6 @@
 {{- $project := .Get "project" -}}
 {{ if eq .Ordinal 0 }}
-{{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}
 {{- end -}}
 {{- $filepath      := (partialCached "render/filepath" (dict "context" . "project" $project "type" "personas.json") $project "personas.json") -}}
 {{- if fileExists $filepath -}}

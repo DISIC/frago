@@ -10,7 +10,6 @@
   {{ partialCached "elements/content.html" .Content .Content }}
   <div class="grid">
   {{/* Range all regular pages */}}
-  {{- partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") -}}
   {{- range .RegularPages -}}
     {{/* Range the personas file in the project and find/list the pages on `content/personas/` directory */}}
     {{- range where (getJSON $path) "name" "eq" .Title -}}
@@ -23,7 +22,6 @@
 <!--$paginator-->
 {{ .Scratch.Set "Paginator" (.Paginate .Pages) }}
 {{- $paginator:=(.Scratch.Get "Paginator") -}}
-{{ partial "utils/css.html" (dict "context" . "filefolder" "overgo/object" "filename" "card") }}
 <article class="wrapper narrow">
   <h1>{{ .Title }}</h1>
   {{ partialCached "elements/content.html" .Content .Content }}

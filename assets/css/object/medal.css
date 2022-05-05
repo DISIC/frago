@@ -1,0 +1,20 @@
+/*
+/// Medal
+*/
+
+.medal span {
+  font-weight: bold;
+}
+
+.medal b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.2em;
+  width: 3em;
+  height: 3em;
+  font-weight: bold;
+  color: var(--background-color-body, #fff);
+  border-radius: 50%;
+  background: var(--color-primary-dark);
+}

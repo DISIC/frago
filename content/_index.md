@@ -33,6 +33,7 @@ cascade:
   outputs:
     - html
     - json
+    - declaration
     - accessibility
     - recommendation
     - performance
