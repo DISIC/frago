@@ -13,10 +13,11 @@ Plan annuel {{ replace (path.Base .Path) (path.Ext .Path) "" }}
       {{- $.Scratch.Add "date"   $dateStart -}}
       {{- $.Scratch.Add "date"   $dateEnd -}}
       {{- $.Scratch.Add "update" (((os.Stat .Path).ModTime).Format "02/01/2006") -}}
-      {{- $.Scratch.Add "params" (cond (not .Params) "" .Params) -}}
+      {{- $.Scratch.Add "params" (cond (not .Params) "" .Params) -}} 
       {{- $.Scratch.Add "link"   (.Permalink) -}}
     {{- end -}}
   {{- end -}}
+  {{- partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "table") "table" -}}
   <article class="fg-wrapper narrow">
     <h1>Plan annuel de l’année {{ replace (path.Base .Path) (path.Ext .Path) "" }}</h1>
     <h2>Introduction</h2>

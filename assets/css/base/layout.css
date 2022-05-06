@@ -85,8 +85,7 @@
   .grid {
     display: grid;
     grid-gap: var(--baseline);
-    margin: 0 0 var(--baseline);
-    padding: 0 0 calc(var(--baseline) * 2);
+    padding: 0;
   }
 
   .grid-center {
@@ -112,22 +111,6 @@
 
   .grid-4 > * {
     grid-template-columns: repeat(auto-fit, minmax(150px, 300px)) !important;
-  }
-
-  .grid-separator {
-    grid-gap: 0;
-  }
-  .grid-separator > *:first-child {
-      padding-right: 1em;
-  }
-  .grid-separator > *:not(:first-child) {
-      border: none;
-      border-left: #f1f1f1 2px solid;
-      padding: 0 1em;
-  }
-  .grid-separator.flex > *:not(:first-child) {
-      margin: 0 0 0 0.5em;
-      padding: 0 1em;
   }
 }
 

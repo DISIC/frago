@@ -71,6 +71,7 @@
       {{- end -}}
     {{- end -}}
   {{- else -}}
+  <p class="no-print">← <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
     {{ with .Title }}<h1 class="text-center wrapper">{{ . }}</h1>{{ end }}
     {{- if and (ne $project "audits") (not (partialCached "render/issimpleproject.html" "arg" "arg")) -}}
       {{- if and (not (in (path.Base .Path) "index.md")) -}}

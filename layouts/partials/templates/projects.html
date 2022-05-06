@@ -4,7 +4,6 @@
 
 {{- if and (ne $project "audits") (ne .Path "audits") -}}
 <section class="fg-wrapper narrow">
-    <p class="no-print">← <a href="{{ .Parent.Permalink }}" class="link-more link-back">Retour à la liste des {{ .Parent.Title }}</a></p>
     {{/* Load lasts file */}}
     {{- $.Scratch.Set "accessibility-lastfile"  (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "accessibility" "datafilename" .Params.datafilename) $project "accessibility" .Params.datafilename) -}}
     {{- $.Scratch.Set "accessibility-path"      (index ($.Scratch.Get "accessibility-lastfile") "auditfile-path")     -}}
@@ -150,7 +149,7 @@
                       chartType: 'bar'
                     }
                   ],
-                  yRegions: [{ label: "", start: 0, end: 30 }]
+                  yRegions: [{ label: "", start: 0, end: 50 }]
               }
               const chartrecommendation = new frappe.Chart("#chartrecommendation", {
                   title: "Préconisations relevées",

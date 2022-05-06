@@ -1,11 +1,11 @@
 {{- $context := .context -}}
 {{- $score   := .score -}}
 {{- $audit   := .audit -}}
-{{- $data         := newScratch -}}
+{{- $data    := newScratch -}}
 
 {{- $data.Set "criterioncounter" 0 -}}
-{{- if fileExists (printf "%s/quality" (index $audit "pathproject")) -}}
-{{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "recommendation") (index $audit "project")) "recommendation") -}}
+{{- if or (fileExists (printf "%s/quality" (index $audit "pathproject"))) (fileExists (printf "%s/recommendation" (index $audit "pathproject"))) (fileExists (printf "%s/recommendations" (index $audit "pathproject"))) -}}
+{{- with (index (partialCached "render/lastfile.html" (dict "context" $context "project" (index $audit "project") "type" "recommendation") (index $audit "project")) "auditfile-path") -}}
 {{- if fileExists . -}}
 {{- range (readFile . | transform.Unmarshal) -}}
   {{- range .pages -}}{{ $name := .name }}{{- range .blocks -}}{{ $block := .name }}{{- range .errors -}}{{- $data.Delete "criterions" -}}{{- $data.Set "path" 0 -}}
@@ -38,41 +38,41 @@
   {{- $thematiques := float (index (split $key ".") 0) -}}
   {{- $criteria    := float (index (split $key ".") 1) -}}
   <p><strong>Critère {{ $thematiques }}.{{ $criteria }}</strong><br/>
-  {{- $s := where ($.context.Site.Data.rgaa.criteria.topics) "number" "eq" (float (index (split $key ".") 0)) -}}
+  {{- $s := where ($context.Site.Data.rgaa.criteria.topics) "number" "eq" (float (index (split $key ".") 0)) -}}
   {{- if ge (len $s) 1 -}}
-  {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
-  <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em>
-  </br>
-      {{- end -}}
-      {{- with ($data.Get "criterion") -}}
-      {{ with (index . (printf "%v.%v" $thematiques $criteria)) }}
-          <table>
-            {{ range first 1 (index (sort .) 0) }}
-            <thead>
-              <tr>
-                <th class="w-100">Page</th>
-                <th class="w-100">Bloc</th>
-                <th class="w-120">Titre</th>
-                <th>Description</th>
-                {{ if ne .pathexist 0 }}<th>Xpath</th>{{ end }}
-              </tr>
-            </thead>
-            {{- end -}}
-            <tbody>
-            {{- range $key, $value := . -}}
-              <tr>
-              {{ range . }}
-                <td>{{ .page }}</td>
-                <td>{{ .block }}</td>
-                <td>{{ .name }}</td>
-                <td>{{ .description | markdownify }}</td>
-                {{ if ne .pathexist 0 }}<td aria-label="{{ .path }}">{{ substr .path 0 20 }}</td>{{ end }}
-              {{ end }}
-              </tr>
-            {{- end -}}
-            </tbody>
-          </table>
-      {{- end -}}
-      {{- end -}}
+    {{- $content := (index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium.title -}}
+    <em>{{ replaceRE "\\[(.*?)\\]\\(.*?\\)" "$1" $content | markdownify }}</em>
+    </br>
+  {{- end -}}
+  {{- with ($data.Get "criterion") -}}
+  {{ with (index . (printf "%v.%v" $thematiques $criteria)) }}
+      <table>
+        {{ range first 1 (index (sort .) 0) }}
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            {{ if ne .pathexist 0 }}<th>Xpath</th>{{ end }}
+          </tr>
+        </thead>
+        {{- end -}}
+        <tbody>
+        {{- range $key, $value := . -}}
+          <tr>
+          {{ range . }}
+            <td>{{ .page }}</td>
+            <td>{{ .block }}</td>
+            <td>{{ .name }}</td>
+            <td>{{ .description | markdownify }}</td>
+            {{ if ne .pathexist 0 }}<td aria-label="{{ .path }}">{{ substr .path 0 20 }}</td>{{ end }}
+          {{ end }}
+          </tr>
+        {{- end -}}
+        </tbody>
+      </table>
+  {{- end -}}
+  {{- end -}}
 {{ end }}
 
