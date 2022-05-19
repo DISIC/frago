@@ -48,13 +48,13 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   notAlternative = false
   permalinkable = true
   isHTML = true
-[outputFormats.recommendation]
+[outputFormats.recommendationcsv]
   baseName = "recommendation"
-  mediaType = "application/json"
+  mediaType = "text/csv"
   isPlainText = true
   notAlternative = false
-[outputFormats.quality]
-  baseName = "quality"
+[outputFormats.recommendation]
+  baseName = "recommendation"
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false

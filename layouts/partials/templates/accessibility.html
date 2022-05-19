@@ -197,155 +197,77 @@
     {{- if and (gt (len ($data.Get "pageslist")) 1) -}}
     <h3 id="pagesall" class="small-caps">Anomalies présentes sur toutes les pages</h3>
     {{- else -}}
-    <h3 >Anomalies</h3>
+    <h3>Anomalies</h3>
     {{- end -}}
+
+
 
     {{- $data.Set "counterallpages" 0 -}}
     {{- if and ($data.Get "auditmethodology") ($data.Get "auditfile-csv") -}}
+    {{/* START :: Loop csv files */}}
     {{- range $key, $value := after 1 ($data.Get "auditfile-csv") -}}
-      {{- $indication := (delimit (uniq (after ($data.Get "auditmethodology") .)) "") -}}
-      {{- $content := (index (split $indication "|") 0) -}}
-      {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
-      {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
-      {{- $condcontentnc := (eq $content "nc") -}}
-      {{- $condcontentc := (eq $content "c") -}}
-      {{- $thematiques := index $value 0 -}}
-      {{- $criteria := index $value 1 -}}
-      {{- $tests := index $value 2 -}}
-      {{ if eq (len (uniq (after ($data.Get "auditmethodology") .))) 1 }}
+      {{/* START :: if all criteria are the same */}}
+      {{- $criteriaperline := (uniq (after ($data.Get "auditmethodology") .)) -}}
       {{- range first 1 . -}}
-        {{- if or $condcontentlen $condcontentnc -}}
-        {{- $data.Set "counterallpages" 1 -}}
-        <p class="mb-0"><strong>
-          {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($data.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($data.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
-          {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
-        </strong></p>
-        {{- $txt := "" -}}
-        {{- if not $condcontentnc -}}
-          {{- if $condcontentc -}}
-            {{- $txt = "Conforme! Note" -}}
-          {{- else -}}
-            {{- $txt = "Non applicable" -}}
-          {{- end -}}
-        {{- else -}}
-          {{- $txt = "Commentaire(s)" -}}
-        {{- end -}}
-        {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>{{- $txt -}}</b>&nbsp;: {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
-          {{- $s := where ($data.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-          {{- if eq ($data.Get "auditmethodology") 2 -}}
-            <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
-          {{ else if eq ($data.Get "auditmethodology") 3 }}
-            {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
-              {{- if eq $idx (string ($tests)) -}}
-                {{- if reflect.IsSlice . -}}
-                  <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
-                {{- if (after 1 .) -}}
-                  <ol>
-                    {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
-                  </ol>
-                {{- end -}}
-              {{- else -}}
-                <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
-              {{- end -}}
-            {{- end -}}
-            {{- end -}}
-          {{- end -}}
+        {{ if eq (len $criteriaperline) 1 }}
+          {{- $indication := (delimit $criteriaperline "") -}}
+          {{- template "description" (dict "value" $value "indication" $indication "criteriaperline" $criteriaperline "data" $data) -}}
         {{- end -}}
       {{- end -}}
-      {{- end -}}
+      {{/* END :: if all criteria are the same */}}
     {{- end -}}
     {{- end -}}
     {{ if not ($data.Get "counterallpages") }}<p>Aucune erreur commune à toutes les pages.</p>{{ end }}
 
     <hr class="divider">
 
+    {{/* START :: If several page tested */}}
     {{- if and (gt (len ($data.Get "pageslist")) 1) -}}
-    {{/* Range map errors sort by RGAA order - on specifics pages */}}
-    <h3 class="small-caps">Anomalies présentes sur les pages spécifiques</h3>
-    {{/* Display errors presents on specific pages */}}
-    {{- range $id, $value := ($data.Get "pageslist") -}}
-      {{- $data.Set "text" 0 -}}
-      {{- $page := . -}}
-      <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}" class="bullet">Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
-      {{- $data.Set "is-page-error" 0 -}}
-      {{- range $key, $value := after 1 ($data.Get "auditfile-csv") -}}
-      {{- if ne (len (uniq (after ($data.Get "auditmethodology") .))) 1 -}}
-        {{- $indication := (string (index . (add $id ($data.Get "auditmethodology")))) -}}
-        {{- $content := (index (split $indication "|") 0) -}}
-        {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
-        {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
-        {{- $condcontentnc := (eq $content "nc") -}}
-        {{- $condcontentc := (eq $content "c") -}}
-        {{- $thematiques := index $value 0 -}}
-        {{- $criteria := index $value 1 -}}
-        {{- $tests := index $value 2 -}}
-        {{- if or $condcontentlen $condcontentnc -}}
-        {{- $data.Add "is-page-error" 1 -}}
-          <p class="mb-0"><strong>
-          {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($data.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($data.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
-          {{- if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
-          </strong></p>
-        {{- $txt := "" -}}
-        {{- if $condcontentc -}}
-          {{- $txt = "Conforme, mais attention" -}}
-        {{- else -}}
-          {{- $txt = "Commentaire(s)" -}}
+      {{/* Range map errors sort by RGAA order - on specifics pages */}}
+      <h3 class="small-caps">Anomalies présentes sur les pages spécifiques</h3>
+      {{/* START :: Display errors presents on specific pages */}}
+      {{- range $id, $value := ($data.Get "pageslist") -}}
+        {{- $data.Set "text" 0 -}}
+        <h4 id="{{ if ge (len (split . "|")) 2 }}{{ (index (split . "|") 0) | urlize }}{{ else }}{{ . | urlize }}{{ end }}" class="bullet">Page : {{ if ge (len (split . "|")) 2 }}{{ index (split . "|") 0 }}{{ else }}{{ . }}{{ end }}</h4>
+        {{- $data.Set "is-page-error" 0 -}}
+        {{/* START :: Loop csv files for each page */}}
+        {{- range $key, $value := after 1 ($data.Get "auditfile-csv") -}}
+          {{- $criteriaperline := (uniq (after ($data.Get "auditmethodology") .)) -}}
+          {{/* START :: if all criteria are different */}}
+          {{- if ne (len $criteriaperline) 1 -}}
+            {{- $data.Add "is-page-error" 1 -}}
+            {{- $indication := (string (index . (add $id ($data.Get "auditmethodology")))) -}}
+            {{- template "description" (dict "value" $value "indication" $indication "criteriaperline" $criteriaperline "data" $data) -}}
+          {{- end -}}
+          {{/* END :: if all criteria are different */}}
         {{- end -}}
-          {{- if $condcontentlen }}<p class="m-0 smaller"><b>{{- $txt -}}</b> : {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
-            {{- $s := where ($data.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
-            {{- if eq ($data.Get "auditmethodology") 2 -}}
-              <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
-            {{ else if eq ($data.Get "auditmethodology") 3 }}
-              {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
-                {{- if eq $idx (string ($tests)) -}}
-                  {{- if reflect.IsSlice . -}}
-                    <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
-                  {{- if (after 1 .) -}}
-                    <ol>
-                      {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
-                    </ol>
-                  {{- end -}}
-                {{- else -}}
-                  <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
-                {{- end -}}
-              {{- end -}}
-              {{- end -}}
-            {{- end -}}
-        {{- end -}}
+        {{/* END :: Loop csv files for each page */}}
+        {{- if eq ($data.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
+        {{- if ne (add (int $id) 1) (len ($data.Get "pageslist")) -}}<hr class="divider-strong">{{- end -}}
+      {{- end -}}
+    {{/* END :: Display errors presents on specific pages */}}
+    <hr class="divider">
+    {{- end -}}
+    {{/* END :: If several page tested */}}
+
+    {{/* START If several page tested */}}
+    {{- if gt (len ($data.Get "pageslist")) 0 -}}
+    {{/* Range map errors sort by RGAA order - on all pages */}}
+    <h3 id="criteria-nonconforme">Tous les critères non conformes du site</h3>
+    {{ partialCached "templates/validity.html" (dict "context" $context "audit" ($data.Get "audits") "score" ($data.Get "scores").criteria) ($data.Get "scores").criteria }}
+    {{- end -}}
+    {{/* END If several page tested */}}
+
+    </article>
+    {{- else -}}
+      {{ $project }}
+      <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}accessibility</p>
+      {{- if (ne (printf "%s/%s" (path.Dir $.context.Path) (path.Base $.context.Path)) "audits/_index.md") -}}
+        <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($data.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>
+        {{- warnf "Fichier d’audit manquant dans %s" ($data.Get "audits").pathdatafile -}}
       {{- end -}}
     {{- end -}}
-    {{- if eq ($data.Get "is-page-error") 0 -}}<p>Aucune erreur spécifique sur cette page.</p>{{- end -}}
-    {{- if ne (add (int $id) 1) (len ($data.Get "pageslist")) -}}<hr class="divider-strong">{{- end -}}
-
-  {{- end -}}
-
-  <hr class="divider">
-
-  {{- end -}}
-  {{/* END If several page tested */}}
-
-  {{/* START If several page tested */}}
-  {{- if gt (len ($data.Get "pageslist")) 0 -}}
-  {{/* Range map errors sort by RGAA order - on all pages */}}
-  <h3 id="criteria-nonconforme">Tous les critères non conformes du site</h3>
-  {{ partialCached "templates/validity.html" (dict "context" $context "audit" ($data.Get "audits") "score" ($data.Get "scores").criteria) ($data.Get "scores").criteria }}
-  {{- end -}}
-  {{/* END If several page tested */}}
-
-  </article>
-  {{- else -}}
-    {{ $project }}
-    <p>Aucun fichier de test n’est présent dans le répertoire : {{ (partialCached "render/rootpath" (dict "context" . "project" $project "type" "accessibility") $project "accessibility") }}/{{ cond (not $project) "" (printf "%s/" $project) }}accessibility</p>
-    {{- if (ne (printf "%s/%s" (path.Dir $.context.Path) (path.Base $.context.Path)) "audits/_index.md") -}}
-      <p>Le fichier d’audit RGAA est manquant dans ce ce répertoire: {{ ($data.Get "audits").pathdatafile }} - vérifier le chemin du fichier sur le disque.</p>
-      {{- warnf "Fichier d’audit manquant dans %s" ($data.Get "audits").pathdatafile -}}
-    {{- end -}}
-  {{- end -}}
-  {{/* END If several page tested */}}
+    {{/* END If several page tested */}}
 
 {{- end -}}
 {{/* END Test if audit file exists */}}
@@ -358,3 +280,55 @@
   </article>
 {{- end -}}
 
+{{- define "description" -}}
+  {{- $value := .value -}}
+  {{- $data := .data -}}
+  {{- $indication := .indication -}}
+  {{- $content := (index (split $indication "|") 0) -}}
+  {{- $comment := delimit (uniq ((split $indication "|") | symdiff (slice $content))) ", " -}}
+  {{- $condcontentlen := gt (len (split $indication "|")) 1 -}}
+  {{- $condcontentnc := (eq $content "nc") -}}
+  {{- $condcontentc := (eq $content "c") -}}
+  {{- $thematiques := index $value 0 -}}
+  {{- $criteria := index $value 1 -}}
+  {{- $tests := index $value 2 -}}
+  {{- if or $condcontentlen $condcontentnc -}}
+    {{- $data.Set "counterallpages" 1 -}}
+    <p class="mb-0"><strong>
+      {{- if $condcontentc -}}{{ end }}{{ if or $condcontentnc $condcontentlen }}{{ end }} {{ if eq ($data.Get "auditmethodology") 3 }}Test{{ else }}Critère{{ end }} {{ $thematiques }}.{{ $criteria }}{{ if eq ($data.Get "auditmethodology") 3 }}.{{ $tests }}{{ end }} <small hidden>- {{ if $condcontentc }}Conforme{{ end }}{{ if or $condcontentnc $condcontentlen }}Non conforme{{ end }}</small>
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!F!" -}}<span class="badge good">Facile</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!M!" -}}<span class="badge medium">Modéré</span>{{- end -}}
+      {{ if eq (upper (delimit (findRE "!(.*)!" $comment) "")) "!D!" -}}<span class="badge bad">Difficile</span>{{- end -}}
+    </strong></p>
+    {{- $txt := "" -}}
+    {{- if not $condcontentnc -}}
+      {{- if $condcontentc -}}
+        {{- $txt = "Conforme! Note" -}}
+      {{- else -}}
+        {{- $txt = "Non applicable" -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $txt = "Commentaire(s)" -}}
+    {{- end -}}
+    {{- if ge (len $comment) 1 }}<p class="m-0 smaller"><b>{{- $txt -}}</b>&nbsp;: {{ replace (replaceRE "!(.*)!" "" $comment 1) "\n" "<br>" | markdownify }}</p>{{- end -}}
+      {{- $s := where ($data.Get "criteriafile") "number" "eq" (int ($thematiques)) -}}
+      {{- if eq ($data.Get "auditmethodology") 2 -}}
+        <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).title) | markdownify) 100) | safeHTML }}</em></p>
+      {{ else if eq ($data.Get "auditmethodology") 3 }}
+        {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
+          {{- if eq $idx (string ($tests)) -}}
+            {{- if reflect.IsSlice . -}}
+              <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+            {{- if (after 1 .) -}}
+              <ol>
+                {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+              </ol>
+            {{- end -}}
+          {{- else -}}
+            <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
