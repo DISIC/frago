@@ -19,9 +19,9 @@
 
     {{- else -}}
 
-      {{- $accessibility  := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility")  $project "accessibility") "auditfile-path") -}}
-      {{- $recommendation := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation") $project "recommendation") "auditfile-path") -}}
-      {{- $lighthouse     := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse")     $project "lighthouse") "auditfile-path") -}}
+    {{- $accessibility  := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path")  }}
+    {{- $recommendation := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "quality") $project "quality") "auditfile-path") -}}
+    {{- $lighthouse     := fileExists (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
 
 
       {{/* START - Display medium compliance */}}
@@ -36,10 +36,10 @@
       {{- end -}}
       {{/* END - Display medium compliance */}}
 
-      {{/* START - If accessibility and recommendation and lighthouse */}}
-      {{- if or $accessibility $recommendation $lighthouse -}}
-      <h2 class="text-center">{{ if $.Scratch.Get "subservice" }}Site principal{{ else }}Scores{{ end }}</h2>
-      {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
+    {{/* START - If accessibility and quality and lighthouse */}}
+    {{- if or $accessibility $recommendation $lighthouse -}}
+    <h2 class="text-center">{{ if $.Scratch.Get "subservice" }}Site principal{{ else }}Scores{{ end }}</h2>
+    {{- with .OutputFormats.Get "declarationpage" -}}<p class="text-center"><a href="{{ .RelPermalink }}">Accéder à la déclaration</a></p>{{- end -}}
 
       {{/* START - If accessibility */}}
       {{- if $accessibility -}}
@@ -69,59 +69,63 @@
         {{- with ($.Scratch.Get "accessibility-all-path") -}}
           {{- range $id, $value := . -}}{{- ($.Scratch.Add "render" (slice (partialCached "render/accessibility.html" (dict "auditfile" . ) . ))) -}}{{- end -}}
         {{- end -}}
-        {{- with ($.Scratch.Get "render") -}}
-          {{- if gt (len .) 1 -}}
-          <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
-          <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
-          <script src="{{ (resources.Get "js/frappe-colors.js").Permalink }}"></script>
-          <div id="chartaccessibility">
-            <table>
-              <caption>Taux de conformité dans le temps</caption>
-              <thead>
-                <tr>
-                  <th>Date d’audit</th>
-                  <th>Taux de conformité</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{- range $id, $value := . -}}
-                <tr>
-                  {{- $date := index ($.Scratch.Get "accessibility-all-name") (string $id) -}}
-                  <th>{{ (time $date).Day }} {{ index $.Site.Data.month (printf "%d" (time $date).Month) }} {{ (time $date).Year }}</th>
-                  <td>{{- .scores.compliance -}} %</td>
-                </tr>
-                {{- end -}}
-              </tbody>
-            </table>
-          </div>
-          <script>
-              const dataaccessibility = {
-                  labels: [{{- range $id, $value := ($.Scratch.Get "accessibility-all-name") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value).Day }} {{ index $.Site.Data.month (printf "%d" (time $value).Month) }} {{ (time $value).Year }}"{{- end -}}],
-                  datasets: [
-                    {
-                      name: "Conformité",
-                      values: [{{- range $id, $value := . -}}{{ if ne $id 0 }},{{ end }}"{{- .scores.compliance -}}"{{- end -}}]
-                    }
-                  ],
-                  yRegions: [{ label: "", start: 0, end: 100 }]
-              }
-              const chartaccessibility = new frappe.Chart("#chartaccessibility", {
-                  title: "Taux de conformité dans le temps (en %)",
-                  data: dataaccessibility,
-                  type: 'bar',
-                  height: 400,
-                  lineOptions: {
-                      regionFill: 1
-                  },
-                  truncateLegends: true,
-                  colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
-              })
-          </script>
-          {{- end -}}
-        {{- end -}}
-        {{/* END - If several accessibility files */}}
       {{- end -}}
-      {{/* END - If Accessibility */}}
+      {{/* END - If several accessibility files */}}
+    {{- end -}}
+    {{/* END - If Accessibility */}}
+
+    {{/* START - If Recommendations */}}
+    {{- if $recommendation -}}
+      <h3 class="m-0">
+        Recommandations
+        {{ with (first 1 (where (where $OutputFormats "MediaType.Type" "eq" "text/html") "Format.BaseName" "eq" "recommendation")) }}
+          {{- $AuditLink := cond (in $project (index . 0).Permalink) (index . 0).Permalink (printf "%saudits/%s/%s.html" $context.Site.BaseURL $project (index . 0).Format.BaseName) -}}
+          <small>- <a href="{{ $AuditLink }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small>{{ end }}{{ $pageauditpath := (printf "/content/audits/%s/quality.md" ($project | anchorize)) }}{{- if (fileExists $pageauditpath) -}}<small>- <a href="{{ site.BaseURL | default "/" }}{{ replace (replace (replace $pageauditpath ".md" "/") "/content/" "") "//" "/" }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small>
+        {{- end -}}
+      </h3>
+      {{- with index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-path" -}}
+        {{- partial "components/scores/quality" (dict "context" $context "counter" (partialCached "render/recommendation" (dict "context" $context "project" $project "auditfile" .) .)) -}}
+      {{- end -}}
+
+      {{/* START - If several quality files */}}
+      {{- with (index (partialCached "render/lastfile.html" (dict "context" . "project" $project "type" "quality") $project "quality") "auditfile-all-path") -}}
+        {{- if (gt (len .) 1) -}}
+          {{- range $id, $value := . -}}
+            {{- ($.Scratch.SetInMap "renderquality" (string $id) (partialCached "render/recommendation" (dict "context" $context "auditfile" . ) . )) -}}
+          {{- end -}}
+          <div id="chartquality"></div>
+            <script>
+                const dataquality = {
+                    labels: [{{- range $id, $value := ($.Scratch.Get "renderquality") -}}{{ if ne $id "0" }},{{ end }}"{{ (time $value.date).Day }} {{ index $.Site.Data.month (printf "%d" (time $value.date).Month) }} {{ (time $value.date).Year }}"{{- end -}}],
+                    datasets: [
+                      {
+                        name: "Erreurs",
+                        values: [{{ range $id, $value := ($.Scratch.Get "renderquality") }}{{ if ne $id "0" }},{{ end }}"{{ .total }}"{{- end -}}],
+                        chartType: 'bar'
+                      }
+                    ],
+                    yRegions: [{ label: "", start: 0, end: 30 }]
+                }
+                const chartquality = new frappe.Chart("#chartquality", {
+                    title: "Préconisations relevées",
+                    data: dataquality,
+                    type: 'axis-mixed',
+                    height: 300,
+                    truncateLegends: true,
+                    colors: [hslToHex(hsltertiary),hslToHex(hslquartenary),hslToHex(hslprimary),hslToHex(hslsecondary)]
+                })
+            </script>
+        {{- end -}}
+      {{- end -}}
+      {{/* END - If several quality files */}}
+    {{- else -}}
+      {{- if and (partialCached "render/notepath" . .) (eq (len (where .OutputFormats "RelPermalink" "in" (slice (printf "/audits/%s/recommendation.html" $project)))) 1) -}}
+        <article class="wrapper narrow">
+          <h3 class="m-0">Recommandations <small>- <a href="{{ site.BaseURL | default "/" }}{{ printf "/%s/quality.html" (path.Dir .Path) }}" aria-label="Accéder au rapport de recommandations">Accéder au rapport</a></small></h3>
+        </article>
+      {{- end -}}
+    {{- end -}}
+    {{/* END - If Recommendations */}}
 
       {{/* START - If Recommendation */}}
       {{- if $recommendation -}}
