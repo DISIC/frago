@@ -74,9 +74,9 @@
   {{/* END Display page content if exists */}}
 
   <h2 class="page-break">Erreurs à corriger</h2>
-  {{- $partial := (partialCached "components/quality/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) $project "lot") -}}
+  {{- $partial := (partialCached "components/recommendation/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) $project "lot") -}}
   {{- partialCached "elements/content.html" $partial "lot" -}}
-  {{/*- partial "components/quality/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
+  {{/*- partial "components/recommendation/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
   {{- $cScores := ($data.Get "scores").scores.criteria.conforme -}}
   {{- $ncScores := ($data.Get "scores").scores.criteria.nonconforme -}}
