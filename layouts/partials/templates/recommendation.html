@@ -73,9 +73,11 @@
 
   {{/* END Display page content if exists */}}
 
-  <h2 class="page-break">Erreurs à corriger</h2>
   {{- $partial := (partialCached "components/recommendation/lot.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) $project "lot") -}}
-  {{- partialCached "elements/content.html" $partial "lot" -}}
+  {{ with $partial }}
+    <h2 class="page-break">Erreurs à corriger</h2>
+    {{- partialCached "elements/content.html" . $project -}}
+  {{ end }}
   {{/*- partial "components/recommendation/critical.html" (dict "context" $context "project" $project "datafilename" .Params.datafilename) -*/}}
 
   {{- $cScores := ($data.Get "scores").scores.criteria.conforme -}}
@@ -151,13 +153,13 @@
     let Background = [
       "padding: 2px",
       "font-weight:bold",
-      "background: #222",
-      "color: #fff"
+      "background:#222",
+      "color:#fff"
     ].join(" ;");
     let BackgroundWhite = [
-      "padding: 2px 2px",
+      "padding:2px 2px",
       "background:#fff",
-      "color: #000"
+      "color:#000"
     ].join(" ;");
     console.group('%cErreurs par critère listé{{ with ($data.Get "countercriterionlist") }} ({{ len . }}){{ end }} : ', 'font-size: 12px;');
     {{- range $key, $criterion := $data.Get "countercriterionlist" }}
@@ -168,7 +170,7 @@
           '%c{{- if ($data.Get "countercheckedlist") }}{{ with (index ($data.Get "countercheckedlist") $key) }}{{ len . }}{{ else }}0{{ end }}{{ end -}}/{{ $lenghtcriterion -}}
           %c corrigées pour %c{{ $key }}%c qui a le statut %c
           {{- index (index ($data.Get "scores") "criteria").all $key -}}
-          %c\n-> Erreurs : {{ range $id, $value := . -}}
+          %c\n-> Erreurs: {{ range $id, $value := . -}}
           {{ with ($data.Get "countercheckedlist") }}{{- if (intersect (index . $key) $criterion) }}%c{{ end }}{{ end }}{{ . }}
           {{- if ne (add $id 1) (len ($criterion)) }} /-/ {{ end }}
           {{- end }}',
