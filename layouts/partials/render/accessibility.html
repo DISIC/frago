@@ -81,6 +81,7 @@
             ($data.Get (printf "%s%s%s" $scorekey $idx "iPageC"))
           }}
         {{ end }}
+
         {{ if eq (index (split $value "|") 0) "nc" }}
           {{ $data.SetInMap (printf "%s%s%s" $scorekey $idx "iPageNC") (string $key) $value }}
           {{ $data.SetInMap (printf "%s%s" $scorekey "pageNC") (string $idx) ($data.Get (printf "%s%s%s" $scorekey $idx "iPageNC")) }}

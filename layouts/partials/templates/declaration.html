@@ -1,19 +1,20 @@
 {{- $audit    := .audits -}}
 {{- $context  := .context -}}
-{{- $project :=  (partialCached "render/projectpath" $context $context) -}}
+{{- $data     := newScratch -}}
+{{- $project  := (partialCached "render/projectpath" $context $context) -}}
 
 {{/* START Determine the version of the audit from the context declaration */}}
-  {{- $context.Scratch.Set "guidelinename" "rgaa" -}}
-  {{- $context.Scratch.Set "guidelineversion" "4.1" -}}
-  {{- $context.Scratch.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
-  {{- with ($context.Scratch.Get "context") -}}
+  {{- $data.Set "guidelinename" "rgaa" -}}
+  {{- $data.Set "guidelineversion" "4.1" -}}
+  {{- $data.Set "context" (partialCached "render/context.html" (dict "context" $context "project" $project) $project) -}}
+  {{- with ($data.Get "context") -}}
   {{- with (index $audit "auditfile-name") -}}
-  {{- with (index ($context.Scratch.Get "context") .) -}}
+  {{- with (index ($data.Get "context") .) -}}
     {{- with .audit -}}
       {{- with .audit.guidelines -}}
         {{- $guideline := (replace (. | urlize) "-" "") -}}
-        {{- $context.Scratch.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
-        {{- $context.Scratch.Set "guidelineversion" (replace $guideline ($.context.Scratch.Get "guidelinename") "") -}}
+        {{- $data.Set "guidelinename"    (cond (in $guideline "rgaa") "rgaa" (cond (in $guideline "wcag") "wcag" "none")) -}}
+        {{- $data.Set "guidelineversion" (replace $guideline ($data.Get "guidelinename") "") -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -26,41 +27,43 @@
 {{/* END Determine the version of the audit form the context declaration */}}
 
 {{/* START Load the criteria file for the good audit version */}}
-{{- $.context.Scratch.Set "criteriafile" (index (index $.context.Site.Data ($.context.Scratch.Get "guidelinename")) ($.context.Scratch.Get "guidelineversion")).criteria.topics -}}
-{{- $.context.Scratch.Set "organisation" (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
-{{- $.context.Scratch.Set "strategy"     (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
-{{- $.context.Scratch.Set "auditpath-csv" (index $audit "auditfile-path") -}}
-{{- if and ($.context.Scratch.Get "auditpath-csv") (ne ($.context.Scratch.Get "auditpath-csv") "/false") -}}
+{{- $data.Set "criteriafile"  (index (index $.context.Site.Data ($data.Get "guidelinename")) ($data.Get "guidelineversion")).criteria.topics -}}
+{{- $data.Set "organisation"  (cond (ne $.context.Site.Params.organisation "") $.context.Site.Params.organisation "") -}}
+{{- $data.Set "strategy"      (cond (ne $.Params.accessibility.strategy "") $.Params.accessibility.strategy (cond (ne $context.Site.Params.strategy "") $context.Site.Params.strategy "")) -}}
+{{- $data.Set "auditpath-csv" (index $audit "auditfile-path") -}}
+{{- $data.Set "auditfile-csv" (getCSV "," ($data.Get "auditpath-csv")) -}}
+{{- if and ($data.Get "auditpath-csv") (ne ($data.Get "auditpath-csv") "/false") -}}
 {{/* END Load the criteria file for the good audit version */}}
 
 {{/* START Load Scores, context and pageslist */}}
-{{- $.context.Scratch.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($.context.Scratch.Get "auditpath-csv")) ($.context.Scratch.Get "auditpath-csv")) -}}
+{{- $data.Set "scores" (partialCached "render/accessibility.html" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv")) -}}
 {{- $date := (string (index $audit "auditfile-name")) -}}
 
 {{ with (partialCached "render/context.html" (dict "context" $context "project" $project) $project) }}
   {{- $contextlast := cond (not (index . $date)) (index (last 1 (sort .)) 0) (index . $date) -}}
-  {{- $.context.Scratch.Set "context" $contextlast -}}
+  {{- $data.Set "context" $contextlast -}}
   {{- if (not (index . $date)) -}}
     {{ warnf "%s/accessibility/context.yml is not well filed, maybe the last value for date last audit is missing" $project }}
   {{- end -}}
 {{- end -}}
 {{/* Find if the audit file is by criteria or by tests */}}
-{{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "methodology") -}}
+{{- $auditmethodology := (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($data.Get "auditfile-csv")) $project) "methodology") -}}
 {{/* Create an array with all pages */}}
-{{- $.context.Scratch.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($.Scratch.Get "auditfile-csv")) $context) "pageslist") -}}
+{{- $data.Set "pageslist" (index (partialCached "render/methodology.html" (dict "context" $context "auditfile" ($data.Get "auditfile-csv")) $project) "pageslist") -}}
 {{/* END Load Scores, context and pageslist */}}
+
 
 {{/* START If "context" */}}
 
-{{- with ($.context.Scratch.Get "context") -}}
+{{- with ($data.Get "context") -}}
   <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
   <section>
     {{/* START If "organisation" */}}
-    {{ if ($.context.Scratch.Get "organisation") }}
-      <p>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
+    {{ if ($data.Get "organisation") }}
+      <p>{{ with ($data.Get "organisation") }}{{ . }}{{ end }} s’engage à rendre ses sites internet, intranet, extranet et ses
       progiciels accessibles (et ses applications mobiles et mobilier urbain numérique) conformément à l’article 47 de la
       loi n°2005-102 du 11 février 2005.</p>
-      {{- with $.context.Scratch.Get "strategy" -}}
+      {{- with $data.Get "strategy" -}}
       <p>À cette fin, elle met en œuvre la stratégie et les actions suivantes :</p>
       <ul>
         {{- with .schema -}}<li>Schéma pluriannuel de mise en accessibilité 2020-2022 : <a href="{{ . }}">Schéma pluriannuel</a></li>{{ end }}
@@ -72,19 +75,19 @@
     {{ end }}
     {{/* END If "organisation" */}}
     <h2>État de conformité</h2>
-    <p>{{ with $.context.Scratch.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($.context.Scratch.Get "scores") }}{{ if lt (index ($.context.Scratch.Get "scores") "compliance") 50 }}non{{ else if ge (index ($.context.Scratch.Get "scores") "compliance") 50 }}partiellement{{ else if eq (index ($.context.Scratch.Get "scores") "compliance") 100 }}totalement{{ end }}{{ end }} conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des dérogations énumérées ci-dessous.</p>
+    <p>{{ with $data.Get "organisation" }}{{ . }}{{ end }}{{ with .website }}, {{ . }}{{ end }} est {{ if ($data.Get "scores") }}{{ if lt (index ($data.Get "scores") "compliance") 50 }}non{{ else if ge (index ($data.Get "scores") "compliance") 50 }}partiellement{{ else if eq (index ($data.Get "scores") "compliance") 100 }}totalement{{ end }}{{ end }} conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des dérogations énumérées ci-dessous.</p>
     <h3>Résultats des tests</h3>
     {{/* START If criteria */}}
-    {{- if ($.context.Scratch.Get "scores").criteria -}}
+    {{- if ($data.Get "scores").criteria -}}
       <p>L’audit de conformité{{ with (time $date) }}, du {{ .Day }} {{ index $context.Site.Data.month (printf "%d" .Month) }} {{ .Year }}, {{ end }}{{ with .condition }}réalisé par {{ . }}{{ end }} révèle que :</p>
       <ul>
-        {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($.context.Scratch.Get "auditpath-csv")) $context $project ($.context.Scratch.Get "auditpath-csv") -}}
+        {{- with partialCached "render/externals" (dict "context" $context "project" $project "auditfile" ($data.Get "auditpath-csv")) $context $project ($data.Get "auditpath-csv") -}}
         {{- $map := . -}}
         {{- if ne (len .compliance) 1 -}}
           {{/* Cumulated scores */}}
-          <li>{{ .percentage }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>
-          {{- if ($.context.Scratch.Get "scores").criteria -}}
-            <li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($.context.Scratch.Get "context").website }}pour {{ . }}{{ end }} (le taux moyen est de {{ ($.context.Scratch.Get "scores").scores.complianceaverage }}%).</li>
+          <li>{{ .percentage }}% {{ with ($data.Get "scores").scores.criteria.total }}des {{ . }} critères {{ end }}{{ with ($data.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés sur l’ensemble des parcours.</li>
+          {{- if ($data.Get "scores").criteria -}}
+            <li>{{ ($data.Get "scores").scores.compliance }}% {{ with ($data.Get "scores").scores.criteria.total }}des {{ . }} critères{{ end }} {{ with (index ($data.Get "scores") "criteretotal") }}testés {{ end }}{{ with ($data.Get "context").audit.guidelines }}du {{ . }}{{ end }} sont respectés {{ with ($data.Get "context").website }}pour {{ . }}{{ end }} (le taux moyen est de {{ ($data.Get "scores").scores.complianceaverage }}%).</li>
           {{- end -}}
             {{/* Specific score for sub services */}}
           {{- range $id, $value := .names }}
@@ -94,10 +97,10 @@
           {{- end }}
           {{- else -}}
             {{/* If any sub services */}}
-            {{ if ($.context.Scratch.Get "scores").criteria }}<li>{{ ($.context.Scratch.Get "scores").scores.compliance }}% {{ with ($.context.Scratch.Get "scores").scores.criteria.total }}des {{ . }} critères testés{{ end }} {{ with (index ($.context.Scratch.Get "scores") "criteretotal") }}testés {{ end }}{{/* with ($.context.Scratch.Get "context").audit.guidelines }}du {{ . }}{{ end */}} sont respectés (le taux moyen est de {{ ($.context.Scratch.Get "scores").scores.complianceaverage }}%).</li>{{ end }}
+            {{ if ($data.Get "scores").criteria }}<li>{{ ($data.Get "scores").scores.compliance }}% {{ with ($data.Get "scores").scores.criteria.total }}des {{ . }} critères testés{{ end }} {{ with (index ($data.Get "scores") "criteretotal") }}testés {{ end }}{{/* with ($data.Get "context").audit.guidelines }}du {{ . }}{{ end */}} sont respectés (le taux moyen est de {{ ($data.Get "scores").scores.complianceaverage }}%).</li>{{ end }}
           {{- end -}}
         {{- end -}}
-        {{/*- if ($.context.Scratch.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($.context.Scratch.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -*/}}
+        {{/*- if ($data.Get "auditpath-csv") -}}<li>Accès à la grille d’audit RGAA : <a href="{{ $context.Site.BaseURL | default "/" }}{{ replace ($data.Get "auditpath-csv") "/content/" "" }}">Télécharger la grille d’audit RGAA{{ with .website }} pour {{ . }}{{ end }}</a>{{- end -*/}}
         </li>
       </ul>
     {{- else -}}
@@ -105,16 +108,16 @@
     {{ end }}
     {{/* END If criteria */}}
     {{/* START If criteria */}}
-    {{- with ($.context.Scratch.Get "scores").criteria -}}
+    {{- with ($data.Get "scores").criteria -}}
       {{- $score := . -}}
       <h2>Critères non conformes</h2>
       {{ partialCached "templates/validity.html" (dict "context" $context "audit" $audit "score" $score) $score }}
       <h2>Établissement de cette déclaration d’accessibilité</h2>
       {{/* START If "context" */}}
-      {{ with ($.context.Scratch.Get "context") }}
+      {{ with ($data.Get "context") }}
         <p>Cette déclaration a été établie le <time datetime="{{ (time $date).Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">{{ (time $date).Day }} {{ index $context.Site.Data.month (printf "%d" (time $date).Month) }} {{ (time $date).Year }}</time>.</p>
         {{/* START If audit */}}
-        {{ with ($.context.Scratch.Get "context").audit }}
+        {{ with ($data.Get "context").audit }}
           <h3>Technologies utilisées</h3>
           <ul>
             {{- range $id, $value := .technologies -}}
@@ -125,7 +128,7 @@
         {{ end }}
         {{/* END If audit */}}
         {{/* START If audit */}}
-        {{ with ($.context.Scratch.Get "context").audit }}
+        {{ with ($data.Get "context").audit }}
           {{/* START environment */}}
           {{ with .environment }}
             <h3>Environnement de test</h3>
@@ -151,7 +154,7 @@
         {{ end }}
         {{/* END If audit */}}
         {{/* START If "pageslist" */}}
-        {{ with ($.context.Scratch.Get "pageslist") }}
+        {{ with ($data.Get "pageslist") }}
           <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
           <ol>
             {{ range $id, $value := . }}<li>{{ if ge (len (split . "|")) 2 }}<a href="{{ index (split . "|") 1 }}">{{ index (split . "|") 0 }}</a>{{ else }}{{ . }}{{ end }}</li>
@@ -163,17 +166,17 @@
     {{/* END If criteria */}}
 
     {{/* START If "organisation" */}}
-    {{ if and ($.context.Scratch.Get "organisation") .contacts }}
+    {{ if and ($data.Get "organisation") .contacts }}
       <h2>Retour d’information et contact</h2>
       <address>
-        <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with ($.context.Scratch.Get "organisation") }}<strong>{{ . }}</strong>{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
+        <p>Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de {{ with ($data.Get "organisation") }}<strong>{{ . }}</strong>{{ end }}{{ with .website }}, {{ . }}{{ end }} pour être orienté vers une alternative accessible ou obtenir le contenu
         sous une autre forme.</p>
 
         {{/* START contact */}}
         {{- with .contacts -}}
           <ul>
             {{ if .email }}<li>Envoyer un message à : <strong>{{ .email }}</strong></li>{{ end }}
-            {{ if .address }}<li>Contacter : <strong>{{ with ($.context.Scratch.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
+            {{ if .address }}<li>Contacter : <strong>{{ with ($data.Get "organisation") }}{{ . }}, {{ end }}{{ with .address }}{{ . }}{{ end }}</strong></li>{{ end }}
           </ul>
         {{- end -}}
         {{/* END contact */}}

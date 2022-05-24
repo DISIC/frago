@@ -53,6 +53,7 @@
 {{- end -}}
 {{- $total := add $counterconformesum $counternonconformesum -}}
 {{- if and (gt (len (index $scores.conformepage "0")) 3) (index $scores.nonconformepage "0") -}}
+
 <div id="chartpagecriteres-csv"></div>
 <link rel="preload" href="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}" as="script">
 <script src="{{ (resources.Get "js/frappe-charts.min.iife.js").Permalink }}"></script>
@@ -73,11 +74,11 @@
         datasets: [
           {
             name: "Non Conforme",
-            values: [{{ range $id, $value := $scores.conformepage }}{{ if ne $id "0" }},{{ end }}{{ sub 100 (div (mul (float (len .)) 100) (add (len .) (len (index $scores.nonconformepage (string $id))))) | lang.NumFmt 1 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := $scores.pageaverage }}{{ if ne $id "0" }},{{ end }}{{ sub 100 . | lang.NumFmt 1 | safeJS }}{{ end }}]
           },
           {
             name: "Conforme",
-            values: [{{ range $id, $value := $scores.conformepage }}{{ if ne $id "0" }},{{ end }}{{ div (mul (float (len .)) 100) (add (len .) (len (index $scores.nonconformepage (string $id)))) | lang.NumFmt 1 | safeJS }}{{ end }}]
+            values: [{{ range $id, $value := $scores.pageaverage }}{{ if ne $id "0" }},{{ end }}{{ . | lang.NumFmt 1 | safeJS }}{{ end }}]
           }
         ]
     }
