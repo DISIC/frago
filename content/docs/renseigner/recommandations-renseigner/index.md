@@ -33,6 +33,7 @@ Le fichier de recommandation est fastidieux à remplir, mais permet de suivre de
         status: important # Criticité : critique, important, moindre
         delivery: lot 2 # Lot 2
     - name: Saisie de la déclaration # Nom de la page
+      blocks:
       - name: Formulaire # Titre du bloc
         errors:
         - name: Label
