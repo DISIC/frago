@@ -99,6 +99,7 @@
   table th,
   table td {
     padding: 1px 5px;
+    border-width: 1px !important;
   }
 
   pre,
