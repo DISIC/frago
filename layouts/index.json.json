@@ -9,10 +9,10 @@
     {{- $.Scratch.Add "slugs" $slug -}}
     {{- $.Scratch.Set "folder" $value -}}
     {{- if eq $value "performance" -}}{{- $.Scratch.Set "folder" "lighthouse" -}}{{- end -}}
-    {{ $file := (partialCached "render/filepath" (dict "context" $context "project" $slug "type" ($.Scratch.Get "folder")) $slug ($.Scratch.Get "folder")) }}
+    {{- $file := (partialCached "render/filepath" (dict "context" $context "project" $slug "type" ($.Scratch.Get "folder")) $slug ($.Scratch.Get "folder")) -}}
     {{/* Folder for each audit type */}}
     {{- $.Scratch.Set (printf "rootpath%s" ($.Scratch.Get "folder")) (partialCached "render/rootpath" (dict "context" . "project" $slug "type" $value) $slug $value) -}}
-    {{ $filepath := (partialCached "render/filepath" (dict "context" . "project" $slug "type" $value) $slug $value) }}
+    {{- $filepath := (partialCached "render/filepath" (dict "context" . "project" $slug "type" $value) $slug $value) -}}
     {{- if not (in $slug ".md") -}}
       {{- if fileExists $filepath -}}
         {{- range readDir $filepath -}}
@@ -22,7 +22,7 @@
       {{- $.Scratch.SetInMap "jsonslug" (urlize $.Site.Title) ($.Scratch.Get (printf "slug-%s" (urlize $.Site.Title))) -}}
       {{- end -}}
     {{- end -}}
-    {{- if fileExists $filepath }}
+    {{- if fileExists $filepath -}}
       {{- range readDir $filepath -}}
           {{- $name := .Name -}}{{- $.Scratch.SetInMap (printf "slug-%s" $slug) $value (printf "audits/%s/%s/" $slug $value) -}}
       {{- end -}}
@@ -46,11 +46,11 @@
     {{- if $context.GetPage $path -}}
       {{- with $context.GetPage (printf "audits/%s" $slug) -}}{{- $.Scratch.Set "title" .Title -}}{{- end -}}
         {{- $.Scratch.Add "pages" (dict "sitename" $.Site.Title "siteslug" ($.Site.Title | replaceRE "'" "-" | replaceRE "[èéêë]" "e" | replaceRE "[àáâãäå]" "a" | replaceRE "[ìíîï]" "i" | replaceRE "[òóôõö]" "o" | replaceRE "[ùúûü]" "u" | replaceRE "[æ]" "ae" | replaceRE "[/œ]" "oe" | anchorize) "slug" $slug) -}}
-        {{- $.Scratch.Delete "audits" }}
+        {{- $.Scratch.Delete "audits" -}}
         {{- range $type, $path := $value -}}
-          {{- $.Scratch.Delete $type }}
-          {{- $.Scratch.Delete "context" }}
-          {{- $.Scratch.Set "guideline" "" }}
+          {{- $.Scratch.Delete $type -}}
+          {{- $.Scratch.Delete "context" -}}
+          {{- $.Scratch.Set "guideline" "" -}}
           {{- if eq $type "accessibility" -}}
             {{- $accessibility := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "accessibility") $project "accessibility") "auditfile-path") -}}
             {{- if (partialCached "render/accessibility.html" (dict "context" $context "auditfile" $accessibility) $accessibility) -}}
@@ -70,16 +70,16 @@
           {{- if or (eq $type "recommendation") (eq $type "quality") -}}
             {{- $recommendation := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" $type) $project $type) "auditfile-path") -}}
             {{- if (partialCached "render/recommendation" (dict "context" $context "auditfile" $recommendation) $recommendation) -}}
-              {{ range $idx, $value := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation") $project "recommendation") "auditfile-all-path") }}
+              {{ range $idx, $value := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation") $project "recommendation") "auditfile-all-path") -}}
                   {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "indexes" (partialCached "render/recommendation" (dict "context" $context "project" $project "auditfile" .) .)) -}}
               {{- end -}}
               {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1))) "scores" ($.Scratch.Get $type)) -}}
             {{- end -}}
           {{- end -}}
           {{- if eq $type "performance" -}}
-            {{ $performance := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") }}
+            {{ $performance := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-path") -}}
             {{- if (partialCached "render/performance" (dict "context" $context "auditfile" $performance) $performance) -}}
-              {{ range $idx, $value := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") }}
+              {{ range $idx, $value := (index (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "lighthouse") $project "lighthouse") "auditfile-all-path") -}}
                   {{- $.Scratch.SetInMap $type $idx (dict "url" (replace (replace . "/content/" "") "/static/" "") "indexes" (partialCached "render/performance" (dict "context" $context "auditfile" .) . )) -}}
               {{- end -}}
               {{- $.Scratch.SetInMap "audits" $type (dict "urls" (dict "api" (printf "%s.json" (substr $path $pathstart -1))) "scores" ($.Scratch.Get $type)) -}}
@@ -95,4 +95,4 @@
   "websites" ($.Scratch.Get "slug")
   "pages" ($.Scratch.Get "pages")
 ) | jsonify -}}
-{{ end }}
+{{- end -}}
