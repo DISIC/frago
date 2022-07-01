@@ -63,7 +63,7 @@
     {{/* Load the criteria file for the good audit version */}}
     {{- $data.Set "criteriafile" (index (index $.context.Site.Data ($data.Get "guidelinename")) ($data.Get "guidelineversion")).criteria.topics -}}
     {{/* Load the glossary file for the good audit version */}}
-    {{- $data.Set "glossaire" (printf "=\"%s%s/glossaire/#" ($data.Get "guidelinename") ($data.Get "guidelineversion")) -}}
+    {{- $data.Set "glossaire" (printf "=\"%s%s%s/glossaire/#" (site.BaseURL | default "/") ($data.Get "guidelinename") ($data.Get "guidelineversion")) -}}
 
     {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
     <h1>Audit Accessibilité{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
@@ -200,8 +200,6 @@
     <h3>Anomalies</h3>
     {{- end -}}
 
-
-
     {{- $data.Set "counterallpages" 0 -}}
     {{- if and ($data.Get "auditmethodology") ($data.Get "auditfile-csv") -}}
     {{/* START :: Loop csv files */}}
@@ -318,14 +316,14 @@
         {{- range $idx, $value := ((index (index $s 0).criteria (sub (int ($criteria)) 1)).criterium).tests -}}
           {{- if eq $idx (string ($tests)) -}}
             {{- if reflect.IsSlice . -}}
-              <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((index . 0) | markdownify) 100) | markdownify }}</em><br></p>
+              <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") ((index . 0) | markdownify) 100) | safeHTML }}</em><br></p>
             {{- if (after 1 .) -}}
               <ol>
-                {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</li>{{ end }}
+                {{ range after 1 . }}<li>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | safeHTML }}</li>{{ end }}
               </ol>
             {{- end -}}
           {{- else -}}
-            <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | markdownify }}</em></p>
+            <p><em>{{ (replaceRE "=\"#" ($data.Get "glossaire") (. | markdownify) 100) | safeHTML }}</em></p>
           {{- end -}}
         {{- end -}}
       {{- end -}}
