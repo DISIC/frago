@@ -259,15 +259,15 @@
               {{- end -}}
               <small class="no-print">
                 {{- if and $context.Site.IsServer (not (eq (getenv "HUGO_ENV") "production" | or (eq $context.Site.Params.env "production"))) -}}
-                  {{- if $data.Get "fileexist" -}}
-                  &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
-                  {{- end -}}
-                {{- else -}}
                   &nbsp;-&nbsp;
-                  {{- if $data.Get "fileexist" -}}ss
+                  {{- if $data.Get "fileexist" -}}
                   <a href="#{{ $filename }}">/{{ ($data.Get "auditfile-name") }}/{{ $filename }}</a>
                   {{- else -}}
                   {{ $filename }}
+                  {{- end -}}
+                {{- else -}}
+                  {{- if $data.Get "fileexist" -}}
+                  &nbsp;-&nbsp;<a href="#{{ $filename }}">Accéder à la capture écran</a>
                   {{- end -}}
                 {{- end -}}
                 {{ with .status }}&nbsp;<span class="badge{{ if eq . "critique" }} bad{{ end }}{{ if eq . "important" }} medium{{ end }}{{ if eq . "moindre" }} normal{{ end }}">{{ . }}</span>{{ end }}
