@@ -107,7 +107,7 @@
   {{/* START Create a anchors menu */}}
   {{- with ($data.Get "auditfile") -}}
   {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
-  <div class="tableofcontents page-break">
+  <div class="tableofcontents page-break" {{ if eq (len .) 1 }}hidden{{ end }}>
   <h2>Accéder aux pages auditées</h2>
     <ul>
     {{- range ($data.Get "auditfile") -}}
@@ -186,7 +186,7 @@
     console.groupEnd();
   </script>
 
-  <h2>Liste des pages auditées</h2>
+  <h2 {{ if eq (len .) 1 }}hidden{{ end }}>Liste des pages auditées</h2>
 
   {{/* START - List of all pages */}}
   {{- range ($data.Get "auditfile") -}}
@@ -362,12 +362,12 @@
 {{- $patharray := split (path.Dir $context.Path) "/" -}}
 {{- $alternate := where (where $context.OutputFormats "Permalink" "eq" $context.Permalink) "Rel" "eq" "alternate" -}}
 {{- if ne (len $alternate) 0 -}}
-{{- with $alternate -}}{{- range $key, $value := . -}}{{ $.Scratch.Set "outputrecommendation" (or (eq .Format.BaseName "recommendation")) }}{{- end -}}{{- end -}}
+{{- with $alternate -}}{{- range $key, $value := . -}}{{ $data.Set "outputrecommendation" (or (eq .Format.BaseName "recommendation")) }}{{- end -}}{{- end -}}
 {{- end -}}
-{{- if and (ne (len $patharray) 1) (or (in $context "quality.md") (in $context "recommandation.md") (in $context "recommandations.md") ($.Scratch.Get "outputrecommendation")) -}}
+{{- if and (ne (len $patharray) 1) (or (in $context "quality.md") (in $context "recommandation.md") (in $context "recommandations.md") ($data.Get "outputrecommendation")) -}}
   {{- $lastfile := (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "recommendation" "datafilename" .Params.datafilename) $project "recommendation" .Params.datafilename) -}}
   {{- if ne (index $lastfile "auditfile-path") "/false" -}}
-    {{- $.Scratch.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
+    {{- $data.Set "auditfile" (readFile (index $lastfile "auditfile-path") | transform.Unmarshal) -}}
     {{ partialCached "utils/css.html" (dict "context" $context "filefolder" "object" "filename" "benchmark") "benchmark" }}
     {{- $csslightbox  := resources.Get "css/simple-lightbox.min.css" -}}
     {{- $csshighlight := resources.Get "css/night-owl.min.css" -}}
@@ -377,7 +377,7 @@
     {{- $js           := slice $jslightbox $jshighlight | resources.Concat "/assets/js/recommendationBundle.js" -}}
     <link rel="stylesheet" href="{{ $css.Permalink }}" media="screen">
     <script type="text/javascript" src="{{ $js.Permalink }}"></script>
-    {{- range ($.Scratch.Get "auditfile") -}}
+    {{- range ($data.Get "auditfile") -}}
       {{- range $idpage, $p := .pages -}}
       {{- $name := .name -}}
       <script>
