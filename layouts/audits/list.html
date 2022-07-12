@@ -10,6 +10,8 @@
       {{- range $key, $value := . -}}
         {{- if eq .Format.BaseName "accessibility" -}}
           Audit Accessibilité
+        {{- else if eq .Format.BaseName "ecoconception" -}}
+          Écoconception
         {{- else if eq .Format.BaseName "quality" -}}
           Recommandations
         {{- else if or (eq .Format.BaseName "recommendation") -}}
@@ -37,6 +39,9 @@
       {{- with $alternate -}}{{- range $key, $value := . -}}
         {{- if eq .Format.BaseName "accessibility" -}}
           {{- $partial := (partialCached "templates/accessibility.html" (dict "context" $context) $context) -}}
+          {{- partialCached "elements/content.html" $partial $partial -}}
+        {{- else if or (eq .Format.BaseName "ecoconception") -}}
+          {{- $partial := (partialCached "templates/ecoconception.html" (dict "context" $context) $context) -}}
           {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if or (eq .Format.BaseName "quality") -}}
           {{- $partial := (partialCached "templates/recommendation.html" (dict "context" $context) $context) -}}

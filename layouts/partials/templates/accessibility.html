@@ -252,7 +252,7 @@
     {{- if gt (len ($data.Get "pageslist")) 0 -}}
     {{/* Range map errors sort by RGAA order - on all pages */}}
     <h3 id="criteria-nonconforme">Tous les critères non conformes du site</h3>
-    {{ partialCached "templates/validity.html" (dict "context" $context "audit" ($data.Get "audits") "score" ($data.Get "scores").criteria) ($data.Get "scores").criteria }}
+    {{ partialCached "templates/validity.html" (dict "context" $context "audit" ($data.Get "audits") "score" ($data.Get "scores").criteria) "accessibility" ($data.Get "scores").criteria }}
     {{- end -}}
     {{/* END If several page tested */}}
 

@@ -42,6 +42,22 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
+[outputFormats.ecoconceptionpage]
+  baseName = "ecoconception"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.ecoconceptioncsv]
+  baseName = "ecoconception"
+  mediaType = "text/csv"
+  isPlainText = true
+  notAlternative = false
+[outputFormats.ecoconception]
+  baseName = "ecoconception"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.recommendationpage]
   baseName = "recommendation"
   mediaType = "text/html"
