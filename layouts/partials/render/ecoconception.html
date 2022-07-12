@@ -1,0 +1,75 @@
+{{ $data     := newScratch }}
+
+{{ if (ne .auditfile "/false") }}
+  {{ $auditfile        := (getCSV "," .auditfile) }}
+  {{ $data.Set "date" (replace (path.Base .auditfile) (path.Ext .auditfile) "") }}
+
+
+  {{ range $key1, $value1 := after 1 $auditfile }}
+    {{ range $id, $value2 := after 2 . }}
+      {{ $value2 := lower (index (split . "|") 0) }}
+      {{ $key := printf "%s.%s" (index $value1 0) (index $value1 1)}}
+      {{ if eq $value2 "oui"}}
+        {{ $data.SetInMap "CritC" (string $key) . }}
+      {{ else if eq $value2 "non"}}
+        {{ $data.SetInMap "CritNC" (string $key) . }}
+      {{ else if or ( eq $value2 "na") (eq $value2 "non applicable") }}
+          {{ $data.SetInMap "CritNA" (string $key) . }}
+      {{ else }}
+        {{ $data.SetInMap "CritNT" (string $key) . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+{{ end }}
+
+{{ $data.Set "iCritC" 0 }}
+{{ with ($data.Get "CritC") }}
+  {{ $data.Set "iCritC" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCritNC" 0 }}
+{{ with ($data.Get "CritNC") }}
+  {{ $data.Set "iCritNC" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCritNA" 0 }}
+{{ with ($data.Get "CritNA") }}
+  {{ $data.Set "iCritNA" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCritNT" 0 }}
+{{ with ($data.Get "CritNT") }}
+  {{ $data.Set "iCritNT" (len .) }}
+{{ end }}
+
+{{ $data.Set "CritCount" ($data.Get "CritC") }}
+{{ with ($data.Get "CritNC") }}
+  {{ $data.Set "CritCount" (merge ($data.Get "CritC") .)  }}
+{{ end }}
+
+{{ $data.Set "compliance" 0 }}
+{{ $data.Set "compliance"
+    (div (mul ($data.Get "iCritC") 100) (len ($data.Get "CritCount")))
+}}
+
+{{ return (dict
+  "isempty"       true
+  "date"          ($data.Get "date")
+  "criteria"      (dict "conforme" ($data.Get "CritC")
+                        "nonconforme" ($data.Get "CritNC")
+                        "nonapplicable" ($data.Get "CritNA")
+                        "nonteste" ($data.Get "CritNT")
+                        "testtotal" (add (add ($data.Get "iCritC") ($data.Get "iCritNC")) ($data.Get "iCritNA"))
+                  )
+  "scores"        (dict "criteria"
+                      (dict "total" (add (add ($data.Get "iCritC") ($data.Get "iCritNC")) ($data.Get "iCritNA"))
+                            "conforme" ($data.Get "iCritC")
+                            "nonapplicable" ($data.Get "iCritNA")
+                            "nonconforme" ($data.Get "iCritNC")
+                            "nonteste" ($data.Get "iCritNT")
+                      )
+                      "compliance" ($data.Get "compliance")
+                  )
+  )
+}}

@@ -16,9 +16,11 @@ cascade:
     - declaration
     - declarationpage
     - accessibility
+    - ecoconception
     - recommendation
     - performance
     - accessibilitypage
+    - ecoconceptionpage
     - recommendationpage
     - performancepage
 - _target:
@@ -35,9 +37,11 @@ cascade:
     - json
     - declaration
     - accessibility
+    - ecoconception
     - recommendation
     - performance
     - accessibilitypage
+    - ecoconceptionpage
     - recommendationpage
     - performancepage
 - _target:
