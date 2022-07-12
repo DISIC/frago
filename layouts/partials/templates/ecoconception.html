@@ -1,0 +1,100 @@
+{{- $context      := .context -}}
+{{- $project      := partialCached "render/projectpath" $context $context -}}
+{{- $data         := newScratch -}}
+{{- $projectPath  := cond (fileExists (printf "audits/%s/index.md" ($project))) (printf "audits/%s/index.md" ($project)) (printf "audits/%s/_index.md" ($project)) -}}
+{{- $projectTitle := ($context.GetPage $projectPath).Title -}}
+
+<article class="fg-wrapper narrow">
+{{- $data.Set "audits" (partialCached "render/lastfile.html" (dict "context" $context "project" $project "type" "ecoconception" "datafilename" .context.Params.datafilename) $project "ecoconception" .context.Params.datafilename) -}}
+{{- $data.Set "auditpath-csv" (index ($data.Get "audits") "auditfile-path") -}}
+
+{{/* START Test if audit file exists */}}
+{{- if and ($data.Get "auditpath-csv") (ne ($data.Get "auditpath-csv") "/false") -}}
+  {{- $data.Set "auditfile-csv" (getCSV "," ($data.Get "auditpath-csv")) -}}
+  {{- $data.Set "scores" (partialCached "render/ecoconception.html" (dict "auditfile" ($data.Get "auditpath-csv")) ($data.Get "auditpath-csv") ) -}}
+
+  {{/* START Test if the csv file has a good name : YYYY-MM-DD.csv */}}
+    {{- if ne "0" (printf "%v" (len (findRE "((?:19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])" (index ($data.Get "audits") "auditfile-name")))) -}}
+      {{- $data.Set "date" (time (string (index ($data.Get "audits") "auditfile-name"))) -}}
+    {{- else -}}
+      {{- $data.Set "date" now -}}
+      {{- warnf "The file %s has a bad name, it should be a date YYYY-MM-DD.csv" (index ($data.Get "audits") "auditfile-path") -}}
+    {{- end -}}
+    {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
+
+  {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
+  <h1>Synthèse Écoconception{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>
+
+
+  {{/* START Display page note if exists */}}
+  {{- with .context.Params.note -}}
+    <div class="note">
+      {{ . | markdownify }}
+    </div>
+  {{- end -}}
+  {{/* END Display page note if exists */}}
+
+  {{- $data.Set "guidelinename" "rgesn" -}}
+  {{- $data.Set "guidelineversion" "0.1" -}}
+  {{- $criteriafile := (index (index $context.Site.Data ($data.Get "guidelinename")) ($data.Get "guidelineversion")).criteres -}}
+
+  {{- if and ($data.Get "auditfile-csv") (ne ($data.Get "scores").isempty 0) -}}
+    <h2 class="text-center">Scores{{- with ($data.Get "scores").scores.criteria -}}&nbsp;-&nbsp;{{- .total -}}&nbsp;critères{{ end }}</h2>
+    <time class="text-center" datetime="{{ ($data.Get "date").Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">Le {{ ($data.Get "date").Day }} {{ index $.context.Site.Data.month (printf "%d" ($data.Get "date").Month) }} {{ ($data.Get "date").Year }}</time>
+
+    <h3 class="mb-0">Conformité globale selon les critères</h3>
+    {{- if or ($data.Get "scores").scores.compliance (eq ($data.Get "scores").scores.compliance 0) -}}
+      {{- $conforme := ($data.Get "scores").scores.compliance -}}
+      {{- partialCached "components/scores/accessibility" (dict "context" . "score" $conforme) $conforme -}}
+      {{- partialCached "components/scores/criteria" (dict "context" $context "criteria" ($data.Get "scores").criteria) ($data.Get "scores").criteria -}}
+
+      {{- with ($data.Get "scores").criteria.nonconforme -}}
+      <h3 id="criteria-nonconforme">Tous les critères non conformes</h3>
+        {{- range $key, $value := . -}}
+          <p>
+            <strong>Critère {{ $key }}</strong><br>
+            <em>{{ (index (where $criteriafile "id" $key) 0).critere }}</em>
+          </p>
+          {{- if gt (len (split . "|")) 1 -}}
+          <div class="note">
+            {{- if gt (len (split . "|")) 2 }}
+              <ul class="p-0">
+              {{- range after 1 (split . "|") }}
+                <li>{{ . }}</li>
+              {{- end -}}
+              </ul>
+            {{- else -}}
+              <p>{{ index (split . "|") 1 }}</p>
+            {{ end -}}
+          </div>
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- with ($data.Get "scores").criteria.nonapplicable -}}
+      <h3 id="criteria-nonapplicables">Tous les critères non applicables</h3>
+        {{- range $key, $value := . -}}
+          <p>
+            <strong>Critère {{ $key }}</strong><br>
+            <em>{{ (index (where $criteriafile "id" $key) 0).critere }}</em>
+          </p>
+          {{- if gt (len (split . "|")) 1 -}}
+          <div class="note">
+            {{- if gt (len (split . "|")) 2 }}
+              <ul class="p-0">
+              {{- range after 1 (split . "|") }}
+                <li>{{ . }}</li>
+              {{- end -}}
+              </ul>
+            {{- else -}}
+              <p>{{ index (split . "|") 1 }}</p>
+            {{ end -}}
+          </div>
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      <p>L’audit de conformité est en cours.</p>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+</article>

@@ -1,0 +1,53 @@
+{{- define "main" -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+
+{{- $.Scratch.Set "guidelinename" "rgesn" -}}
+{{- $.Scratch.Set "guidelineversion" "0.1" -}}
+{{- if ge ($patharray) 2 -}}
+  {{- $.Scratch.Set "guideline" (index $patharray 0) -}}
+  {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
+  {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
+{{- end -}}
+{{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteres -}}
+
+{{- $.Scratch.Set "thematique" slice -}}
+{{- $thematiqueCounter := 1 -}}
+{{- range $key1, $value1 := $criteriafile -}}
+  {{- $thematique := int (index (first 1 (split .id ".")) 0) -}}
+  {{- if eq $thematique $thematiqueCounter -}}
+    {{- $.Scratch.Add "thematique" .thematique -}}
+    {{- $thematiqueCounter = add $thematiqueCounter 1 -}}
+  {{ end }}
+{{- end -}}
+
+<article class="fg-wrapper narrow">
+<h1>{{ (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).title | safeHTML }}</h1>
+  {{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
+  <div class="tableofcontents">
+    <h2>Thématiques</h2>
+    <ol>
+    {{/* Range all topics for anchors menu */}}
+    {{- range $key1, $value1 := $.Scratch.Get "thematique" -}}
+      <li><a href="#{{ . | urlize }}">{{ . }}</a></li>
+    {{- end -}}
+    </ol>
+  </div>
+
+{{/* Range all topics */}}
+{{- range $key1, $value1 := $.Scratch.Get "thematique" -}}
+  <h2 id="{{ . | urlize }}" >{{ . }}</h2>
+{{- range $key2, $value2 := where $criteriafile "thematique" . -}}
+  <h3 id="{{ .critere | urlize }}" >{{ .critere }}</h3>
+  <p>
+    <strong>{{ .objectif | markdownify }}</strong><br>
+    {{ .miseEnOeuvre | markdownify }}
+  </p>
+  <div class="note">
+    <p>{{ .controle | markdownify }}</p>
+  </div>
+  <hr>
+{{- end -}}
+{{- end -}}
+</div>
+
+{{- end -}}
