@@ -1,0 +1,20 @@
+{{- define "title" -}}
+  {{- $context := . -}}
+  {{- $alternate  := where (where .OutputFormats "Permalink" "eq" .Permalink) "Rel" "eq" "alternate" -}}
+  {{- if ne (len $alternate) 0 -}}
+    {{- with $alternate -}}
+      {{- range $key, $value := . -}}
+        {{- if eq .Format.BaseName "declaration" -}}Déclaration{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    Éco conception
+  {{- end -}}
+  {{- $projectTitle := (.GetPage "./").Title -}}{{ with $projectTitle }} pour {{ $projectTitle }}{{ else }}{{ (index (split (path.Dir .Path) "/") 1) }}{{ end }}
+{{- end -}}
+
+{{- define "main" -}}
+  {{- $context := . -}}
+  {{- $partial := (partialCached "templates/ecoconception.html" (dict "context" $context) $context) -}}
+  {{- partialCached "elements/content.html" $partial $partial -}}
+{{- end -}}
