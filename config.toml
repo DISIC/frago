@@ -38,7 +38,7 @@ summaryLength = 10
 
 [params]
   google_analytics_id=""
-  homepage_button_link = '/docs'
+  homepage_button_link = 'docs'
   homepage_button_text = 'Lire la documentation'
   homepage_intro = 'Frago est un outil pour la génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.'
   # homepage_image = '/images/terminal.gif'
@@ -60,3 +60,4 @@ summaryLength = 10
   [params.logo]
       mobile = "/images/logo-mobile.svg"
       standard  = "/images/logo.svg"
+      standarddark  = "/images/logodark.svg"

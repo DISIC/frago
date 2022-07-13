@@ -15,14 +15,8 @@
       padding: 4px 0 4px 0;
       &.active {
         a {
-          color: lighten($primary, 10%);
+          //color: lighten($primary, 10%);
           font-weight: 400;
-        }
-      }
-      a {
-        color: $black;
-        &:hover {
-          color: $primary;
         }
       }
     }

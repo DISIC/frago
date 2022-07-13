@@ -11,6 +11,7 @@
     font-family: $font-family-mono;
     font-size: 0.9rem;
     line-height: 1.4;
+    color: var(--code-color);
   }
   pre {
     font-family: $font-family-mono;
@@ -61,7 +62,6 @@
   p {
     font-family: $font-family-base;
     font-size: 1rem;
-    color: lighten($black, 10%);
     font-weight: 400;
   }
   h1,.h1 {

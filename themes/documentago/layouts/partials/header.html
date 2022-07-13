@@ -1,10 +1,20 @@
 <div class='header'>
   <div class="container">
     <div class="logo">
-      <a href="{{ .Site.BaseURL }}"><img alt="Logo" src="{{ .Site.BaseURL }}{{ .Site.Params.logo.standard | relURL }}" /></a>
+      <a href="{{ .Site.BaseURL }}">
+        <picture>
+            <source srcset="{{ .Site.BaseURL }}{{ .Site.Params.logo.standarddark | relURL }}" media="(prefers-color-scheme: dark)">
+            <img src="{{ .Site.BaseURL }}{{ .Site.Params.logo.standard | relURL }}" width="80" role="img" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}">
+        </picture>
+      </a>
     </div>
     <div class="logo-mobile">
-      <a href="{{ .Site.BaseURL }}"><img alt="Logo" src="{{ .Site.BaseURL }}{{ .Site.Params.logo.mobile | relURL }}" /></a>
+      <a href="{{ .Site.BaseURL }}">
+      <picture>
+          <source srcset="{{ .Site.BaseURL }}{{ .Site.Params.logo.standarddark | relURL }}" media="(prefers-color-scheme: dark)">
+          <img src="{{ .Site.BaseURL }}{{ .Site.Params.logo.standard | relURL }}" width="80" role="img" alt="Logo {{ if .Site.Params.organisation }}{{ .Site.Params.organisation }}{{ else }}{{ .Site.Title }}{{ end }}">
+      </picture>
+      </a>
     </div>
     {{ partial "main-menu.html" . }}
     {{ partial "hamburger.html" . }}
