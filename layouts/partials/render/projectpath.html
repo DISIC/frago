@@ -1,5 +1,5 @@
 {{ $projectpath := cond (not (partialCached "render/issimpleproject.html" "arg" "arg")) (cond (eq (len (split (path.Dir .Path) "/")) 1) "" (replace (path.Dir .Path) (printf "%s/" .Section) "")) "" }}
-{{ $projectpath := replace $projectpath "/" "" }}
+{{/* $projectpath := replace $projectpath "/" "" % */}}
 {{/* if eq (getenv "HUGO_ENV") "dev" -}}
 {{ warnf "ProjectPath for project %s is: %s" (path.Dir .Path) $projectpath }}
 {{ end */}}

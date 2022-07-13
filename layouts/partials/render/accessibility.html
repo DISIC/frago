@@ -4,6 +4,7 @@
 
 {{/* START - (ne .auditfile "/false") */}}
 {{ if (ne .auditfile "/false") }}
+
   {{ $auditfile        := (getCSV "," .auditfile) }}
   {{ $auditmethodology := (index (partialCached "render/methodology.html" (dict "auditfile" $auditfile) $auditfile) "methodology") }}
   {{ $pageslist        := (index (partialCached "render/methodology.html" (dict "auditfile" $auditfile) $auditfile) "pageslist") -}}

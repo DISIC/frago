@@ -17,10 +17,12 @@ cascade:
     - declarationpage
     - accessibility
     - ecoconception
+    - quality
     - recommendation
     - performance
     - accessibilitypage
     - ecoconceptionpage
+    - qualitypage
     - recommendationpage
     - performancepage
 - _target:
@@ -38,10 +40,12 @@ cascade:
     - declaration
     - accessibility
     - ecoconception
+    - quality
     - recommendation
     - performance
     - accessibilitypage
     - ecoconceptionpage
+    - qualitypage
     - recommendationpage
     - performancepage
 - _target:

@@ -21,7 +21,7 @@
   {{ $datalastfile.Set "pathdata" ((replace ($path) (printf "%s/" .type) (printf "%s" .type))) }}
 {{ end }}
 
-{{/* In case of accessibility type - the folder name can be rgaa */}}
+{{/* In case of accessibility type - the folder name can be RGAA */}}
 {{ if (eq "accessibility" .type) }}
   {{ $pathrgaa := partialCached "render/filepath" (dict "context" $context "project" $project "type" "rgaa") $project "rgaa" }}
   {{ $datalastfile.Set "pathdata" (cond (eq "accessibility" .type) (cond (fileExists $pathrgaa) $pathrgaa ($datalastfile.Get "pathdata")) ($datalastfile.Get "pathdata")) }}

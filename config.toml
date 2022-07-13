@@ -74,6 +74,17 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
+[outputFormats.qualitypage]
+  baseName = "quality"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.quality]
+  baseName = "quality"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.performancepage]
   baseName = "performance"
   mediaType = "text/html"
