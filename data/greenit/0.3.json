@@ -1,0 +1,2699 @@
+[
+  {
+    "title": "#641 - Alimenter le système d’information avec de l’électricité issue d’une source d’énergie renouvelable",
+    "thématique": "Démarches transversales",
+    "sujet": "Achats responsables",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Il est possible d’améliorer le mix énergétique qui alimente son système d’information en augmentant la proportion de l’électricité issue d’une énergie primaire renouvelable."
+      },
+      {
+        "p": "Une méthode consiste à acheter des certificats de garantie de l’origine renouvelable de son électricité. Le tarif est légèrement plus élevé mais il permet d’encourager le développement de la filière renouvelable. Cependant, la quantité d’énergie renouvelable disponible étant finie, ces certificats de garantie d’origine ne sont pas une finalité."
+      },
+      {
+        "p": "Différents fournisseurs s’engagent à vous alimenter en énergie renouvelable de manière exclusive ou partielle : Enercoop, offre Electricité verte de Direct énergie, Planète Oui, Poweo, Grenoble Gaz Electricité, etc."
+      }
+    ],
+    "KPI": "% d’électricité issue d’énergie primaire renouvelable",
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 1
+    }
+  },
+  {
+    "title": "#646 - Acquérir en priorité des équipements reconditionnés",
+    "thématique": "Démarches transversales",
+    "sujet": "Achats responsables",
+    "impacts": {
+      "ressources": true,
+      "gaz": false,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "À l’échelle du cycle de vie complet d’un matériel informatique, la fabrication concentre les impacts environnementaux. Acquérir un équipement reconditionné plutôt qu’un matériel neuf est un geste particulièrement efficace pour réduire les impacts environnementaux tout en obtenant un impact social positif : le reconditionnement crée de l’emploi, souvent d’insertion."
+      },
+      {
+        "p": "De nombreuses sociétés proposent ce type d’équipements. À qualité égale, il faut privilégier les acteurs de l’économie sociale et solidaire (ESS). D’un point de vue social, cela permet de faire travailler des entreprises adaptées (comptabilisé dans le calcul des 6% de personnes handicapées rendu obligatoire par la loi n°2005-102 du 11 février 2015)."
+      },
+      {
+        "p": "D’un point de vue environnemental, un équipement reconditionné est un équipement qui n’est pas fabriqué. Et d’un point de vue économique, le coût est moindre à service rendu équivalent."
+      },
+      {
+        "p": "Il est nécessaire de sensibiliser les acheteurs et les utilisateurs pour adopter ces nouveaux processus et usages. Cette bonne pratique est très adaptée aux petites structures (micro-entreprises, associations, particuliers...), elle reste encore marginale au sein de grandes entreprises."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% du parc reconditionné"
+  },
+  {
+    "title": "#651 - Généraliser les clauses environnementales dans les appels d’offres d’équipements",
+    "thématique": "Démarches transversales",
+    "sujet": "Achats responsables",
+    "impacts": {
+      "ressources": true,
+      "gaz": false,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’inclusion systématique d’exigences environnementales dans les appels d’offres est une action simple à mettre en œuvre et très efficace pour pousser les fabricants à proposer des équipements éco-conçus et à en gérer correctement la fin de vie."
+      },
+      {
+        "p": "Il faut agir à deux niveaux :",
+        "ul": [
+          "La démarche du fabricant et les bonnes pratiques qu’il applique pour réduire ses impacts.",
+          "L’équipement lui-même."
+        ]
+      },
+      {
+        "p": "L’engagement du fabricant peut être évalué grâce à certaines certifications désormais courantes : ISO 14001, certification SA 8000, etc."
+      },
+      {
+        "p": "La performance environnementale de l’équipement doit, autant que possible, être résumée par un écolabel. On le complétera éventuellement à l’aide d’exigences techniques spécifiques (par exemple une batterie amovible pour un ordinateur portable)."
+      },
+      {
+        "p": "Les labels retenus peuvent :",
+        "ul": [
+          "soit être discriminants lorsque le label est exigé (intégré dans les conditions d’exécution du marché)",
+          "soit avoir une pondération importante dans la note technique du produit."
+        ]
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% des appels d’offres intégrant des clauses environnementales"
+  },
+  {
+    "title": "#652 - Généraliser l’intégration de clauses sociétales dans les marchés",
+    "thématique": "Démarches transversales",
+    "sujet": "Achats responsables",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "L’objectif de cette bonne pratique est de promouvoir à travers les marchés de services en informatique, le retour à l’emploi de personnes qui en sont éloignées, pour des prestations d’ordre matériel ou intellectuel."
+      },
+      {
+        "p": "D’une part, il est possible de favoriser l’emploi de personnes n’ayant accès à l’emploi qu’à travers l’engagement de structures spécialisées d’aide au travail : ESAT (Etablissement et service d’aide par le travail), EA (Entreprise Adaptée), EI (Entreprise d’Insertion) - Cf. réseau GESAT. Parmi les types de fonctionnement envisageables :"
+      },
+      {
+        "ul": [
+          "Mettre en place un marché réservé principalement à destination du handicap ou de l’insertion. Exemple : numérisation, travaux de post productions (mise sous plis, tri), recyclage...",
+          "Privilégier le choix d’une EESS (entreprise de l’économie sociale et solidaire) pour des marchés spécifiques. La gestion des DEEE par une EESS est particulièrement bien adaptée pour limiter notre impact environnemental (reconditionnement/ réutilisation) tout en participant à la création d’emplois pour un public défavorisé."
+        ]
+      },
+      {
+        "p": "D’autre part, la mise en œuvre des clauses d’insertion est compatible avec les marchés de prestations intellectuelles qui peuvent nécessiter des publics hautement qualifiés."
+      },
+      {
+        "p": "Public concerné :",
+        "p": "Les demandeurs d’emploi de longue durée, les allocataires du revenu de solidarité active demandeurs d’emploi, les allocataires de minima sociaux, les personnes reconnues travailleurs handicapés, les jeunes sortis sans qualification à l’issue de leur scolarité ou sans expérience professionnelle, les jeunes diplômés au chômage depuis plus d’un an, les séniors qualifiés demandeurs d’emploi de longue durée, les personnes relevant d’un dispositif de l’insertion par l’activité économique."
+      },
+      {
+        "p": "Principe de l’action :",
+        "p": "les clauses d’insertion s’appuient sur un dispositif règlesmentaire adapté, elles sont inscrites dans les conditions d’exécution du marché. (Exemple pour les marchés public avec article 14 conditions d’exécution et article 53 conditions d’attribution). L’attributaire s’engage à réaliser les exigences d’insertion demandées par le client. En cas de non-respect des pénalités sont calculées à hauteur de 60€ par heure non réalisée. Ce dispositif ne peut s’appliquer à un marché qu’à partir d’un volume financier conséquent. Exemple : une demande d’embauche en insertion pour 4 millions d’€ de chiffre d’affaires réalisé."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "p": "http://www.reseau-gesat.com"
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 3,
+      "environnement": 1,
+      "économie": 2
+    },
+    "KPI": "% des marchés intégrant, 3 % au moins de personnes en insertion"
+  },
+  {
+    "title": "#621 - Intégrer les bonnes pratiques d’écoconception et d’accessibilité lors d’achat de prestations externes",
+    "thématique": "Démarches transversales",
+    "sujet": "Achats responsables",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Comme l’ont montré Facebook, Linkedin, Microsoft, IBM et bien d’autres ténors : l’écoconception services en ligne peut réduire significativement l’infrastructure physique nécessaire à leur fonctionnement. Linkedin a par exemple divisé par 112 le nombre de serveurs nécessaires au fonctionnement de son site web mobile et IBM par 100 le nombre de serveurs nécessaires au fonctionnement d’une de ses applications décisionnelles."
+      },
+      {
+        "p": "Pour les applications et sites web, il existe un référentiel* reconnu par la profession. Il suffit donc de demander aux prestataires chargés de la conception, de la réalisation et de l’hébergement d’appliquer les bonnes pratiques de ce référentiel. Cette exigence peut être portée en annexe du cahier des charges techniques. Quelques lignes supplémentaire dans un document contractuel suffisent ainsi à initier une démarche d’écoconception logicielle. L’éventuel surcoût – de l’ordre de 4 à 5 % du budget initial – est très largement compensé par les gains tant en nombre de serveurs que de consommation électrique et de bande passante."
+      },
+      {
+        "p": "*Ecoconception web: les 115 bonnes pratiques"
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% d’appel d’offre intégrant des exigences en matière d’écoconception et d’accessibilité"
+  },
+  {
+    "title": "#438 - Mettre en place et optimiser le tri sélectif des consommables",
+    "thématique": "Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "L’objectif de cette bonne pratique est de limiter l’impact des déchets de l’entreprise (papier, toner, batterie, etc.) en favorisant le recyclage et la réutilisation des matières premières qu’ils contiennent."
+      },
+      {
+        "p": "Confiés à des acteurs de l’économie sociale et solidaire (ESS), la collecte et le traitement peuvent ajouter à cette démarche environnementale, un axe sociétal fort en favorisant l’insertion par l’activité économique."
+      },
+      {
+        "p": "La mise en œuvre est simple. Il suffit de disposer dans les endroits stratégiques des réceptacles adaptés au type de déchets :",
+        "ul": [
+          "Carton « croc feuilles » ou tout autre dispositif permettant de collecter le papier bureautique sans le froisser, dans les bureaux ou près des appareils d’impression.",
+          "Poubelle dédiée pour la collecte en vrac.",
+          "etc."
+        ]
+      },
+      {
+        "p": "Assurer une collecte régulière par un organisme adapté ou prévu dans le contrat de nettoyage de l’entreprise."
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% collecté par type de déchet (poids papier collectés vs poids papier acheté par exemple) etc., Assurer une collecte régulière par un organisme adapté ou prévu dans le contrat de nettoyage de l’entreprise."
+  },
+  {
+    "title": "#470 - Favoriser la remise en état du matériel fonctionnel via une entreprise de l’économie sociale et solidaire ou de l’économie adaptée",
+    "thématique": "Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Dans l’analyse du cycle de vie d’un poste informatique, la fabrication est l’ étape qui concentre le plus d’impacts environnementaux. Aussi, la remise en état des équipements fonctionnels est un des gestes les plus efficaces pour réduire les impacts environnementaux des équipements."
+      },
+      {
+        "p": "Il s’agit de privilégier délibérément le reconditionnement et la réutilisation des postes de travail afin de leur procurer une deuxiéme vie auprès d’associations, d’écoles ou de particuliers souhaitant s’équiper à moindre coût."
+      },
+      {
+        "h3.titre": "Principe de l’action :",
+        "p": "Choisir une entreprise de l’économie sociale est solidaire pour laquelle la réutilisation des postes de travail informatique est une priorité."
+      },
+      {
+        "p": "Ces structures sont soit :",
+        "ul": [
+          "Des entreprises d’insertion qui favorisent l’accueil de personnes éloignées de l’emploi afin de les faire gagner en compétences et de les rendre autonomes sur le marché du travail (ex : Ateliers sans Frontiére, Ateliers du Bocage)",
+          "Des entreprises adaptées spécialisés dans l’emploi de travailleurs handicapés. (ex : Ateliers du Bocage) Certaines de ces structures offrent une qualité de service équivalente en termes de certification, de traçabilité et de filiére de recyclage que de grands groupes industriels."
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% du parc reconditionné par un acteur de l’ESS (nombre d’équipements)"
+  },
+  {
+    "title": "#608 - Préférer la remise en état pour réemploi plutôt que le recyclage",
+    "thématique": "Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Prolonger la durée de vie des matériels permet de limiter l’empreinte environnementale résultant de la fabrication de nouveaux équipements et les impacts associés à la fin de vie."
+      },
+      {
+        "p": "Cette bonne pratique consiste à faire évoluer le matériel autant qu’il est raisonnablement possible de le faire notamment en :",
+        "ul": [
+          "ajoutant des barrettes mémoire.",
+          "remplaçant les disques HDD défectueux par des disques SSD, des touches claviers si nécessaire, des ventilateurs si trop bruyants ou défectueux."
+        ]
+      },
+      {
+        "p": "Sur les smartphones et tablettes, remplacer les écrans en cas de casse ou de rayures, changer les coques si félées, changer les dalles."
+      },
+      {
+        "p": "Le prolongement de la durée de vie entraine mécaniquement une baisse des impacts environnementaux, notamment ceux associés à la fabrication des nouveaux équipements et à la fin de vie des équipements remplacés."
+      },
+      {
+        "p": "D’un point de vue social, le reconditionnement peut être confié à des entreprises adaptées ou ESAT. On favorise donc de ce fait l’économie sociale et solidaire. D’un point de vue économique, on évite l’achat de matériels neufs et coûteux, ce qui a pour effet d’optimiser les dépenses."
+      },
+      {
+        "p": "La lutte contre le gaspillage donne un sens à la stratégie IT : les collaborateurs et les clients apprécient ces mesures."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% d’équipements informatiques reconditionnés et recyclés"
+  },
+  {
+    "title": "#644 - Exiger des reconditionneurs la transparence de leurs exutoires",
+    "thématique": " Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Exutoires : ensemble des acteurs reprennant les équipements préalablement transmis aux reconditionneurs."
+      },
+      {
+        "p": "Tous les prestataires DEEE n’ont pas la même déontologie. Si bien que 70 % des DEEE dans le monde font l’objet d’un trafic. Confier la gestion de ses DEEE à un éco-organisme agréé, c’est avoir l’assurance d’une traçabilité et la garantie d’une filière certifiée."
+      },
+      {
+        "p": "À ce jour les éco-organismes orientent vers des filiéres de destruction des matériels sans privilégier la réutilisation et l’emploi de mains d’œuvre. Des solutions intégrant ces exigences restent à traiter au cas par cas. Il ne faut donc leur confier que les déchets électroniques. Les matériels fonctionnels devront être reconditionnés via une autre filiére."
+      },
+      {
+        "p": "Les éco-organismes sont des structures à but non lucratif. Ce sont des sociétés de droit privé investies d’une mission d’intérêt KPI général par les pouvoirs publics qui leur délivre un agrément. En fonction des filiéres dédiées, les producteurs soumis à la REP (Responsabilité Elargie des Producteurs) peuvent choisir de transférer leurs obligations de gestion des déchets concernés, en l’occurrence les DEEE professionnels, à l’éco-organisme agréé dans ce domaine. Ce transfert d’obligations s’opére en échange d’une contrepartie financière qui correspond au coût de la gestion des dits déchets."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "p": "Directive DEEE"
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "général par les pouvoirs publics qui leur délivre un agrément. En fonction des filiéres dédiées, les producteurs soumis à la REP (Responsabilité Elargie des Producteurs) peuvent choisir de transférer leurs obligations de gestion des déchets concernés, en l’occurrence les DEEE professionnels, à l’éco-organisme agréé dans ce domaine. Ce transfert d’obligations s’opére en échange d’une contrepartie financière qui correspond au coût de la gestion des dits déchets."
+  },
+  {
+    "title": "#647 - Systématiser la collecte des DEEE et des consommables",
+    "thématique": "Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’objectif de cette bonne pratique est de maîtriser la fin de vie des équipements et des consommables pour s’assurer que leur prise en charge est conforme à la règlementation et au respect de l’environnement. En effet, l’impact sur l’environnement et sur la santé des populations locales est désastreux lorsque ces déchets ne sont pas traités correctement."
+      },
+      {
+        "p": "Généralement, le fournisseur (ou le broker) reste assez vague sur la fin de vie des consommables et des équipements collectés. Or, une récente étude montre que 60 à 90 % des équipements informatiques en fin de vie font l’objet d’un intense trafic au niveau mondial."
+      },
+      {
+        "p": "On doit impérativement considérer une seconde vie (reconditionnement) pour l’équipement électronique avant de le catégoriser comme déchet à détruire."
+      },
+      {
+        "p": "Les services des moyens généraux et des achats doivent exiger la traçabilité des équipements et consommables en fin de vie. Ils doivent également s’assurer que leur prise en charge est bien effectuée par des professionnels du déchet. Pensez à intégrer des clauses contraignantes dans les contrats."
+      }
+    ],
+    "KPI": "% (masse) de consommables et DEEE collectés",
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 1
+    }
+  },
+  {
+    "title": "#650 - Réaffecter les équipements en interne",
+    "thématique": "Démarches transversales",
+    "sujet": "Durée de vie et fin de vie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Lorsque les capacités du matériel informatique (PC, laptop, tablette, smartphone) deviennent insuffisantes pour accomplir certaines tâches d’un profil particulier d’utilisateur (ex : développeurs), il est possible de réaffecter l’équipement à d’autres catégories d’utilisateurs moins exigeants (ex : agent administratif). Cela permet d’éviter le renouvellement systématique des matériels, engendrant des économies et une réduction significative des impactsenvironnementaux. Pourmettreenœuvrecettebonne pratique, on commence par établir des profils en fonction des besoins utilisateurs (par exemple 3 profils : usage bureautique, usage applications métier, usage développeurs et experts). Cela permet à un équipement d’être utilisé plusieurs fois dans l’entreprise. Il s’agit d’ajuster l’équipement en fonction des besoins plutôt que de niveler par le haut (pratique plus simple à gérer mais nettement inflationniste), engendrant un environnement stable, ajusté et donc pérenne."
+      },
+      {
+        "p": "Outils :",
+        "ul": [
+          "Evaluation des applications utiles à chaque profil.",
+          "Tableau associant un type de machine à chaque profil.",
+          "Outil permettant de scanner régulièrement les postes pour supprimer les logiciels devenus caduques pour l’utilisateur."
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Durée moyenne de vie d’un équipement dans l’organisation ou prix de revient moyen d’un poste / an"
+  },
+  {
+    "title": "#700 - Nommer et former un responsable Green IT / Numérique responsable",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "À temps plein ou à temps partiel, cette personne pilote et anime la Priorité stratégie Numérique Responsable de l’entreprise. Elle coordonne les actions Green IT avec la DSI et la conception responsable de service numérique avec les directions métier."
+      },
+      {
+        "p": "Elle appréhende le numérique sous l’angle des enjeux environnementaux, sociaux et économiques pour construire un système d’information (éco) responsable et aider l’entreprise à évoluer vers des modèles plus soutenables gràce au numérique."
+      },
+      {
+        "p": "Elle élabore, applique et fait évoluer la stratégie Développement Durable (RSE/CSR) de l’entreprise au niveau du système d’information, en relation avec le Directeur des Système d’Information (DSI/CIO), le Directeur du Développement Durable (DDD/SDO), et le comité exécutif de l’entreprise."
+      },
+      {
+        "p": "Elle accompagne les directions métier pour les aider à tirer le meilleur partie du numérique dans le cadre de la conception responsable des produits et services numériques de l’entreprise."
+      },
+      {
+        "p": "Ressource :",
+        "p": "Fiche métier « Responsable Green IT » de la nomenclature des métiers du SI du CIGREF"
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "Charge dédiée au responsable Green IT (% ETP)"
+  },
+  {
+    "title": "#701 - Dédier un budget spécifique au Green IT",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La création d’une politique Green IT / numérique responsable et la mise en place d’un plan d’action nécessitent plus que du temps homme."
+      },
+      {
+        "p": "Il faut par exemple mener à bien des audits et réaliser des évaluations d’empreinte environnementale. La législation en perpétuelle évolution – notamment concernant les déchets électroniques – oblige aussi à se faire accompagner par des experts juridiques. Enfin, dans certains cas, il peut être judicieux de faire appel à des outils spécialisés et à des experts. Dans la plupart de ces situations, le / la responsable Green IT doit disposer d’un budget pour prendre en charge ces prestations."
+      },
+      {
+        "p": "Bien menée, une politique Green IT permet d’économiser bien plus d’argent qu’elle en a coûté. Il est donc nécessaire d’investir initialement dans des actions corrective. Le % du budget de la DSI / RSE alloué à cette pratique est un bon indicateur de maturité et d’engagement de l’entreprise sur le sujet."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% du budget DSI"
+  },
+  {
+    "title": "#702 - Définir une stratégie et un plan d’action Green IT",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La première action lors de la mise en place d’une démarche Green IT / numérique responsable dans une entreprise consiste à faire un bilan global de l’empreinte environnementale du système d’information et de sa maturité en terme de bonnes pratiques"
+      },
+      {
+        "p": "En comparant ces informations avec les valeurs d’autres entreprises, on peut alors identifier les domaines de progrès, quantifier l’impact potentiel des actions correctives et estimer un gain global en terme de réduction d’impacts environnementaux."
+      },
+      {
+        "p": "La création de la stratégie consiste à aligner ce plan d’actions, les indicateurs et les objectifs quantifiés associés sur la stratégie RSE de l’entreprise. Certaines entreprises choisissent ainsi de se focaliser sur la phase d’utilisation du système d’information et / ou sur un seul indicateur environnemental (émission de gaz à effet de serre par exemple). D’autres, notamment dans le tertiaire, s’appuient sur la stratégie Green IT pour faire progresser l’ensemble des indicateurs RSE : performance sociale via la remise en état par des acteurs de l’économie sociale et solidaire (ESS) et de l’économie adaptée (EA), réduction des impacts environnementaux via l’allongement de la durée de vie des terminaux, etc."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "Oui = 100 %, Non = 0 %"
+  },
+  {
+    "title": "#703 - Définir des indicateurs (KPI) Green IT",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Il est impossible d’assurer correctement le suivi d’une stratégie Green IT sans la mise en place d’indicateurs chiffrés. C’est l’un des objectifs de ce référentiel que de fournir ces indicateurs pour chaque domaine du système d’information."
+      },
+      {
+        "p": "Deux niveaux de granularité sont nécessaires :",
+        "ul": [
+          "des indicateurs micro pour pouvoir prendre des décisions opérationnelles.",
+          "des indicateurs macro pour pouvoir contribuer au reporting RSE global de l’entreprise."
+        ]
+      },
+      {
+        "p": "Plusieurs types d’indicateurs permettent d’expliquer :",
+        "ul": [
+          "la performance environnementale (kg de DEEE / an / utilisateur par exemple).",
+          "l’empreinte environnementale (tonne équivalent CO2 / an / utilisateur).",
+          "la maturité (mise en œuvre ou non de bonnes pratiques visant à réduire l’empreinte)."
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "Nombre KPI green IT / Nombre de bonnes pratiques"
+  },
+  {
+    "title": "#704 - Aligner la stratégie Green IT sur la stratégie RSE de l’entreprise",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Il faut absolument aligner les indicateurs Green IT sur ceux de l’entreprise dans son ensemble. C’est la meilleure façon de contribuer effectivement à la stratégie sociale, environnementale et économique de l’entreprise. Cet alignement permet aussi de témoigner de l’impact de la démarche et de créer un vocabulaire commun avec les autres parties prenantes : responsable et référents / correspondants RSE / DD de l’entreprise, etc."
+      },
+      {
+        "p": "Dans cette optique, le Club Green IT a aligné les principaux indicateurs du Benchmark Numérique Responsable sur ceux les plus couramment utilisés par les directions RSE des organisations membres :",
+        "ul": [
+          "énergie primaire.",
+          "changement climatique (émissions de gaz à effet de serre).",
+          "déchets.",
+          "eau."
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Oui = 100 %, Non = 0 % ou nombre d’indicateurs en commun"
+  },
+  {
+    "title": "#705 - Evaluer régulièrement l’empreinte environnementale du SI",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Comme on ne peut améliorer que ce que l’on sait mesurer, il est indispensable que l’entreprise évalue régulièrement l’empreinte environnementale de son système d’information pour identifier les principaux gisements de réduction des impacts environnementaux."
+      },
+      {
+        "p": "En plus des gaz à effet de serre (GES), cette évaluation doit également porter sur l’eau, l’énergie (dont énergie grise), et les déchets afin d’éviter les transferts de pollution."
+      },
+      {
+        "p": "Idéalement, il faut également prendre en considération l’épuisement des ressources naturelles non renouvelables et l’impact sur la biodiversité, entre autre."
+      }
+    ],
+    "KPI": "Oui = 100 % ,    Non = 0 %",
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Oui = 100 %, Non = 0 %"
+  },
+  {
+    "title": "#706 - Créer une filière interne de référent(e)s Green IT et les former",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Un.e responsable Green IT ne peut pas insuffler seul.e cette dynamique au sein d’une grande entreprise. La meilleure façon d’y parvenir est de créer une réseau de référents / correspondants Green IT dont l’objectif est d’animer cette pratique à leur niveau et de sensibiliser leurs collègues au sujet."
+      },
+      {
+        "p": "Pour que cette démarche fonctionne, il est impératif de former les référents / correspondants Green IT et de s’assurer qu’ils ont réellement acquis les connaissances fondamentales qu’ils devront transmettre à leur tour. C’est dans cet objectif que le Club Green IT propose une formation et une certification."
+      },
+      {
+        "p": "Il est également important d’alimenter ce réseau de correspondants avec des outils d’animation : campagne d’e-mailing, animations, supports de sensibilisation, etc."
+      }
+    ],
+    "KPI": "Nombre de référent(e) s Green IT / nombre salariés DSI",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#801 - Former les équipes produits à l’écoconception et/ou à l’ACV",
+    "thématique": "Démarches transversales",
+    "sujet": "Gouvernance et pilotage",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Pour acquerir les connaissances nécessaires à la compréhension de la démarche, la formation des équipes est essentielle. Les concepts d’écoconception et d’ACV peuvent ainsi être appliqués dans le développement de produit. Cela permet également de sensibiliser les équipes qui ont le plus gros impact à la sobriété numérique."
+      },
+      {
+        "p": "On peut citer, comme profils à former :",
+        "ul": [
+          "Product owners",
+          "Business analysts",
+          "Chef.fes de projet",
+          "Architectes SI"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% de personnes formées dans les équipes produits",
+    "labels": "Architectes SI"
+  },
+  {
+    "title": "#207 - Upgrader les équipements plutôt que de les remplacer",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Qu’il s’agisse d’ordinateurs portables ou de bureau, les postes de travail professionnels sont conçus de façon à faciliter le remplacement des composants clés tels que l’unité de stockage (disque dur ou SSD) et la mémoire vive."
+      },
+      {
+        "p": "Sur les plans économique et environnemental, il est plus intéressant de doper un équipement vieillissant que de le remplacer par un équipement neuf. Le simple fait d’ajouter de la capacité mémoire vive (RAM) suffit généralement à allonger la durée de vie d’un poste de travail de 1 à 2 ans. Pour les ordinateurs portables, on peut compléter la démarche en remplaçant le disque dur par un SSD."
+      },
+      {
+        "p": "Pour s’assurer de pouvoir mettre en œuvre cette bonne pratique, il peut être judicieux d’ajouter quelques exigences techniques lors de l’appel d’offre, notamment :",
+        "ul": [
+          "la facilité de démontage et la possibilité d’accéder aux composants clés",
+          "et la possibilité d’étendre la capacité de la mémoire vive et de remplacer les autres composants clés"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% du parc de poste travail upgradés plutôt que renouvelés et durée de l’allongement"
+  },
+  {
+    "title": "#321 - Mettre en veille les postes de travail la nuit et les éteindre le week-end",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": true,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Sur une journée de 24 heures, un poste de travail n’est généralement pas utilisé plus de 8 heures. Il faut donc le mettre en veille au moment de la pause déjeuner et surtout le soir. On économise ainsi, durant les jours ouvrés, près de 2/3 de la consommation électrique par rapport à un poste de travail qui resterait allumé 24 heures sur 24. Le week-end, il est préférable d’éteindre physiquement le poste de travail pour le forcer à redémarrer."
+      },
+      {
+        "p": "La consommation électrique en veille est très faible et l’économie d’énergie associée est quasiment la même que poste éteint. En outre, le redémarrage assure une meilleure stabilité du système d’exploitation et des performances accrues. Cependant, contrairement à un arrêt complet, ce mode d’économie d’énergie facilite la maintenance des postes la nuit et permet à l’utilisateur de récupérer son environnement de travail là où il l’avait laissé."
+      },
+      {
+        "p": "Il est possible d’utiliser les outils d’administration de parc tels que SCCM de Microsoft et des outils de « power management » tels que ceux d’Avob, Cisco, Verdiem, etc. pour forcer l’extinction ou la mise en veille de tous les équipements IP : poste de travail, écran, imprimantes, etc."
+      }
+    ],
+    "KPI": " % du parc de postes de travail éteints ou mis en veille le soir et le week - end",
+    "priorité": 1,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 1
+    },
+    "KPI": "% du parc de postes de travail éteints ou mis en veille le soir et le week-end"
+  },
+  {
+    "title": "#324 - Adapter la configuration du poste de travail au juste nécessaire des usages métier",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Tous les utilisateurs de l’entreprise n’ont pas besoin du même poste de travail. Par exemple, les usages bureautiques nécessitent moins de mémoire vive et de puissance processeur que la modélisation 3D et la CAO. Dans le même esprit, des graphistes auront besoin d’une carte graphique surdimensionnée par rapport à un poste de travail standard et de plus de capacité de stockage local."
+      },
+      {
+        "p": "Pour éviter des impacts économiques et environnementaux inutiles, il est donc pertinent de définir des configurations adaptées aux usages plutôt que d’aligner tous les postes sur l’exigence la plus forte."
+      },
+      {
+        "p": "Cette définition des profils de postes de travail facilitera également, dans un deuxiéme temps, la réaffectation en interne des équipements de première main (cf. #650)."
+      }
+    ],
+    "KPI": "% de postes de travail adapté aux usages",
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    }
+  },
+  {
+    "title": "# 511 - Allonger la durée de dotation des équipements",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le geste le plus efficace pour réduire les impacts environnementaux et économiques des équipements constituant le poste de travail – desktop + écran et laptop – est d’allonger leur durée de vie active. En effet, la majorité des impacts environnementaux (épuisement de ressources naturelles non renouvelables, pollutions, changement climatique, etc.) ont lieu lors de l’extraction des minerais, de leur transformation en composants électroniques, et de la fin de vie de ces composants. Il faut donc en fabriquer moins et allonger la durée de vie des équipements existants."
+      },
+      {
+        "p": "L’allongement de la durée de dotation du poste de travail commence par le fait d’affirmer clairement cette volonté et d’en démontrer l’impact positif, tant d’un point de vue environnemental qu’économique."
+      },
+      {
+        "p": "De nombreuses bonnes pratiques peuvent ensuite soutenir cette démarche :",
+        "ul": [
+          "ne pas migrer systématiquement vers les nouvelles versions de logiciels",
+          "ajouter de la mémoire vive (RAM) si nécessaire (voir #207",
+          "acquérir des extensions de garantie",
+          "allonger la durée d’amortissement comptable (> à 5 ans)",
+          "etc."
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Durée de vie moyenne par type d’équipement"
+  },
+  {
+    "title": "# 602 - Privilégier des ordinateurs éco - labellisés TCO, ou à défaut EPEAT GOLD",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Lors de l’achat d’un poste de travail (desktop et écran, laptop), il est préférable de privilégier les équipements éco labellisés TCO (et à défaut EPEAT Gold)."
+      },
+      {
+        "p": "TCO Certified est le seul écolabel dédié au numérique qui intègre des critères sociaux, portant par exemple sur les conditions de travail chez le fabricant ou ses sous-traitants. À quelques exceptions près, tous les autres écolabels se concentrent exclusivement sur la dimension environnementale."
+      },
+      {
+        "p": "Pour les ordinateurs portables, vérifiez et exigez en complément que la batterie de l’équipement soit amovible et facilement remplaçable par l’utilisateur."
+      },
+      {
+        "p": "Un autre éco-label possible est EPEAT Gold, mais il ne prend en compte que les critères environnementaux."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "ul": [
+            "www.epeat.net",
+            "www.tcodevelopment.com"
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% de postes de travail écolabélisés TCO",
+    "labels": "EPEAT, TCO"
+  },
+  {
+    "title": "#603 - Privilégier le matériel d’occasion avant de considérer des équipements neufs",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Avant d’acheter des postes de travail neufs, mieux vaut privilégier la réaffectation d’équipements internes. Par exemple, une unité centrale affectée à un poste technique sera réaffectée à un profil bureautique après remise en état (effacement des données du disque dur et réinitialisation des logiciels). Dans un second temps, il faut envisager d’acquérir des équipements d’occasion remis à neuf. Un écran ou une unité centrale reconditionnés sont généralement 60 % à 80 % moins chers que le même équipement neuf."
+      },
+      {
+        "p": "Le label Ordi 3.0 (<http://www.ordi3-0.fr/>) permet d’identifier facilement les entreprises qui respectent un cahier des charges strict en matiére de remise en état. Une liste des entreprises est disponible sur le web."
+      },
+      {
+        "p": "Consulter les fiches # 650 et # 608."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% du parc de postes de travail reconditionnés"
+  },
+  {
+    "title": "#604 - Dissocier le renouvellement des unités centrales des autres équipements",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Lors des renouvellements de parc, dissocier le renouvellement des unités centrales (desktop) de celui des autres équipements tels que l’écran, clavier, souris, disque dur externe, etc."
+      },
+      {
+        "p": "Cette bonne pratique s’applique également aux ordinateurs portables (laptop) pour lesquels il faut éviter de renouveler les périphériques associés tels que l’écran additionnel, la station d’accueil, le clavier, la souris, etc."
+      },
+      {
+        "p": "La durée de vie des écrans est souvent 2 à 3 fois plus longue que celle des desktops / laptops et les autres périphériques (station d’accueil, clavier, souris, chargeurs, sacoches, etc.) sont quasiment inusables."
+      },
+      {
+        "p": "Cette bonne pratique réduit considérablement les impacts environnementaux – notamment ceux associés à la fabrication et à la fin de vie des équipements – tout en faisant faire d’importantes économies à l’entreprise. Et l’utilisateur conserve son environnement habituel."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% du parc de postes de travail (desktop / laptop) renouvelés seuls"
+  },
+  {
+    "title": "#800 - Limiter le nombre d’écrans",
+    "thématique": "Utilisateur",
+    "sujet": "Poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le double écran a été fortement déployé dans les bureaux ces derniéres années. Pourtant, les écrans représentent un des plus gros impacts des équipements à la fabrication."
+      },
+      {
+        "p": "Une maniére simple de réduire l’impact des équipements est donc de ne pas systématiser le double écran pour les environnements utilisateurs des profils bureautiques."
+      },
+      {
+        "p": "Pour les profils plus techniques, il faudra évaluer si le double écran est indispensable."
+      }
+    ],
+    "KPI": "Nombre d’écran moyen par utilisateur",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    }
+  },
+  {
+    "title": "#217 - Limiter le nombre de terminaux de téléphonie",
+    "thématique": "Utilisateur",
+    "sujet": "Téléphonie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Bien que les téléphones fixes aient une durée de vie longue et que leur empreinte environnementale soit faible comparée à celle des autres équipements du système d’information, ils sont souvent plus nombreux que les utilisateurs. Par ailleurs, les téléphones fixes sont de moins en moins utilisés car ils sont souvent redondants avec les mobiles (notamment depuis l’apparition des forfaits mobiles illimités)."
+      },
+      {
+        "p": "Il devient donc raisonnable de supprimer les téléphones fixes au profit d’une solution logicielle : softphone et / ou outil de visioconférence."
+      },
+      {
+        "p": "La majorité des utilisateurs plébiscite les softphones / ToIP tels que Lync (Microsoft), Webex, Skype, Zoom, etc."
+      },
+      {
+        "p": "En plus d’être intéressante d’un point de vue économique et environnemental, cette bonne pratique apporte un service supplémentaire aux utilisateurs. En effet, on y partage son écran, ses documents, on peut y voir son interlocuteur. Il est également accessible n’importe où, en déplacement ou pour le télétravail."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 1
+    },
+    "KPI": "Nombre moyen de téléphones fixes ou portables par utilisateur"
+  },
+  {
+    "title": "#235 - Déployer le BYOD (Bring Your Own Device) pour certaines catégories d’utilisateurs",
+    "thématique": "Utilisateur",
+    "sujet": "Téléphonie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le BYOD consiste à donner à certains collaborateurs la possibilité d’utiliser leur équipement personnel (laptop, tablette ou smartphone) dans le cadre professionnel. Cette démarche est appréciée par les collaborateurs qui peuvent alors choisir leur équipement ou système d’exploitation favori ou familier."
+      },
+      {
+        "p": "Le BYOD a un intérêt économique. Un seul appareil est suffisant au lieu de 2 : un pour l’usage professionnel et un pour l’usage privé. Les économies réalisées sont partagées contractuellement entre l’entreprise et le collaborateur. Chacun y trouve son compte."
+      },
+      {
+        "p": "L’empreinte environnementale est fortement réduite car il n’y a qu’un appareil à fabriquer et faire fonctionner au lieu de deux."
+      },
+      {
+        "p": "Certaines précautions sont à prendre pour des raisons de sécurité évidente. L’entreprise devra mettre en œuvre un dispositif permettant d’assurer une totale étanchéité entre l’environnement privé et professionnel. De nombreuses solutions existent sur le marché pour cela."
+      },
+      {
+        "p": "Le cadre juridique devra être aussi précisé dans les détails. Ainsi, deux alternatives peuvent être envisagées :",
+        "ul": [
+            "Le BYOD inversé c’est-à-dire la mise à disposition d’un téléphone professionnel permettant l’usage peronnel",
+            "Les téléphones double-SIM."
+        ]
+      },
+      {
+        "p": "Attention, toutefois, au droit à la déconnexion des collaborateurs."
+      },
+      {
+        "p": "Pour les smartphones, un logiciel de MDM (Mobile Device Management) est installé par l’entreprise sur les postes. Il garantit la sécurité d’accès à l’environnement professionnel et offre des fonctions bureautiques classiques : annuaire, agenda, messagerie, lecture des pièces jointes aux mails, accès à l’intranet, etc."
+      },
+      {
+        "p.note": "Le coût complet d’une solution de Mobile Device Management (MDM) peut être important. Plus la flotte est importante plus le retour sur investissement sera favorable."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% des PC, smartphones, tablettes en mode BYOD"
+  },
+  {
+    "title": "#610 - Fixer un niveau de DAS (Débit d’Ab- sorption Spécifique) maximum de 0,6 W/kg",
+    "thématique": "Utilisateur",
+    "sujet": "Téléphonie",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "En 2011, l’Organisation Mondiale de la Santé (OMS) a classé les champs de radiofréquences électromagnétiques émis par les terminaux mobiles connectés (téléphones, smartphones, tablettes, etc.) comme « potentiellement cancérigènes ». En 2015, la France a voté la « loi relative à la sobriété, à la transparence, à l’information et à la concertation en matiére d’exposition aux ondes électromagnétiques », loi n°2015-136. Cette loi impose l’application des principes de précaution et de sobriété face aux émissions d’ondes électromagnétiques (antennes relais, téléphones portables et smartphones, box internet, etc.)."
+      },
+      {
+        "p": "Lors de l’achat d’un équipement émettant des ondes électromagnétiques – téléphone, smartphone, tablette, etc. mais aussi de nombreux éléments actifs réseau – il est intéressant d’appliquer le principe de précaution en fixant un niveau de DAS (Débit d’Absorption Spécifique) maximum."
+      },
+      {
+        "p": "Le DAS est une mesure du rayonnement électromagnétique qui s’exprime en volt par mêtre (V/m) ou en Watt par kilogramme (W/kg) pour un espace de 10 g de tissu humain. La première mesure est surtout utilisée pour les antennes relais GSM et les bornes Wi-Fi. La seconde mesure est surtout utilisée pour les terminaux utilisateurs."
+      },
+      {
+        "p": "Concernant les antennes, le Conseil de l’Europe préconise de limiter la puissance à 0,6 Volts par mêtre (V/m). Concernant les terminaux, en France, le maximum légal est de 2 Watts/kg contre 1,6 W/kg aux USA."
+      },
+      {
+        "p": "Le DAS varie d’un facteur 5 entre les terminaux les plus et les moins émissifs. Compte tenu des performances actuelles des téléphones, il n’est pas déraisonnable de viser un DAS maximum de 0,5 W/kg."
+      }
+    ],
+    "KPI": "DAS moyen du parc en Watts/kg",
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 1,
+      "économie": 1
+    }
+  },
+  {
+    "title": "#611 - Réemployer des équipements de téléphonie",
+    "thématique": "Utilisateur",
+    "sujet": "Téléphonie",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le réemploi est un des gestes les plus efficaces pour réduire les impacts environnementaux des téléphones et autres smartphones. Leur durée de première utilisation (première main) en entreprise est courte : de 24 à 36 mois. Or, ces équipements fonctionnent sans problème plus de 5 ans. La remise en état consiste le plus souvent à remettre à zéro le système d’exploitation et changer la coque et / ou l’écran."
+      },
+      {
+        "p": "Pour l’entreprise, ce réemploi est une bonne opportunité de réduire le coût global par abonnement (car les mobiles repris ont une valeur) tout en améliorant le bilan environnemental associé aux équipements."
+      },
+      {
+        "p": "Tous les grands opérateurs disposent désormais d’un programme de reprise et la plupart sont capables de proposer le réemploi plutôt que le recyclage. À défaut, les acteurs de l’économie sociale et solidaire (ESS) fournissent ce genre de prestation. Faire appel à eux permet d’introduire une dimension sociale à une action économique et environnementale."
+      },
+      {
+        "p": "Vous pouvez exiger de la part de l’opérateur des informations quantifiées sur le nombre d’équipements repris, le type de traitement subi, et la destination des équipements remis sur le marché."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% d’équipement repris et reconditionnés"
+  },
+  {
+    "title": "#214 - Paramétrer les imprimantes par défaut en mode éco",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le paramétrage des imprimantes par défaut en mode éco, c’est Priorité à dire en recto-verso, monochrome et mode brouillon, divise par 2 la quantité de papier et de toner utilisés par rapport à une impression recto en qualité standard."
+      },
+      {
+        "p": "Simple à mettre en œuvre et peu coûteuse, cette bonne pratique peut pourtant générer d’importantes économies et réduire significativement les nuisances associées aux impressions. En effet, c’est la fabrication du papier et le toner qui concentrent les impacts environnementaux."
+      },
+      {
+        "p": "Le mode recto-verso peut être difficile à appréhender par certains utilisateurs, il n’est alors pas inutile de les former à l’utilisation de cette fonctionnalité. On profitera de cette formation pour vanter l’intérêt : 2 fois moins de poids à transporter, etc.."
+      },
+      {
+        "p": "Pour aller plus loin, penser aussi à :",
+        "ul": [
+          "choisir une police de caractère par défaut sobre en consommation d’encre",
+          "éco-concevoir vos modèles types de documents",
+          "mettre en page les documents avant de les mettre à disposition"
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% du parc d’imprimantes configurées par défaut en mode éco"
+  },
+  {
+    "title": "#215 - Sensibiliser les utilisateurs aux gestes clés de l’impression écoresponsable",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Plus que dans tout autre domaine du système d’information, les utilisateurs sont la clé d’une politique d’impression maîtrisée. En effet, alors que l’on peut éteindre des ordinateurs à distance, il est impossible de juger à la place de l’utilisateur de l’intérêt d’imprimer ou pas un document. Il est donc crucial de sensibiliser les utilisateurs aux impacts des impressions et notamment de valoriser la portée de leur effort à l’échelle individuelle et collective. La sensibilisation est facilitée si l’entreprise s’est fixée des objectifs clairs (nombre de page par jour et par salarié, % des impressions couleurs, % de recto verso, etc.)."
+      },
+      {
+        "p": "Pour impliquer les utilisateurs, certaines grandes entreprises françaises ont décidé d’indexer une partie de l’intéressement annuel des salariés sur leur capacité à réduire leur consommation de papier. Ces entreprises redistribuent donc une partie des économies financières générées aux utilisateurs qui jouent le jeu. Une approche très efficace qui a permis à certaines de ces organisations d’atteindre moins de 4 pages par jour et par salarié !"
+      },
+      {
+        "p": "Au-delà de la sensibilisation, de nombreuses actions peuvent être entreprises : favoriser le transfert de compétences entres les jeunes recrues et les salariés plus anciens, étudier l’effet potentiellement positif des outils de travail collaboratifs et / ou de partage de documents en ligne, dématérialiser certains documents sous la forme de données structurées plus faciles à manipuler et moins impactantes, favoriser des imprimantes multifonctions à badge (#433), etc."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 2,
+      "économie": 3
+    },
+    "KPI": "Pages / jour / utilisateur et / ou % d’impressions couleurs"
+  },
+  {
+    "title": "#315 - Acheter du papier recyclé et certifié Blue Angel ou FSC, éviter PEFC",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Une feuille de papier recyclée nécessite 6 fois moins de produits Priorité chimiques et 25 fois moins d’eau douce pour être fabriquée (WWF). Il faut donc privilégier ce type de papier pour toutes les impressions qui ne nécessitent pas un rendu graphique parfait."
+      },
+      {
+        "p": "La qualité du recyclage est très importante. Notamment, il faut éviter le papier blanchi au chlore. Pour vous simplifier la vie, n’achetez que du papier recyclé certifié Blue Angel, ou, à défaut, FSC. Eviter le faux écolabel PEFC."
+      },
+      {
+        "p": "Le prix du papier recyclé peut être plus cher que le papier fabriqué à partir de fibres vierges. Pour le faire adopter, il peut être nécessaire de l’inclure dans une démarche plus large de maîtrise des coûts des impressions économiquement viables."
+      },
+      {
+        "p": "Pour aller plus loin:",
+        "ul": [
+          "FSC : https://fr.fsc.org",
+          "Blue Angel : https://www.blauer-engel.de"
+        ]
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% de papier recyclé FSC ou Blue Angel (par rapport à la quantité totalede papier utilisé)",
+    "labels": "Blue Angel, FSC"
+  },
+  {
+    "title": "#316 - Reconditionner les toners usagés via une entreprise de l’économie sociale et solidaire ou de l’économie adaptée",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les consommables d’impression – papier et toner – constituent le principal poste d’émission de gaz à effet de serre sur le cycle de vie complet d’une impression. Le toner est lui-même constitué presque entiérement de carbone. Pour réduire les émissions de gaz à effet de serre associées aux consommables d’impression il faut donc réduire les quantités de papier et de toner utilisés. Cependant, il peut aussi être intéressant de travailler sur le contenant."
+      },
+      {
+        "p": "Plutôt que d’acheter des cartouches de toner non rechargeables (c’est le cas de la plupart fournies par le fabricant de l’imprimante), privilégier des cartouches rechargeables. Ce geste est intéressant pour l’environnement mais surtout, il permet de faire appel à des prestataires locaux de l’économie sociale et solidaire (ESS) ou de type ESAT (Etablissement et service d’aide par le travail) pour le rechargement des cartouches."
+      },
+      {
+        "p": "Cette bonne pratique permet donc d’améliorer à la fois le bilan environnemental mais aussi social des impressions. Sans oublier les économies réalisées sur les consommables puisqu’une cartouche de toner rechargée coûte moins cher qu’une cartouche neuve de même capacité."
+      }
+    ],
+    "KPI": " % de cartouche / toner rechargeable en ESAT",
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 2,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#433 - Consolider le parc d’imprimantes sur des multifonctions avec système d’identification",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La consolidation des moyens d’impression vers des imprimantes collectives connectées en réseau (MFP) est le geste le plus efficace pour réduire le nombre de pages imprimées par utilisateur ainsi que le nombre de moyens d’impression (imprimantes individuelles, fax, scanners, photocopieurs). Il faut donc mettre cette bonne pratique en œuvre en priorité."
+      },
+      {
+        "p": "Cependant, une étude préalable est indispensable pour déterminer le type d’équipement et les emplacements adaptés en fonction des usages. Par ailleurs, l’ajout d’un système d’identification (carte magnétique / code PIN) est vivement recommandé pour garantir la confidentialité des impressions et en réduire le volume."
+      }
+    ],
+    "KPI": "Nombre d’utilisateurs par équipement d’impression (imprimantes individuelles comprises)",
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    }
+  },
+  {
+    "title": "#614 - Acheter ou louer des imprimantes labellisés Blue Angel (à défaut EPEAT)",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Blue Angel RAL-UZ 122 est l’écolabel de référence pour les imprimantes. Il couvre l’ensemble des problématiques environnementales sur tout le cycle de vie de l’équipement."
+      },
+      {
+        "p": "Ces équipements ne sont pas plus chers à l’achat mais permettent de faire des économies conséquentes sur la phase d’utilisation, notamment en permettant d’activer par défaut le mode éco : brouillon, monochrome, etc."
+      },
+      {
+        "p": "Blue Angel RAL UZ-122 couvre également les problématiques sanitaires. Il définit notamment un seuil maximum d’émission de micro-particules de toner (cancérigène) afin de protéger les salariés."
+      },
+      {
+        "p": "EPEAT offre une meilleur converture que Blue Angel en terme de nombres d’équipements mais Blue Angel reste l’écolabel le plus exigeant."
+      },
+      {
+        "h3.important": "En complément de l’usage d’un écolabel, il peut être judicieux d’ajouter quelques exigences techniques lors de l’appel d’offre, notamment que les toners couleurs soient dissociés pour ne remplacer que le toner correspondant à la couleur épuisée."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "ul": [
+          "www.blauerengel.de/en/",
+          "www.epeat.net/"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% d’équipements d’impression écolabelisés Blue Angel (et/ou EPEAT)",
+    "labels": "Blue Angel, EPEAT"
+  },
+  {
+    "title": "#615 - Acheter du papier certifié Blue Angel ou à défaut FSC, éviter PEFC",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’idéal est d’utiliser uniquement du papier recyclé. À défaut, le papier vierge dont les fibres de cellulose sont issues d’une forét gérée durablement propose un meilleur bilan environnemental qu’un papier bureautique classique. En effet, le gestionnaire de la ressource s’engage à prèserver la biodiversité et, bien entendu à replanter les arbres abattus pour repuiser le carbone libéré. De nombreux autres engagements sociaux et sociétaux sont également exigés."
+      },
+      {
+        "p": "Il faut privilégier les écolabels Blue Angel puis FSC et ne surtout pas utiliser PEFC qui n’est pas un écolabel. À qualité égale, le papier certifié Blue Angel ou FSC n’est quasiment pas plus cher qu’un papier ordinaire. Bien souvent, il suffit de s’organiser pour commander en volume pour gommer totalement la différence de prix d’achat."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "ul": [
+          "FSC : https://fr.fsc.org",
+          "Blue Angel (RAL UZ 72) : https://www.blauer-engel.de/en/products/office/printing-paper-2014 et https://www.blauer-engel.de/en/products/office/printing-papers-2011"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% du poids total acheté certifié Blue Angel et / ou FSC",
+    "labels": "Blue Angel, FSC"
+  },
+  {
+    "title": "#617 - Collecter le papier blanc bureautique sans le froisser",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le papier graphique – feuilles A4 blanches utilisées en bureautique – est bien plus facile à recycler s’il est trié séparément des autres papiers et cartons et s’il n’est pas froissé. On peut notamment le désencrer plus facilement et en utilisant moins de produits chimiques."
+      },
+      {
+        "p": "Alors que la collecte et le recyclage des papiers et cartons en vrac représente souvent un coût à assumer par les organisations, le papier graphique correctement trié et non froissé représente une matiére première de choix que certains recycleurs rachètent aux entreprises."
+      },
+      {
+        "p": "Il est donc important de trier ce papier séparément, par exemple en destinant une poubelle spécifique dans chaque bureau, plutôt que de le jeter dans la corbeille destinée aux matières recyclables (plastique, papier, carton...). Une simple poubelle avec une ouverture plate de quelques centimêtres permet une collecte séparée."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "Kg collectés par an et par utilisateur"
+  },
+  {
+    "title": "#618 - Privilégier des fournisseurs qui proposent des équipements d’impression reconditionnés",
+    "thématique": "Utilisateur",
+    "sujet": "Impression",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Certains fabricants tels que Canon et Konica-Minolta allongent au maximum la durée de vie des imprimantes multifonctions (MFP pour Multi Functions Printer) louées aux entreprises dans le cadre des contrats de type Managed Printing Service. Il est donc possible d’ajouter ce critére lors de la sélection d’un fournisseur."
+      },
+      {
+        "p": "Bien que la fabrication de ces équipements ne représente pas le principal impact des impressions (c’est la fabrication du papier), cette approche ne doit pas être négligée quand il est possible de la mettre en œuvre."
+      },
+      {
+        "h3.important": "De plus en plus de fournisseurs proposent en location des équipements perçus comme neufs mais qui sont pourtant de seconde main. Pour un utilisateur lambda, il est pratiquement impossible de faire la différence entre un équipement remis en état et un équipement neuf."
+      }
+    ],
+    "KPI": "% du parc d’imprimantes reconditionnées(s’informer auprès du fournisseur dans le cas de location)",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 3
+    }
+  },
+  {
+    "title": "#210 - Sensibiliser les utilisateurs qui laissent leur poste de travail allumé inutilement",
+    "thématique": "Utilisateur",
+    "sujet": "Outils et usages du poste de travail",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’extinction (ou la mise en veille) de son poste de travail lorsqu’il Priorité n’est pas utilisé est une action simple et particulièrement efficace pour réduire la consommation d’énergie du système d’information."
+      },
+      {
+        "p": "En France, en réduisant la consommation d’énergie, on réduit surtout la consommation d’eau douce associée à la fabrication de l’électricité (environ 10 litres par kWh électrique) ainsi que la quantité de déchets radioactifs produits."
+      },
+      {
+        "p": "Selon la culture de l’entreprise, une action de sensibilisation peut s’avérer suffisante pour changer durablement le comportement d’une partie des utilisateurs. Cette action doit souligner les enjeux environnementaux et économiques tout en montrant l’impact de cette bonne pratique à l’échelle de l’individu et de l’entreprise."
+      },
+      {
+        "p": "Lorsque l’action de sensibilisation n’est pas suffisante, intégrer cet indicateur dans le calcul de la partie variable de l’intéressement des salariés est particulièrement efficace."
+      },
+      {
+        "p": "Enfin, il est possible d’utiliser les outils d’administration de parc tels que SCCM de Microsoft et des outils de « power management » pour forcer l’extinction ou la mise en veille des postes de travail récalcitrant."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#904 - Communiquer auprès des utilisateurs et les former sur les bonnes pratiques Green IT",
+    "thématique": "Utilisateur",
+    "sujet": "Outils et usages du poste de travail",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les utilisateurs sont le maillon critique dans la mise en œuvre des bonnes pratiques Green IT au sein d’une organisation. Il est donc important de les intéger au maximum à la démarche Green IT."
+      },
+      {
+        "p": "Une maniére de s’en assurer est de mener des campagnes de sensibilisation au sein de l’entreprise sur les impacts du numérique. Il est aussi judicieux de former les utilisateurs à ces bonnes pratiques pour que la transition vers un numérique responsable se fasse de maniére efficace."
+      }
+    ],
+    "KPI": " % d’utilisateurs sensibilisés et / ou formés",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#670 - Mettre en place des dossiers de partage de documents",
+    "thématique": "Utilisateur",
+    "sujet": "Outils et usages du poste de travail",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Cette bonne pratique consiste à rendre accessible un dossier contenant des documents, stocké sur le réseau de l’entreprise ou sur internet, à un ensemble de personnes qui pourraient en avoir la nécessité. Seuls les personnes ayant un droit d’accès à ces dossiers pourront y accéder."
+      },
+      {
+        "p": "Mettre en place des dossiers de partage de documents (ou espace de travail collaboratif) permet d’éviter l’envoi de pièces jointes volumineuses et la duplication des documents sur différents postes de travail ou dans différents dossiers."
+      },
+      {
+        "p": "Cela permet également aux personnes d’échanger et de communiquer leurs écritures, leurs documents tout en collaborant avec leurs collègues. Cette rédaction collective permet d’être coopératif et collaboratif."
+      },
+      {
+        "p": "À noter que, selon les personnes, les droits d’accès aux dossiers peuvent être limités à la lecture des documents pour éviter les modifications incongrues."
+      },
+      {
+        "p": "Pour les fichiers volumineux ou pour le partage en dehors de l’organisation il existe des services de dépôt pour transfert de gros fichiers."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "Volume de stockage en entrée (To)"
+  },
+  {
+    "title": "#671 - Rationaliser l’usage de ses courriels",
+    "thématique": "Utilisateur",
+    "sujet": "Outils et usages du poste de travail",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les courriers électroniques sont devenus une source de stress pour les salariés qui en reçoivent entre 25 et plus de 100 par jour. En plus de cet impact sanitaire délétére, nos courriels ont un impact environnemental. Contrairement aux idées reçues, ce n’est pas leur stockage, mais bien l’écriture, la lecture, et le transport des e-mails qui contribuent le plus à augmenter l’empreinte environnementale du système d’information."
+      },
+      {
+        "p": "Fort de ces constats, quelques changements d’usage simples peuvent grandement améliorer la situation :",
+        "ul": [
+          "Limiter au maximum le nombre d’e-mails envoyés chaque jour",
+          "Le courriel doit communiquer une information utile et importante au destinataire (très efficace)",
+          "Réduire le nombre de destinataires : n’utiliser la fonction « répondre à tous » que si nécessaire",
+          "Ne pas utiliser les courriels comme moyen de substitution à des contacts téléphoniques ou physiques",
+          "Si nécessaire, privilégier l’usage d’un système de messagerie instantanée"
+        ]
+      },
+      {
+        "p": "Pour y parvenir, il faut réserver des plages de temps spécifiquement réservées au traitement des e-mails et n’y déroger qu’en cas d’urgence."
+      },
+      {
+        "p": "Sans oublier des bonnes pratiques de base :",
+        "ul": [
+          "Ne pas imprimer ses courriels pour les lire",
+          "Envoyer les courriers au format texte",
+          "Remplacer la signature « image » par un simple texte",
+          "Ne pas se servir de la messagerie comme d’un espace de stockage ou d’archivage : éviter les pièces attachées quand vous pouvez les remplacer par un lien (cf #670) (très efficace)",
+          "Se désabonner des fils de discussion, des newsletters, et autres systèmes de notification inutiles (efficace)",
+          "Supprimer tous les courriels inutiles (peu efficace)"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 1,
+      "économie": 2
+    },
+    "KPI": "Nombre de courriels envoyés / utilisateur / jour"
+  },
+  {
+    "title": "#672 - Appliquer les bonnes pratiques de conception et d’accessibilité aux chartes graphiques de l’organisation",
+    "thématique": "Utilisateur",
+    "sujet": "Outils et usages du poste de travail",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Pour réduire les impacts environnementaux des impressions tout en améliorant l’accessibilité des documents de l’entreprise, il peut être intéressant de mener une démarche de conception responsable de la charte graphique de l’entreprise et de sa déclinaison sous la forme de modèles de documents bureautiques."
+      },
+      {
+        "p": "Sur le plan environnemental, un aplat recouvrant 25 % de la page contient assez d’encre ou de toner pour imprimer un texte sur l’ensemble de la page. De nombreuses connaissances de base de ce type (police de caractères à utiliser, contraste importants, etc.) doivent être prises en compte lors de la (re)conception de la charte graphique de l’entreprise."
+      },
+      {
+        "p": "Sur le plan social, la plupart des codes couleurs utilisés ne correspondent pas aux standard d’accessibilité et ne peuvent donc pas être utilisés par les daltoniens et mal-voyants. Pire, en terme de structure, la plupart des documents bureautiques ne respectent pas des consignes basiques qui pourraient pourtant les rendre accessibles aux non voyants et aux dyslexiques (un document bien structuré devient accessible via le changement d’une simple police de caractère. Mais encore faut-il utiliser les styles pour simplifier cette manipulation qui peut sinon devenir très fastidieuse)."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Poids des fichiers graphiques"
+  },
+  {
+    "title": "#625 - Entretenir les ordinateurs pour éviter qu’ils ralentissent et deviennent instables",
+    "thématique": "Entreprise",
+    "sujet": "Logiciels",
+    "impacts": {
+      "ressources": true,
+      "gaz": false,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’instabilité et le ralentissement progressifs des postes de travail sous Windows sont presque toujours dus à l’absence d’entretien du système d’exploitation. Des actions simples et sans danger peuvent améliorer le confort des utilisateurs et repousser la nécessité de renouveler les équipements."
+      },
+      {
+        "p": "Parmi les actions efficaces, on peut citer le fait de :",
+        "ul": [
+          "rebooter les machines.",
+          "vider les fichiers temporaires (navigateur, système, etc.)",
+          "nettoyer la base de registre.",
+          "défragmenter le disque dur et la base de registre.",
+          "supprimer certains programmes du démarrage",
+          "etc."
+        ]
+      },
+      {
+        "p": "Des outils comme CCleaner et Agomo de Piriform permettent d’entretenir un parc complet de postes de travail depuis une console centralisée."
+      },
+      {
+        "h3.important": "Un ordinateur dont la couche logicielle est mal entretenue peut nécessiter jusqu’à 25 % de puissance supplémentaire (mémoire vive, puissance processeur, rapidité du disque dur, etc.) pour délivrer la même performance qu’un ordinateur moins puissant mais bien entretenu."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% du parc de postes de travail entretenus au moins une fois par mois"
+  },
+  {
+    "title": "#626 - Désinstaller régulièrement les logiciels inutilisés",
+    "thématique": "Entreprise",
+    "sujet": "Logiciels",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Plusieurs études (HP, 1E, etc.) montrent que presque toutes les entreprises achètent plus de licences qu’elles n’en utilisent. En moyenne, 10 % des logiciels achetés et installés ne sont pas utilisés. Au coût de licence – 415 dollars en moyenne – il faut ajouter les coûts de mise à jour et de maintenance. Soit un gâchis compris entre 145 et 155 dollars par an et par utilisateur, uniquement pour la maintenance."
+      },
+      {
+        "p": "Au-delà du coût, plus le nombre de logiciels installés inutilement est important et plus ils ont de chance de ralentir le poste de travail, poussant les utilisateurs à demander un renouvellement. Il est donc important de faire régulièrement un audit des logiciels inutilisés et de les désinstaller."
+      },
+      {
+        "p": "Des outils comme AppClarity de 1E permettent de lister les logiciels inutilisés et de les désinstaller facilement."
+      },
+      {
+        "h3.important": "Cette bonne pratique porte aussi sur les systèmes d’exploitation des serveurs. Plusieurs études et retours d’expérience montrent qu’une installation sur mesure du système d’exploitation en fonction des besoins précis de l’application peut nécessiter jusqu’à 15 % de puissance en moins. À l’échelle de plusieurs milliers de serveurs physiques, ce sont des centaines de machines que l’on peut éteindre."
+      }
+    ],
+    "KPI": "Nombre de licences utilisées / nombre de licences totale",
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 3
+    }
+  },
+  {
+    "title": "#627 - Mettre à jour les logiciels uniquement lorsque c’est indispensable",
+    "thématique": "Entreprise",
+    "sujet": "Logiciels",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Contrairement aux idées reçues, la majorité des utilisateurs ne souhaitent pas que l’on remplace leur version actuelle d’un logiciel par une plus récente. Ils préférent en effet conserver leurs habitudes et ne souhaitent pas faire l’effort de s’adapter à une nouvelle interface."
+      },
+      {
+        "p": "Jusqu’à récemment, une nouvelle version d’un logiciel sortait tous les 2 à 3 ans et nécessitait 2 fois plus de ressources pour fonctionner (RAM, CPU, etc.). Chaque nouvelle version poussait donc au renouvellement prématuré du poste de travail. On note heureusement un ralentissement à cette tendance."
+      },
+      {
+        "p": "Il est cependant indispensable de mettre à jour les logiciels pour corriger des failles de sécurité et assurer une bonne stabilité."
+      },
+      {
+        "p": "Cette bonne pratique vous invite donc à faire le tri entre les mises à jour « cosmétiques », les mises à jours fonctionnelles sans intérêt pour votre entreprise, et les mises à jour de sécurité considérées comme incontournables."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 2,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "Nombre moyen de versions entre celles utilisées"
+  },
+  {
+    "title": "#415 - Mettre en œuvre les bonnes pratiques d’accessibilité numérique",
+    "thématique": "Entreprise",
+    "sujet": "Services numériques et applications métier",
+    "impacts": {
+      "ressources": false,
+      "gaz": false,
+      "eau": false,
+      "déchets": false,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "L’accessibilité numérique consiste à rendre un logiciel (web exclusivement*) utilisable par des personnes en situation de handicap : visuel (malvoyance, non-voyance), moteur (impossibilité d’utiliser une souris, etc.), cognitif (difficulté à analyser un écran trop complexe, etc.), auditif ou maladies « en Dys » : dyslexie, dysphasie, etc."
+      },
+      {
+        "p": "Cette démarche doit :",
+        "ul": [
+          "être intégrée dans le cahier des charges du site web",
+          "être mise en œuvre au sein des projets pilotés, conçus, réalisés et hébergés en interne comme en externe (fournir aux prestataires le référentiel des bonnes pratiques et les accompagner dans la démarche)"
+        ]
+      },
+      {
+        "p": "Pour le succès de cette intégration, il faut sensibiliser toutes les parties prenantes (maîtrise d’ouvrage, ergonome, communicant, chef de projet, développeur, etc.) et former des référents techniques, chargés de relayer cette compétence auprès des équipes. L’analyse régulière des applications développées permet d’ancrer les bonnes pratiques de façon durable."
+      },
+      {
+        "p": "Bénéfices :",
+        "ul": [
+          "Meilleure ergonomie générale",
+          "Sur le plan RH : intégrer des collaborateurs handicapés",
+          "Sur le plan business : s’adresser à des clients en situation de handicap"
+        ]
+      },
+      {
+        "p": "Cette démarche doit :",
+        "ul": [
+          "être intégrée dans le cahier des charges du site web",
+          "être mise en œuvre au sein des projets pilotés, conçus, réalisés et hébergés en interne comme en externe (fournir aux prestataires le référentiel des bonnes pratiques et les accompagner dans la démarche)"
+        ]
+      },
+      {
+        "p": "*Les principales recommandations disponibles à ce sujet se concentrent principalement sur le web (WCAG/RGAA). Elles sont donc moins appropriées pour les autres services."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 3,
+      "environnement": 1,
+      "économie": 2
+    },
+    "KPI": "% des sites et applications web accessible (définir un niveau minimim parmi Bronze, Argent, Or)"
+  },
+  {
+    "title": "#622 - Optimiser les états et sorties d’impression",
+    "thématique": "Entreprise",
+    "sujet": "Services numériques et applications métier",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’écoconception d’un service numérique ne porte pas, loin s’en faut, que sur les lignes de code. Cette démarche s’intéresse également aux externalités du logiciel, et notamment aux états de sortie. Lorsque ces derniers sont conçus et codés, il faut absolument prendre en compte les bonnes pratiques associées à l’impression : génération d’un PDF plutôt que d’une impression papier, mise en ligne des documents les plus récents, possibilité d’accéder facilement aux archives, impression recto-verso en mode brouillon, etc."
+      },
+      {
+        "p": "Cette bonne pratique doit être systématiquement intégrée pour un site web. L’impression d’une page quelconque donne souvent des résultats catastrophiques (nombreuses pages, informations manquantes, prèsence d’informations inutiles, etc.). Fournir aux utilisateurs la fonctionnalité de préparer l’impression donnera un meilleur ressenti du site mais sera plus vertueux pour les impressions."
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% d’applications dont les états de sortie sont optimisés"
+  },
+  {
+    "title": "#623 - Mettre en œuvre les bonnes pratiques d’écoconception",
+    "thématique": "Entreprise",
+    "sujet": "Services numériques et applications métier",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La démarche d’écoconception vise à réduire l’empreinte environnementale des services numériques dés leur conception."
+      },
+      {
+        "p": "Elle doit être mise en œuvre au sein des projets pilotés, conçus, réalisés et hébergés en interne comme en externe (fournir aux prestataires le référentiel des bonnes pratiques et les accompagner dans la démarche). L’efficience obtenue peut contribuer à réduire significativement l’infrastructure physique nécessaire au fonctionnement du système d’information."
+      },
+      {
+        "p": "Pour garantir la mise en œuvre de cette démarche, il faut sensibiliser toutes les parties prenantes (maîtrise d’ouvrage, architecte, chef de projet, développeur, etc.) et former des référents techniques, chargés à leur tour de relayer cette compétence auprès des équipes. En outre, l’analyse régulière des services numériques permet d’ancrer les bonnes pratiques de façon durable."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "ul": [
+          "« Écoconception web : 115 bonnes pratiques », Eyrolles",
+          "Collectif Conception Numérique Responsable : https://collectif.greenit.fr"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% d’applications écoconçues et accessibles"
+  },
+  {
+    "title": "#624 - Privilégier une architecture applicative modulaire",
+    "thématique": "Entreprise",
+    "sujet": "Services numériques et applications métier",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Une architecture applicative modulaire permet d’enrichir un logiciel par un système d’extension."
+      },
+      {
+        "p": "Popularisé par les logiciels open source, cette approche apporte souvent une plus grande capacité à monter en charge, des coûts réduits de maintenance corrective et évolutive, ainsi qu’un code plus efficient. Si la couverture fonctionnelle du logiciel peut être amenée à évoluer, mieux vaut implémenter les fonctionnalités de base dans un noyau et les compléter au besoin par des extensions."
+      },
+      {
+        "p": "La majorité des logiciels qui ont connu un succès planétaire repose sur cette architecture. On peut citer le système d’exploitation Linux, le serveur web Apache, mais aussi les navigateurs comme Chrome, Firefox, Internet Explorer et Edge qui proposent des systèmes d’extensions."
+      },
+      {
+        "p": "La mise en œuvre de cette bonne pratique nécessite d’investir sur l’étape de conception fonctionnelle et de s’assurer qu’un dialogue efficace a lieu entre les parties prenantes chargées de la conception fonctionnelle et de l’architecture technique. Ce projet doit donc être abordé avant tout comme un projet de conduite du changement qui vise à renouer un véritable dialogue entre les parties prenantes du projet."
+      },
+      {
+        "h3.important": "À savoir :",
+        "p": "Selon une étude de Cast Software, 70% des fonctionnalités demandées par les utilisateurs ne sont jamais ou rarement utilisées, ce qui représente 70 % de code mort qu’il faudra pourtant revoir (voir #628) et maintenir."
+      },
+      {
+        "p": "Pour aller plus loin :",
+        "ul": [
+          "FSC : https://fr.fsc.org",
+          "Blue Angel (RAL UZ 72) : https://www.blauer-engel.de/en/products/office/printing-paper-2014 et https://www.blauer-engel.de/en/products/office/printing-papers-2011"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% d’applications reposant sur une architecture modulaire"
+  },
+  {
+    "title": "#628 - Systématiser la revue de code en sortie de développements",
+    "thématique": "Entreprise",
+    "sujet": "Services numériques et applications métier",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La revue de code consiste à faire relire son code afin d’y détecter les éventuels défauts, autant sur le fond (est-ce que ce code fonctionne, et matérialise bien la fonctionnalité prévue ?) que sur la forme (clarté, lisibilité, respect des standards, etc.)."
+      },
+      {
+        "p": "L’objectif principal de la revue de code est le même que les autres méthodes d’assurance de la qualité du logiciel : il s’agit de trouver au plutôt les défauts qui existent dans le code pour limiter la dette technique du logiciel."
+      },
+      {
+        "p": "Les bénéfices de la revue de code ne sont plus à démontrer : selon des études regroupées par Caperas Jones sur plus de 12 000 projets, la revue de code collective permet de détecter en moyenne 65 % des défauts, 50 % pour la revue par un pair, tandis que les tests automatiques n’en détectent en moyenne que 30 %."
+      },
+      {
+        "p": "Dans une démarche de conception responsable de service numérique, la revue de code est surtout intéressante pour réduire le coût du service, mais aussi, dans une moindre mesure, l’empreinte environnementale associée en optimisant l’efficience du logiciel."
+      },
+      {
+        "h3.important": "Zoom sur…",
+        "h3.important": "La dette technique (l’ensemble des défauts logiciels à corriger) pourrait représenter jusqu’à 70 % du coût complet d’un logiciel. Selon l’étude The Crash Report 2011 – 2012 de Cast Software, il serait en moyenne de 3,6 dollars par ligne de code."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 3
+    }
+  },
+  {
+    "title": "#219 - Activer les dispositifs d’économie d’énergie des processeurs modernes",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Au cours d’une journée, d’une semaine, la charge de travail des serveurs évolue rapidement en fonction du nombre d’utilisateurs connectés. Il y a des heures de pointe et de longues périodes de sous-activité."
+      },
+      {
+        "p": "Or on constate souvent que la consommation électrique du data center est relativement stable, tout au long de la journée. Pourtant, les processeurs récents des grands constructeurs (INTEL, AMD) embarquent de nombreux dispositifs d’économie d’énergie. Ils permettent d’adapter la puissance de calcul à la charge, en faisant par exemple varier la vitesse d’horloge de cœurs, en arrêtant ou redémarrant un cœur, etc. Encore faut-il les utiliser."
+      },
+      {
+        "p": "Chez INTEL, ces technologies ont pour nom : *Speed Step Technology, Clock Modulation, Turbo Boost, etc.*"
+      },
+      {
+        "p": "On peut les rendre actives en ajustant les paramètres du BIOS, de l’OS voire de l’hyperviseur."
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% de serveurs paramétrés"
+  },
+  {
+    "title": "#223 - Exiger une efficacité énergétique minimum pour les équipements non IT des salles",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Même si ce n’est pas directement son domaine, l’informatique se doit d’être vigilante dans le choix des équipements non IT des salles, notamment les équipements chargés de produire et de distribuer du froid (refroidisseurs, climatiseurs) et ceux chargés de redresser et distribuer l’électricité (onduleurs notamment) d’autant qu’ils ont une très longue durée de vie ( >15 ans)."
+      },
+      {
+        "p": "D’abord, un dimensionnement raisonnable est nécessaire car un équipement sous-utilisé a un rendement très faible. Ensuite, choisir le matériel le moins cher peut avoir des conséquences désastreuses sur le coût énergétique et donc sur le coût complet (TCO) pendant toute la durée de vie."
+      },
+      {
+        "p": "Les fournisseurs publient systématiquement des indicateurs d’efficacité énergétique. Il faut s’en servir. Par exemple, on peut exiger : une catégorie A pour un climatiseur mural, un ratio EER > 3,2 pour une armoire de climatisation, un rendement > 94% pour un onduleur, etc."
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% d’équipement acheté avec une efficacité énergétique minimum (à préciser)"
+  },
+  {
+    "title": "manquant",
+    "thématique": "Les fournisseurs publient systématiquement des indicateurs d’efficacité énergétique.Il faut s’en servir.Par exemple,on peut exiger: une catégorie A pour un climatiseur mural,un ratio EER > 3,2 pour une armoire de climatisation,un rendement",
+    "sujet": "94 % pour un onduleur,etc.  ",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 1
+    },
+    "KPI": "% d’équipement acheté avec une efficacité énergétique minimum (à préciser)"
+  },
+  {
+    "title": "#224 - Optimiser l’architecture et l’agencement des salles",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les équipements informatiques d’une salle évoluent en permanence. Les équipements les plus anciens sont remplacés et de nouveaux matériels arrivent avec des caractéristiques environnementales souvent différentes."
+      },
+      {
+        "p": "L’efficacité énergétique risque de se dégrader progressivement si on n’en assure pas une maintenance constante. Il s’agit de garantir dans le temps :",
+        "ul": [
+          "la bonne circulation de l’air dans les faux planchers",
+          "le remplacement de certaines dalles et la chasse aux fuites d’air chaud ou froid inutiles",
+          "l’ajout de cloisons souples sur les salles partiellement remplies pour réduire le volume d’air à climatiser"
+        ]
+      },
+      {
+        "p": "Une vision moyen-terme du bon agencement de la salle est nécessaire, pour maintenir une efficacité optimum à mesure que les nouveaux équipements arrivent."
+      }
+    ],
+    "KPI": "PUE ou % de m2 du DC optimisé",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 3,
+      "environnement": 3,
+      "économie": 1
+    }
+  },
+  {
+    "title": "#227 - Adapter l’architecture physique des serveurs à leur usage",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les gestionnaires de centres préférent généralement administrer Priorité des configurations standard virtualisées, que l’on peut préparer en avance de phase sur les nouveaux projets et ensuite allouer aux applications de façon dynamique."
+      },
+      {
+        "p": "Il y a cependant des cas où l’utilisation d’une architecture informatique dédiée pour un problème précis, permet d’optimiser à la fois les performances, les coûts et l’efficacité énergétique."
+      },
+      {
+        "p": "La création d’une architecture spécifique doit résulter d’une étude approfondie du besoin afin de fournir au projet la meilleure résultante. Ces architectures sont souvent utilisées pour toutes les tâches qui nécessitent une très forte puissance de calcul, (outils de travail collaboratifs, prévisions météorologiques, modélisation moléculaire, simulations physiques ou financières, etc.)."
+      },
+      {
+        "p": "Il peut-être aussi opportun de tester en grandeur réelle de nouvelles gammes de serveurs très innovatrices telles que ceux basés sur des architectures ARM, bien plus efficientes d’un point de vue énergétique, et qui peuvent répondre à des cas d’usages spécifiques. ou bien encore des architectures de type « physicalisation »."
+      },
+      {
+        "h3.important": "Zoom sur la physicalisation",
+        "p": "À contre courant de la virtualisation, cette démarche vise à concentrer un très grand nombre de micro-serveurs physiques dans une même baie. HP propose par exemple des configurations « Moonshot » qui intègrent jusqu’à 1 800 serveurs par rack, avec une promesse de gain de 65 % sur l’efficacité énergétique et de 90 % sur l’espace occupé."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 3
+    },
+    "KPI": "% du parc avec une configuration spécifique à l’usage"
+  },
+  {
+    "title": "#231 - Réutiliser l’énergie thermique produite par le centre informatique",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Il est possible de réutiliser la chaleur produite par le data center, au lieu de l’évacuer dans l’atmosphère."
+      },
+      {
+        "p": "Mais des opérations plus ambitieuses sont envisageables. On peut citer à titre d’exemple :",
+        "ul": [
+          "le chauffage de l’ensemble des bâtiments de l’entreprise (Roubaix)",
+          "l’alimentation du réseau de chauffage urbain (Marne-la-Vallée)",
+          "l’alimentation d’un réseau d’eau chaude (Amsterdam)",
+          "l’alimentation d’une serre tropicale (Clichy)",
+          "l’alimentation d’une piscine (Butte-aux-cailles à Paris)."
+        ]
+      }
+    ],
+    "priorité": 1,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Énergie réutilisée / énergie totale consommée par la salle (sur une année pleine)"
+  },
+  {
+    "title": "#250 - Mettre en place un suivi régulier des indicateurs énergétiques du datacenter",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Que le data center soit géré en interne ou confié à un opérateur externe, il est essentiel de mesurer et d’améliorer en continu sa performance environnementale."
+      },
+      {
+        "p": "Depuis avril 2016, l’ISO/IEC a publié plusieurs normes internationales qui offrent désormais un cadre harmonisé à différents indicateurs de performance énergétiques pour les Data centers, comme le PUE (Power Usage Effectiveness)."
+      },
+      {
+        "p": "Une multitude de publications, normes et bonnes pratiques existent sur le sujet. Un livre blanc, fruit d’un travail collaboratif entre l’Alliance Green-IT, France Datacenter et le Gimélec, propose un outil opérationnel décryptant à la fois les normes et bonnes pratiques existantes, tout en explicitant comment calculer les KPI et comment effectuer les mesures des paramètres associés."
+      },
+      {
+        "p": "On peut citer à titre d’exemples :",
+        "ul": [
+          "le PUE qui mesure l’efficacité énergétique de l’infrastructure au service de la production informatique",
+          "le REF (Renewable Energy Factor) qui mesure la part d’énergie renouvelable consommé par le data center",
+          "le COP (Coefficient Of Performance) qui permet de mesurer le rendement de la production de froid"
+        ]
+      },
+      {
+        "p": "Ces mesures ont une importance capitale, notamment dans un contexte où la part de l’électricité consommée par les CdC (centre de calculs) et les SdS (salles de serveurs) représente 3,6% de l’électricité consommée en Suisse (en 2019). De plus, le potentiel d’amélioration de l’efficacité énergétique (PUE) moyen de ces centres correspond à près de 46 % de leur consommation d’électricité. (EnergieSchweiz avril 2021. RechenzentrenStromverbrauchEffizienzpotenziale)"
+      },
+      {
+        "p": "Pour en savoir plus :",
+        "ul": [
+          "https://www.apl-datacenter.com/wp-content/uploads/2017/07/livre-blanc-indicateurs-performance-énergétique-environnementale-des-data-centers.pdf"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "PUE"
+  },
+  {
+    "title": "#312 - Privilégier les opérateurs qui ont ratifié le code européen de bonne conduite pour les centres informatiques",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le code européen de bonne conduite des centres informatiques (EU CoC for Data centres) a été créé en conséquence à l’augmentation de la consommation d’énergie dans les centres informatiques et à la nécessité de réduire leurs impacts environnementaux, économiques et énergétiques."
+      },
+      {
+        "p": "L’objectif est d’informer et de sensibiliser les opérateurs et les propriétaires de datacenters afin de réduire la consommation d’énergie de maniére rentable et sans entraver la fonction essentielle des datacenters. Le Code de conduite vise à atteindre cet objectif en améliorant la compréhension de la demande d’énergie au sein du centre informatique, en sensibilisant le public."
+      },
+      {
+        "p": "En annexe, il fournit un guide des bonnes pratiques et un certain nombre d’indicateurs permettant d’évaluer l’efficacité énergétique actuelle de son (ses) centre(s) informatique(s)."
+      },
+      {
+        "p": "Pour en savoir plus :",
+        "ul": [
+          "https://www.apl-datacenter.com/wp-content/uploads/2017/07/livre-blanc-indicateurs-performance-énergétique-environnementale-des-data-centers.pdf"
+        ]
+      },
+      {
+        "h3.important": "À savoir",
+        "p": "En ratifiant ce code, l’opérateur certifie qu’il applique une liste minimum de bonnes pratiques, où qu’il a un planning à court terme de mise en œuvre pour certaines d’entre elles. Il s’engage aussi à fournir un certain nombre d’indicateurs proposés dans le guide."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% de DC ou m2 de DC ou kW IT gérés par des fournisseurs ayant signé le CoC"
+  },
+  {
+    "title": "#517 - Confiner les baies des salles serveurs",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le confinement des baies permet de réduire sensiblement l’énergie nécessaire à la climatisation."
+      },
+      {
+        "p": "Deux solutions existent :",
+        "ul": [
+          "**Confinement de l’air frais :** on réduit le volume d’air à refroidir et on le canalise précisément vers les serveurs. 100 % de l’air frais traversera les baies. L’architecture de la salle peut le prévoir d’entrée, mais il est aussi possible de le mettre en œuvre après coup en rajoutant des cloisons autour de l’allée froide.",
+          "**Confinement de l’air chaud :** une technique utilisée par exemple par APC, dans ses « cubes » fermés, où alternent des racks de serveurs qui aspirent l’air frais extérieur, et des racks de climatiseurs qui refroidissent l’air chaud et l’expulsent frais vers l’extérieur des cubes."
+        ]
+      },
+      {
+        "p": "Le confinement devient indispensable pour les racks à haute densité de serveurs car les techniques de climatisation classiques ne sont plus suffisantes."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% de rack confinés"
+  },
+  {
+    "title": "#631 - Privilégier les équipements IT conformes aux exigences ASHRAE classe A3-A4",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "L’ASHRAE (Société américaine des ingénieurs en chauffage, réf rigération et climatisation) publie des normes qui font référence pour les datacenters et leurs équipements et qui sont reprises dans le code européen de bonne conduite."
+      },
+      {
+        "p": "Ces normes sont suivies par les constructeurs de matériel informatique qui élargissent en température et en humidité les plages de bon fonctionnement de leurs matériels, réduisant ainsi l’énergie nécessaire à leur climatisation."
+      },
+      {
+        "ul": [
+          "Ainsi les matériels classés A2 doivent pouvoir fonctionner entre 10° C et 35° C (température à l’entrée d’air des ventilateurs) et dans une humidité relative comprise entre 20 % et 80 %.",
+          "Pour la classe A3, le barème devient : entre 5° C et 40° C et entre 8 % et 85 % d’humidité.",
+          "Pour la classe A4, le barème devient ; entre 5° C et 45° C et entre 8 % et 90 % d’humidité."
+        ]
+      },
+      {
+        "p": "Ces normes concernent aussi les locaux techniques contenant des équipements réseau et situés dans les bâtiments industriels ou tertiaires. Acheter du matériel durci (de classe A4) peut permettre d’éviter de climatiser et ainsi se contenter d’une simple ventilation."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% de racks confiné",
+    "labels": "ASHRAE Class A3 à A4"
+  },
+  {
+    "title": "#634 - Virtualiser les serveurs physiques sous-utilisés pour les regrouper",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": true,
+      "gaz": false,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "L’approche traditionnelle des chefs de projets informatiques était de définir une architecture technique dédiée à leur application. Cette approche est devenue contre-productive avec la croissance très rapide de la puissance des machines. Un serveur dédié à une seule application devient sous-utilisé."
+      },
+      {
+        "p": "Les techniques de virtualisation ont apporté une solution à ce problème. Elles permettent de faire fonctionner plusieurs OS et plusieurs applications sur le même serveur physique, comme s’ils tournaient sur des machines distinctes."
+      },
+      {
+        "p": "La virtualisation est très efficace sur les applications existantes, surtout si les serveurs sont anciens. Il y a un gain de place, de matériel, d’énergie tout à fait spectaculaire. Elle est aussi très recommandée sur les applications nouvelles qui pourront être développées en natif sur cet environnement plus agile, plus économique et écologique."
+      },
+      {
+        "p": "En plus de ces avantages, la virtualisation offre aussi des facilités d’installation, de déploiement et de migration des applications."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% de serveurs virtualisés"
+  },
+  {
+    "title": "#635 - Maîtriser les capacités de stockage",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": true
+    },
+    "description": [
+      {
+        "p": "Bien que le stockage de données et documents ne représente pas une source majeure d’impacts environnementaux à l’échelle du système d’information, c’est un domaine qui progresse vite."
+      },
+      {
+        "p": "Trois techniques permettent de réduire efficacement la capacité de stockage physique :"
+      },
+      {
+        "h3.titre": "1.Déduplication :",
+        "p": "Il s’agit de ne stocker qu’une seule fois un document ou un fragment de document. Par exemple, le fichier PowerPoint de 10 Mo envoyé par mail à 20 collaborateurs n’est stocké qu’une seule fois côté serveur."
+      },
+      {
+        "h3.titre": "2.Thin provisionning :",
+        "p": "On fait croire aux logiciels qu’on leur a alloué plus de quantité de stockage qu’ils n’en possédent réellement. Cette approche permet d’utiliser la juste quantité de stockage physique malgré les exigences des logiciels (configuration minimale requise)."
+      },
+      {
+        "h3.titre": "3.Gestion hiérarchique de données :",
+        "p": "Des règles de gestion indiquent à la baie de stockage quel support est adapté en fonction de l’étape du cycle de vie de la donnée. Par exemple, le jour de sa publication, un rapport annuel est stocké sur un support très rapide (SSD), mais 6 mois plus tard, il se retrouve sur un disque dur capacitif de 4 To. On réduit ainsi le coût économique et écologique du stockage de la donnée."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 3
+    },
+    "KPI": "Go / utilisateur / an"
+  },
+  {
+    "title": "#636 - Mettre en place une procédure stricte de provisionning et déprovisionning des matériels",
+    "thématique": "IT Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Autant l’arrivée de nouveaux matériels est le plus souvent bien anticipée par l’ensemble des acteurs, car liée à un projet d’entreprise attendu par les clients internes et externes, autant l’arrêt des anciennes machines est toujours plus difficile à organiser pour différentes raisons : fin du déploiement du nouveau système qui traine en longueur, maintien d’une application secondaire avec quelques utilisateurs, basculement des équipes projet sur un autre sujet, etc. Il est pourtant indispensable pour le/la responsable du datacenter de bien gérer la fin de vie des équipements sous peine d’avoir une quantité de matériels inutiles qui continuent à consommer de l’énergie et qu’il faut climatiser."
+      },
+      {
+        "p": "Une procédure stricte de deprovisionning doit être mise en place avec des acteurs identifiés, des plannings à respecter et des relances en cas de retard."
+      },
+      {
+        "h3.important": "Le chiffre",
+        "p": "Plusieurs retours d’expérience montrent qu’environ 15 % des machines virtuelles déployées ne servent à rien. Elles monopolisent pourtant une partie des serveurs physiques sur lesquels elles s’exécutent."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 2,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "Oui = 100 %, Non = 0 %"
+  },
+  {
+    "title": "#637 - Favoriser autant que possible le free cooling",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description":  [
+      {
+        "p": "Les techniques de climatisation classiques fonctionnent en circuit fermé. On récupére l’air chaud en provenance des serveurs et on le réinjecte dans la salle après l’avoir refroidi. C’est très énergivore."
+      },
+      {
+        "p": "Le free cooling a apporté un progrès considérable. Il consiste à utiliser l’air ambiant extérieur pour refroidir sa salle, chaque fois que la température extérieure passe en dessous de 20°C. Suivant les conditions climatiques locales, cette technique permet de réduire de 50 à 70% l’énergie nécessaire à la climatisation."
+      },
+      {
+        "p": "Tous les datacenters modernes utilisent cette technologie. Pour un datacenter plus ancien, il faudra étudier systématiquement l’hypothèse free cooling à l’occasion du remplacement des équipements de climatisation arrivés en fin de vie. Si son installation est trop complexe, il existe une alternative, le free- chilling qui peut être plus simple à mettre en œuvre. Elle utilise un circuit d’eau qui va circuler dans une tour aéro-réfrigérante extérieure lorsque la température y est suffisamment basse. L’eau froide ainsi obtenue peut, par exemple, servir à rafraîchir l’air de la salle via un échangeur."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% des centres de données de l’entreprise utilisant un refroidissement naturel"
+  },
+  {
+    "title": "#638 - Organiser les baies en allées chaudes et froides",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Un des basiques d’une bonne climatisation est d’assurer une circulation efficace de l’air frais dans la salle, notamment en :",
+        "ul": [
+          "évitant les mélanges entre air chaud et air froid",
+          "apportant l’air froid au plus près des baies et en extrayant l’air chaud au plus près des sorties de baies"
+        ]
+      },
+      {
+        "p": "L’idéal est que 100% de l’air frais traverse les équipements informatiques et que 100% de l’air chaud en sortie soit évacuée directement vers les climatiseurs. Tout mélange entre l’air frais et l’air chaud dégrade l’efficacité."
+      },
+      {
+        "p": "Pour obtenir ce résultat, un premier moyen simple consiste à organiser les racks en allées chaudes et froides.",
+        "ul": [
+          "L’air frais sort du faux plancher au milieu de l’allée froide",
+          "Les équipements informatiques sont tous orientés dans le rack pour que leurs ventilateurs entraînent l’air frais depuis l’allée froide vers l’allée chaude",
+          "Les extracteurs d’air sont situés au-dessus de l’allée chaude."
+        ]
+      },
+      {
+        "h3.titre": "À noter :",
+        "ul": [
+          "Des accessoires existent pour intégrer des matériels atypiques (ventilation du bas vers le haut par exemple)",
+          "Les emplacements vides du rack doivent être obturés pour éviter les déperditions"
+        ]
+      },
+      {
+        "p": "Il y a un travail de maintenance régulier à opérer, compte tenu du départ et de l’entrée de nouveaux équipements IT, pour garantir l’efficacité du dispositif dans le temps"
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% du DC organisé en allées chaudes allées froides"
+  },
+  {
+    "title": "#639 - Augmenter la température de fonctionnement à plus de 24° C",
+    "thématique": "Entreprise",
+    "sujet": "Centres informatiques",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Selon l’American Society of Heating, Refrigerating and Air Conditioning Engineers (ASHRAE), un centre de données réduit sa facture électrique de 4 % à chaque fois qu’il augmente la température de consigne de 2° C à l’intérieur de ses salles informatiques."
+      },
+      {
+        "p": "Outre l’augmentation de la température de consigne, l’élargissement de la plage de température et d’hygrométrie favorise aussi la réduction de la facture électrique. Plus généralement l’élargissement de la plage de température et d’hygrométrie favorise la réduction de la facture électrique. En effet, si les serveurs fonctionnent à des températures et des niveaux d’humidité plus variables, il est moins souvent nécessaire de traiter l’air intérieur."
+      },
+      {
+        "p": "L’ASHRAE propose donc un cahier des charges que les fabricants d’équipements informatiques, réseau et télécoms peuvent suivre dans ce but. Classés en quatre catégories - A1 à A4 - les équipements sont alors plus ou moins tolérants en termes de température et niveau maximum d’humidité et de vitesse de variation de ces deux paramètres. Les équipements des classes A3 et A4 autorisent à pratiquer le free cooling en France plus de 80 % du temps."
+      },
+      {
+        "h3.important": "Point d’attention",
+        "p": "À contre courant de la virtualisation, cette démarche vise à concentrer un très grand nombre de micro-serveurs physiques dans une même baie. HP propose par exemple des configurations « Moonshot » qui intègrent jusqu’à 1 800 serveurs par rack, avec une promesse de gain de 65 % sur l’efficacité énergétique et de 90 % sur l’espace occupé."
+      },
+      {
+        "p": "Pour en savoir plus :",
+        "ul": [
+          "http://tc99.ashraetcs.org/documents/ASHRAE%20Networking%20Thermal%20Guidelines.pdf"
+        ]
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "Température de consigne"
+  },
+  {
+    "title": "#640 - Privilégier une architecture modulaire",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": true,
+      "déchets": true,
+      "social": false
+    },
+    "description":  [
+      {
+        "p": "Les grandes salles informatiques ont souvent une efficacité énergétique faible pour 2 raisons principales :",
+        "ul": [
+          "Il est difficile d’en garantir dans la durée un bon taux de remplissage, ce qui peut rendre le volume d’air à climatiser disproportionné par rapport aux équipements informatiques réellement installés.",
+          "Les paramètres de climatisation doivent être réglés sur les équipements les plus exigeants, même s’ils représentent qu’une faible proportion de l’ensemble."
+        ]
+      },
+      {
+        "p": "Le découpage du datacenter en modules autonomes de taille plus réduite permet :",
+        "ul": [
+          "de regrouper dans une même salle des équipements présentant les contraintes environnementales les plus exigeantes (et ainsi réduire sans risque la charge de climatisation pour les autres)",
+          "d’éviter de climatiser les modules vides et ne les ouvrir que progressivement, en fonction de l’arrivée de nouveaux équipements informatiques."
+        ]
+      },
+      {
+        "p": "Il facilite le maintien dans le temps d’une bonne efficacité énergétique."
+      },
+      {
+        "p": "Cette démarche est envisageable que le datacenter soit ancien ou nouveau."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "% de m2 DC modulaires"
+  },
+  {
+    "title": "#327 - Activer les fonctions d’économie d’énergie des équipements actifs réseau (switch, etc.)",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le réseau est le composant du système d’information dont la consommation électrique augmente le plus fortement par rapport aux autres grands domaines. Essentiellement parce que le réseau est le seul domaine dans lequel très peu d’efforts ont été faits jusqu’à présent pour réduire la consommation électrique, alors que c’est une démarche quasi standard pour les postes de travail, les équipements d’impression, et les centres de données."
+      },
+      {
+        "p": "Il est possible de mettre en veille les appareils non utilisés (ou les ports non utilisés) via le paramétrage de l’équipement."
+      },
+      {
+        "p": "Les systèmes de contrôle à distance facilitent le déploiement de cette bonne pratique."
+      }
+    ],
+    "KPI": " % d’équipements surlesquels les fonctions d’économie d’énergie sont activées",
+    "priorité": 3,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#900 - Adapter la dimension du réseau aux besoins réels et au juste nécessaire",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": true,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "La fabrication des équipements réseaux a un lourd impact (ex. fils de cuivre). Éviter de surdimensionner les réseaux permet de limiter leur impact sur les ressources et la consommation électrique."
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 3,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 3
+    },
+    "KPI": "% port réseau utilisé, % réseau utilisé"
+  },
+  {
+    "title": "#901 - Acheter des équipements réseau compatibles avec le protocole Energy-Efficient Ethernet",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Le protocole IEEE-802.3az permet de réduire significativement la consommation d’électricité pendant les périodes de faible activité notamment en mettant en veille les ports inutiles."
+      }
+    ],
+    "priorité": 3,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    },
+    "KPI": "% d’équipements réseaux avec le protocole Energy- Efficient Ethernet"
+  },
+  {
+    "title": "#902 - Acheter des équipements réseau respectant les exigences ASHRAE classe A3-A4",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": false,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Les normes ASHRAE exigent une certaine tolérance en terme de variation de température et d’humidité."
+      },
+      {
+        "ul": [
+          "Ainsi les matériels classés A2 doivent pouvoir fonctionner entre 10° C et 35° C (température à l’entrée d’air des ventilateurs) et dans une humidité relative comprise entre 20 % et 80 %.",
+          "Pour la classe A3, le baréme devient : entre 5° C et 40° C et entre 8 % et 85 % d’humidité.",
+          "Pour la classe A4, le baréme devient. entre 5° C et 45° C et entre 8 % et 90 % d’humidité."
+        ]
+      },
+      {
+        "p": "**N.B :** le matériel le moins tolérant (classe ASHRAE la plus basse) imposera les conditions de toute la salle."
+      },
+      {
+        "p": "Les plages données ci-dessus correspondent au référentiel ASHRAE de 2011."
+      }
+    ],
+    "KPI": " % d’équipements réseaux respectant les exigences ASHRAE classe A3 - A4",
+    "priorité": 2,
+    "difficulté": 1,
+    "potentiel": {
+      "social": 1,
+      "environnement": 3,
+      "économie": 2
+    }
+  },
+  {
+    "title": "#903 - Favoriser les réseaux de télécommuni- cations les moins énergivores",
+    "thématique": "Entreprise",
+    "sujet": "Réseau",
+    "impacts": {
+      "ressources": false,
+      "gaz": true,
+      "eau": false,
+      "déchets": true,
+      "social": false
+    },
+    "description": [
+      {
+        "p": "Faire passer l’information par les ondes est plus coûteux en énergie que par des fils. De plus, la pose d’un câblage Ethernet fonctionnel est obligatoire en France depuis 2009* et recommandée en Suisse** lors de la construction ou transformation d’un bâtiment. La fabrication des câbles a déjà eu un impact, il est donc préférable de les utiliser (sans ajouter d’impacts dûs à l’émission d’ondes)."
+      },
+      {
+        "p": "Sur le plan humain, le fait d’être connecté et sollicité de manière continue peut générer un stress important et a un impact certain sur l’efficacité et la productivité des salariés. Sans compter que les ondes électromagnétiques ont également un potentiel impact sur la santé. Utiliser seulement le réseau Ethernet dans les bureaux permet de se connecter à des moments choisis et de limiter ces sollicitations continues. Les laptops peuvent se connecter au réseau Ethernet par des connectiques présentes dans les bureaux. Pour les smartphones, il est possible de mettre un point Wifi dans les zones de repos / café par exemple."
+      },
+      {
+        "p": "Rappelons enfin que le débit est toujours meilleur avec une connexion filaire."
+      },
+      {
+        "p": "* Article R111-1 du code de la construction"
+      },
+      {
+        "p": "** Recommandation KBOB / Câblage universel de communication (CUC) /Édition 3 / Mars 2012"
+      }
+    ],
+    "priorité": 2,
+    "difficulté": 2,
+    "potentiel": {
+      "social": 1,
+      "environnement": 2,
+      "économie": 2
+    },
+    "KPI": "Consommation électrique par unité de donnée transférée"
+  }
+]

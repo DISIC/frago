@@ -1,0 +1,100 @@
+{{- define "main" -}}
+{{- $patharray := split (path.Dir .Path) "/" -}}
+
+{{- $.Scratch.Set "guidelinename" "greenit" -}}
+{{- $.Scratch.Set "guidelineversion" "0.3" -}}
+{{- if ge ($patharray) 2 -}}
+  {{- $.Scratch.Set "guideline" (index $patharray 0) -}}
+  {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
+  {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
+{{- end -}}
+{{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")) -}}
+
+<article class="fg-wrapper narrow">
+<style>
+  ul, ol {
+    padding-left: 1rem;
+  }
+  .titre, .important, .important + p {
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 1.1rem;
+  }
+  .important, .important + * {
+    color: var(--color-primary);
+  }
+  .background {
+    background: #dedede;
+  }
+</style>
+<h1>Critères GreenIT</h1>
+{{- range $key1, $value1 := $criteriafile -}}
+  <h2 id="{{ .title | urlize }}" >{{ .title }}</h2>
+  <p>
+    <strong>{{ .thématique | markdownify }} > {{ .sujet | markdownify }} </strong><br>
+  </p>
+
+  <div>
+      <h3>Impacts :</h3>
+      <div class="flex flex-gap align-items-center text-center mb-1" style="align-items: stretch ">
+      {{- range $key, $value := .impacts }}
+        <div>
+          {{ if . }}
+            <img src="/assets/images/greenit/picto-{{ $key | urlize }}.svg" width="30px" alt="{{ $key }}"><br><b>{{ $key }}</b>
+          {{ else }}
+            <img src="/assets/images/greenit/picto-{{ $key | urlize }}.svg" width="30px" alt="{{ $key }}"><br><b>{{ $key }}</b>
+          {{ end }}
+        </div>
+      {{ end -}}
+      </div>
+    </div>
+
+  {{- if (isset .description -1) -}}
+    {{- range  .description  }}
+      {{ $description := . }}
+      {{ $counter := 0 }}
+      {{- range $key, $value := . }}
+        {{ $.Scratch.Set "classcontent" slice }}
+        {{ $tag   := index (split $key ".") 0 }}
+        {{- if ge (split $key ".") 2 -}}{{ $.Scratch.Add "classcontent" (after 1 (split $key ".")) }}{{- end -}}
+        {{- if and (eq $counter 0) (ge (len $description) 2) }}{{ $.Scratch.Add "classcontent" "mb-0" }}{{ end -}}
+        {{ $class := cond (isset ($.Scratch.Get "classcontent") 0) (printf " class='%s'" (delimit ($.Scratch.Get "classcontent") " ")) "" }}
+        {{ printf "<%s%s>" $tag $class | safeHTML }}
+          {{- if (isset . -1) -}}
+            {{ range . }}
+              <li>{{- . | markdownify -}}</li>
+            {{ end }}
+          {{ else }}
+            {{- . | markdownify -}}
+          {{ end }}
+        {{ printf "</%s>" $tag | safeHTML }}
+        {{ $counter = add $counter 1 }}
+      {{ end -}}
+    {{ end -}}
+  {{- else -}}
+    {{ .description  }}
+  {{- end -}}
+
+  <div class="note">
+    <p>Priorité : {{ .priorité | markdownify }} -<img src="/assets/images/greenit/picto-priorite.svg" width="30px"></p>
+    <p>Difficulté : {{ .difficulté | markdownify }} - <img src="/assets/images/greenit/picto-difficulte.svg" width="20px"></p>
+    <p>Potentiel :
+      <ul>
+      {{ range $key, $value := .potentiel }}
+        <li>
+        {{ $key }}: {{ . | urlize }}&nbsp;-
+        {{ range (seq .) }}
+          <img src="/assets/images/greenit/picto-potentiel-{{ $key | urlize }}.svg" width="15px">
+        {{ end }}
+        </li>
+      {{ end }}
+      </ul>
+    </p>
+  </div>
+  <p><strong>KPI :</strong> {{ .KPI | markdownify }}</p>
+{{- end -}}
+</article>
+
+
+{{- end -}}
