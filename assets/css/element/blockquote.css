@@ -3,8 +3,8 @@
 */
 
 blockquote {
-  margin-bottom: var(--baseline);
-  padding: calc(var(--baseline) / 2) var(--baseline) calc(var(--baseline) / 4);
+  margin-bottom: var(--baseline,1.5em);
+  padding: calc(var(--baseline,1.5em) / 2) var(--baseline,1.5em) calc(var(--baseline,1.5em) / 4);
   font-size: calc(1rem * var(--ms1));
   border-left: 5px solid var(--color-primary);
   background-color: #fff;

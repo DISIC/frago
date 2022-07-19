@@ -1,5 +1,7 @@
 {{- define "main" -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
+{{- $data      := newScratch -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}
 
 {{- $.Scratch.Set "guidelinename" "greenit" -}}
 {{- $.Scratch.Set "guidelineversion" "0.3" -}}
@@ -8,7 +10,7 @@
   {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
 {{- end -}}
-{{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")) -}}
+{{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteres -}}
 
 <article class="fg-wrapper narrow">
 <style>
@@ -18,37 +20,87 @@
   .titre, .important, .important + p {
     font-weight: bold;
   }
-  h3 {
-    font-size: 1.1rem;
-  }
   .important, .important + * {
     color: var(--color-primary);
   }
   .background {
     background: #dedede;
   }
+  .svgblue {
+    stroke: #00697a;
+    fill: transparent;
+
+  }
+  .svgblue.empty {
+    stroke: #b8d6da;
+    fill: #b8d6da;
+  }
+  .svggreen {
+    fill: #80a13d;
+    stroke: #fff;
+    stroke-width: 0;
+  }
+  .svggreen.empty {
+    fill: transparent;
+    stroke: #80a13d;
+    stroke-width: 0.1px;
+  }
 </style>
-<h1>Critères GreenIT</h1>
+<h1>{{ (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).title | safeHTML }}</h1>
+
+{{ $data.Set "counterthematique" 0 }}
+{{ $data.Set "thematique" "" }}
+{{ $data.Set "subject" slice }}
 {{- range $key1, $value1 := $criteriafile -}}
-  <h2 id="{{ .title | urlize }}" >{{ .title }}</h2>
-  <p>
-    <strong>{{ .thématique | markdownify }} > {{ .sujet | markdownify }} </strong><br>
+  {{ if ne ($data.Get "thematique") .thematique }}{{ $data.Add "counterthematique" 1 }}{{ $data.Set "subject" slice }}{{ end }}
+  {{ $data.Set "thematique" .thematique }}
+  {{ $data.Add "subject" .subject }}
+  {{ $data.SetInMap "thematiques" (printf "%s.%s" (string ($data.Get "counterthematique")) (string .thematique)) (uniq ($data.Get "subject")) }}
+{{- end -}}
+
+{{ partialCached "utils/css.html" (dict "context" . "filefolder" "element" "filename" "tableofcontents") "tableofcontents" }}
+<div class="tableofcontents">
+<h2>Table des matières</h2>
+{{ range $key, $value := $data.Get "thematiques" }}
+  <h3>{{ index (split $key ".") 1 }}</h3>
+  {{ range $value := . }}
+    <h4 class="primary mb-0">{{ . }}</h4>
+    <ol class="list-unstyled">
+    {{ range (where $criteriafile "subject" .) }}
+      <li>#{{ .id }} - <a href="#{{ .id }}">{{ .title }}</a></li>
+    {{ end }}
+    </ol>
+  {{ end }}
+{{ end }}
+</div>
+
+{{- range $key1, $value1 := $criteriafile -}}
+  <h2 id="{{ .id | urlize }}" >#{{ .id }} - {{ .title }}</h2>
+  <p class="primary">
+    <strong>{{ .thematique | markdownify }} > {{ .subject | markdownify }} </strong><br>
   </p>
 
   <div>
-      <h3>Impacts :</h3>
-      <div class="flex flex-gap align-items-center text-center mb-1" style="align-items: stretch ">
+      <h3 class="mb-0 invert">Impacts :</h3>
+      <div class="flex flex-gap align-items-center text-center mb-2 card-background p-2" style="align-items: stretch ">
       {{- range $key, $value := .impacts }}
         <div>
           {{ if . }}
-            <img src="/assets/images/greenit/picto-{{ $key | urlize }}.svg" width="30px" alt="{{ $key }}"><br><b>{{ $key }}</b>
+            <svg width="60px" role="img" class="svgblue" aria-label="{{ $key }}" viewBox="0 0 50 50">
+              <use xlink:href="/assets/images/greenit/picto-impact.svg#{{ $key | urlize }}" />
+            </svg>
+            <br><b>{{ $key }}</b>
           {{ else }}
-            <img src="/assets/images/greenit/picto-{{ $key | urlize }}.svg" width="30px" alt="{{ $key }}"><br><b>{{ $key }}</b>
+            <svg width="60px" role="img" class="svgblue empty" aria-label="{{ $key }}" viewBox="0 0 50 50">
+              <use xlink:href="/assets/images/greenit/picto-impact.svg#{{ $key | urlize }}" />
+            </svg>
+            <br><b><strike>{{ $key }}</strike></b>
           {{ end }}
         </div>
       {{ end -}}
       </div>
     </div>
+
 
   {{- if (isset .description -1) -}}
     {{- range  .description  }}
@@ -76,25 +128,87 @@
     {{ .description  }}
   {{- end -}}
 
-  <div class="note">
-    <p>Priorité : {{ .priorité | markdownify }} -<img src="/assets/images/greenit/picto-priorite.svg" width="30px"></p>
-    <p>Difficulté : {{ .difficulté | markdownify }} - <img src="/assets/images/greenit/picto-difficulte.svg" width="20px"></p>
-    <p>Potentiel :
-      <ul>
-      {{ range $key, $value := .potentiel }}
-        <li>
-        {{ $key }}: {{ . | urlize }}&nbsp;-
-        {{ range (seq .) }}
-          <img src="/assets/images/greenit/picto-potentiel-{{ $key | urlize }}.svg" width="15px">
-        {{ end }}
-        </li>
+
+  {{ with .toknow }}
+    <h3 class="important mb-0">{{ .h3 }}</h3>
+    <p>{{ .p }}</p>
+  {{ end }}
+
+  {{ with .more }}
+    <p class="mb-0"><strong>Pour aller plus loin</strong> :</p>
+    <ul>
+    {{ range . }}
+      <li>{{ . | markdownify }}</li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  {{ with .consult }}
+    <p class="mb-0"><strong>Consulter les fiches</strong> :</p>
+    <ul>
+    {{ range . }}
+      <li>#{{ . | markdownify }} - <a href="#{{ . }}">{{ (index (where $criteriafile "id" .) 0).title }}</a></li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  {{ with .footnotes }}
+    <p class="mb-0"><strong>Notes</strong> :</p>
+    <ul class="list-unstyled mb-1">
+    {{ range $key, $value := . }}
+      <li>{{ range (seq (add (int $key) 1)) }}* {{ end }}{{ . }}</li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  <p><strong>KPI :</strong> {{ .KPI | markdownify }}</p>
+
+  <h3 class="mb-0 invert">Mise en œuvre :</h3>
+  <div class="flex flex-gap align-items-center text-center mb-1 card-background pt-2" style="align-items: stretch ">
+    <p>
+      <span class="rank border-50">{{ .priority | urlize }}</span><br>
+      {{ range (seq (int .priority)) }}
+        <svg width="40px" role="img" class="svggreen" aria-label="priorité" viewBox="0 0 50 50">
+          <use xlink:href="/assets/images/greenit/picto.svg#priorite" />
+        </svg>
       {{ end }}
-      </ul>
+      {{ range (seq (sub 3 (int .priority))) }}
+        <svg width="40px" role="img" class="svggreen empty" aria-label="priorité" viewBox="0 0 50 50">
+          <use xlink:href="/assets/images/greenit/picto.svg#priorite" />
+        </svg>
+      {{ end }}
+      <br><strong class="invert">Priorité</strong>
+    </p>
+    <p>
+      <span class="rank border-50">{{ .difficulty | urlize }}</span><br>
+      {{ range (seq (int .difficulty)) }}
+        <svg width="40px" role="img" class="svggreen" aria-label="priorité" viewBox="0 0 50 50">
+          <use xlink:href="/assets/images/greenit/picto.svg#difficulte" />
+        </svg>
+      {{ end }}
+      {{ range (seq (sub 3 (int .difficulty))) }}
+        <svg width="40px" role="img" class="svggreen empty" aria-label="priorité" viewBox="0 0 50 50">
+          <use xlink:href="/assets/images/greenit/picto.svg#difficulte" />
+        </svg>
+      {{ end }}
+      <br><strong class="invert">Difficulté</strong>
     </p>
   </div>
-  <p><strong>KPI :</strong> {{ .KPI | markdownify }}</p>
+  <h3 class="mb-0 invert">Potentiel :</h3>
+  <div class="flex flex-gap align-items-center text-center mb-1 card-background pt-2" style="align-items: stretch ">
+    {{ range $key, $value := .potentiel }}
+      <p>
+      <span class="rank border-50">{{ . | urlize }}</span><br>
+      {{ range (seq .) }}
+        <svg width="40px" role="img" aria-label="{{ $key | urlize }}" viewBox="0 0 50 50">
+          <use xlink:href="/assets/images/greenit/picto.svg#{{ $key | urlize }}" />
+        </svg>
+      {{ end }}
+      <br><strong class="mt-2 invert">{{ $key }}</strong>
+      </p>
+    {{ end }}
+  </div>
+  <hr>
 {{- end -}}
 </article>
-
-
 {{- end -}}

@@ -11,8 +11,8 @@ input[type="submit"],.btn {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  margin: var(--baseline) 0;
-  padding: calc(var(--baseline) / 2) var(--baseline);
+  margin: var(--baseline,1.5em) 0;
+  padding: calc(var(--baseline,1.5em) / 2) var(--baseline,1.5em);
   font-size: inherit;
   cursor: pointer;
   transition: background 0.45s;

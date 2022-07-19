@@ -3,7 +3,7 @@
 */
 
 embed {
-  margin-bottom: var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
   width: 100%;
   min-height: 800px;
 }

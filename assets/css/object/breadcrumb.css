@@ -5,8 +5,8 @@
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  padding: var(--baseline) calc(var(--baseline) / 2);
-  margin: 0 0 var(--baseline);
+  padding: var(--baseline,1.5em) calc(var(--baseline,1.5em) / 2);
+  margin: 0 0 var(--baseline,1.5em);
   font-size: var(--smaller);
   list-style: none;
 }
@@ -16,13 +16,13 @@
 }
 
 .breadcrumb-item + .breadcrumb-item {
-  padding-left: calc(var(--baseline) / 2);
+  padding-left: calc(var(--baseline,1.5em) / 2);
 }
 
 .breadcrumb-item + .breadcrumb-item a::before,
 .breadcrumb-item + .breadcrumb-item span::before {
   display: inline-block;
-  padding-right: calc(var(--baseline) / 2);
+  padding-right: calc(var(--baseline,1.5em) / 2);
   content: '>';
 }
 
@@ -65,7 +65,7 @@
 .breadcrumb-item .--has-menu span a {
   display: block;
   margin: 0;
-  padding: calc(var(--baseline) / 4) var(--baseline);
+  padding: calc(var(--baseline,1.5em) / 4) var(--baseline,1.5em);
 }
 
 .breadcrumb-item .--has-menu span a:hover {

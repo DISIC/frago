@@ -14,7 +14,7 @@
 
 .mermaid svg {
   margin: auto;
-  padding: 0 var(--baseline);
+  padding: 0 var(--baseline,1.5em);
   max-width: 98%;
   border-radius: 4px;
   background: #ffffff;

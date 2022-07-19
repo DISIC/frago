@@ -3,7 +3,7 @@
 */
 
 .benchmark {
-  margin: calc(var(--baseline) * 2) auto 0;
+  margin: calc(var(--baseline,1.5em) * 2) auto 0;
 }
 
 .benchmark:empty {
@@ -33,7 +33,7 @@
 }
 
 .benchmark figure {
-  padding: var(--baseline);
+  padding: var(--baseline,1.5em);
   text-align: center;
   background: #fff;
 }

@@ -3,12 +3,12 @@
 */
 
 .nav-anchor {
-  margin-bottom: calc(var(--baseline) * 2);
-  padding: var(--baseline) calc(var(--baseline) * 2) var(--baseline);
+  margin-bottom: calc(var(--baseline,1.5em) * 2);
+  padding: var(--baseline,1.5em) calc(var(--baseline,1.5em) * 2) var(--baseline,1.5em);
   background-color: var(--background-color);
 }
 
 .nav-anchor li {
   display: inline-block;
-  margin: var(--baseline) var(--baseline) var(--baseline) 0;
+  margin: var(--baseline,1.5em) var(--baseline,1.5em) var(--baseline,1.5em) 0;
 }

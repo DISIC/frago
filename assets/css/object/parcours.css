@@ -3,8 +3,8 @@
 */
 
 .parcours-container {
-  margin: 0 0 var(--baseline);
-  padding: var(--baseline) 0 var(--baseline);
+  margin: 0 0 var(--baseline,1.5em);
+  padding: var(--baseline,1.5em) 0 var(--baseline,1.5em);
   border: none;
   border-bottom: 2px dotted var(--color-grey-light);
 }
@@ -69,7 +69,7 @@
 @media screen and (min-width: 70em) {
   .parcours {
     display: inline-block;
-    margin: 0 0 var(--baseline) -200px;
+    margin: 0 0 var(--baseline,1.5em) -200px;
     max-width: 99999px;
   }
 

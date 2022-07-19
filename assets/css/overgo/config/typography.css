@@ -73,8 +73,8 @@ h6
 label,
 legend {
   color: currentColor;
-  margin-top: var(--baseline);
-  margin-bottom: var(--baseline);
+  margin-top: var(--baseline,1.5em);
+  margin-bottom: var(--baseline,1.5em);
   font-family: var(--title-font);
 }
 
@@ -88,7 +88,7 @@ h5,
 }
 h4,
 .h4 {
-  font-size: var(--bigger);
+  font-size: var(--normal);
 }
 h3,
 .h3 {
@@ -111,5 +111,5 @@ h3 small {
 }
 
 p {
-  margin: 0 0 var(--baseline);
+  margin: 0 0 var(--baseline,1.5em);
 }

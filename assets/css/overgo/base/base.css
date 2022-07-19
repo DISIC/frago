@@ -133,7 +133,7 @@ a:active {
 
 ul,
 ol {
-  margin-bottom: var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
 }
 
 /*/ List options

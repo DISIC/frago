@@ -4,7 +4,7 @@
 
 dl {
   margin-top: 0;
-  margin-bottom: var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
 }
 
 dt,
@@ -13,7 +13,7 @@ dd {
 }
 
 dt {
-  margin-top: calc(var(--baseline) / 2);
+  margin-top: calc(var(--baseline,1.5em) / 2);
   font-size: var(--bigger);
   font-weight: bold;
 }

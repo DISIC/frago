@@ -4,7 +4,7 @@
 
 form {
   margin: auto;
-  padding: var(--baseline) calc(var(--baseline) * 2);
+  padding: var(--baseline,1.5em) calc(var(--baseline,1.5em) * 2);
   max-width: 40em;
   background: var(--color-primary-verylight);
 }
@@ -21,7 +21,7 @@ fieldset > * {
 }
 
 legend {
-  margin-bottom: calc(var(--baseline) * 2 );
+  margin-bottom: calc(var(--baseline,1.5em) * 2 );
   line-height: 1;
   color: var(--color-grey-dark);
 }
@@ -39,7 +39,7 @@ form label {
   justify-content: space-between;
   order: -1;
   width: 100%;
-  height: var(--baseline);
+  height: var(--baseline,1.5em);
   font-weight: bold;
   text-transform: uppercase;
   color: var(--color-grey-dark);
@@ -55,8 +55,8 @@ input[type=password],
 input[type=number],
 textarea {
   box-sizing: border-box;
-  margin-bottom: calc(var(--baseline) / 2);
-  padding: calc(var(--baseline) / 2);
+  margin-bottom: calc(var(--baseline,1.5em) / 2);
+  padding: calc(var(--baseline,1.5em) / 2);
   width: 100%;
   font-family: inherit;
   font-size: 1em;
@@ -142,7 +142,7 @@ input[type=number]:not(:placeholder-shown):invalid {
 
 .hf-warning {
   overflow: hidden;
-  margin: calc(var(--baseline) / -2) 0 calc(var(--baseline) / 2);
+  margin: calc(var(--baseline,1.5em) / -2) 0 calc(var(--baseline,1.5em) / 2);
   font-size: 75%;
   color: hsl(var(--base-red), var(--base-sat), var(--base-light));
 }

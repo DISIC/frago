@@ -97,7 +97,14 @@ main {
 /* = header = */
 
 header {
-  margin-bottom: calc(var(--baseline) * 2);
-  padding: 0 var(--baseline);
+  margin-bottom: calc(var(--baseline,1.5em) * 2);
+  padding: 0 var(--baseline,1.5em);
   border-bottom: 1px solid #dedede;
+}
+
+/* COLOR
+   ----------------------------- */
+
+.primary {
+  color: var(--color-primary);
 }

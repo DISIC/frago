@@ -12,14 +12,14 @@
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
   justify-content: center;
-  padding: var(--baseline);
+  padding: var(--baseline,1.5em);
   min-height: 5em;
   font-weight: bold;
   background: var(--background-color-grey);
 }
 
 .card {
-  padding: var(--baseline);
+  padding: var(--baseline,1.5em);
   color: #666;
   color: var(--background-color);
   border-radius: 30px;
@@ -40,14 +40,14 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: var(--baseline);
-  padding: 0 var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
+  padding: 0 var(--baseline,1.5em);
   text-decoration: none;
   color: var(--text-color);
 }
 
 .card-inline > * {
-  padding: var(--baseline) 0;
+  padding: var(--baseline,1.5em) 0;
   width: 100%;
 }
 
@@ -87,7 +87,12 @@
 }
 
 .card-border {
-  border: 1px solid var(--color-grey);
+  border: 1px solid var(--color-primary-dark);
+}
+
+.card-background {
+  background: var(--color-grey-verylight);
+  border: 2px solid var(--color-grey);
 }
 
 .card-shadow {
@@ -114,9 +119,9 @@
 }
 
 .card img.full {
-  margin: -2em calc(var(--baseline) * -1) calc(var(--baseline));
-  width: calc(100% + calc(var(--baseline) * 2));
-  max-width: calc(100% + calc(var(--baseline) * 2));
+  margin: -2em calc(var(--baseline,1.5em) * -1) calc(var(--baseline,1.5em));
+  width: calc(100% + calc(var(--baseline,1.5em) * 2));
+  max-width: calc(100% + calc(var(--baseline,1.5em) * 2));
   max-height: 100em;
   object-fit: cover;
 }

@@ -19,8 +19,8 @@
 /* = section = */
 
 section {
-  margin: var(--baseline) auto 0;
-  padding: var(--baseline) 0;
+  margin: var(--baseline,1.5em) auto 0;
+  padding: var(--baseline,1.5em) 0;
 }
 
 .section-dark {
@@ -50,7 +50,7 @@ article h2 + p.text-center {
 /* = Divider = */
 
 hr {
-  margin: var(--baseline) 0;
+  margin: var(--baseline,1.5em) 0;
   width: auto;
   height: 0;
   border: none;
@@ -61,7 +61,7 @@ hr {
 }
 
 .divider-strong {
-  margin: calc(var(--baseline) * 1.5) 0;
+  margin: calc(var(--baseline,1.5em) * 1.5) 0;
   width: 100%;
   border: none;
   border-top: 2px dashed var(--color-primary-dark);
@@ -74,7 +74,7 @@ hr {
 
 .divider {
   overflow: hidden;
-  margin: calc(var(--baseline) * 2) auto;
+  margin: calc(var(--baseline,1.5em) * 2) auto;
   max-width: 80%;
   height: 4em;
   border: none;
@@ -94,7 +94,6 @@ hr {
 
 /* TYPOGRAPHY
    ----------------------------- */
-
 
 h1,
 .h1 {
@@ -157,8 +156,8 @@ h3 + time {
 }
 
 .note {
-  margin-bottom: var(--baseline);
-  padding: var(--baseline) var(--baseline) calc(var(--baseline) / 2);
+  margin-bottom: var(--baseline,1.5em);
+  padding: var(--baseline,1.5em) var(--baseline,1.5em) calc(var(--baseline,1.5em) / 2);
   font-size: var(--smaller);
   color: var(--text-color);
   border: 1px solid var(--color-primary-light);
@@ -167,7 +166,7 @@ h3 + time {
 
 .note p,
 .note ul {
-  margin-bottom: calc(var(--baseline) / 2);
+  margin-bottom: calc(var(--baseline,1.5em) / 2);
 }
 
 /* LOGO
@@ -205,8 +204,8 @@ figure.rounded {
 /* = Footer = */
 
 footer {
-  margin: var(--baseline) 0 0;
-  padding: var(--baseline);
+  margin: var(--baseline,1.5em) 0 0;
+  padding: var(--baseline,1.5em);
   text-align: center;
   color: var(--color-grey-verylight);
   background-color: #0a0a0a;
@@ -246,7 +245,20 @@ footer a {
   text-shadow: 0 0 0 #fff;
 }
 
+/* = Rank = */
 
+.rank {
+  font-size: var(--title2);
+  font-weight: bold;
+  min-width: 2.5em;
+  text-align: center;
+}
+
+.invert {
+  padding: 0.25em 0.4em 0.25em;
+  color: #fefefe;
+  background: #333;
+}
 
 /* = Badge = */
 

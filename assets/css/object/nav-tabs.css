@@ -3,7 +3,7 @@
 */
 
 .nav-tabs {
-  margin: 0 0 var(--baseline);
+  margin: 0 0 var(--baseline,1.5em);
 }
 
 .nav-tabs li {
@@ -46,8 +46,8 @@
 }
 
 .nav-tabs__content {
-  margin-top: var(--baseline);
-  padding: var(--baseline);
+  margin-top: var(--baseline,1.5em);
+  padding: var(--baseline,1.5em);
   min-height: 20rem;
   text-align: center;
   font-size: var(--bigger);

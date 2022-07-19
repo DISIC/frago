@@ -5,7 +5,7 @@
 .counter {
   display: inline-grid;
   align-items: center;
-  padding: calc(var(--baseline) / 8) calc(var(--baseline) / 4);
+  padding: calc(var(--baseline,1.5em) / 8) calc(var(--baseline,1.5em) / 4);
   font-family: Futura, Tahoma, Helvetica, Arial, sans-serif;
   color: #fff;
   background: var(--color-score,#204f93);

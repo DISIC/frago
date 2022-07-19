@@ -4,13 +4,13 @@
 
 .tags {
   display: flex;
-  margin-bottom: var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
 }
 
 .tags a {
   position: relative;
-  margin: 0 calc(var(--baseline) / 4) 0 0;
-  padding: 0.2em calc(var(--baseline) / 2);
+  margin: 0 calc(var(--baseline,1.5em) / 4) 0 0;
+  padding: 0.2em calc(var(--baseline,1.5em) / 2);
   text-decoration: none;
   color: var(--color-grey-verylight);
   background: hsl(var(--base-primary), var(--base-sat), var(--base-light));

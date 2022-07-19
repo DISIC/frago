@@ -15,7 +15,7 @@
   display: inline-block;
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
-  padding: var(--baseline);
+  padding: var(--baseline,1.5em);
   text-decoration: none;
   color: white;
   background: black;

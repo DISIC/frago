@@ -11,7 +11,7 @@
 */
 
 .page {
-  padding-bottom: var(--baseline);
+  padding-bottom: var(--baseline,1.5em);
 }
 
 .page,
@@ -23,8 +23,8 @@
 }
 
 .fg-wrapper {
-  padding-right: var(--baseline);
-  padding-left: var(--baseline);
+  padding-right: var(--baseline,1.5em);
+  padding-left: var(--baseline,1.5em);
   width: clamp(16rem, 90vw, var(--layout-max-width));
 }
 
@@ -42,7 +42,7 @@
 }
 
 .flex-gap > * {
-  padding: calc(var(--baseline) / 2) 0;
+  padding: calc(var(--baseline,1.5em) / 2) 0;
 }
 
 .flex-wrap {
@@ -56,7 +56,7 @@
   }
 
   .flex-gap > * {
-    padding: 0 calc(var(--baseline) / 2);
+    padding: 0 calc(var(--baseline,1.5em) / 2);
   }
 }
 
@@ -84,7 +84,7 @@
 @supports (grid-area: auto) {
   .grid {
     display: grid;
-    grid-gap: var(--baseline);
+    grid-gap: var(--baseline,1.5em);
     padding: 0;
   }
 
@@ -120,12 +120,12 @@
 */
 
 .margin-baseline {
-  margin-bottom: var(--baseline);
+  margin-bottom: var(--baseline,1.5em);
 }
 
 .padding-baseline {
-  padding-top: var(--baseline);
-  padding-bottom: var(--baseline);
+  padding-top: var(--baseline,1.5em);
+  padding-bottom: var(--baseline,1.5em);
 }
 
 /* Alignement
