@@ -40,6 +40,8 @@
   --link-color-hover: #000;
   --text-color: #000;
   --code-color: #000;
+  --baseline: 1em;
+  --color-grey: #fefefe;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,7 +63,7 @@ body {
   font-family: $font-family-base;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: calc(1em + 0.5rem);
   color: var(--text-color);
   background-color: var(--background-color-body, #fff);
 }
@@ -113,4 +115,22 @@ body {
 
 .bold {
   font-weight: 600;
+}
+
+.note {
+  margin-bottom: var(--baseline,1.5em);
+  padding: var(--baseline,1.5em) var(--baseline,1.5em) calc(var(--baseline,1.5em) / 2);
+  color: var(--text-color);
+  border: 1px solid #555;
+  background: #efefef;
+}
+
+.note p,
+.note ul {
+  margin-bottom: calc(var(--baseline,1.5em) / 2);
+}
+
+.anchor {
+  margin-left: -1.5rem;
+  margin-right: 0.2rem;
 }

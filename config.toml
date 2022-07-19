@@ -4,7 +4,6 @@ title = "Documentation"
 
 theme = ["documentago", "github.com/disic/frago"]
 
-
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true

@@ -1,6 +1,2 @@
-github.com/disic/frago v1.9.3 h1:EH3ikBOjQX0AWvS1Bcp5hFoqCKcKlvBYAIJz1USvXIo=
-github.com/disic/frago v1.9.3/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
-github.com/disic/frago v1.9.4-0.20220712135911-6c0bdd6f40ad h1:XoPOPTjwku/XeENnMY219QB+ifQGWHXz2zIpQ0FewiE=
-github.com/disic/frago v1.9.4-0.20220712135911-6c0bdd6f40ad/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
-github.com/disic/frago v1.9.4-0.20220713084951-7743c8fb6a81 h1:WGlTjxveXRt7TdP4QOboHTepdic0E4r4lNyVOtfXKEM=
-github.com/disic/frago v1.9.4-0.20220713084951-7743c8fb6a81/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
+github.com/disic/frago v1.9.4-0.20220719104447-281f732d9909 h1:PP4qnvRLA4HlR8xb9UnmBLjRHiFg4GoMckTcvaXGQl4=
+github.com/disic/frago v1.9.4-0.20220719104447-281f732d9909/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
