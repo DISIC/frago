@@ -9,4 +9,5 @@ _vendor
 # Editors
 .vscode
 
+themes/frago/
 assets/css/base/main.css
