@@ -1,11 +1,11 @@
 {{- with .scores -}}
 <small class="text-center d-block p-relative">
   {{- if (ne .isempty 0) -}}
-  <b class="h3 d-block">{{- .scores.compliance -}}%</b>
+  <b class="font-bigger font-bold d-block">{{- .scores.compliance -}}%</b>
   <span class="smaller">conformité&nbsp;RGAA</span>
   {{ if lt (.scores.criteria.total) 110 }}<span class="p-absolute p-top p-right badge bad d-inline-block">{{ (.scores.criteria.total) }}</span>{{ end }}
   {{- else -}}
-  <b class="h3 d-block">Conformité</b>
+  <b class="font-bigger font-bold d-block">Conformité</b>
   <span class="smaller">En&nbsp;cours</span>
   {{- end -}}
 </small>

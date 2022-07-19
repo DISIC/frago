@@ -40,7 +40,7 @@
           {{- $lighthouse        := fileExists (printf "/%s/lighthouse/" $projectFolders) -}}
           {{- $declaration       := cond (fileExists "/data/websites.json") true false -}}
           <li class="enlarge-link card-inline card-shadow">
-              <h2 id="{{ .Title | anchorize }}" class="h4">
+              <h2 id="{{ .Title | anchorize }}" class="font-normal font-bold">
                 <a class="link-text" href="{{ .Permalink }}" aria-labelledby="{{ .Title | anchorize }}">{{ .Title }}</a>
               </h2>
               {{- if or $accessibility $recommendation $lighthouse -}}

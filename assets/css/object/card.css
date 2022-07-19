@@ -91,8 +91,10 @@
 }
 
 .card-background {
-  background: var(--color-grey-verylight);
-  border: 2px solid var(--color-grey);
+  background: #fefefe;
+  border: 2px solid #aaa;
+  border-top: none;
+  color: #000;
 }
 
 .card-shadow {

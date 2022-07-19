@@ -1,18 +1,18 @@
 {{- if .counter.LCP -}}
-<div class="scores grid">
-  <ul>
-    <li class="counter text-center {{ .counter.speedindexclass }}"><span>Page chargée<br><b class="h2">{{ div (.counter.LCP) 1000 | lang.NumFmt 1 }}s</b></span></li>
-    <li class="counter text-center"><span>Poids de la page<br><b class="h2">{{ div .counter.pageweight 1024 | lang.NumFmt 0 }}kb</b></span></li>
-    <li class="counter text-center"><span>Éléments sur la page<br><b class="h2">{{ .counter.domsize | lang.NumFmt 0 }}</b></span></li>
-    <li class="counter text-center"><span>Nombre de requêtes<br><b class="h2">{{ .counter.requests }}</b></span></li>
+<div class="scores mb-1">
+  <ul class="flex flex-gap flex-wrap">
+    <li class="counter text-center {{ .counter.speedindexclass }}"><span>Page chargée<br><b>{{ div (.counter.LCP) 1000 | lang.NumFmt 1 }}s</b></span></li>
+    <li class="counter text-center"><span>Poids de la page<br><b>{{ div .counter.pageweight 1024 | lang.NumFmt 0 }}kb</b></span></li>
+    <li class="counter text-center"><span>Éléments sur la page<br><b>{{ .counter.domsize | lang.NumFmt 0 }}</b></span></li>
+    <li class="counter text-center"><span>Nombre de requêtes<br><b>{{ .counter.requests }}</b></span></li>
   </ul>
 </div>
 <h3 class="m-0">Écoindex</h3>
-<div class="scores grid">
-  <ul>
-    <li class="counter text-center {{ .counter.ecoindexclass }}"><span>Score<br><b class="h2">{{ .counter.ecoindex }}</b></span></li>
-    <li class="counter text-center"><span>Eau (cl)<br><b class="h2">{{ .counter.eau | lang.NumFmt 2 }}</b></span></li>
-    <li class="counter text-center"><span>GES (gCO2e)<br><b class="h2">{{ .counter.co2 | lang.NumFmt 2 }}</b></span></li>
+<div class="scores mb-1">
+  <ul class="flex flex-gap flex-wrap">
+    <li class="counter text-center {{ .counter.ecoindexclass }}"><span>Score<br><b>{{ .counter.ecoindex }}</b></span></li>
+    <li class="counter text-center"><span>Eau (cl)<br><b>{{ .counter.eau | lang.NumFmt 2 }}</b></span></li>
+    <li class="counter text-center"><span>GES (gCO2e)<br><b>{{ .counter.co2 | lang.NumFmt 2 }}</b></span></li>
   </ul>
 </div>
 {{- end -}}

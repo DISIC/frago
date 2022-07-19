@@ -1,6 +1,7 @@
 {{- define "main" -}}
 {{- $patharray := split (path.Dir .Path) "/" -}}
 {{- $data      := newScratch -}}
+{{- partialCached "utils/css.html" (dict "context" . "filefolder" "base" "filename" "layout" "inline" "true") "layout" -}}
 {{- partialCached "utils/css.html" (dict "context" . "filefolder" "object" "filename" "card") "card" -}}
 
 {{- $.Scratch.Set "guidelinename" "greenit" -}}
@@ -87,12 +88,12 @@
         <div>
           {{ if . }}
             <svg width="60px" role="img" class="svgblue" aria-label="{{ $key }}" viewBox="0 0 50 50">
-              <use xlink:href="/assets/images/greenit/picto-impact.svg#{{ $key | urlize }}" />
+              <use xlink:href="{{ $.Site.BaseURL }}/assets/images/greenit/picto-impact.svg#{{ (replace $key "é" "e") | urlize }}" />
             </svg>
             <br><b>{{ $key }}</b>
           {{ else }}
             <svg width="60px" role="img" class="svgblue empty" aria-label="{{ $key }}" viewBox="0 0 50 50">
-              <use xlink:href="/assets/images/greenit/picto-impact.svg#{{ $key | urlize }}" />
+              <use xlink:href="{{ $.Site.BaseURL }}/assets/images/greenit/picto-impact.svg#{{ (replace $key "é" "e") | urlize }}" />
             </svg>
             <br><b><strike>{{ $key }}</strike></b>
           {{ end }}
@@ -164,17 +165,17 @@
   <p><strong>KPI :</strong> {{ .KPI | markdownify }}</p>
 
   <h3 class="mb-0 invert">Mise en œuvre :</h3>
-  <div class="flex flex-gap align-items-center text-center mb-1 card-background pt-2" style="align-items: stretch ">
+  <div class="flex flex-gap align-items-center text-center mb-1 card-background p-2" style="align-items: stretch ">
     <p>
       <span class="rank border-50">{{ .priority | urlize }}</span><br>
       {{ range (seq (int .priority)) }}
         <svg width="40px" role="img" class="svggreen" aria-label="priorité" viewBox="0 0 50 50">
-          <use xlink:href="/assets/images/greenit/picto.svg#priorite" />
+          <use xlink:href="{{ $.Site.BaseURL }}assets/images/greenit/picto.svg#priorite" />
         </svg>
       {{ end }}
       {{ range (seq (sub 3 (int .priority))) }}
         <svg width="40px" role="img" class="svggreen empty" aria-label="priorité" viewBox="0 0 50 50">
-          <use xlink:href="/assets/images/greenit/picto.svg#priorite" />
+          <use xlink:href="{{ $.Site.BaseURL }}assets/images/greenit/picto.svg#priorite" />
         </svg>
       {{ end }}
       <br><strong class="invert">Priorité</strong>
@@ -183,25 +184,25 @@
       <span class="rank border-50">{{ .difficulty | urlize }}</span><br>
       {{ range (seq (int .difficulty)) }}
         <svg width="40px" role="img" class="svggreen" aria-label="priorité" viewBox="0 0 50 50">
-          <use xlink:href="/assets/images/greenit/picto.svg#difficulte" />
+          <use xlink:href="{{ $.Site.BaseURL }}assets/images/greenit/picto.svg#difficulte" />
         </svg>
       {{ end }}
       {{ range (seq (sub 3 (int .difficulty))) }}
         <svg width="40px" role="img" class="svggreen empty" aria-label="priorité" viewBox="0 0 50 50">
-          <use xlink:href="/assets/images/greenit/picto.svg#difficulte" />
+          <use xlink:href="{{ $.Site.BaseURL }}assets/images/greenit/picto.svg#difficulte" />
         </svg>
       {{ end }}
       <br><strong class="invert">Difficulté</strong>
     </p>
   </div>
   <h3 class="mb-0 invert">Potentiel :</h3>
-  <div class="flex flex-gap align-items-center text-center mb-1 card-background pt-2" style="align-items: stretch ">
+  <div class="flex flex-gap align-items-center text-center mb-1 card-background p-2" style="align-items: stretch ">
     {{ range $key, $value := .potentiel }}
       <p>
       <span class="rank border-50">{{ . | urlize }}</span><br>
       {{ range (seq .) }}
         <svg width="40px" role="img" aria-label="{{ $key | urlize }}" viewBox="0 0 50 50">
-          <use xlink:href="/assets/images/greenit/picto.svg#{{ $key | urlize }}" />
+          <use xlink:href="{{ $.Site.BaseURL }}assets/images/greenit/picto.svg#{{ (replace $key "é" "e") | urlize }}" />
         </svg>
       {{ end }}
       <br><strong class="mt-2 invert">{{ $key }}</strong>

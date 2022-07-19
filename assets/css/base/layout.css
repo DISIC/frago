@@ -25,7 +25,7 @@
 .fg-wrapper {
   padding-right: var(--baseline,1.5em);
   padding-left: var(--baseline,1.5em);
-  width: clamp(16rem, 90vw, var(--layout-max-width));
+  width: clamp(16rem, 90%, var(--layout-max-width));
 }
 
 .narrow {
@@ -42,7 +42,7 @@
 }
 
 .flex-gap > * {
-  padding: calc(var(--baseline,1.5em) / 2) 0;
+  margin: 0 0 calc(var(--baseline,1.5em) / 2);
 }
 
 .flex-wrap {
@@ -55,8 +55,12 @@
       flex-direction: row;
   }
 
+  .flex-gap {
+    gap: 0 calc(var(--baseline,1.5em) / 2);
+  }
+
   .flex-gap > * {
-    padding: 0 calc(var(--baseline,1.5em) / 2);
+    margin: 0;
   }
 }
 
@@ -84,7 +88,7 @@
 @supports (grid-area: auto) {
   .grid {
     display: grid;
-    grid-gap: var(--baseline,1.5em);
+    grid-gap: 1.5em;
     padding: 0;
   }
 

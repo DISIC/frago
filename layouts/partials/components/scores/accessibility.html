@@ -1,6 +1,6 @@
-<div class="scores grid">
-    <ul>
-      <li class="counter text-center d-inline-block good"><span><b class="h2">{{- .score -}}%</b><br>Critères conformes</span></li>
-      <li class="counter text-center d-inline-block bad"><span><b class="h2">{{- sub 100 .score -}}%</b><br>Critères non conformes</span></li>
+<div class="scores mb-1">
+    <ul class="flex flex-gap flex-wrap">
+      <li class="counter text-center good"><span><b>{{- .score -}}%</b><br>Critères conformes</span></li>
+      <li class="counter text-center bad"><span><b>{{- sub 100 .score -}}%</b><br>Critères non conformes</span></li>
     </ul>
 </div>

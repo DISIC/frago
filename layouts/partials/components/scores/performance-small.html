@@ -4,7 +4,7 @@
 
 {{- if $performance.LCP -}}
   <small class="text-center d-block">
-    <b class="h3 d-block">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b>
+    <b class="font-bigger font-bold d-block">{{ div ($performance.LCP) 1000 | lang.NumFmt 1 }}s</b>
     <span class="smaller">de&nbsp;chargement</span>
   </small>
 {{- else -}}
