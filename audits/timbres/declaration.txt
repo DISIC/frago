@@ -1,0 +1,94 @@
+
+
+
+
+  
+
+
+  <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
+    <section>
+      
+      
+      
+      <h2>État de conformité</h2>
+      <p> est non conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des dérogations énumérées ci-dessous.</p>
+      <h3>Résultats des tests</h3>
+      <p>L’audit de conformité, du 15 janvier 2020,  révèle que :</p>
+        <ul>
+              <li>60% des 23 critères testés  sont respectés (le taux moyen est de 69%).</li>
+          </li>
+        </ul>
+      
+      <h2>Critères non conformes</h2>
+        <p><strong>Critère 1.1</strong><br/><em>Certaines images porteuses d’information n’ont pas d’alternative textuelle.</em>
+    </br><p><strong>Critère 6.1</strong><br/><em>Certains liens ne sont pas explicites.</em>
+    </br><p><strong>Critère 7.1</strong><br/><em>Certains scripts ne sont pas compatibles avec les technologies d’assistance.</em>
+    </br><p><strong>Critère 9.1</strong><br/><em>Pour certaines pages web, l’information n’est pas structurée par l’utilisation appropriée de titres.</em>
+    </br><p><strong>Critère 10.6</strong><br/><em>Pour certaines pages web, certains liens dont la nature n’est pas évidente ne sont pas visibles par rapport au texte environnant.</em>
+    </br><p><strong>Critère 12.8</strong><br/><em>Pour certaines pages web, l’ordre de tabulation n’est pas cohérent.</em>
+    </br>
+
+
+        <h2>Établissement de cette déclaration d’accessibilité</h2>
+        
+        
+          <p>Cette déclaration a été établie le <time datetime="2020-01-15T00:00:00Z">15 janvier 2020</time>.</p>
+          
+          
+            <h3>Technologies utilisées</h3>
+            <ul><li>HTML</li><li>CSS</li></ul>
+            
+          
+          
+          
+          
+            
+            
+              <h3>Environnement de test</h3>
+              <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
+                par la base de référence du RGAA, avec les versions suivantes :</p>
+              <ul><li>MacOS</li><li>Chrome</li><li>VoiceOver</li></ul>
+            
+            
+            
+            
+              <h3>Outils pour évaluer l’accessibilité</h3>
+              <ul>
+                
+                <li>Wave</li>
+                <li>AXE</li>
+                <li>MOZ DevTools</li>
+                <li>Usability Hike</li></ul>
+            
+            
+          
+          
+          
+          
+            <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
+            <ol>
+              <li>Accueil</li>
+              
+            </ol>
+          
+          
+      
+      
+
+      
+      
+
+      <h2>Voies de recours</h2>
+      <p>Cette procédure est à utiliser dans le cas suivant.</p>
+      <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
+        ou à un des services du portail et vous n’avez pas obtenu de réponse satisfaisante.</p>
+      <ul>
+        <li><a href="https://formulaire.defenseurdesdroits.fr">Écrire un message au Défenseur des droits</a></li>
+        <li><a href="https://www.defenseurdesdroits.fr/saisir/delegues">Contacter le délégué du Défenseur des droits dans
+            votre région</a></li>
+        <li>Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre)<br>
+          Défenseur des droits<br>
+          Libre réponse 71120<br>
+          75342 Paris CEDEX 07<br></li>
+      </ul>
+    </section>

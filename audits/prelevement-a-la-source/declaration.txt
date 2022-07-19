@@ -1,0 +1,123 @@
+
+
+
+
+  
+
+
+  <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
+    <section>
+      
+      
+      
+      <h2>État de conformité</h2>
+      <p> est non conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des dérogations énumérées ci-dessous.</p>
+      <h3>Résultats des tests</h3>
+      <p>L’audit de conformité, du 22 octobre 2020,  révèle que :</p>
+        <ul>
+              <li>30% des 66 critères testés  sont respectés (le taux moyen est de 57%).</li>
+          </li>
+        </ul>
+      
+      <h2>Critères non conformes</h2>
+        <p><strong>Critère 3.1</strong><br/><em>Pour certaines pages web, l’information est donnée uniquement par la couleur.</em>
+    </br><p><strong>Critère 3.2</strong><br/><em>Pour certaines pages web, le contraste entre la couleur du texte et la couleur de son arrière-plan n’est pas suffisamment élevé.</em>
+    </br><p><strong>Critère 3.3</strong><br/><em>Pour certaines pages web, les couleurs utilisées dans les composants d’interface ou les éléments graphiques porteurs d’informations ne sont suffisamment contrastées</em>
+    </br><p><strong>Critère 5.1</strong><br/><em>Certains tableaux de données complexe n’ont pas de résumé.</em>
+    </br><p><strong>Critère 5.2</strong><br/><em>Pour certains tableaux de données complexe ayant un résumé, celui-ci est non pertinent.</em>
+    </br><p><strong>Critère 5.3</strong><br/><em>Pour certains tableaux de mise en forme, le contenu linéarisé n’est pas compréhensible.</em>
+    </br><p><strong>Critère 5.4</strong><br/><em>Pour certains tableaux de données ayant un titre, le titre n’est pas correctement associé au tableau de données.</em>
+    </br><p><strong>Critère 5.5</strong><br/><em>Pour certains tableaux de données ayant un titre, celui-ci est non pertinent.</em>
+    </br><p><strong>Critère 5.6</strong><br/><em>Pour certains tableaux de données, certains en-têtes de colonnes et certains en-têtes de lignes ne sont pas correctement déclarés.</em>
+    </br><p><strong>Critère 6.1</strong><br/><em>Certains liens ne sont pas explicites.</em>
+    </br><p><strong>Critère 6.2</strong><br/><em>Pour certaines pages web, certains liens n’ont pas d’intitulé.</em>
+    </br><p><strong>Critère 7.1</strong><br/><em>Certains scripts ne sont pas compatibles avec les technologies d’assistance.</em>
+    </br><p><strong>Critère 7.2</strong><br/><em>Pour certains scripts ayant une alternative, l’alternative est non pertinente.</em>
+    </br><p><strong>Critère 7.3</strong><br/><em>Certains scripts ne sont pas contrôlables par le clavier et par tout dispositif de pointage.</em>
+    </br><p><strong>Critère 7.4</strong><br/><em>Pour certains scripts qui initient un changement de contexte, l’utilisateur n’est pas averti ou en n’a pas le contrôle.</em>
+    </br><p><strong>Critère 8.1</strong><br/><em>Certaines pages web ne sont pas définies par un type de document.</em>
+    </br><p><strong>Critère 8.2</strong><br/><em>Pour certaines pages web, le code source généré n’est pas valide selon le type de document spécifié.</em>
+    </br><p><strong>Critère 8.5</strong><br/><em>Certaines pages web n’ont pas de titre de page.</em>
+    </br><p><strong>Critère 8.9</strong><br/><em>Pour certaines pages web, les balises ne doivent pas être utilisées uniquement à des fins de présentation.</em>
+    </br><p><strong>Critère 9.1</strong><br/><em>Pour certaines pages web, l’information n’est pas structurée par l’utilisation appropriée de titres.</em>
+    </br><p><strong>Critère 9.2</strong><br/><em>Pour certaines pages web, la structure du document n’est pas cohérente.</em>
+    </br><p><strong>Critère 9.3</strong><br/><em>Pour certaines pages web, certaines listes ne sont pas correctement structurées.</em>
+    </br><p><strong>Critère 10.3</strong><br/><em>Pour certaines pages web, l’information ne reste pas compréhensible lorsque les feuilles de styles sont désactivées.</em>
+    </br><p><strong>Critère 10.8</strong><br/><em>Pour certaines pages web, certains contenus cachés n’ont pas vocation à être ignorés par les technologies d’assistance.</em>
+    </br><p><strong>Critère 10.14</strong><br/><em>Pour certaines pages web, les contenus additionnels apparaissant via les styles CSS uniquement ne pas peuvent être rendus visibles au clavier et par tout dispositif de pointage.</em>
+    </br><p><strong>Critère 12.7</strong><br/><em>Pour certaines pages web, un lien d’évitement ou d’accès rapide à la zone de contenu principal n’est pas présent.</em>
+    </br><p><strong>Critère 12.8</strong><br/><em>Pour certaines pages web, l’ordre de tabulation n’est pas cohérent.</em>
+    </br><p><strong>Critère 12.9</strong><br/><em>Pour certaines pages web, la navigation contient des pièges au clavier.</em>
+    </br><p><strong>Critère 12.11</strong><br/><em>Pour certaines pages web, les contenus additionnels apparaissant au survol, à la prise de focus ou à l’activation d’un composant d’interface ne sont pas si nécessaire atteignables au clavier.</em>
+    </br><p><strong>Critère 13.1</strong><br/><em>Pour certaines pages web, l’utilisateur n’a pas le contrôle de certaines limites de temps modifiant le contenu.</em>
+    </br>
+
+
+        <h2>Établissement de cette déclaration d’accessibilité</h2>
+        
+        
+          <p>Cette déclaration a été établie le <time datetime="2020-10-22T00:00:00Z">22 octobre 2020</time>.</p>
+          
+          
+            <h3>Technologies utilisées</h3>
+            <ul><li>HTML</li><li>CSS</li></ul>
+            
+          
+          
+          
+          
+            
+            
+              <h3>Environnement de test</h3>
+              <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
+                par la base de référence du RGAA, avec les versions suivantes :</p>
+              <ul><li>MacOS</li><li>Chrome</li><li>VoiceOver</li></ul>
+            
+            
+            
+            
+              <h3>Outils pour évaluer l’accessibilité</h3>
+              <ul>
+                
+                <li>Wave</li>
+                <li>AXE</li>
+                <li>MOZ DevTools</li>
+                <li>Usability Hike</li></ul>
+            
+            
+          
+          
+          
+          
+            <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
+            <ol>
+              <li>Accueil - Consultation du taux</li>
+              <li>Accueil - Activation d&#39;options</li>
+              <li>Actualisation revenus - Actualisation situation</li>
+              <li>Gestion des acomptes</li>
+              <li>Historique des prélèvements</li>
+              <li>Historique des actions</li>
+              
+            </ol>
+          
+          
+      
+      
+
+      
+      
+
+      <h2>Voies de recours</h2>
+      <p>Cette procédure est à utiliser dans le cas suivant.</p>
+      <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
+        ou à un des services du portail et vous n’avez pas obtenu de réponse satisfaisante.</p>
+      <ul>
+        <li><a href="https://formulaire.defenseurdesdroits.fr">Écrire un message au Défenseur des droits</a></li>
+        <li><a href="https://www.defenseurdesdroits.fr/saisir/delegues">Contacter le délégué du Défenseur des droits dans
+            votre région</a></li>
+        <li>Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre)<br>
+          Défenseur des droits<br>
+          Libre réponse 71120<br>
+          75342 Paris CEDEX 07<br></li>
+      </ul>
+    </section>

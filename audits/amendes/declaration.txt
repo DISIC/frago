@@ -1,0 +1,415 @@
+
+
+
+
+  
+
+
+  <h1 id="declaration">Déclaration d’accessibilité RGAA</h1>
+    <section>
+      
+      
+      
+      <h2>État de conformité</h2>
+      <p>, amendes.gouv.fr est non conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4 en raison des non-conformités et des dérogations énumérées ci-dessous.</p>
+      <h3>Résultats des tests</h3>
+      <p>L’audit de conformité, du 25 mars 2022,  révèle que :</p>
+        <ul>
+              <li>71% des 106 critères testés  sont respectés (le taux moyen est de 88%).</li>
+          </li>
+        </ul>
+      
+      <h2>Critères non conformes</h2>
+        <p><strong>Critère 1.3</strong><br/><em>Certaines images porteuses d’information ayant une alternative textuelle, ont une alternative non pertinente.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Illustration - image texte</td>
+            <td>Formulaire</td>
+            <td>Illustration - image texte</td>
+            <td>L’alternative texte ne décrit pas suffisamment l’image. Il devrait être indiqué le cas de figure précis que présente l’image.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 1.6</strong><br/><em>Certaines images porteuses d’information n’ont pas de description détaillée.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Accordéon - image figure</td>
+            <td>Où trouver mon numéro de télépaiement et la clé ?</td>
+            <td>Accordéon - image figure</td>
+            <td>L’image pourrait être inclue dans une balise <code>&lt;figure&gt;</code> avec une <code>&lt;figcaption&gt;</code> pour décrire où se situe le numéro sur le formulaire de télépaiement.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 3.2</strong><br/><em>Pour certaines pages web, le contraste entre la couleur du texte et la couleur de son arrière-plan n’est pas suffisamment élevé.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Bouton couleur</td>
+            <td>Formulaire</td>
+            <td>Bouton couleur</td>
+            <td>Le bouton n’a pas d’état actif (<code>:active</code>)</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 6.1</strong><br/><em>Certains liens ne sont pas explicites.</em>
+    </br><p><strong>Critère 7.1</strong><br/><em>Certains scripts ne sont pas compatibles avec les technologies d’assistance.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Accordéon - focus</td>
+            <td>Où trouver mon numéro de télépaiement et la clé ?</td>
+            <td>Accordéon - focus</td>
+            <td>L’accordéon ne prend pas le focus quand on navigue dans la modale</td>
+            
+          
+          </tr><tr>
+          
+            <td>Accordéon - vocalisation de la flèche</td>
+            <td>Où trouver mon numéro de télépaiement et la clé ?</td>
+            <td>Accordéon - vocalisation de la flèche</td>
+            <td>La flèche à gauche des éléments d’accordéon est vocalisé par Voice-Over.</td>
+            
+          
+          </tr><tr>
+          
+            <td>Affichage</td>
+            <td>Modale</td>
+            <td>Affichage</td>
+            <td>La modale présente un bouton ”fermer” mal aligné, il semble manquer parfois un titre. Sur petit écran, elle s’affiche en haut et à gauche de l’écran</td>
+            
+          
+          </tr><tr>
+          
+            <td>Fermeture bouton</td>
+            <td>Modale</td>
+            <td>Fermeture bouton</td>
+            <td>Le bouton de fermeture du bas contient un initulé &ldquo;fermer&rdquo;, il devrait indiquer &ldquo;Fermer la fenêtre TITRE DE LA MODALE&rdquo;.</td>
+            
+          
+          </tr><tr>
+          
+            <td>Fermeture croix</td>
+            <td>Modale</td>
+            <td>Fermeture croix</td>
+            <td>Le bouton de fermeture du haut n’a pas de texte, on ne peut pas savoir avec le lecteur d’écran, qu&rsquo;il permet de fermer la modale (Fonctionnement acceptable sur les modales avec un bouton ”fermer” en bas mais pas dans tous les cas).</td>
+            
+          
+          </tr><tr>
+          
+            <td>Modale fermeture reprise focus</td>
+            <td>Où trouver mon numéro de télépaiement et la clé ?</td>
+            <td>Modale fermeture reprise focus</td>
+            <td>Lors de la fermeture de la fenêtre modale, le focus doit revenir à l’endroit (bouton) qui a enclenché l’ouverture de la modale.</td>
+            
+          
+          </tr><tr>
+          
+            <td>Titre</td>
+            <td>Modale</td>
+            <td>Titre</td>
+            <td>La modale n‘a pas titre. Il semble y avoir un manque dans le code : <code>aria-labelledby='exampleModalLongTitle'</code> doit faire référence une <code>id</code>. Il devrait peut-être être inclue dans uen <code>&lt;h4&gt;</code></td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 7.3</strong><br/><em>Certains scripts ne sont pas contrôlables par le clavier et par tout dispositif de pointage.</em>
+    </br><p><strong>Critère 7.4</strong><br/><em>Pour certains scripts qui initient un changement de contexte, l’utilisateur n’est pas averti ou en n’a pas le contrôle.</em>
+    </br><p><strong>Critère 7.5</strong><br/><em>Pour certaines pages web, les messages de statut ne sont pas correctement restitués par les technologies d’assistance.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Champ valeur - paiement fractionnée</td>
+            <td>Formulaire</td>
+            <td>Champ valeur - paiement fractionnée</td>
+            <td>Le champ ne devrait pas avoir le <code>type=number</code></td>
+            
+          
+          </tr><tr>
+          
+            <td>Groupement - paiement fractionnée</td>
+            <td>Formulaire</td>
+            <td>Groupement - paiement fractionnée</td>
+            <td>Devrait être dans un <code>fieldset</code>, son titre dans une <code>legend</code></td>
+            
+          
+          </tr><tr>
+          
+            <td>Message alerte - paiement fractionnée</td>
+            <td>Formulaire</td>
+            <td>Message alerte - paiement fractionnée</td>
+            <td>Le message d’erreur n’a pas de <code>role=&quot;alert&quot;</code></td>
+            
+          
+          </tr><tr>
+          
+            <td>Paiement - paiement fractionnée</td>
+            <td>Formulaire</td>
+            <td>Paiement - paiement fractionnée</td>
+            <td>Le message de description pour la zone de paiement fractionnée n’a pas de `aria-labelledby``.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 8.2</strong><br/><em>Pour certaines pages web, le code source généré n’est pas valide selon le type de document spécifié.</em>
+    </br><p><strong>Critère 8.9</strong><br/><em>Pour certaines pages web, les balises ne doivent pas être utilisées uniquement à des fins de présentation.</em>
+    </br><p><strong>Critère 9.1</strong><br/><em>Pour certaines pages web, l’information n’est pas structurée par l’utilisation appropriée de titres.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Titre page niveau</td>
+            <td>À savoir</td>
+            <td>Titre page niveau</td>
+            <td>Les titres devraient être des h3.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 10.6</strong><br/><em>Pour certaines pages web, certains liens dont la nature n’est pas évidente ne sont pas visibles par rapport au texte environnant.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Liens vers autres moyens de paiement</td>
+            <td>Les autres moyens de payer à distance</td>
+            <td>Liens vers autres moyens de paiement</td>
+            <td>Les liens ne sont pas valorisés de manières évidentes clicables.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 10.11</strong><br/><em>Pour certaines pages web, les contenus sont présentés en ayant recours à la fois à un défilement vertical pour une fenêtre ayant une hauteur de 256px ou une largeur de 320px.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Tableau de contenu</td>
+            <td>Contenu</td>
+            <td>Tableau de contenu</td>
+            <td>Le tableau ne présente pas styles appropriés pour son affichage sur petit écran (défilement).</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 11.5</strong><br/><em>Pour certains formulaires, les champs de même nature ne sont pas regroupés, si nécessaire.</em>
+    </br><p><strong>Critère 11.6</strong><br/><em>Pour certains formulaires, certains regroupements de champs de formulaire n’ont pas de légende.</em>
+    </br><p><strong>Critère 11.9</strong><br/><em>Pour certains formulaires, certains intitulés de certains boutons ne sont pas pertinents.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Liens - annuler</td>
+            <td>Formulaire</td>
+            <td>Liens - annuler</td>
+            <td>Le lien devrait s’appeler « retour à la page d’accueil » et avoir le style d’un lien et non d’un bouton. Nous proposons de supprimer ces liens (sur toutes les pages où il est présent), pour plus de simplicité.</td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 11.10</strong><br/><em>Pour certains formulaires, certains contrôles de saisie ne sont pas utilisés de manière pertinente.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Saisir une adresse mail - champ obligatoire</td>
+            <td>Saisir une adresse de courrier électronique</td>
+            <td>Saisir une adresse mail - champ obligatoire</td>
+            <td>Le champ de saisi n’a pas d’attribut <code>required</code></td>
+            
+          
+          </tr></tbody>
+      </table><p><strong>Critère 13.3</strong><br/><em>Pour certaines pages web, certains documents bureautiques en téléchargement ne possèdent pas une version accessible.</em>
+    </br>
+      <table>
+        
+        <thead>
+          <tr>
+            <th class="w-100">Page</th>
+            <th class="w-100">Bloc</th>
+            <th class="w-120">Titre</th>
+            <th>Description</th>
+            
+          </tr>
+        </thead><tbody><tr>
+          
+            <td>Bandeau</td>
+            <td>Document imprimé</td>
+            <td>Bandeau</td>
+            <td>Ne pas imprimer le bandeau en taille aussi importante.</td>
+            
+          
+          </tr><tr>
+          
+            <td>Logo</td>
+            <td>Document imprimé</td>
+            <td>Logo</td>
+            <td>Revoir l’alignement du logo avec le texte.</td>
+            
+          
+          </tr></tbody>
+      </table>
+
+
+        <h2>Établissement de cette déclaration d’accessibilité</h2>
+        
+        
+          <p>Cette déclaration a été établie le <time datetime="2022-03-25T00:00:00Z">25 mars 2022</time>.</p>
+          
+          
+            <h3>Technologies utilisées</h3>
+            <ul><li>HTML</li><li>CSS</li><li>JS</li><li>PDF</li></ul>
+            
+          
+          
+          
+          
+            
+            
+              <h3>Environnement de test</h3>
+              <p>Les vérifications de restitution de contenus ont été réalisées sur la base de la combinaison fournie
+                par la base de référence du RGAA, avec les versions suivantes :</p>
+              <ul><li>MacOS</li><li>Firefox</li><li>Chrome</li><li>VoiceOver</li></ul>
+            
+            
+            
+            
+              <h3>Outils pour évaluer l’accessibilité</h3>
+              <ul>
+                
+                <li>Wave</li>
+                <li>AXE</li>
+                <li>Web Developper</li>
+                <li>Usability Hike</li>
+                <li>Heading Maps</li></ul>
+            
+            
+          
+          
+          
+          
+            <h3>Pages du site ayant fait l’objet de la vérification de conformité</h3>
+            <ol>
+              <li>Accueil</li>
+              <li>Vérification des informations de paiement</li>
+              <li>Justificatif de paiement</li>
+              <li>Plan du site</li>
+              <li>FAQ</li>
+              <li>Modalités de règlement</li>
+              <li>Saisie Indicatif</li>
+              <li>Informations du virement</li>
+              <li>Erreur</li>
+              
+            </ol>
+          
+          
+      
+      
+
+      
+      
+
+      <h2>Voies de recours</h2>
+      <p>Cette procédure est à utiliser dans le cas suivant.</p>
+      <p>Vous avez signalé au responsable du site internet un défaut d’accessibilité qui vous empêche d’accéder à un contenu
+        ou à un des services du portail et vous n’avez pas obtenu de réponse satisfaisante.</p>
+      <ul>
+        <li><a href="https://formulaire.defenseurdesdroits.fr">Écrire un message au Défenseur des droits</a></li>
+        <li><a href="https://www.defenseurdesdroits.fr/saisir/delegues">Contacter le délégué du Défenseur des droits dans
+            votre région</a></li>
+        <li>Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre)<br>
+          Défenseur des droits<br>
+          Libre réponse 71120<br>
+          75342 Paris CEDEX 07<br></li>
+      </ul>
+    </section>
