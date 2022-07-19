@@ -81,12 +81,16 @@
 
 /* Font */
 
-.smaller {
-  font-size: var(--smaller);
+.font-smaller {
+  font-size: 75%;
 }
 
-.bigger {
-  font-size: var(--bigger);
+.font-normal {
+  font-size: 1rem;
+}
+
+.font-bigger {
+  font-size: 125%;
 }
 
 .small-caps {
