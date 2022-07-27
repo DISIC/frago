@@ -1,0 +1,16 @@
+{{- $project     := .project -}}
+{{- $lastfile    := (index (partialCached "render/lastfile.html" (dict "context" .context "project" $project "type" "greenit") $project "greenit") "auditfile-path") -}}
+{{- $greenit := partialCached "render/greenit.html" (dict "context" .context "auditfile" $lastfile) .context $lastfile -}}
+
+{{- with $greenit -}}
+  <small class="text-center d-block p-relative">
+    {{- if (ne .isempty 0) -}}
+    <b class="font-bigger font-bold d-block">{{- .scores.compliance -}}%</b>
+    <span class="smaller">avancée&nbsp;GreenIT</span>
+    {{ if lt (.scores.criteria.total) 74 }}<span class="p-absolute p-top p-right badge bad d-inline-block">{{ (.scores.criteria.total) }}</span>{{ end }}
+    {{- else -}}
+    <b class="h3 d-block">Avancée</b>
+    <span class="smaller">En&nbsp;cours</span>
+    {{- end -}}
+  </small>
+{{ end }}
