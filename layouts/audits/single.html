@@ -12,6 +12,8 @@
           Audit Accessibilité
         {{- else if eq .Format.BaseName "ecoconception" -}}
           Écoconception
+        {{- else if eq .Format.BaseName "greenit" -}}
+          GreenIT - 74 bonnes pratiques
         {{- else if eq .Format.BaseName "quality" -}}
           Recommandations
         {{- else if eq .Format.BaseName "recommendation" -}}
@@ -42,6 +44,9 @@
           {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if or (eq .Format.BaseName "ecoconception") -}}
           {{- $partial := (partialCached "templates/ecoconception.html" (dict "context" $context) $context) -}}
+          {{- partialCached "elements/content.html" $partial $partial -}}
+        {{- else if or (eq .Format.BaseName "greenit") -}}
+          {{- $partial := (partialCached "templates/greenit.html" (dict "context" $context) $context) -}}
           {{- partialCached "elements/content.html" $partial $partial -}}
         {{- else if or (eq .Format.BaseName "recommendation") -}}
           {{- $partial := (partialCached "templates/recommendation.html" (dict "context" $context) $context) -}}

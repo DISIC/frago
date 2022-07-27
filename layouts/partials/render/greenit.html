@@ -9,7 +9,6 @@
   {{ range $key1, $value1 := after 1 $auditfile }}
       {{ $key := index $value1 0 }}
       {{ $value := index $value1 1 }}
-      {{ warnf "%s" $key }}
       {{ $data.SetInMap "CritAll" (string $key) $value }}
       {{ if eq $value "1"}}
         {{ $data.SetInMap "Crit1" (string $key) $value }}

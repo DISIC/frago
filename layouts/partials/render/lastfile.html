@@ -9,7 +9,7 @@
 
 
 {{ $condrecommendation := eq (len (intersect (slice .type) (slice "recommendation" "quality"))) 1 }}
-{{ $ext                := cond (eq "ecoconception" .type) "csv" (cond (eq "actions" .type) "csv" (cond (eq "accessibility" .type) "csv" (cond ($condrecommendation) "yml" "json"))) }}
+{{ $ext                := cond (eq "greenit" .type) "csv" (cond (eq "ecoconception" .type) "csv" (cond (eq "actions" .type) "csv" (cond (eq "accessibility" .type) "csv" (cond ($condrecommendation) "yml" "json")))) }}
 
 {{ $datalastfile.Set    "auditpath-lastfile" "/false" }}
 {{ $datalastfile.Set    "pathdata" "/false" }}
