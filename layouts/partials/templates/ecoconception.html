@@ -20,7 +20,7 @@
       {{- $data.Set "date" now -}}
       {{- warnf "The file %s has a bad name, it should be a date YYYY-MM-DD.csv" (index ($data.Get "audits") "auditfile-path") -}}
     {{- end -}}
-    {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
+  {{/* END Test if the csv file has a good name : YYYY-MM-DD.csv */}}
 
   {{- if $project -}}<p>← <a href="{{ site.BaseURL | default "/" }}{{- with $project -}}{{ printf "audits/%s/" . }}{{- end -}}" class="link-more link-back" aria-label="Retour à la page {{ ($context.GetPage $project).Title }}">Retour à la page projet</a></p>{{- end -}}
   <h1>Synthèse Écoconception{{ with $projectTitle }}<small> pour {{ partialCached "utils/isURL.html" (dict "context" $context "projectTitle" $projectTitle) $projectTitle }}</small>{{ end }}</h1>

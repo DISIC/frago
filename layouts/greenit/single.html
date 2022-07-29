@@ -119,13 +119,13 @@
         {{- if and (eq $counter 0) (ge (len $description) 2) }}{{ $.Scratch.Add "classcontent" "mb-0" }}{{ end -}}
         {{ $class := cond (isset ($.Scratch.Get "classcontent") 0) (printf " class='%s'" (delimit ($.Scratch.Get "classcontent") " ")) "" }}
         {{ printf "<%s%s>" $tag $class | safeHTML }}
-          {{- if (isset . -1) -}}
-            {{ range . }}
-              <li>{{- . | markdownify -}}</li>
-            {{ end }}
-          {{ else }}
-            {{- . | markdownify -}}
+        {{- if reflect.IsSlice . -}}
+          {{ range . }}
+            <li>{{- . | markdownify -}}</li>
           {{ end }}
+        {{ else }}
+          {{- . | markdownify -}}
+        {{ end }}
         {{ printf "</%s>" $tag | safeHTML }}
         {{ $counter = add $counter 1 }}
       {{ end -}}

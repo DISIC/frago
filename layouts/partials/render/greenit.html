@@ -1,0 +1,86 @@
+
+{{ $data     := newScratch }}
+
+{{ if (ne .auditfile "/false") }}
+  {{ $auditfile        := (getCSV "," .auditfile) }}
+  {{ $data.Set "auditfile" $auditfile }}
+  {{ $data.Set "date" (replace (path.Base .auditfile) (path.Ext .auditfile) "") }}
+
+  {{ range $key1, $value1 := after 1 $auditfile }}
+      {{ $key := index $value1 0 }}
+      {{ $value := index $value1 1 }}
+      {{ $data.SetInMap "CritAll" (string $key) $value }}
+      {{ if eq $value "1"}}
+        {{ $data.SetInMap "Crit1" (string $key) $value }}
+      {{ else if eq $value "2"}}
+        {{ $data.SetInMap "Crit2" (string $key) $value }}
+      {{ else if eq $value "3"}}
+        {{ $data.SetInMap "Crit3" (string $key) $value }}
+      {{ else if eq $value "4"}}
+        {{ $data.SetInMap "Crit4" (string $key) $value }}
+      {{ else if eq $value "5"}}
+        {{ $data.SetInMap "Crit5" (string $key) $value }}
+      {{ else }}
+        {{ $data.SetInMap "Critnonteste" (string $key) $value }}
+      {{ end }}
+    {{ end }}
+
+{{ end }}
+
+{{ $data.Set "iCrit1" 0 }}
+{{ with ($data.Get "Crit1") }}
+  {{ $data.Set "iCrit1" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCrit2" 0 }}
+{{ with ($data.Get "Crit2") }}
+  {{ $data.Set "iCrit2" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCrit3" 0 }}
+{{ with ($data.Get "Crit3") }}
+  {{ $data.Set "iCrit3" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCrit4" 0 }}
+{{ with ($data.Get "Crit4") }}
+  {{ $data.Set "iCrit4" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCrit5" 0 }}
+{{ with ($data.Get "Crit5") }}
+  {{ $data.Set "iCrit5" (len .) }}
+{{ end }}
+
+{{ $data.Set "iCritnonteste" 0 }}
+{{ with ($data.Get "Critnonteste") }}
+  {{ $data.Set "iCritnonteste" (len .) }}
+{{ end }}
+
+{{ $compliancetotal := (add (add (add (add (mul ($data.Get "iCrit1") 1) (mul ($data.Get "iCrit2") 2)) (mul ($data.Get "iCrit3") 3) ) (mul ($data.Get "iCrit4") 4 )) (mul ($data.Get "iCrit5") 5)) }}
+
+{{ return (dict
+  "isempty"       false
+  "date"          ($data.Get "date")
+  "criteria"      (dict "1" ($data.Get "Crit1")
+                        "2" ($data.Get "Crit2")
+                        "3" ($data.Get "Crit3")
+                        "4" ($data.Get "Crit4")
+                        "5" ($data.Get "Crit5")
+                        "all" ($data.Get "CritAll")
+                        "nonteste" ($data.Get "Critnonteste")
+                  )
+  "scores"        (dict "criteria"
+                    (dict "total" (add (add (add (add ($data.Get "iCrit1") ($data.Get "iCrit2")) ($data.Get "iCrit3")) ($data.Get "iCrit4")) ($data.Get "iCrit5"))
+                          "1" ($data.Get "iCrit1")
+                          "2" ($data.Get "iCrit2")
+                          "3" ($data.Get "iCrit3")
+                          "4" ($data.Get "iCrit4")
+                          "5" ($data.Get "iCrit5")
+                          "nonteste" ($data.Get "iCritnonteste")
+                    )
+                  "compliancetotal" $compliancetotal
+                  "compliance" (div ((mul $compliancetotal 100)) 370)
+              )
+)
+}}

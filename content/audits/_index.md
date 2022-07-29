@@ -1,5 +1,5 @@
 ---
-title: Audits
+title: Accueil
 outputs:
   - html
   - json
@@ -17,11 +17,13 @@ cascade:
     - declarationpage
     - accessibility
     - ecoconception
+    - greenit
     - quality
     - recommendation
     - performance
     - accessibilitypage
     - ecoconceptionpage
+    - greenitpage
     - qualitypage
     - recommendationpage
     - performancepage
@@ -40,11 +42,13 @@ cascade:
     - declaration
     - accessibility
     - ecoconception
+    - greenit
     - quality
     - recommendation
     - performance
     - accessibilitypage
     - ecoconceptionpage
+    - greenitpage
     - qualitypage
     - recommendationpage
     - performancepage

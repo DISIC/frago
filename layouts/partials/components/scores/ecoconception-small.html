@@ -5,7 +5,7 @@
 {{- with $ecoconception -}}
   <small class="text-center d-block p-relative">
     {{- if (ne .isempty 0) -}}
-    <b class="h3 d-block">{{- .scores.compliance -}}%</b>
+    <b class="font-bigger font-bold d-block">{{- .scores.compliance -}}%</b>
     <span class="smaller">conformité&nbsp;RGESN</span>
     {{ if lt (.scores.criteria.total) 110 }}<span class="p-absolute p-top p-right badge bad d-inline-block">{{ (.scores.criteria.total) }}</span>{{ end }}
     {{- else -}}

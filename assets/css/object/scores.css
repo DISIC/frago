@@ -13,7 +13,7 @@
 }
 
 .scores ul {
-  margin: 0 calc(var(--baseline,1.5em) / -2);
+  margin: 0 calc(var(--baseline,1.5em) / -2) var(--baseline,1.5em);
   padding: 0;
 }
 

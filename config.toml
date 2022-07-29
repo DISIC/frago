@@ -58,6 +58,17 @@ disableKinds = ["RSS", "sitemap", "taxonomy", "taxonomyTerm"]
   mediaType = "application/json"
   isPlainText = true
   notAlternative = false
+[outputFormats.greenitpage]
+  baseName = "greenit"
+  mediaType = "text/html"
+  notAlternative = false
+  permalinkable = true
+  isHTML = true
+[outputFormats.greenit]
+  baseName = "greenit"
+  mediaType = "application/json"
+  isPlainText = true
+  notAlternative = false
 [outputFormats.recommendationpage]
   baseName = "recommendation"
   mediaType = "text/html"
