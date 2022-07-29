@@ -6,11 +6,11 @@
 
 {{- $.Scratch.Set "guidelinename" "greenit" -}}
 {{- $.Scratch.Set "guidelineversion" "0.3" -}}
-{{- if ge ($patharray) 2 -}}
+{{/*- if ge ($patharray) 2 -}}
   {{- $.Scratch.Set "guideline" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelinename" (index $patharray 0) -}}
   {{- $.Scratch.Set "guidelineversion" (index $patharray 1) -}}
-{{- end -}}
+{{- end -*/}}
 {{- $criteriafile := (index (index $.Site.Data ($.Scratch.Get "guidelinename")) ($.Scratch.Get "guidelineversion")).criteres -}}
 
 <article class="fg-wrapper narrow">
