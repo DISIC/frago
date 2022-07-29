@@ -1,2 +1,6 @@
 github.com/disic/frago v1.9.4-0.20220719104447-281f732d9909 h1:PP4qnvRLA4HlR8xb9UnmBLjRHiFg4GoMckTcvaXGQl4=
 github.com/disic/frago v1.9.4-0.20220719104447-281f732d9909/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
+github.com/disic/frago v1.10.0 h1:K45hAlTSK/PjTprknOgDGr874yBHat1OJ1r9WJEoEEc=
+github.com/disic/frago v1.10.0/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
+github.com/disic/frago v1.10.1 h1:6JOiDKue3+Zl40VjhO5JZvHx7OH8NSnQxnO8jfMMWm0=
+github.com/disic/frago v1.10.1/go.mod h1:P+FGLyK+Tit1HIeu1aDFxIwQCCrYTJflqCX0Xue/jXM=
