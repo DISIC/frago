@@ -1,1 +1,1 @@
-.scores{overflow:hidden;align-items:stretch;margin:0}.scores+.scores{padding-top:0}.scores ul{margin:0 calc(var(--baseline,1.5em)/-2);padding:0}.scores li{min-width:8rem;min-height:5rem;list-style:none}
+.scores{overflow:hidden;align-items:stretch;margin:0}.scores+.scores{padding-top:0}.scores ul{margin:0 calc(var(--baseline,1.5em)/-2)var(--baseline,1.5em);padding:0}.scores li{min-width:8rem;min-height:5rem;list-style:none}
