@@ -1,4 +1,8 @@
-# Génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.
+Ce projet n'est plus maintenu par la [DINUM](https://www.numerique.gouv.fr).
+
+Il continue d'être développé sur [github.com/lowdit/frago](https://github.com/lowdit/frago.)
+
+## Génération de rapports de synthèse pour le suivi et l’amélioration de l’accessibilité web.
 
 <p align="center">
   <img width="243" height="272" src="/images/frago.png">
@@ -34,5 +38,5 @@ Le thème Frago utilise cette liste de bibliothèques :
 
 ## Auteur
 
-2019-2020, Bertrand Keller pour la direction interministérielle du numérique.  
-2020-2021, Bertrand Keller pour le ministère de l’économie, des Finances et de la Relance.
+2019-2020, Direction interministérielle du numérique.
+2020-2022, Ministère de l’économie, des Finances et de la Relance.
